@@ -1,8 +1,11 @@
 package com.example.ticketbookingsystem.servlet.arena_servlets;
 
 import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
+import com.example.ticketbookingsystem.validator.Error;
+import com.example.ticketbookingsystem.validator.ValidationResult;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,21 +28,33 @@ public class UpdateArenaServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        try {
+            String id = request.getParameter("id");
+            String name = request.getParameter("name");
+            String city = request.getParameter("city");
+            int capacity = Integer.parseInt(request.getParameter("capacity"));
 
-        String id = request.getParameter("id");
-        String name = request.getParameter("name");
-        String city = request.getParameter("city");
-        int capacity = Integer.parseInt(request.getParameter("capacity"));
+            Arena arena = new Arena();
+            arena.setId(Long.parseLong(id));
+            arena.setName(name);
+            arena.setCity(city);
+            arena.setCapacity(capacity);
 
-        Arena arena = new Arena();
-        arena.setId(Long.parseLong(id));
-        arena.setName(name);
-        arena.setCity(city);
-        arena.setCapacity(capacity);
+            arenaService.updateArena(arena);
 
-        arenaService.updateArena(arena);
-
-        response.sendRedirect(request.getContextPath() + "/arenas");
+            response.sendRedirect(request.getContextPath() + "/arenas");
+        }catch (NumberFormatException e){
+            ValidationResult numberFormatValidationResult = new ValidationResult();
+            numberFormatValidationResult.add(Error.of("invalid.number.format",
+                    "Проверьте корректность ввода данных значения вместимости " +
+                            "(допускается вводить только целые числа в диапазоне от 1 до 22000)!"));
+            request.setAttribute("errors", numberFormatValidationResult.getErrors());
+            doGet(request, response);
+        }
+        catch (ValidationException e){
+            request.setAttribute("errors", e.getErrors());
+            doGet(request, response);
+        }
     }
 }

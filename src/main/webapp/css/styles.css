@@ -84,3 +84,8 @@ button:hover {
 .form-container .button-group button {
     margin-top: 10px;
 }
+
+.error {
+    color: red;
+    margin-top: 10px;
+}
