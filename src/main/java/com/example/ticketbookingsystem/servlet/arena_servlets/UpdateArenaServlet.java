@@ -1,0 +1,45 @@
+package com.example.ticketbookingsystem.servlet.arena_servlets;
+
+import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.service.ArenaService;
+import com.example.ticketbookingsystem.utils.JspFilesResolver;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.Optional;
+
+@WebServlet("/update-arena")
+public class UpdateArenaServlet extends HttpServlet {
+    private final ArenaService arenaService = ArenaService.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+        Optional<Arena> arena = arenaService.findById(Long.parseLong(id));
+        request.setAttribute("arena", arena.get());
+        request.getRequestDispatcher(JspFilesResolver.getPath("update-arena")).forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String city = request.getParameter("city");
+        int capacity = Integer.parseInt(request.getParameter("capacity"));
+
+        Arena arena = new Arena();
+        arena.setId(Long.parseLong(id));
+        arena.setName(name);
+        arena.setCity(city);
+        arena.setCapacity(capacity);
+
+        arenaService.updateArena(arena);
+
+        response.sendRedirect(request.getContextPath() + "/arenas");
+    }
+}
