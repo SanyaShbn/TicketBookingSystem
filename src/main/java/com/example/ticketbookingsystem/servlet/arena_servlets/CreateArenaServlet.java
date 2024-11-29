@@ -1,8 +1,11 @@
 package com.example.ticketbookingsystem.servlet.arena_servlets;
 
 import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
+import com.example.ticketbookingsystem.validator.Error;
+import com.example.ticketbookingsystem.validator.ValidationResult;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,14 +23,27 @@ public class CreateArenaServlet extends HttpServlet {
         request.getRequestDispatcher(JspFilesResolver.getPath("create-arena")).forward(request, response);
     }
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String name = req.getParameter("name");
-        String city = req.getParameter("city");;
-        int capacity = Integer.parseInt(req.getParameter("capacity"));
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        try{
+            String name = req.getParameter("name");
+            String city = req.getParameter("city");;
+            int capacity = Integer.parseInt(req.getParameter("capacity"));
 
-        Arena arena = new Arena(name, city, capacity);
-        arenaService.createArena(arena);
+            Arena arena = new Arena(name, city, capacity);
+            arenaService.createArena(arena);
 
-        resp.sendRedirect(req.getContextPath() + "/arenas");
+            resp.sendRedirect(req.getContextPath() + "/arenas");
+        }catch (NumberFormatException e){
+            ValidationResult numberFormatValidationResult = new ValidationResult();
+            numberFormatValidationResult.add(Error.of("invalid.number.format",
+                    "Проверьте корректность ввода данных значения вместимости " +
+                            "(допускается вводить только целые числа в диапазоне от 1 до 22000)!"));
+            req.setAttribute("errors", numberFormatValidationResult.getErrors());
+            doGet(req, resp);
+        }
+        catch (ValidationException e){
+            req.setAttribute("errors", e.getErrors());
+            doGet(req, resp);
+        }
     }
 }

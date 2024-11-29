@@ -28,6 +28,15 @@
             <button type="submit"><fmt:message key="button.save" /></button>
         </div>
     </form>
+
+    <c:if test="${not empty requestScope.errors}">
+        <div class="error">
+            <c:forEach var="error" items="${requestScope.errors}">
+                <span>${error.message}</span>
+                <br/>
+            </c:forEach>
+        </div>
+    </c:if>
 </div>
 </body>
 </html>
