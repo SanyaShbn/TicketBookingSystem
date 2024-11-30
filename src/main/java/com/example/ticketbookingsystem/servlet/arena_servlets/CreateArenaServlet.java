@@ -1,5 +1,6 @@
 package com.example.ticketbookingsystem.servlet.arena_servlets;
 
+import com.example.ticketbookingsystem.dto.ArenaDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.ArenaService;
@@ -29,8 +30,12 @@ public class CreateArenaServlet extends HttpServlet {
             String city = req.getParameter("city");;
             int capacity = Integer.parseInt(req.getParameter("capacity"));
 
-            Arena arena = new Arena(name, city, capacity);
-            arenaService.createArena(arena);
+            ArenaDto arenaDto = ArenaDto.builder()
+                    .name(name)
+                    .city(city)
+                    .capacity(capacity).build();
+
+            arenaService.createArena(arenaDto);
 
             resp.sendRedirect(req.getContextPath() + "/arenas");
         }catch (NumberFormatException e){

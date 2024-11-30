@@ -14,10 +14,4 @@ public class Arena {
     private String name;
     private String city;
     private int capacity;
-
-    public Arena (String name, String city, int capacity){
-        this.name = name;
-        this.city = city;
-        this.capacity = capacity;
-    }
 }
