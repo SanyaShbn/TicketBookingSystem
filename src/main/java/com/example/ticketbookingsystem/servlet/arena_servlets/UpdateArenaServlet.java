@@ -25,7 +25,7 @@ public class UpdateArenaServlet extends HttpServlet {
         String id = request.getParameter("id");
         Optional<Arena> arena = arenaService.findById(Long.parseLong(id));
         request.setAttribute("arena", arena.get());
-        request.getRequestDispatcher(JspFilesResolver.getPath("update-arena")).forward(request, response);
+        request.getRequestDispatcher(JspFilesResolver.getPath("/arena-jsp/update-arena")).forward(request, response);
     }
 
     @Override

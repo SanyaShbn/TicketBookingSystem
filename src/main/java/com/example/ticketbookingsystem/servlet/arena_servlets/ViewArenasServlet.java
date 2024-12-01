@@ -24,20 +24,20 @@ public class ViewArenasServlet extends HttpServlet {
             Optional<Arena> arena = arenaService.findById(Long.parseLong(id));
             if (arena.isPresent()) {
                 req.setAttribute("arena", arena.get());
-                req.getRequestDispatcher(JspFilesResolver.getPath("update-arena")).forward(req, resp);
+                req.getRequestDispatcher(JspFilesResolver.getPath("/arena-jsp/update-arena")).forward(req, resp);
                 return;
             }
         }
 
         List<Arena> arenas = arenaService.findAll();
         req.setAttribute("arenas", arenas);
-        req.getRequestDispatcher(JspFilesResolver.getPath("arenas")).forward(req, resp);
+        req.getRequestDispatcher(JspFilesResolver.getPath("/arena-jsp/arenas")).forward(req, resp);
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
         req.setAttribute("arenas", arenaService.findAll());
-        req.getRequestDispatcher(JspFilesResolver.getPath("arenas")).forward(req, resp);
+        req.getRequestDispatcher(JspFilesResolver.getPath("/arena-jsp/arenas")).forward(req, resp);
     }
 }

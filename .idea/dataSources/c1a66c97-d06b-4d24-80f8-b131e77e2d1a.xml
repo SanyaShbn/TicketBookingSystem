@@ -3,9 +3,9 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.49">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>9559</IntrospectionStateNumber>
+      <IntrospectionStateNumber>9600</IntrospectionStateNumber>
       <ServerVersion>16.1</ServerVersion>
-      <StartupTime>1732204588</StartupTime>
+      <StartupTime>1732950391</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -800,7 +800,7 @@ false Zulu
 14697||10|C|G
 14697||-9223372036854775808|U|G
 14697||10|U|G</Grants>
-      <IntrospectionStateNumber>9559</IntrospectionStateNumber>
+      <IntrospectionStateNumber>9600</IntrospectionStateNumber>
       <ObjectId>22622</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4256,9 +4256,9 @@ false Zulu
     <schema id="272" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>9559</IntrospectionStateNumber>
-      <IntrospectionTimestamp>2024-11-29.20:02:15.638</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2024-11-29.17:02:16</LocalIntrospectionTimestamp>
+      <IntrospectionStateNumber>9600</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2024-12-01.14:00:24.880</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2024-12-01.11:00:25</LocalIntrospectionTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>524</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -4266,18 +4266,32 @@ false Zulu
     <sequence id="273" parent="272" name="arena_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22630</ObjectId>
-      <SequenceIdentity>1(1)</SequenceIdentity>
+      <SequenceIdentity>1(14)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9558</StateNumber>
       <OwnerName>postgres</OwnerName>
     </sequence>
-    <table id="274" parent="272" name="arena">
+    <sequence id="274" parent="272" name="sector_id_seq">
+      <DasType>bigint|0s</DasType>
+      <ObjectId>22641</ObjectId>
+      <SequenceIdentity>1(1)</SequenceIdentity>
+      <StartValue>1</StartValue>
+      <StateNumber>9599</StateNumber>
+      <OwnerName>postgres</OwnerName>
+    </sequence>
+    <table id="275" parent="272" name="arena">
       <ObjectId>22623</ObjectId>
-      <StateNumber>9544</StateNumber>
+      <StateNumber>9593</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <column id="275" parent="274" name="id">
+    <table id="276" parent="272" name="sector">
+      <ObjectId>22631</ObjectId>
+      <StateNumber>9599</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>postgres</OwnerName>
+    </table>
+    <column id="277" parent="275" name="id">
       <DasType>bigint|0s</DasType>
       <IdentityKind>always</IdentityKind>
       <NotNull>1</NotNull>
@@ -4286,28 +4300,28 @@ false Zulu
       <SequenceId>22630</SequenceId>
       <TypeId>20</TypeId>
     </column>
-    <column id="276" parent="274" name="name">
+    <column id="278" parent="275" name="name">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>9544</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="277" parent="274" name="city">
+    <column id="279" parent="275" name="city">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>9544</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="278" parent="274" name="capacity">
+    <column id="280" parent="275" name="capacity">
       <DasType>integer|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>9544</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="279" parent="274" name="arena_pkey">
+    <index id="281" parent="275" name="arena_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22628</ObjectId>
@@ -4316,12 +4330,57 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="280" parent="274" name="arena_pkey">
+    <key id="282" parent="275" name="arena_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22629</ObjectId>
       <Primary>1</Primary>
       <StateNumber>9544</StateNumber>
       <UnderlyingIndexId>22628</UnderlyingIndexId>
+    </key>
+    <column id="283" parent="276" name="id">
+      <DasType>bigint|0s</DasType>
+      <IdentityKind>always</IdentityKind>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>9599</StateNumber>
+      <SequenceId>22641</SequenceId>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="284" parent="276" name="arena_id">
+      <DasType>bigint|0s</DasType>
+      <Position>2</Position>
+      <StateNumber>9597</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="285" parent="276" name="sector_name">
+      <DasType>varchar(50)|0s</DasType>
+      <Position>3</Position>
+      <StateNumber>9593</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <foreign-key id="286" parent="276" name="sector_arena_id_fkey">
+      <ColNames>arena_id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>22642</ObjectId>
+      <StateNumber>9597</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>22623</RefTableId>
+    </foreign-key>
+    <index id="287" parent="276" name="sector_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>22652</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>9599</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="288" parent="276" name="sector_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>22653</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>9599</StateNumber>
+      <UnderlyingIndexId>22652</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>

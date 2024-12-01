@@ -1,7 +1,6 @@
 package com.example.ticketbookingsystem.servlet.arena_servlets;
 
 import com.example.ticketbookingsystem.service.ArenaService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

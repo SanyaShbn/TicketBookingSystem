@@ -12,14 +12,27 @@
 <body>
 <div>
     <h1><fmt:message key="arenas.list"/></h1>
-    <button onclick="location.href='${pageContext.request.contextPath}/create-arena'">Создать</button>
+    <button onclick="location.href='${pageContext.request.contextPath}/create-arena'">
+        <fmt:message key="button.create"/>
+    </button>
     <div class="arena-container">
         <c:if test="${not empty requestScope.arenas}">
             <c:forEach var="arena" items="${requestScope.arenas}">
                 <div class="arena-card">
-                    <div><fmt:message key="arena.name"/>: ${arena.name}</div>
+                    <a href="${pageContext.request.contextPath}/sectors?arenaId=${arena.id}">
+                        <fmt:message key="arena.name"/>: ${arena.name}
+                    </a>
                     <div><fmt:message key="arena.city"/>: ${arena.city}</div>
                     <div><fmt:message key="arena.capacity"/>: ${arena.capacity}</div>
+                    <button onclick="location.href='${pageContext.request.contextPath}/arena-sectors?id=${arena.id}'">
+                        Перейти с меню настройки информации о арене
+                    </button>
+<%--                    <form action="${pageContext.request.contextPath}/upload-arena-photo" method="post"--%>
+<%--                          enctype="multipart/form-data" style="display:inline;">--%>
+<%--                        <input type="hidden" name="id" value="${arena.id}"/>--%>
+<%--                        <input type="file" name="arenaPhoto"/>--%>
+<%--                        <button type="submit">Добавить фото арены</button>--%>
+<%--                    </form>--%>
 <%--                    <c:if test="${sessionScope.user.role == 'ADMIN'}">--%>
                         <form action="${pageContext.request.contextPath}/update-arena" method="get" style="display:inline;">
                             <input type="hidden" name="id" value="${arena.id}"/>
