@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Arena {
+public class Sector {
     private Long id;
-    private String name;
-    private String city;
-    private int capacity;
+    private String sectorName;
+    private Arena arena;
 }

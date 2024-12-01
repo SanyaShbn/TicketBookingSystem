@@ -1,6 +1,7 @@
 package com.example.ticketbookingsystem.service;
 
 import com.example.ticketbookingsystem.dao.ArenaDao;
+import com.example.ticketbookingsystem.dto.ArenaDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.validator.CreateOrUpdateArenaValidator;
@@ -25,7 +26,16 @@ public class ArenaService {
         return arenaDao.findById(id);
     }
 
-    public void createArena(Arena arena) {
+    private Arena buildArenaFromDto(ArenaDto arenaDto) {
+        return Arena.builder()
+                .name(arenaDto.getName())
+                .city(arenaDto.getCity())
+                .capacity(arenaDto.getCapacity())
+                .build();
+    }
+
+    public void createArena(ArenaDto arenaDto) {
+        Arena arena = buildArenaFromDto(arenaDto);
         var validationResult = createOrUpdateArenaValidator.isValid(arena);
         if(!validationResult.isValid()){
             throw new ValidationException(validationResult.getErrors());
@@ -33,7 +43,9 @@ public class ArenaService {
         arenaDao.save(arena);
     }
 
-    public void updateArena(Arena arena) {
+    public void updateArena(Long id, ArenaDto arenaDto) {
+        Arena arena = buildArenaFromDto(arenaDto);
+        arena.setId(id);
         var validationResult = createOrUpdateArenaValidator.isValid(arena);
         if(!validationResult.isValid()){
             throw new ValidationException(validationResult.getErrors());

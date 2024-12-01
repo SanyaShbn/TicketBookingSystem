@@ -2,15 +2,13 @@ package com.example.ticketbookingsystem.dao;
 
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.utils.ConnectionManager;
-import lombok.extern.slf4j.Slf4j;
+import com.example.ticketbookingsystem.utils.ConnectionManager;;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 public class ArenaDao implements DaoCrud<Long, Arena>{
     private final static ArenaDao INSTANCE = new ArenaDao();
     private final static String SAVE_SQL = """
@@ -59,7 +57,6 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
             }
             return arenasList;
         } catch (SQLException e) {
-            log.error("Failed reading arenas info: " + e.getMessage());
             throw new DaoCrudException(e);
         }
     }
@@ -76,7 +73,6 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
             }
             return Optional.ofNullable(arena);
         } catch (SQLException e) {
-            log.error("Failed reading single arena's info: " + e.getMessage());
             throw new DaoCrudException(e);
         }
     }
@@ -99,7 +95,6 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
 
             return arena;
         } catch (SQLException e) {
-            log.error("Failed to save record into 'arena' table: " + e.getMessage());
             throw new DaoCrudException(e);
         }
     }
@@ -112,7 +107,6 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            log.error("Failed to update record from 'arena' table: " + e.getMessage());
             throw new DaoCrudException(e);
         }
     }
@@ -124,7 +118,6 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            log.error("Failed to delete record from 'arena' table: " + e.getMessage());
             throw new DaoCrudException(e);
         }
     }

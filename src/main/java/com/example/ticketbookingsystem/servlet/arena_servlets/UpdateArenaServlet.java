@@ -1,5 +1,6 @@
 package com.example.ticketbookingsystem.servlet.arena_servlets;
 
+import com.example.ticketbookingsystem.dto.ArenaDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.ArenaService;
@@ -24,7 +25,7 @@ public class UpdateArenaServlet extends HttpServlet {
         String id = request.getParameter("id");
         Optional<Arena> arena = arenaService.findById(Long.parseLong(id));
         request.setAttribute("arena", arena.get());
-        request.getRequestDispatcher(JspFilesResolver.getPath("update-arena")).forward(request, response);
+        request.getRequestDispatcher(JspFilesResolver.getPath("/arena-jsp/update-arena")).forward(request, response);
     }
 
     @Override
@@ -35,13 +36,12 @@ public class UpdateArenaServlet extends HttpServlet {
             String city = request.getParameter("city");
             int capacity = Integer.parseInt(request.getParameter("capacity"));
 
-            Arena arena = new Arena();
-            arena.setId(Long.parseLong(id));
-            arena.setName(name);
-            arena.setCity(city);
-            arena.setCapacity(capacity);
+            ArenaDto arenaDto = ArenaDto.builder()
+                    .name(name)
+                    .city(city)
+                    .capacity(capacity).build();
 
-            arenaService.updateArena(arena);
+            arenaService.updateArena(Long.parseLong(id), arenaDto);
 
             response.sendRedirect(request.getContextPath() + "/arenas");
         }catch (NumberFormatException e){

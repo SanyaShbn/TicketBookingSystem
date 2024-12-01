@@ -1,6 +1,6 @@
 package com.example.ticketbookingsystem.servlet.arena_servlets;
 
-import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.dto.ArenaDto;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
@@ -13,14 +13,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @WebServlet("/create-arena")
 public class CreateArenaServlet extends HttpServlet {
     private final ArenaService arenaService = ArenaService.getInstance();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher(JspFilesResolver.getPath("create-arena")).forward(request, response);
+        request.getRequestDispatcher(JspFilesResolver.getPath("/arena-jsp/create-arena")).forward(request, response);
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -29,8 +28,12 @@ public class CreateArenaServlet extends HttpServlet {
             String city = req.getParameter("city");;
             int capacity = Integer.parseInt(req.getParameter("capacity"));
 
-            Arena arena = new Arena(name, city, capacity);
-            arenaService.createArena(arena);
+            ArenaDto arenaDto = ArenaDto.builder()
+                    .name(name)
+                    .city(city)
+                    .capacity(capacity).build();
+
+            arenaService.createArena(arenaDto);
 
             resp.sendRedirect(req.getContextPath() + "/arenas");
         }catch (NumberFormatException e){
