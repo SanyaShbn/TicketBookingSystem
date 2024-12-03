@@ -17,8 +17,9 @@ public class SectorDao implements DaoCrud<Long, Sector>{
     private final static SectorDao INSTANCE = new SectorDao();
     private final static ArenaService arenaService = ArenaService.getInstance();
     private final static String SAVE_SQL = """
-            INSERT INTO sector (sector_name, arena_id)
-            VALUES (?, ?)
+            INSERT INTO sector (sector_name, arena_id, max_rows_numb,
+            max_seats_numb)
+            VALUES (?, ?, ?, ?)
             """;
     private final static String DELETE_SQL = """
             DELETE FROM sector WHERE id=?
@@ -26,11 +27,14 @@ public class SectorDao implements DaoCrud<Long, Sector>{
     private final static String UPDATE_SQL = """
             UPDATE sector
             SET sector_name=?,
-                arena_id=?
+                arena_id=?,
+                max_rows_numb=?,
+                max_seats_numb=?
             WHERE id=?
             """;
     private final static String FIND_ALL_SQL = """
-            SELECT s.id, s.sector_name, s.arena_id
+            SELECT s.id, s.sector_name, s.arena_id, s.max_rows_numb, s.available_rows_numb,
+            s.max_seats_numb, s.available_seats_numb
             FROM public.sector s
             JOIN public.arena a on a.id = s.arena_id
             """;
@@ -46,13 +50,6 @@ public class SectorDao implements DaoCrud<Long, Sector>{
         return INSTANCE;
     }
     private SectorDao(){
-    }
-    private Sector buildSector(ResultSet result) throws SQLException {
-        return new Sector(
-                result.getLong("id"),
-                result.getString("sector_name"),
-                arenaService.findById((long) result.getInt("arena_id")).get()
-        );
     }
     @Override
     public List<Sector> findAll() {
@@ -98,10 +95,6 @@ public class SectorDao implements DaoCrud<Long, Sector>{
             throw new DaoCrudException(e);
         }
     }
-    private void setStatement(Sector sector, PreparedStatement statement) throws SQLException {
-        statement.setString(1, sector.getSectorName());
-        statement.setLong(2, sector.getArena().getId());
-    }
     @Override
     public Sector save(Sector sector) {
         try(var connection = ConnectionManager.get();
@@ -124,7 +117,7 @@ public class SectorDao implements DaoCrud<Long, Sector>{
         try(var connection = ConnectionManager.get();
             var statement = connection.prepareStatement(UPDATE_SQL)){
             setStatement(sector, statement);
-            statement.setLong(3, sector.getId());
+            statement.setLong(5, sector.getId());
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -141,5 +134,22 @@ public class SectorDao implements DaoCrud<Long, Sector>{
         } catch (SQLException e) {
             throw new DaoCrudException(e);
         }
+    }
+    private Sector buildSector(ResultSet result) throws SQLException {
+        return new Sector(
+                result.getLong("id"),
+                result.getString("sector_name"),
+                arenaService.findById((long) result.getInt("arena_id")).get(),
+                result.getInt("max_rows_numb"),
+                result.getInt("available_rows_numb"),
+                result.getInt("max_seats_numb"),
+                result.getInt("available_seats_numb")
+        );
+    }
+    private void setStatement(Sector sector, PreparedStatement statement) throws SQLException {
+        statement.setString(1, sector.getSectorName());
+        statement.setLong(2, sector.getArena().getId());
+        statement.setInt(3, sector.getMaxRowsNumb());
+        statement.setInt(4, sector.getMaxSeatsNumb());
     }
 }

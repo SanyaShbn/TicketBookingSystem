@@ -12,6 +12,9 @@
 <body>
 <div>
     <h1><fmt:message key="arenas.list"/></h1>
+    <button onclick="location.href='${pageContext.request.contextPath}/'">
+        <fmt:message key="button.back"/>
+    </button>
     <button onclick="location.href='${pageContext.request.contextPath}/create-arena'">
         <fmt:message key="button.create"/>
     </button>

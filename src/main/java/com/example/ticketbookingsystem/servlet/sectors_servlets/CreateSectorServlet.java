@@ -33,10 +33,17 @@ public class CreateSectorServlet extends HttpServlet {
             String sectorName = req.getParameter("sectorName");
             Long arenaId = Long.valueOf(req.getParameter("arenaId"));
             Optional<Arena> arena = arenaService.findById(arenaId);
+            int maxRowsNumb = Integer.parseInt(req.getParameter("maxRowsNumb"));
+//            int availableRowsNumb = Integer.parseInt(req.getParameter("availableRowsNumb"));
+            int maxSeatsNumb = Integer.parseInt(req.getParameter("maxSeatsNumb"));
+//            int availableSeatsNumb = Integer.parseInt(req.getParameter("availableSeatsNumb"));
 
             SectorDto sectorDto = SectorDto.builder()
                     .sectorName(sectorName)
-                    .arena(arena.get()).build();
+                    .arena(arena.get())
+                    .maxRowsNumb(maxRowsNumb)
+                    .maxSeatsNumb(maxSeatsNumb)
+                    .build();
 
             sectorService.createSector(sectorDto);
 

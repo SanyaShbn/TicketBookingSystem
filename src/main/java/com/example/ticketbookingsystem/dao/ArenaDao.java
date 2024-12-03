@@ -37,14 +37,6 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
     }
     private ArenaDao(){
     }
-    private Arena buildArena(ResultSet result) throws SQLException {
-        return new Arena(
-                result.getLong("id"),
-                result.getString("name"),
-                result.getString("city"),
-                result.getInt("capacity")
-        );
-    }
     @Override
     public List<Arena> findAll() {
         try(var connection = ConnectionManager.get();
@@ -75,11 +67,6 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
         } catch (SQLException e) {
             throw new DaoCrudException(e);
         }
-    }
-    private void setStatement(Arena arena, PreparedStatement statement) throws SQLException {
-        statement.setString(1, arena.getName());
-        statement.setString(2, arena.getCity());
-        statement.setInt(3, arena.getCapacity());
     }
     @Override
     public Arena save(Arena arena) {
@@ -120,5 +107,18 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
         } catch (SQLException e) {
             throw new DaoCrudException(e);
         }
+    }
+    private Arena buildArena(ResultSet result) throws SQLException {
+        return new Arena(
+                result.getLong("id"),
+                result.getString("name"),
+                result.getString("city"),
+                result.getInt("capacity")
+        );
+    }
+    private void setStatement(Arena arena, PreparedStatement statement) throws SQLException {
+        statement.setString(1, arena.getName());
+        statement.setString(2, arena.getCity());
+        statement.setInt(3, arena.getCapacity());
     }
 }

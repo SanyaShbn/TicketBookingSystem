@@ -39,10 +39,17 @@ public class UpdateSectorServlet extends HttpServlet {
             String sectorName = request.getParameter("sectorName");
             Long arenaId = Long.valueOf(request.getParameter("arenaId"));
             Optional<Arena> arena = arenaService.findById(arenaId);
+            int maxRowsNumb = Integer.parseInt(request.getParameter("maxRowsNumb"));
+//            int availableRowsNumb = Integer.parseInt(request.getParameter("availableRowsNumb"));
+            int maxSeatsNumb = Integer.parseInt(request.getParameter("maxSeatsNumb"));
+//            int availableSeatsNumb = Integer.parseInt(request.getParameter("availableSeatsNumb"));
 
             SectorDto sectorDto = SectorDto.builder()
                     .sectorName(sectorName)
-                    .arena(arena.get()).build();
+                    .arena(arena.get())
+                    .maxRowsNumb(maxRowsNumb)
+                    .maxSeatsNumb(maxSeatsNumb)
+                    .build();
 
             sectorService.updateSector(Long.parseLong(id), sectorDto);
 

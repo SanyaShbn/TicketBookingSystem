@@ -9,12 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Sector {
+public class Row {
     private Long id;
-    private String sectorName;
-    private Arena arena;
-    private int maxRowsNumb;
-    private int availableRowsNumb;
-    private int maxSeatsNumb;
-    private int availableSeatsNumb;
+    private int rowNumber;
+    private int seatsNumb;
+    private Sector sector;
 }

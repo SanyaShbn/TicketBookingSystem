@@ -30,6 +30,8 @@ public class SectorService {
         return Sector.builder()
                 .sectorName(sectorDto.getSectorName())
                 .arena(sectorDto.getArena())
+                .maxRowsNumb(sectorDto.getMaxRowsNumb())
+                .maxSeatsNumb(sectorDto.getMaxSeatsNumb())
                 .build();
     }
 
