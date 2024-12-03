@@ -2,7 +2,7 @@ package com.example.ticketbookingsystem.servlet.row_servlets;
 
 import com.example.ticketbookingsystem.dto.RowDto;
 import com.example.ticketbookingsystem.entity.Sector;
-import com.example.ticketbookingsystem.exception.CreateUpdateSectorException;
+import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.RowService;
 import com.example.ticketbookingsystem.service.SectorService;
@@ -26,7 +26,8 @@ public class CreateRowServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        forwardToCreateRowPage(request, response);
+        request.getRequestDispatcher(JspFilesResolver.getPath("/rows-jsp/create-row"))
+                .forward(request, response);
     }
 
     @Override
@@ -38,17 +39,11 @@ public class CreateRowServlet extends HttpServlet {
             redirectAfterSuccess(request, response);
         } catch (NumberFormatException e) {
             handleNumberFormatException(request, response);
-        } catch (CreateUpdateSectorException e) {
+        } catch (CreateUpdateEntityException e) {
             handleCreateUpdateSectorException(request, response, e);
         } catch (ValidationException e) {
             handleValidationException(request, response, e);
         }
-    }
-
-    private void forwardToCreateRowPage(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher(JspFilesResolver.getPath("/rows-jsp/create-row"))
-                .forward(request, response);
     }
 
     private RowDto buildRowDto(HttpServletRequest request) throws NumberFormatException, IOException {
@@ -76,34 +71,53 @@ public class CreateRowServlet extends HttpServlet {
         validationResult.add(Error.of("invalid.number.format",
                 "Проверьте корректность ввода данных!"));
         request.setAttribute("errors", validationResult.getErrors());
-        forwardToCreateRowPage(request, response);
+        doGet(request, response);
     }
 
     private void handleCreateUpdateSectorException(HttpServletRequest request, HttpServletResponse response,
-                                                   CreateUpdateSectorException e)
+                                                   CreateUpdateEntityException e)
             throws ServletException, IOException {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         request.setAttribute("errors", sqlExceptionResult.getErrors());
-        forwardToCreateRowPage(request, response);
+        doGet(request, response);
     }
     private void handleValidationException(HttpServletRequest request, HttpServletResponse response,
                                            ValidationException e)
             throws ServletException, IOException {
         request.setAttribute("errors", e.getErrors());
-        forwardToCreateRowPage(request, response);
+        doGet(request, response);
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {
         if (errorMessage != null) {
-            if (errorMessage.contains("ERROR_CHECK_SEATS")) {
-                sqlExceptionResult.add(Error.of("create.row.fail",
-                        "Ошибка! Суммарное количество мест рядов сектора " +
-                                "не может превышать заданное маскимальное количество доступных мест в секторе." +
-                                "\nПроверьте корректность ввода данных"));
-            }else{
-                sqlExceptionResult.add(Error.of("create.row.fail", errorMessage));
+            switch (getErrorType(errorMessage)) {
+                case "ERROR_CHECK_ROWS" -> sqlExceptionResult.add(Error.of("create.row.fail",
+                        "Ошибка! Заданное максимальное значение рядов сектора превышено. " +
+                                "Вы не можете создать новый ряд"));
+                case "ERROR_CHECK_SEATS" -> sqlExceptionResult.add(Error.of("create.row.fail",
+                        "Ошибка! Суммарное количество мест рядов сектора не может превышать заданное " +
+                                "маскимальное количество доступных мест в секторе. " +
+                                "Проверьте корректность ввода данных"));
+                case "ERROR_CHECK_ROW_NUMBER" -> sqlExceptionResult.add(Error.of("update.row.fail",
+                        "Ошибка! Ряд с таким номером уже существует в данном секторе. " +
+                                "Проверьте корректность ввода данных"));
+                default -> sqlExceptionResult.add(Error.of("create.row.fail", errorMessage));
             }
-        }else sqlExceptionResult.add(Error.of("create.row.fail", "Unknown sql exception"));
+        } else {
+            sqlExceptionResult.add(Error.of("create.row.fail", "Unknown sql exception"));
+        }
+    }
+
+    private String getErrorType(String errorMessage) {
+        if (errorMessage.contains("ERROR_CHECK_ROWS")) {
+            return "ERROR_CHECK_ROWS";
+        } else if (errorMessage.contains("ERROR_CHECK_SEATS")) {
+            return "ERROR_CHECK_SEATS";
+        } else if (errorMessage.contains("ERROR_CHECK_ROW_NUMBER")) {
+            return "ERROR_CHECK_ROW_NUMBER";
+        } else {
+            return "UNKNOWN_ERROR";
+        }
     }
 }

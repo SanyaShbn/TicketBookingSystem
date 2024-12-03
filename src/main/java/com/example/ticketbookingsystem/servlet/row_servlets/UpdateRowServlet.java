@@ -3,8 +3,7 @@ package com.example.ticketbookingsystem.servlet.row_servlets;
 import com.example.ticketbookingsystem.dto.RowDto;
 import com.example.ticketbookingsystem.entity.Row;
 import com.example.ticketbookingsystem.entity.Sector;
-import com.example.ticketbookingsystem.exception.CreateUpdateSectorException;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.RowService;
 import com.example.ticketbookingsystem.service.SectorService;
@@ -40,7 +39,7 @@ public class UpdateRowServlet extends HttpServlet {
             redirectAfterSuccess(request, response);
         } catch (NumberFormatException e) {
             handleNumberFormatException(request, response);
-        } catch (CreateUpdateSectorException e) {
+        } catch (CreateUpdateEntityException e) {
             handleCreateUpdateSectorException(request, response, e);
         } catch (ValidationException e) {
             handleValidationException(request, response, e);
@@ -85,7 +84,7 @@ public class UpdateRowServlet extends HttpServlet {
     }
 
     private void handleCreateUpdateSectorException(HttpServletRequest request, HttpServletResponse response,
-                                                   CreateUpdateSectorException e) throws ServletException, IOException {
+                                                   CreateUpdateEntityException e) throws ServletException, IOException {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         request.setAttribute("errors", sqlExceptionResult.getErrors());
@@ -99,14 +98,28 @@ public class UpdateRowServlet extends HttpServlet {
     }
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {
         if (errorMessage != null) {
-            if (errorMessage.contains("ERROR_CHECK_SEATS")) {
-                sqlExceptionResult.add(Error.of("update.row.fail",
-                        "Ошибка! Суммарное количество мест рядов сектора " +
-                                "не может превышать заданное маскимальное количество доступных мест в секторе." +
-                                "\nПроверьте корректность ввода данных"));
-            }else{
-                sqlExceptionResult.add(Error.of("update.row.fail", errorMessage));
+            switch (getErrorType(errorMessage)) {
+                case "ERROR_CHECK_SEATS" -> sqlExceptionResult.add(Error.of("create.row.fail",
+                        "Ошибка! Суммарное количество мест рядов сектора не может превышать " +
+                                "заданное маскимальное количество доступных мест в секторе. " +
+                                "Проверьте корректность ввода данных"));
+                case "ERROR_CHECK_ROW_NUMBER" -> sqlExceptionResult.add(Error.of("update.row.fail",
+                        "Ошибка! Ряд с таким номером уже существует в данном секторе. " +
+                                "Проверьте корректность ввода данных"));
+                default -> sqlExceptionResult.add(Error.of("create.row.fail", errorMessage));
             }
-        }else sqlExceptionResult.add(Error.of("update.row.fail", "Unknown sql exception"));
+        } else {
+            sqlExceptionResult.add(Error.of("create.row.fail", "Unknown sql exception"));
+        }
+    }
+
+    private String getErrorType(String errorMessage) {
+        if (errorMessage.contains("ERROR_CHECK_SEATS")) {
+            return "ERROR_CHECK_SEATS";
+        } else if (errorMessage.contains("ERROR_CHECK_ROW_NUMBER")) {
+            return "ERROR_CHECK_ROW_NUMBER";
+        } else {
+            return "UNKNOWN_ERROR";
+        }
     }
 }

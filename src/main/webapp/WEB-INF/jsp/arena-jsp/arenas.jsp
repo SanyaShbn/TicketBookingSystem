@@ -27,6 +27,7 @@
                     </a>
                     <div><fmt:message key="arena.city"/>: ${arena.city}</div>
                     <div><fmt:message key="arena.capacity"/>: ${arena.capacity}</div>
+                    <div><fmt:message key="arena.generalSeatsNumb"/>: ${arena.generalSeatsNumb}</div>
                     <button onclick="location.href='${pageContext.request.contextPath}/arena-sectors?id=${arena.id}'">
                         Перейти с меню настройки информации о арене
                     </button>

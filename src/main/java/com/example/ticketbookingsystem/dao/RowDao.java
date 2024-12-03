@@ -1,7 +1,7 @@
 package com.example.ticketbookingsystem.dao;
 
 import com.example.ticketbookingsystem.entity.Row;
-import com.example.ticketbookingsystem.exception.CreateUpdateSectorException;
+import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.SectorService;
 import com.example.ticketbookingsystem.utils.ConnectionManager;
@@ -117,7 +117,7 @@ public class RowDao implements DaoCrud<Long, Row>{
                 connection.commit();
             } catch (SQLException e) {
                 handleRollback(connection);
-                throw new CreateUpdateSectorException(e.getMessage());
+                throw new CreateUpdateEntityException(e.getMessage());
             } finally {
                 resetAutoCommit(connection);
             }
@@ -152,7 +152,7 @@ public class RowDao implements DaoCrud<Long, Row>{
                 }
             } catch (SQLException e) {
                 handleRollback(connection);
-                throw new CreateUpdateSectorException(e.getMessage());
+                throw new CreateUpdateEntityException(e.getMessage());
             } finally {
                 resetAutoCommit(connection);
             }

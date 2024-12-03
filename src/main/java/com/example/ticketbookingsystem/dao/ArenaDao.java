@@ -1,6 +1,7 @@
 package com.example.ticketbookingsystem.dao;
 
 import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.utils.ConnectionManager;;
 
@@ -26,7 +27,7 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
             WHERE id=?
             """;
     private final static String FIND_ALL_SQL = """
-            SELECT id, name, city, capacity FROM arena
+            SELECT id, name, city, capacity, general_seats_numb FROM arena
             """;
 
     private final static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
@@ -82,7 +83,7 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
 
             return arena;
         } catch (SQLException e) {
-            throw new DaoCrudException(e);
+            throw new CreateUpdateEntityException(e.getMessage());
         }
     }
     @Override
@@ -94,7 +95,7 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DaoCrudException(e);
+            throw new CreateUpdateEntityException(e.getMessage());
         }
     }
     @Override
@@ -105,16 +106,17 @@ public class ArenaDao implements DaoCrud<Long, Arena>{
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DaoCrudException(e);
+            throw new CreateUpdateEntityException(e.getMessage());
         }
     }
     private Arena buildArena(ResultSet result) throws SQLException {
-        return new Arena(
-                result.getLong("id"),
-                result.getString("name"),
-                result.getString("city"),
-                result.getInt("capacity")
-        );
+        return Arena.builder()
+                .id(result.getLong("id"))
+                .name(result.getString("name"))
+                .city(result.getString("city"))
+                .capacity(result.getInt("capacity"))
+                .generalSeatsNumb(result.getInt("general_seats_numb"))
+                .build();
     }
     private void setStatement(Arena arena, PreparedStatement statement) throws SQLException {
         statement.setString(1, arena.getName());

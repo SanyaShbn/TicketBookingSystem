@@ -2,6 +2,7 @@ package com.example.ticketbookingsystem.servlet.arena_servlets;
 
 import com.example.ticketbookingsystem.dto.ArenaDto;
 import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
@@ -44,17 +45,60 @@ public class UpdateArenaServlet extends HttpServlet {
             arenaService.updateArena(Long.parseLong(id), arenaDto);
 
             response.sendRedirect(request.getContextPath() + "/arenas");
-        }catch (NumberFormatException e){
-            ValidationResult numberFormatValidationResult = new ValidationResult();
-            numberFormatValidationResult.add(Error.of("invalid.number.format",
-                    "Проверьте корректность ввода данных значения вместимости " +
-                            "(допускается вводить только целые числа в диапазоне от 1 до 22000)!"));
-            request.setAttribute("errors", numberFormatValidationResult.getErrors());
-            doGet(request, response);
+        }catch (NumberFormatException e) {
+            handleNumberFormatException(request, response);
+        } catch (CreateUpdateEntityException e) {
+            handleCreateUpdateSectorException(request, response, e);
+        } catch (ValidationException e) {
+            handleValidationException(request, response, e);
         }
-        catch (ValidationException e){
-            request.setAttribute("errors", e.getErrors());
-            doGet(request, response);
+    }
+
+    private void handleNumberFormatException(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        ValidationResult validationResult = new ValidationResult();
+        validationResult.add(Error.of("invalid.number.format",
+                "Проверьте корректность ввода данных!"));
+        request.setAttribute("errors", validationResult.getErrors());
+        doGet(request, response);
+    }
+
+    private void handleCreateUpdateSectorException(HttpServletRequest request, HttpServletResponse response,
+                                                   CreateUpdateEntityException e)
+            throws ServletException, IOException {
+        ValidationResult sqlExceptionResult = new ValidationResult();
+        specifySQLException(e.getMessage(), sqlExceptionResult);
+        request.setAttribute("errors", sqlExceptionResult.getErrors());
+        doGet(request, response);
+    }
+    private void handleValidationException(HttpServletRequest request, HttpServletResponse response,
+                                           ValidationException e)
+            throws ServletException, IOException {
+        request.setAttribute("errors", e.getErrors());
+        doGet(request, response);
+    }
+    private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {
+        if (errorMessage != null) {
+            switch (getErrorType(errorMessage)) {
+                case "ERROR_CHECK_ARENA_NAME" -> sqlExceptionResult.add(Error.of("create.arena.fail",
+                        "Ошибка! Имя арены должно быть уникальным. Проверьте корректность ввода данных"));
+                case "ERROR_CHECK_CAPACITY" -> sqlExceptionResult.add(Error.of("create.arena.fail",
+                        "Ошибка! Общее максимально возможное количество мест в секторах для " +
+                        "заданной арены превышает ее вместимость. Проверьте корреткность ввода данных"));
+                default -> sqlExceptionResult.add(Error.of("create.row.fail", errorMessage));
+            }
+        } else {
+            sqlExceptionResult.add(Error.of("create.arena.fail", "Unknown sql exception"));
+        }
+    }
+
+    private String getErrorType(String errorMessage) {
+        if (errorMessage.contains("unique_name")) {
+            return "ERROR_CHECK_ARENA_NAME";
+        } else if (errorMessage.contains("ERROR_CHECK_CAPACITY")) {
+            return "ERROR_CHECK_CAPACITY";}
+        else {
+            return "UNKNOWN_ERROR";
         }
     }
 }
