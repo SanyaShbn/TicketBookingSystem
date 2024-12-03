@@ -17,6 +17,10 @@
         <input type="hidden" name="id" value="${sector.id}">
         <label for="sectorName"><fmt:message key="sector.sectorName" />:</label>
         <input type="text" id="sectorName" name="sectorName" value="${sector.sectorName}" required>
+        <label for="maxRowsNumb"><fmt:message key="sector.maxRowsNumb" />:</label>
+        <input type="text" id="maxRowsNumb" name="maxRowsNumb" value="${sector.maxRowsNumb}" required>
+        <label for="maxSeatsNumb"><fmt:message key="sector.maxSeatsNumb" />:</label>
+        <input type="text" id="maxSeatsNumb" name="maxSeatsNumb" value="${sector.maxSeatsNumb}" required>
         <div class="button-group">
             <button type="button"
                     onclick="location.href='${pageContext.request.contextPath}/sectors?<%= request.getQueryString() %>';">

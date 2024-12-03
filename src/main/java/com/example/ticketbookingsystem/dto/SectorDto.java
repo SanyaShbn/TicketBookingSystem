@@ -9,4 +9,8 @@ import lombok.Value;
 public class SectorDto {
     String sectorName;
     Arena arena;
+    int maxRowsNumb;
+    int availableRowsNumb;
+    int maxSeatsNumb;
+    int availableSeatsNumb;
 }

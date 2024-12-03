@@ -12,6 +12,9 @@
 <body>
 <div>
     <h1><fmt:message key="arenas.list"/></h1>
+    <button onclick="location.href='${pageContext.request.contextPath}/'">
+        <fmt:message key="button.back"/>
+    </button>
     <button onclick="location.href='${pageContext.request.contextPath}/create-arena'">
         <fmt:message key="button.create"/>
     </button>
@@ -24,6 +27,7 @@
                     </a>
                     <div><fmt:message key="arena.city"/>: ${arena.city}</div>
                     <div><fmt:message key="arena.capacity"/>: ${arena.capacity}</div>
+                    <div><fmt:message key="arena.generalSeatsNumb"/>: ${arena.generalSeatsNumb}</div>
                     <button onclick="location.href='${pageContext.request.contextPath}/arena-sectors?id=${arena.id}'">
                         Перейти с меню настройки информации о арене
                     </button>

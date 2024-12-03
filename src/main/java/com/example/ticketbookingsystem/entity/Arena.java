@@ -14,4 +14,5 @@ public class Arena {
     private String name;
     private String city;
     private int capacity;
+    private int generalSeatsNumb;
 }

@@ -10,18 +10,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/exception/CreateUpdateEntityException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/ArenaDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/ArenaDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/RowDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/RowDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SectorDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SectorDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Arena.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/exception/CreateUpdateSectorException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/CreateArenaServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/CreateArenaServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/DeleteArenaServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/DeleteArenaServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/UpdateArenaServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/UpdateArenaServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/ViewArenasServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/ViewArenasServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/CreateRowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/CreateRowServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/UpdateRowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/UpdateRowServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/CreateSectorServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/CreateSectorServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/UpdateSectorServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/UpdateSectorServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arenas.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/arenas.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/create-arena.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/create-arena.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/update-arena.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/update-arena.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/arenas.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/arenas.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,8 +38,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="Jsp File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -203,6 +209,17 @@
       <workItem from="1733046283102" duration="8045000" />
       <workItem from="1733056139847" duration="40000" />
       <workItem from="1733081416913" duration="2501000" />
+      <workItem from="1733115123180" duration="4250000" />
+      <workItem from="1733124864573" duration="4370000" />
+      <workItem from="1733130453105" duration="1024000" />
+      <workItem from="1733131828568" duration="2246000" />
+      <workItem from="1733141769756" duration="3196000" />
+      <workItem from="1733170413146" duration="5088000" />
+      <workItem from="1733175880652" duration="294000" />
+      <workItem from="1733204304568" duration="1414000" />
+      <workItem from="1733208980290" duration="1221000" />
+      <workItem from="1733219641145" duration="8409000" />
+      <workItem from="1733232734224" duration="10173000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -220,7 +237,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732970375984</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Continuing working on feature№2 (for now, CRUD operations with sector's rows) + implementing necessary validation">
+      <option name="closed" value="true" />
+      <created>1733229117488</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1733229117488</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -241,6 +266,7 @@
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Started developing and partly implementing user input validation functionality" />
     <MESSAGE value="Refactoring (implemented dto into Arena module)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactoring (implemented dto into Arena module)" />
+    <MESSAGE value="Continuing working on feature№2 (for now, CRUD operations with sector's rows) + implementing necessary validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continuing working on feature№2 (for now, CRUD operations with sector's rows) + implementing necessary validation" />
   </component>
 </project>

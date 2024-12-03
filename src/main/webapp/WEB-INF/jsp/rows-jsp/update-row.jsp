@@ -7,22 +7,21 @@
 
 <html>
 <head>
-    <title><fmt:message key="create.sector.title" /></title>
+    <title><fmt:message key="update.row.title" /></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
 </head>
 <body>
 <div class="form-container">
-    <h1><fmt:message key="create.sector.title" /></h1>
-    <form action="${pageContext.request.contextPath}/create-sector?<%= request.getQueryString() %>" method="post">
-        <label for="sectorName"><fmt:message key="sector.sectorName" />:</label>
-        <input type="text" id="sectorName" name="sectorName" required>
-        <label for="maxRowsNumb"><fmt:message key="sector.maxRowsNumb" />:</label>
-        <input type="text" id="maxRowsNumb" name="maxRowsNumb" required>
-        <label for="maxSeatsNumb"><fmt:message key="sector.maxSeatsNumb" />:</label>
-        <input type="text" id="maxSeatsNumb" name="maxSeatsNumb" required>
+    <h1><fmt:message key="update.row.title" /></h1>
+    <form action="${pageContext.request.contextPath}/update-row?<%= request.getQueryString() %>" method="post">
+        <input type="hidden" name="id" value="${row.id}">
+        <label for="rowNumber"><fmt:message key="row.rowNumber" />:</label>
+        <input type="text" id="rowNumber" name="rowNumber" value="${row.rowNumber}" required>
+        <label for="seatsNumb"><fmt:message key="row.seatsNumb" />:</label>
+        <input type="text" id="seatsNumb" name="seatsNumb" value="${row.seatsNumb}" required>
         <div class="button-group">
             <button type="button"
-                    onclick="location.href='${pageContext.request.contextPath}/sectors?<%= request.getQueryString() %>';">
+                    onclick="location.href='${pageContext.request.contextPath}/rows?<%= request.getQueryString() %>';">
                 <fmt:message key="button.back" />
             </button>
             <button type="submit"><fmt:message key="button.save" /></button>
