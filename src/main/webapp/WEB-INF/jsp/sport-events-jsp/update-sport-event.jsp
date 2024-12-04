@@ -18,7 +18,18 @@
         <label for="eventName"><fmt:message key="sport_event.eventName" />:</label>
         <input type="text" id="eventName" name="eventName" value="${sport_event.eventName}" required>
         <label for="eventDateTime"><fmt:message key="sport_event.eventDateTime" />:</label>
-        <input type="datetime-local" id="eventDateTime" name="eventDateTime" value="${sport_event.eventDateTime}" required>
+        <input type="datetime-local" step="60" id="eventDateTime" name="eventDateTime"
+               value="${sport_event.eventDateTime}" required>
+
+        <label for="arena"><fmt:message key="sport_event.arena" />:</label>
+        <select id="arena" name="arena" class="scrollable-dropdown" required>
+            <c:forEach var="arena" items="${arenas}">
+                <option value="${arena.id}" ${arena.id == sport_event.arena.id ? 'selected' : ''}>
+                        ${arena.name}. ${arena.city}. Вместимость: ${arena.capacity} чел.
+                </option>
+            </c:forEach>
+        </select>
+
         <div class="button-group">
             <button type="button"
                     onclick="location.href='${pageContext.request.contextPath}/sport_events';">

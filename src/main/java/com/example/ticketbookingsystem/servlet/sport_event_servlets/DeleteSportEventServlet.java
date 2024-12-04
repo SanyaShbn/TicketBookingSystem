@@ -15,6 +15,6 @@ public class DeleteSportEventServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String id = request.getParameter("id");
         sportEventService.deleteSportEvent(Long.parseLong(id));
-        response.sendRedirect(request.getContextPath() + "/sport-events");
+        response.sendRedirect(request.getContextPath() + "/sport_events");
     }
 }

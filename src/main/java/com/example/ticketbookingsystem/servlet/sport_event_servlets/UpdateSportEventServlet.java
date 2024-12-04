@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @WebServlet("/update-sport-event")
@@ -28,6 +30,8 @@ public class UpdateSportEventServlet extends HttpServlet {
         String id = request.getParameter("id");
         Optional<SportEvent> sportEvent = sportEventService.findById(Long.parseLong(id));
         request.setAttribute("sport_event", sportEvent.orElse(null));
+        List<Arena> arenas = arenaService.findAll();
+        request.setAttribute("arenas", arenas);
         request.getRequestDispatcher(JspFilesResolver.getPath("/sport-events-jsp/update-sport-event"))
                 .forward(request, response);
     }
@@ -37,9 +41,12 @@ public class UpdateSportEventServlet extends HttpServlet {
 
         String id = request.getParameter("id");
         String eventName = request.getParameter("eventName");
-        LocalDateTime eventDateTime = Timestamp.valueOf(request.getParameter("eventDateTime")).toLocalDateTime();
 
-        Long arenaId = Long.valueOf(request.getParameter("arenaId"));
+        String eventDateTimeString = request.getParameter("eventDateTime");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime eventDateTime = LocalDateTime.parse(eventDateTimeString, formatter);
+
+        Long arenaId = Long.valueOf(request.getParameter("arena"));
         Optional<Arena> arena = arenaService.findById(arenaId);
 
         SportEventDto sportEventDto = SportEventDto.builder()
@@ -49,6 +56,6 @@ public class UpdateSportEventServlet extends HttpServlet {
                 .build();
 
         sportEventService.updateSportEvent(Long.parseLong(id), sportEventDto);
-        response.sendRedirect(request.getContextPath() + "/sport-events");
+        response.sendRedirect(request.getContextPath() + "/sport_events");
     }
 }

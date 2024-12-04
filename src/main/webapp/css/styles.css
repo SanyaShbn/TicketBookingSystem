@@ -68,12 +68,30 @@ button:hover {
     font-weight: bold;
 }
 
-.form-container input[type="text"] {
+.form-container input[type="text"]{
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.form-container input[type="datetime-local"]{
+    width: 30%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-container select {
+    width: 30%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 120px;
+    overflow-y: auto;
 }
 
 .form-container .button-group {
@@ -83,6 +101,23 @@ button:hover {
 
 .form-container .button-group button {
     margin-top: 10px;
+}
+
+.error-container {
+    text-align: center;
+    background: #fff;
+    padding: 20px;
+    margin-top: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+.error-title {
+    color: #d9534f;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.error-message {
+    color: #333;
 }
 
 .error {

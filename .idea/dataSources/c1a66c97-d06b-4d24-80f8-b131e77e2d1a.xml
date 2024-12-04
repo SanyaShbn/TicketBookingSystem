@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.49">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>9998</IntrospectionStateNumber>
+      <IntrospectionStateNumber>10052</IntrospectionStateNumber>
       <ServerVersion>16.1</ServerVersion>
       <StartupTime>1732950391</StartupTime>
       <TimeZones>true ACDT
@@ -800,7 +800,7 @@ false Zulu
 14697||10|C|G
 14697||-9223372036854775808|U|G
 14697||10|U|G</Grants>
-      <IntrospectionStateNumber>9998</IntrospectionStateNumber>
+      <IntrospectionStateNumber>10052</IntrospectionStateNumber>
       <ObjectId>22622</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4256,9 +4256,9 @@ false Zulu
     <schema id="272" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>9998</IntrospectionStateNumber>
-      <IntrospectionTimestamp>2024-12-04.10:54:46.331</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2024-12-04.07:54:46</LocalIntrospectionTimestamp>
+      <IntrospectionStateNumber>10052</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2024-12-04.17:06:43.197</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2024-12-04.14:06:43</LocalIntrospectionTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>524</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -4336,7 +4336,7 @@ false Zulu
     <sequence id="280" parent="272" name="arena_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22630</ObjectId>
-      <SequenceIdentity>1(25)</SequenceIdentity>
+      <SequenceIdentity>1(33)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9558</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4368,7 +4368,7 @@ false Zulu
     <sequence id="284" parent="272" name="sport_event_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>22770</ObjectId>
-      <SequenceIdentity>1(1)</SequenceIdentity>
+      <SequenceIdentity>1(14)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9997</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4751,8 +4751,8 @@ false Zulu
     <foreign-key id="340" parent="289" name="sport_event_arena_id_fkey">
       <ColNames>arena_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>22765</ObjectId>
-      <StateNumber>9995</StateNumber>
+      <ObjectId>22776</ObjectId>
+      <StateNumber>10050</StateNumber>
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22623</RefTableId>
     </foreign-key>
