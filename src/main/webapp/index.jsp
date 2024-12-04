@@ -16,7 +16,6 @@
         <ul>
             <li><a href="<c:url value="/arenas"/>"><fmt:message key="arenas.nav.link"/></a></li>
             <li><a href="<c:url value="/sport_events"/>"><fmt:message key="events.nav.link"/></a></li>
-            <li><a href=""><fmt:message key="tickets.nav.link"/></a></li>
         </ul>
     </nav>
 </header>

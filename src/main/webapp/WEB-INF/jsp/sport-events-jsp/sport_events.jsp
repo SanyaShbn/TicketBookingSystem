@@ -23,7 +23,9 @@
     <c:if test="${not empty requestScope.sport_events}">
       <c:forEach var="sport_event" items="${requestScope.sport_events}">
         <div class="arena-card">
-          <div><fmt:message key="sport_event.eventName"/>: ${sport_event.eventName}</div>
+          <a href="${pageContext.request.contextPath}/tickets?eventId=${sport_event.id}">
+            <fmt:message key="sport_event.eventName"/>: ${sport_event.eventName}
+          </a>
 
           <c:set var="eventDateTime" value="${sport_event.eventDateTime}" />
           <c:choose>
