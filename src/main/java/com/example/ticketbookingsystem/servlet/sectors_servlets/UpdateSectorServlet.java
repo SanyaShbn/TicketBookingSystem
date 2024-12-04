@@ -30,7 +30,8 @@ public class UpdateSectorServlet extends HttpServlet {
         String id = request.getParameter("id");
         Optional<Sector> sector = sectorService.findById(Long.parseLong(id));
         request.setAttribute("sector", sector.orElse(null));
-        request.getRequestDispatcher(JspFilesResolver.getPath("/sectors-jsp/update-sector")).forward(request, response);
+        request.getRequestDispatcher(JspFilesResolver.getPath("/sectors-jsp/update-sector"))
+                .forward(request, response);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class UpdateSectorServlet extends HttpServlet {
     }
 
     private void handleUpdateSectorRequest(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
+            throws IOException {
         String id = request.getParameter("id");
         SectorDto sectorDto = buildSectorDto(request);
         sectorService.updateSector(Long.parseLong(id), sectorDto);
