@@ -30,6 +30,7 @@ public class SeatDao implements DaoCrud<Long, Seat>{
             JOIN arena a ON sec.arena_id = a.id
             JOIN sport_event e ON a.id = e.arena_id
             WHERE e.id = ? AND has_ticket!=true
+            ORDER BY sec.sector_name, r.id, s.id;
             """;
 
     private final static String FIND_BY_EVENT_ID_WHEN_UPDATE_SQL = """
@@ -39,7 +40,8 @@ public class SeatDao implements DaoCrud<Long, Seat>{
             JOIN sector sec ON r.sector_id = sec.id
             JOIN arena a ON sec.arena_id = a.id
             JOIN sport_event e ON a.id = e.arena_id
-            WHERE e.id = ? AND (has_ticket!=true AND s.id != ?)
+            WHERE e.id = ? AND (has_ticket!=true OR s.id = ?)
+            ORDER BY sec.sector_name, r.id, s.id;
             """;
 
     public static SeatDao getInstance(){
@@ -114,21 +116,6 @@ public class SeatDao implements DaoCrud<Long, Seat>{
         } catch (SQLException e) {
             throw new DaoCrudException(e);
         }
-    }
-
-    @Override
-    public Seat save(Seat seat) {
-        return null;
-    }
-
-    @Override
-    public boolean update(Seat seat) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        return false;
     }
 
     private Seat buildSeat(ResultSet result) throws SQLException {

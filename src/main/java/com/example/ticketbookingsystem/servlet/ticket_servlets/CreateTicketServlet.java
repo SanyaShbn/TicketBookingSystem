@@ -8,6 +8,8 @@ import com.example.ticketbookingsystem.service.SeatService;
 import com.example.ticketbookingsystem.service.SportEventService;
 import com.example.ticketbookingsystem.service.TicketService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
+import com.example.ticketbookingsystem.validator.Error;
+import com.example.ticketbookingsystem.validator.ValidationResult;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -37,24 +39,31 @@ public class CreateTicketServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        try {
+            TicketStatus status = TicketStatus.valueOf("AVAILABLE");
+            BigDecimal price = new BigDecimal(req.getParameter("price"));
 
-        TicketStatus status = TicketStatus.valueOf("AVAILABLE");
-        BigDecimal price = new BigDecimal(req.getParameter("price"));
+            Long sportEventId = Long.valueOf(req.getParameter("eventId"));
+            Optional<SportEvent> sportEvent = sportEventService.findById(sportEventId);
+            Long seatId = Long.valueOf(req.getParameter("seat"));
+            Optional<Seat> seat = seatService.findById(seatId);
 
-        Long sportEventId = Long.valueOf(req.getParameter("eventId"));
-        Optional<SportEvent> sportEvent = sportEventService.findById(sportEventId);
-        Long seatId = Long.valueOf(req.getParameter("seat"));
-        Optional<Seat> seat = seatService.findById(seatId);
+            TicketDto ticketDto = TicketDto.builder()
+                    .status(status)
+                    .price(price)
+                    .sportEvent(sportEvent.orElseThrow(() -> new IOException("Event not found")))
+                    .seat(seat.orElseThrow(() -> new IOException("Seat not found")))
+                    .build();
 
-        TicketDto ticketDto = TicketDto.builder()
-                .status(status)
-                .price(price)
-                .sportEvent(sportEvent.orElseThrow(() -> new IOException("Event not found")))
-                .seat(seat.orElseThrow(() -> new IOException("Seat not found")))
-                .build();
-
-        ticketService.createTicket(ticketDto);
-        resp.sendRedirect(req.getContextPath() + "/tickets?eventId=" + req.getParameter("eventId"));
+            ticketService.createTicket(ticketDto);
+            resp.sendRedirect(req.getContextPath() + "/tickets?eventId=" + req.getParameter("eventId"));
+        }catch (NumberFormatException e) {
+            ValidationResult numberFormatValidationResult = new ValidationResult();
+            numberFormatValidationResult.add(Error.of("invalid.number.format",
+                    "Проверьте корректность ввода данных!"));
+            req.setAttribute("errors", numberFormatValidationResult.getErrors());
+            doGet(req, resp);
+        }
     }
 }

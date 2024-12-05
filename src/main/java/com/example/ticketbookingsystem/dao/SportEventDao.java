@@ -18,10 +18,6 @@ public class SportEventDao implements DaoCrud<Long, SportEvent>{
             VALUES (?, ?, ?)
             """;
     private final static String DELETE_SQL = """
-            UPDATE sport_event
-            SET arena_id=null
-            WHERE id=?;
-            
             DELETE FROM sport_event WHERE id=?
             """;
     private final static String UPDATE_SQL = """
@@ -108,7 +104,6 @@ public class SportEventDao implements DaoCrud<Long, SportEvent>{
         try(var connection = ConnectionManager.get();
             var statement = connection.prepareStatement(DELETE_SQL)){
             statement.setLong(1, id);
-            statement.setLong(2, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoCrudException(e);

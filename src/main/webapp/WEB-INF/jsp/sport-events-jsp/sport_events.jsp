@@ -33,7 +33,7 @@
               <%
                 LocalDateTime eventDateTime = (LocalDateTime) pageContext.findAttribute("eventDateTime");
                 String formattedDate = eventDateTime.toLocalDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-                String formattedTime = eventDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+                String formattedTime = eventDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
               %>
               <c:set var="formattedDate" value="<%= formattedDate %>" />
               <c:set var="formattedTime" value="<%= formattedTime %>" />
