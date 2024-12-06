@@ -1,16 +1,19 @@
 package com.example.ticketbookingsystem.dao;
 
+import com.example.ticketbookingsystem.dto.TicketFilter;
 import com.example.ticketbookingsystem.entity.Ticket;
 import com.example.ticketbookingsystem.entity.TicketStatus;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.SeatService;
 import com.example.ticketbookingsystem.service.SportEventService;
 import com.example.ticketbookingsystem.utils.ConnectionManager;
+import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TicketDao implements DaoCrud<Long, Ticket>{
     private final static TicketDao INSTANCE = new TicketDao();
@@ -81,6 +84,57 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
     private TicketDao(){
     }
 
+    public List<Ticket> findAll(TicketFilter ticketFilter, Long eventId) {
+        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(ticketFilter);
+        String sql = filtrationSqlQueryParameters.sql();
+        List<Object> parameters = filtrationSqlQueryParameters.parameters();
+
+        return executeFilterQuery(sql, parameters, eventId);
+    }
+
+    private FiltrationSqlQueryParameters buildSqlQuery(TicketFilter ticketFilter) {
+        List<Object> parameters = new ArrayList<>();
+        List<String> sortSql = new ArrayList<>();
+
+        if (!ticketFilter.priceSortOrder().isEmpty()) {
+            sortSql.add("price " + ticketFilter.priceSortOrder());
+        }
+
+        var orderBy = sortSql.stream().collect(Collectors.joining(
+                " , ",
+                !sortSql.isEmpty() ? " ORDER BY " : " ",
+                " LIMIT ? OFFSET ? "
+        ));
+
+        parameters.add(ticketFilter.limit());
+        parameters.add(ticketFilter.offset());
+
+        String sql = FIND_ALL_BY_EVENT_ID_SQL + orderBy;
+
+        return new FiltrationSqlQueryParameters(sql, parameters);
+    }
+    private List<Ticket> executeFilterQuery(String sql, List<Object> parameters, Long eventId) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, eventId);
+
+            for (int i = 1; i <= parameters.size(); i++) {
+                statement.setObject(i + 1, parameters.get(i - 1));
+            }
+
+            try (var result = statement.executeQuery()) {
+                List<Ticket> ticketList = new ArrayList<>();
+                while (result.next()) {
+                    ticketList.add(buildTicket(result));
+                }
+                return ticketList;
+            }
+        } catch (SQLException e) {
+            throw new DaoCrudException(e);
+        }
+    }
+
     @Override
     public List<Ticket> findAll() {
         try(var connection = ConnectionManager.get();
@@ -113,20 +167,20 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
         }
     }
 
-    public List<Ticket> findAllByEventId(Long id){
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_ALL_BY_EVENT_ID_SQL)){
-            List<Ticket> ticketList = new ArrayList<>();
-            statement.setLong(1, id);
-            var result = statement.executeQuery();
-            while (result.next()){
-                ticketList.add(buildTicket(result));
-            }
-            return ticketList;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
+//    public List<Ticket> findAllByEventId(Long id){
+//        try(var connection = ConnectionManager.get();
+//            var statement = connection.prepareStatement(FIND_ALL_BY_EVENT_ID_SQL)){
+//            List<Ticket> ticketList = new ArrayList<>();
+//            statement.setLong(1, id);
+//            var result = statement.executeQuery();
+//            while (result.next()){
+//                ticketList.add(buildTicket(result));
+//            }
+//            return ticketList;
+//        } catch (SQLException e) {
+//            throw new DaoCrudException(e);
+//        }
+//    }
 
     @Override
     public Ticket save(Ticket ticket) {

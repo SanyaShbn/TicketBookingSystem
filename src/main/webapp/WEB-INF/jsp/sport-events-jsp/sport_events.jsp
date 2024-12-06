@@ -9,6 +9,7 @@
 <head>
   <title>SportEvents</title>
   <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
+  <script src="<c:url value="/js/toggleFilterFormScript.js"/>"></script>
 </head>
 <body>
 <div>
@@ -55,20 +56,6 @@
       <button type="submit"><fmt:message key="apply.filters"/></button>
     </form>
   </div>
-
-  <script>
-    function toggleFilterForm() {
-      var form = document.querySelector('.filter-bar form');
-      var button = document.querySelector('.filter-bar button');
-      if (form.style.display === 'none' || form.style.display === '') {
-        form.style.display = 'flex';
-        button.innerText = 'Скрыть фильтр';
-      } else {
-        form.style.display = 'none';
-        button.innerText = 'Настроить фильтр';
-      }
-    }
-  </script>
 
   <button onclick="location.href='${pageContext.request.contextPath}/'">
     <fmt:message key="button.back"/>

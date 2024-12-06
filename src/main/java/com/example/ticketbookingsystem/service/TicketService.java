@@ -2,6 +2,7 @@ package com.example.ticketbookingsystem.service;
 
 import com.example.ticketbookingsystem.dao.TicketDao;
 import com.example.ticketbookingsystem.dto.TicketDto;
+import com.example.ticketbookingsystem.dto.TicketFilter;
 import com.example.ticketbookingsystem.entity.Ticket;
 
 import java.util.List;
@@ -20,12 +21,16 @@ public class TicketService {
         return ticketDao.findAll();
     }
 
+    public List<Ticket> findAll(TicketFilter ticketFilter, Long eventId){
+        return ticketDao.findAll(ticketFilter, eventId);
+    }
+
     public Optional<Ticket> findById(Long id){
         return ticketDao.findById(id);
     }
-    public List<Ticket> findAllByEventId(Long eventId){
-        return ticketDao.findAllByEventId(eventId);
-    }
+//    public List<Ticket> findAllByEventId(Long eventId){
+//        return ticketDao.findAllByEventId(eventId);
+//    }
 
     private Ticket buildTicketFromDto(TicketDto ticketDto) {
         return Ticket.builder()

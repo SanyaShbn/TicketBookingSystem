@@ -1,4 +1,4 @@
-package com.example.ticketbookingsystem.servlet.sport_event_servlets;
+package com.example.ticketbookingsystem.servlet.tickets_purchases_servlets;
 
 import com.example.ticketbookingsystem.dto.SportEventFilter;
 import com.example.ticketbookingsystem.entity.Arena;
@@ -17,8 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@WebServlet("/sport_events")
-public class ViewFilteredEvents extends HttpServlet {
+@WebServlet("/view_available_events")
+public class ViewEventsForTicketsPurchaseServlet extends HttpServlet {
     private final SportEventService sportEventService = SportEventService.getInstance();
     private final ArenaService arenaService = ArenaService.getInstance();
     @Override
@@ -39,7 +39,7 @@ public class ViewFilteredEvents extends HttpServlet {
                 ? Integer.parseInt(req.getParameter("page")) : 1;
         req.setAttribute("page", currentPage);
 
-        req.getRequestDispatcher(JspFilesResolver.getPath("/sport-events-jsp/sport_events")).forward(req, resp);
+        req.getRequestDispatcher(JspFilesResolver.getPath("/tickets-purchases-jsp/view-available-events")).forward(req, resp);
     }
 
     private SportEventFilter buildSportEventFilter(HttpServletRequest req) {
