@@ -1,14 +1,17 @@
 package com.example.ticketbookingsystem.dao;
 
+import com.example.ticketbookingsystem.dto.SportEventFilter;
 import com.example.ticketbookingsystem.entity.SportEvent;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.ConnectionManager;
+import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SportEventDao implements DaoCrud<Long, SportEvent>{
     private final static SportEventDao INSTANCE = new SportEventDao();
@@ -39,6 +42,67 @@ public class SportEventDao implements DaoCrud<Long, SportEvent>{
     }
     private SportEventDao(){
     }
+
+    public List<SportEvent> findAll(SportEventFilter sportEventFilter) {
+        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(sportEventFilter);
+        String sql = filtrationSqlQueryParameters.sql();
+        List<Object> parameters = filtrationSqlQueryParameters.parameters();
+
+        return executeFilterQuery(sql, parameters);
+    }
+
+    private FiltrationSqlQueryParameters buildSqlQuery(SportEventFilter sportEventFilter) {
+        List<Object> parameters = new ArrayList<>();
+        List<String> whereSql = new ArrayList<>();
+
+        if (sportEventFilter.startDate() != null) {
+            parameters.add(sportEventFilter.startDate());
+            whereSql.add("event_date_time>?");
+        }
+        if (sportEventFilter.endDate() != null) {
+            parameters.add(sportEventFilter.endDate());
+            whereSql.add("event_date_time<?");
+        }
+        if(sportEventFilter.arenaId() != null){
+            parameters.add(sportEventFilter.arenaId());
+            whereSql.add("arena_id=?");
+        }
+
+        parameters.add(sportEventFilter.limit());
+        parameters.add(sportEventFilter.offset());
+
+        var where = whereSql.stream().collect(Collectors.joining(
+                " AND ",
+                parameters.size() > 2 ? " WHERE " : " ",
+                !sportEventFilter.sortOrder().isEmpty() ?
+                " ORDER BY event_date_time " + sportEventFilter.sortOrder() +
+                " LIMIT ? OFFSET ? " : " LIMIT ? OFFSET ? "
+        ));
+
+        String sql = FIND_ALL_SQL + where;
+
+        return new FiltrationSqlQueryParameters(sql, parameters);
+    }
+    private List<SportEvent> executeFilterQuery(String sql, List<Object> parameters) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(sql)) {
+
+            for (int i = 0; i < parameters.size(); i++) {
+                statement.setObject(i + 1, parameters.get(i));
+            }
+
+            try (var result = statement.executeQuery()) {
+                List<SportEvent> sportEventList = new ArrayList<>();
+                while (result.next()) {
+                    sportEventList.add(buildSportEvent(result));
+                }
+                return sportEventList;
+            }
+        } catch (SQLException e) {
+            throw new DaoCrudException(e);
+        }
+    }
+
     @Override
     public List<SportEvent> findAll() {
         try(var connection = ConnectionManager.get();

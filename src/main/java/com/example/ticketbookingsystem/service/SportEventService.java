@@ -2,6 +2,7 @@ package com.example.ticketbookingsystem.service;
 
 import com.example.ticketbookingsystem.dao.SportEventDao;
 import com.example.ticketbookingsystem.dto.SportEventDto;
+import com.example.ticketbookingsystem.dto.SportEventFilter;
 import com.example.ticketbookingsystem.entity.SportEvent;
 
 import java.util.List;
@@ -18,6 +19,10 @@ public class SportEventService {
 
     public List<SportEvent> findAll(){
         return sportEventDao.findAll();
+    }
+
+    public List<SportEvent> findAll(SportEventFilter sportEventFilter){
+        return sportEventDao.findAll(sportEventFilter);
     }
 
     public Optional<SportEvent> findById(Long id){
