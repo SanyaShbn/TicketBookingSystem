@@ -2,9 +2,12 @@ package com.example.ticketbookingsystem.servlet.sport_event_servlets;
 
 import com.example.ticketbookingsystem.dto.SportEventDto;
 import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.service.SportEventService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
+import com.example.ticketbookingsystem.validator.Error;
+import com.example.ticketbookingsystem.validator.ValidationResult;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -34,22 +37,32 @@ public class CreateSportEventServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String eventName = req.getParameter("eventName");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        try {
+            String eventName = req.getParameter("eventName");
 
-        String eventDateTimeString = req.getParameter("eventDateTime");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime eventDateTime = LocalDateTime.parse(eventDateTimeString, formatter);
+            String eventDateTimeString = req.getParameter("eventDateTime");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            LocalDateTime eventDateTime = LocalDateTime.parse(eventDateTimeString, formatter);
 
-        Long arenaId = Long.valueOf(req.getParameter("arena"));
-        Optional<Arena> arena = arenaService.findById(arenaId);
+            Long arenaId = Long.valueOf(req.getParameter("arena"));
+            Optional<Arena> arena = arenaService.findById(arenaId);
 
-        SportEventDto sportEventDto = SportEventDto.builder()
-                .eventName(eventName)
-                .eventDateTime(eventDateTime)
-                .arena(arena.orElseThrow(() -> new IOException("Arena not found")))
-                .build();
-        sportEventService.createSportEvent(sportEventDto);
-        resp.sendRedirect(req.getContextPath() + "/sport_events");
+            SportEventDto sportEventDto = SportEventDto.builder()
+                    .eventName(eventName)
+                    .eventDateTime(eventDateTime)
+                    .arena(arena.orElseThrow(() -> new IOException("Arena not found")))
+                    .build();
+            sportEventService.createSportEvent(sportEventDto);
+            resp.sendRedirect(req.getContextPath() + "/sport_events");
+        }catch (DaoCrudException e) {
+            ValidationResult validationResult = new ValidationResult();
+            validationResult.add(Error.of("create.event.error",
+                    "Создаваемое событие не может пересекаться по времени с уже запланированными событиями" +
+                    " для выбранной арены (минимальный интервал для одной даты - 3 часа). " +
+                    "Проверьте корректность ввода данных!"));
+            req.setAttribute("errors", validationResult.getErrors());
+            doGet(req, resp);
+        }
     }
 }

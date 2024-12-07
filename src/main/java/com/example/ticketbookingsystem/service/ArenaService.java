@@ -2,6 +2,7 @@ package com.example.ticketbookingsystem.service;
 
 import com.example.ticketbookingsystem.dao.ArenaDao;
 import com.example.ticketbookingsystem.dto.ArenaDto;
+import com.example.ticketbookingsystem.dto.ArenaFilter;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.validator.CreateOrUpdateArenaValidator;
@@ -20,6 +21,10 @@ public class ArenaService {
 
     public List<Arena> findAll(){
         return arenaDao.findAll();
+    }
+
+    public List<Arena> findAll(ArenaFilter arenaFilter){
+        return arenaDao.findAll(arenaFilter);
     }
 
     public Optional<Arena> findById(Long id){
@@ -55,5 +60,9 @@ public class ArenaService {
 
     public void deleteArena(Long id) {
         arenaDao.delete(id);
+    }
+
+    public List<String> findAllArenasCities() {
+        return arenaDao.findAllArenasCities();
     }
 }

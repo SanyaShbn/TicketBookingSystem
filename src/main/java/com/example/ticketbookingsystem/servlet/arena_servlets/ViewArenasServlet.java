@@ -1,5 +1,6 @@
 package com.example.ticketbookingsystem.servlet.arena_servlets;
 
+import com.example.ticketbookingsystem.dto.ArenaFilter;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
@@ -29,15 +30,44 @@ public class ViewArenasServlet extends HttpServlet {
             }
         }
 
-        List<Arena> arenas = arenaService.findAll();
-        req.setAttribute("arenas", arenas);
+        setRequestAttributes(req);
+
         req.getRequestDispatcher(JspFilesResolver.getPath("/arena-jsp/arenas")).forward(req, resp);
     }
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        req.setAttribute("arenas", arenaService.findAll());
-        req.getRequestDispatcher(JspFilesResolver.getPath("/arena-jsp/arenas")).forward(req, resp);
+
+    private void setRequestAttributes(HttpServletRequest req) {
+        ArenaFilter arenaFilter = buildArenaFilter(req);
+        List<Arena> arenaList = arenaService.findAll(arenaFilter);
+        List<String> cities = arenaService.findAllArenasCities();
+
+        req.setAttribute("arenas", arenaList);
+        req.setAttribute("cities", cities);
+
+        req.setAttribute("limit", arenaFilter.limit());
+        int currentPage = req.getParameter("page") != null
+                ? Integer.parseInt(req.getParameter("page")) : 1;
+        req.setAttribute("page", currentPage);
+    }
+
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        resp.setContentType("text/html");
+//        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+//        req.setAttribute("arenas", arenaService.findAll());
+//        req.getRequestDispatcher(JspFilesResolver.getPath("/arena-jsp/arenas")).forward(req, resp);
+//    }
+
+    private ArenaFilter buildArenaFilter(HttpServletRequest req) {
+        String city = req.getParameter("city") != null ? req.getParameter("city") : "";
+        String capacitySortOrder = req.getParameter("capacitySortOrder") != null
+                ? req.getParameter("capacitySortOrder") : "";
+        String seatsNumbSortOrder = req.getParameter("seatsNumbSortOrder") != null
+                ? req.getParameter("seatsNumbSortOrder") : "";
+
+        int limit = 8;
+        int offset = req.getParameter("page") != null
+                ? (Integer.parseInt(req.getParameter("page")) - 1)* limit : 0;
+
+        return new ArenaFilter(city, capacitySortOrder, seatsNumbSortOrder, limit, offset);
     }
 }

@@ -124,3 +124,72 @@ button:hover {
     color: red;
     margin-top: 10px;
 }
+
+.filter-bar {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+.filter-bar form {
+    display: none;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+.filter-bar .form-item {
+    padding: 10px;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+.filter-bar button {
+    align-self: center;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.filter-bar button:hover {
+    background-color: #555;
+}
+.filter-bar input[type="text"]{
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.filter-bar input[type="datetime-local"]{
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.filter-bar select {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 120px;
+    overflow-y: auto;
+}
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    padding-top: 120px;
+}
+.pagination a {
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+}
+.pagination a:hover {
+    background-color: #eaeaea;
+}
+.pagination a.pagination-arrow {
+    font-size: 1.2em;
+}

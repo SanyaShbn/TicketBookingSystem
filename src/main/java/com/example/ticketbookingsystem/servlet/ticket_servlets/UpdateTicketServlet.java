@@ -6,6 +6,8 @@ import com.example.ticketbookingsystem.service.SeatService;
 import com.example.ticketbookingsystem.service.SportEventService;
 import com.example.ticketbookingsystem.service.TicketService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
+import com.example.ticketbookingsystem.validator.Error;
+import com.example.ticketbookingsystem.validator.ValidationResult;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -26,8 +28,6 @@ public class UpdateTicketServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-
         String id = request.getParameter("id");
         Optional<Ticket> ticket = ticketService.findById(Long.parseLong(id));
         request.setAttribute("ticket", ticket.orElse(null));
@@ -41,24 +41,31 @@ public class UpdateTicketServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        try {
+            String id = request.getParameter("id");
+            BigDecimal price = new BigDecimal(request.getParameter("price"));
+            TicketStatus status = TicketStatus.valueOf("AVAILABLE");
+            Long sportEventId = Long.valueOf(request.getParameter("eventId"));
+            Optional<SportEvent> sportEvent = sportEventService.findById(sportEventId);
+            Long seatId = Long.valueOf(request.getParameter("seat"));
+            Optional<Seat> seat = seatService.findById(seatId);
 
-        String id = request.getParameter("id");
-        BigDecimal price = new BigDecimal(request.getParameter("price"));
-        TicketStatus status = TicketStatus.valueOf("AVAILABLE");
-        Long sportEventId = Long.valueOf(request.getParameter("eventId"));
-        Optional<SportEvent> sportEvent = sportEventService.findById(sportEventId);
-        Long seatId = Long.valueOf(request.getParameter("seat"));
-        Optional<Seat> seat = seatService.findById(seatId);
+            TicketDto ticketDto = TicketDto.builder()
+                    .status(status)
+                    .price(price)
+                    .sportEvent(sportEvent.orElseThrow(() -> new IOException("Event not found")))
+                    .seat(seat.orElseThrow(() -> new IOException("Seat not found")))
+                    .build();
 
-        TicketDto ticketDto = TicketDto.builder()
-                .status(status)
-                .price(price)
-                .sportEvent(sportEvent.orElseThrow(() -> new IOException("Event not found")))
-                .seat(seat.orElseThrow(() -> new IOException("Seat not found")))
-                .build();
-
-        ticketService.updateTicket(Long.parseLong(id), ticketDto);
-        response.sendRedirect(request.getContextPath() + "/tickets?eventId=" + request.getParameter("eventId"));
+            ticketService.updateTicket(Long.parseLong(id), ticketDto);
+            response.sendRedirect(request.getContextPath() + "/tickets?eventId=" + request.getParameter("eventId"));
+        }catch (NumberFormatException e) {
+            ValidationResult numberFormatValidationResult = new ValidationResult();
+            numberFormatValidationResult.add(Error.of("invalid.number.format",
+                    "Проверьте корректность ввода данных!"));
+            request.setAttribute("errors", numberFormatValidationResult.getErrors());
+            doGet(request, response);
+        }
     }
 }

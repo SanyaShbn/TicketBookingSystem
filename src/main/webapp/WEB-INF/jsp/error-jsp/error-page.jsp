@@ -12,7 +12,7 @@
 </head>
 <body>
 <div>
-<button onclick="location.href='${pageContext.request.contextPath}/arenas'">
+<button onclick="history.back()">
     <fmt:message key="button.back"/>
 </button>
 <div class="error-container">

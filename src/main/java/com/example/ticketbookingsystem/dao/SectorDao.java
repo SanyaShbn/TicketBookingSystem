@@ -1,15 +1,18 @@
 package com.example.ticketbookingsystem.dao;
 
+import com.example.ticketbookingsystem.dto.SectorFilter;
 import com.example.ticketbookingsystem.entity.Sector;
 import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.ConnectionManager;
+import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SectorDao implements DaoCrud<Long, Sector>{
     private final static SectorDao INSTANCE = new SectorDao();
@@ -65,6 +68,64 @@ public class SectorDao implements DaoCrud<Long, Sector>{
     }
     private SectorDao(){
     }
+
+    public List<Sector> findAll(SectorFilter sectorFilter, Long arenaId) {
+        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(sectorFilter);
+        String sql = filtrationSqlQueryParameters.sql();
+        List<Object> parameters = filtrationSqlQueryParameters.parameters();
+
+        return executeFilterQuery(sql, parameters, arenaId);
+    }
+
+    private FiltrationSqlQueryParameters buildSqlQuery(SectorFilter sectorFilter) {
+        List<Object> parameters = new ArrayList<>();
+        List<String> sortSql = new ArrayList<>();
+
+        if (!sectorFilter.nameSortOrder().isEmpty()) {
+            sortSql.add("sector_name " + sectorFilter.nameSortOrder());
+        }
+        if (!sectorFilter.maxRowsNumbSortOrder().isEmpty()) {
+            sortSql.add("max_rows_numb " + sectorFilter.maxRowsNumbSortOrder());
+        }
+        if (!sectorFilter.maxSeatsNumbSortOrder().isEmpty()) {
+            sortSql.add("max_seats_numb " + sectorFilter.maxSeatsNumbSortOrder());
+        }
+
+        var orderBy = sortSql.stream().collect(Collectors.joining(
+                " , ",
+                !sortSql.isEmpty() ? " ORDER BY " : " ",
+                " LIMIT ? OFFSET ? "
+        ));
+
+        parameters.add(sectorFilter.limit());
+        parameters.add(sectorFilter.offset());
+
+        String sql = FIND_ALL_BY_ARENA_ID_SQL + orderBy;
+
+        return new FiltrationSqlQueryParameters(sql, parameters);
+    }
+    private List<Sector> executeFilterQuery(String sql, List<Object> parameters, Long arenaId) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, arenaId);
+
+            for (int i = 1; i <= parameters.size(); i++) {
+                statement.setObject(i + 1, parameters.get(i - 1));
+            }
+
+            try (var result = statement.executeQuery()) {
+                List<Sector> ticketList = new ArrayList<>();
+                while (result.next()) {
+                    ticketList.add(buildSector(result));
+                }
+                return ticketList;
+            }
+        } catch (SQLException e) {
+            throw new DaoCrudException(e);
+        }
+    }
+
     @Override
     public List<Sector> findAll() {
         try(var connection = ConnectionManager.get();
