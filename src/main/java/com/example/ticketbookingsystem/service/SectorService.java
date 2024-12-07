@@ -2,6 +2,7 @@ package com.example.ticketbookingsystem.service;
 
 import com.example.ticketbookingsystem.dao.SectorDao;
 import com.example.ticketbookingsystem.dto.SectorDto;
+import com.example.ticketbookingsystem.dto.SectorFilter;
 import com.example.ticketbookingsystem.entity.Sector;
 
 import java.util.List;
@@ -17,6 +18,9 @@ public class SectorService {
 
     public List<Sector> findAll(){
         return sectorDao.findAll();
+    }
+    public List<Sector> findAll(SectorFilter sectorFilter, Long arenaId){
+        return sectorDao.findAll(sectorFilter, arenaId);
     }
 
     public Optional<Sector> findById(Long id){

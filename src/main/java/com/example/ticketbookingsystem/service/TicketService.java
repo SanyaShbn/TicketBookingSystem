@@ -28,9 +28,6 @@ public class TicketService {
     public Optional<Ticket> findById(Long id){
         return ticketDao.findById(id);
     }
-//    public List<Ticket> findAllByEventId(Long eventId){
-//        return ticketDao.findAllByEventId(eventId);
-//    }
 
     private Ticket buildTicketFromDto(TicketDto ticketDto) {
         return Ticket.builder()

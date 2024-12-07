@@ -1,15 +1,18 @@
 package com.example.ticketbookingsystem.dao;
 
+import com.example.ticketbookingsystem.dto.RowFilter;
 import com.example.ticketbookingsystem.entity.Row;
 import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.SectorService;
 import com.example.ticketbookingsystem.utils.ConnectionManager;
+import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class RowDao implements DaoCrud<Long, Row>{
     private final static RowDao INSTANCE = new RowDao();
@@ -63,26 +66,66 @@ public class RowDao implements DaoCrud<Long, Row>{
     }
     private RowDao(){
     }
+    public List<Row> findAll(RowFilter rowFilter, Long sectorId) {
+        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(rowFilter);
+        String sql = filtrationSqlQueryParameters.sql();
+        List<Object> parameters = filtrationSqlQueryParameters.parameters();
+
+        return executeFilterQuery(sql, parameters, sectorId);
+    }
+
+    private FiltrationSqlQueryParameters buildSqlQuery(RowFilter rowFilter) {
+        List<Object> parameters = new ArrayList<>();
+        List<String> sortSql = new ArrayList<>();
+
+        if (!rowFilter.rowNumberOrder().isEmpty()) {
+            sortSql.add("row_number " + rowFilter.rowNumberOrder());
+        }
+        if (!rowFilter.seatsNumbOrder().isEmpty()) {
+            sortSql.add("seats_numb " + rowFilter.seatsNumbOrder());
+        }
+
+        var orderBy = sortSql.stream().collect(Collectors.joining(
+                " , ",
+                !sortSql.isEmpty() ? " ORDER BY " : " ",
+                " LIMIT ? OFFSET ? "
+        ));
+
+        parameters.add(rowFilter.limit());
+        parameters.add(rowFilter.offset());
+
+        String sql = FIND_ALL_BY_SECTOR_ID_SQL + orderBy;
+
+        return new FiltrationSqlQueryParameters(sql, parameters);
+    }
+    private List<Row> executeFilterQuery(String sql, List<Object> parameters, Long sectorId) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, sectorId);
+
+            for (int i = 1; i <= parameters.size(); i++) {
+                statement.setObject(i + 1, parameters.get(i - 1));
+            }
+
+            try (var result = statement.executeQuery()) {
+                List<Row> rowList = new ArrayList<>();
+                while (result.next()) {
+                    rowList.add(buildRow(result));
+                }
+                return rowList;
+            }
+        } catch (SQLException e) {
+            throw new DaoCrudException(e);
+        }
+    }
+
     @Override
     public List<Row> findAll() {
         try(var connection = ConnectionManager.get();
             var statement = connection.prepareStatement(FIND_ALL_SQL)){
             List<Row> rowsList = new ArrayList<>();
 
-            var result = statement.executeQuery();
-            while (result.next()){
-                rowsList.add(buildRow(result));
-            }
-            return rowsList;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-    public List<Row> findAllBySectorId(Long id){
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_ALL_BY_SECTOR_ID_SQL)){
-            List<Row> rowsList = new ArrayList<>();
-            statement.setLong(1, id);
             var result = statement.executeQuery();
             while (result.next()){
                 rowsList.add(buildRow(result));

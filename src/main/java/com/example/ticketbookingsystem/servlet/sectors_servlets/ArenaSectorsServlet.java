@@ -1,5 +1,7 @@
 package com.example.ticketbookingsystem.servlet.sectors_servlets;
 
+import com.example.ticketbookingsystem.dto.SectorFilter;
+import com.example.ticketbookingsystem.entity.Sector;
 import com.example.ticketbookingsystem.service.SectorService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import jakarta.servlet.ServletException;
@@ -10,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @WebServlet("/sectors")
 public class ArenaSectorsServlet extends HttpServlet {
@@ -19,9 +22,35 @@ public class ArenaSectorsServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-        Long arenaId = Long.valueOf(req.getParameter("arenaId"));
+        setRequestAttributes(req);
 
-        req.setAttribute("sectors", sectorService.findAllByArenaId(arenaId));
         req.getRequestDispatcher(JspFilesResolver.getPath("/sectors-jsp/sectors")).forward(req, resp);
+    }
+
+    private void setRequestAttributes(HttpServletRequest req) {
+        SectorFilter sectorFilter = buildSectorFilter(req);
+        Long arenaId = Long.valueOf(req.getParameter("arenaId"));
+        List<Sector> sectorList = sectorService.findAll(sectorFilter, arenaId);
+
+        req.setAttribute("sectors", sectorList);
+
+        req.setAttribute("limit", sectorFilter.limit());
+        int currentPage = req.getParameter("page") != null
+                ? Integer.parseInt(req.getParameter("page")) : 1;
+        req.setAttribute("page", currentPage);
+    }
+    private SectorFilter buildSectorFilter(HttpServletRequest req) {
+        String nameSortOrder = req.getParameter("nameSortOrder") != null
+                ? req.getParameter("nameSortOrder") : "";
+        String maxRowsNumbSortOrder = req.getParameter("maxRowsNumbSortOrder") != null
+                ? req.getParameter("maxRowsNumbSortOrder") : "";
+        String maxSeatsNumbSortOrder = req.getParameter("maxSeatsNumbSortOrder") != null
+                ? req.getParameter("maxSeatsNumbSortOrder") : "";
+
+        int limit = 8;
+        int offset = req.getParameter("page") != null
+                ? (Integer.parseInt(req.getParameter("page")) - 1) * limit : 0;
+
+        return new SectorFilter(nameSortOrder, maxRowsNumbSortOrder, maxSeatsNumbSortOrder, limit, offset);
     }
 }

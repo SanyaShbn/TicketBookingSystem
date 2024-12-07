@@ -2,6 +2,7 @@ package com.example.ticketbookingsystem.service;
 
 import com.example.ticketbookingsystem.dao.RowDao;
 import com.example.ticketbookingsystem.dto.RowDto;
+import com.example.ticketbookingsystem.dto.RowFilter;
 import com.example.ticketbookingsystem.entity.Row;
 
 import java.sql.SQLException;
@@ -20,11 +21,12 @@ public class RowService {
         return rowDao.findAll();
     }
 
+    public List<Row> findAll(RowFilter rowFilter, Long sectorId){
+        return rowDao.findAll(rowFilter, sectorId);
+    }
+
     public Optional<Row> findById(Long id){
         return rowDao.findById(id);
-    }
-    public List<Row> findAllBySectorId(Long sectorId){
-        return rowDao.findAllBySectorId(sectorId);
     }
     private Row buildRowFromDto(RowDto rowDto) {
         return Row.builder()

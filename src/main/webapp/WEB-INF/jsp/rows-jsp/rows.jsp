@@ -8,10 +8,49 @@
 <head>
     <title>Rows</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
+    <script src="<c:url value="/js/toggleFilterFormScript.js"/>"></script>
 </head>
 <body>
 <div>
     <h1><fmt:message key="rows.list"/></h1>
+
+    <div class="filter-bar">
+        <button type="button" onclick="toggleFilterForm()">Настроить фильтр</button>
+        <form action="${pageContext.request.contextPath}/rows" method="get">
+            <div class="form-item">
+                <label for="rowNumberOrder"><fmt:message key="row.rowNumber"/></label>
+                <select id="rowNumberOrder" name="rowNumberOrder" class="scrollable-dropdown">
+                    <option value="">-- Сортировка --</option>
+                    <option value="ASC" ${param.rowNumberOrder != null
+                            && param.rowNumberOrder == 'ASC' ? 'selected' : ''}>
+                        По возрастанию
+                    </option>
+                    <option value="DESC" ${param.nameSortOrder != null
+                            && param.rowNumberOrder == 'DESC' ? 'selected' : ''}>
+                        По убыванию
+                    </option>
+                </select>
+            </div>
+            <div class="form-item">
+                <label for="seatsNumbOrder"><fmt:message key="row.seatsNumb"/></label>
+                <select id="seatsNumbOrder" name="seatsNumbOrder" class="scrollable-dropdown">
+                    <option value="">-- Сортировка --</option>
+                    <option value="ASC" ${param.seatsNumbOrder != null
+                            && param.seatsNumbOrder == 'ASC' ? 'selected' : ''}>
+                        По возрастанию
+                    </option>
+                    <option value="DESC" ${param.seatsNumbOrder != null
+                            && param.seatsNumbOrder == 'DESC' ? 'selected' : ''}>
+                        По убыванию
+                    </option>
+                </select>
+            </div>
+            <input type="hidden" name="sectorId" value="${param.sectorId}">
+            <input type="hidden" name="arenaId" value="${param.arenaId}">
+            <button type="submit"><fmt:message key="apply.filters"/></button>
+        </form>
+    </div>
+
     <button onclick="location.href='${pageContext.request.contextPath}/sectors?arenaId=<%= request.getParameter("arenaId") %>'">
         <fmt:message key="button.back"/>
     </button>
@@ -19,7 +58,8 @@
         <fmt:message key="button.add"/>
     </button>
     <div class="arena-container">
-        <c:if test="${not empty requestScope.rows}">
+        <c:choose>
+        <c:when test="${not empty requestScope.rows}">
             <c:forEach var="row" items="${requestScope.rows}">
                 <div class="arena-card">
                     <div><fmt:message key="row.rowNumber"/>: ${row.rowNumber}</div>
@@ -37,7 +77,21 @@
                     </form>
                 </div>
             </c:forEach>
-        </c:if>
+            <div class="pagination" style="padding-top: 45px">
+                <c:if test="${requestScope.page > 1}">
+                    <a href="${pageContext.request.contextPath}/rows?arenaId=${param.arenaId}&sectorId=${param.sectorId}&page=${param.page - 1}"
+                       class="pagination-arrow">&laquo; <fmt:message key="page.previous"/></a>
+                </c:if>
+                <c:if test="${requestScope.rows.size() eq requestScope.limit}">
+                    <a href="${pageContext.request.contextPath}/rows?arenaId=${param.arenaId}&sectorId=${param.sectorId}&page=${param.page != null
+          ? param.page + 1 : 2}" class="pagination-arrow"><fmt:message key="page.next"/> &raquo;</a>
+                </c:if>
+            </div>
+        </c:when>
+            <c:otherwise>
+                <div><fmt:message key="rows.not_found"/></div>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>
 </body>
