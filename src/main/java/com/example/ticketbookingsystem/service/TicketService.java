@@ -25,6 +25,10 @@ public class TicketService {
         return ticketDao.findAll(ticketFilter, eventId);
     }
 
+    public List<Ticket> findAllByEventId(Long eventId){
+        return ticketDao.findAllByEventId(eventId);
+    }
+
     public Optional<Ticket> findById(Long id){
         return ticketDao.findById(id);
     }

@@ -135,6 +135,21 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
         }
     }
 
+    public List<Ticket> findAllByEventId(Long id){
+        try(var connection = ConnectionManager.get();
+            var statement = connection.prepareStatement(FIND_ALL_BY_EVENT_ID_SQL)){
+            List<Ticket> ticketList = new ArrayList<>();
+            statement.setLong(1, id);
+            var result = statement.executeQuery();
+            while (result.next()){
+                ticketList.add(buildTicket(result));
+            }
+            return ticketList;
+        } catch (SQLException e) {
+            throw new DaoCrudException(e);
+        }
+    }
+
     @Override
     public List<Ticket> findAll() {
         try(var connection = ConnectionManager.get();

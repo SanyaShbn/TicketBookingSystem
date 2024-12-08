@@ -32,7 +32,7 @@ public class CreateTicketServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String eventId = request.getParameter("eventId");
-        List<Seat> seats = seatService.findAllByEventId(Long.valueOf(eventId));
+        List<Seat> seats = seatService.findByEventIdWithNoTickets(Long.valueOf(eventId));
         request.setAttribute("seats", seats);
         request.getRequestDispatcher(JspFilesResolver.getPath("/tickets-jsp/create-ticket"))
                 .forward(request, response);

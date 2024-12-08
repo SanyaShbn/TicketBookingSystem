@@ -8,7 +8,7 @@ public interface DaoCrud<K, E> {
     List<E> findAll();
     Optional<E> findById(K id);
     default E save(E e){
-        return null;
+        return e;
     }
     default boolean update(E e){
         return false;

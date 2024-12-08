@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.49">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>10363</IntrospectionStateNumber>
+      <IntrospectionStateNumber>10757</IntrospectionStateNumber>
       <ServerVersion>16.1</ServerVersion>
       <StartupTime>1732950391</StartupTime>
       <TimeZones>true ACDT
@@ -800,7 +800,7 @@ false Zulu
 14697||10|C|G
 14697||-9223372036854775808|U|G
 14697||10|U|G</Grants>
-      <IntrospectionStateNumber>10363</IntrospectionStateNumber>
+      <IntrospectionStateNumber>10757</IntrospectionStateNumber>
       <ObjectId>22622</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4256,9 +4256,9 @@ false Zulu
     <schema id="272" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>10363</IntrospectionStateNumber>
-      <IntrospectionTimestamp>2024-12-05.22:37:17.144</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2024-12-05.19:37:17</LocalIntrospectionTimestamp>
+      <IntrospectionStateNumber>10757</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2024-12-08.16:07:23.265</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2024-12-08.13:07:23</LocalIntrospectionTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>524</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -4356,7 +4356,7 @@ false Zulu
     <sequence id="282" parent="272" name="arena_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22630</ObjectId>
-      <SequenceIdentity>1(38)</SequenceIdentity>
+      <SequenceIdentity>1(51)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9558</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4364,7 +4364,7 @@ false Zulu
     <sequence id="283" parent="272" name="row_row_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22716</ObjectId>
-      <SequenceIdentity>1(54)</SequenceIdentity>
+      <SequenceIdentity>1(78)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9684</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4372,7 +4372,7 @@ false Zulu
     <sequence id="284" parent="272" name="seat_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22754</ObjectId>
-      <SequenceIdentity>1(159)</SequenceIdentity>
+      <SequenceIdentity>1(20383)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9963</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4380,7 +4380,7 @@ false Zulu
     <sequence id="285" parent="272" name="sector_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22703</ObjectId>
-      <SequenceIdentity>1(21)</SequenceIdentity>
+      <SequenceIdentity>1(37)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9667</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4388,7 +4388,7 @@ false Zulu
     <sequence id="286" parent="272" name="sport_event_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>22770</ObjectId>
-      <SequenceIdentity>1(25)</SequenceIdentity>
+      <SequenceIdentity>1(59)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9997</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4396,7 +4396,7 @@ false Zulu
     <sequence id="287" parent="272" name="ticket_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22796</ObjectId>
-      <SequenceIdentity>1(18)</SequenceIdentity>
+      <SequenceIdentity>1(55)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>10092</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4415,7 +4415,7 @@ false Zulu
     </table>
     <table id="290" parent="272" name="seat">
       <ObjectId>22744</ObjectId>
-      <StateNumber>10114</StateNumber>
+      <StateNumber>10756</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
@@ -4647,8 +4647,8 @@ false Zulu
     <column id="326" parent="290" name="has_ticket">
       <DasType>boolean|0s</DasType>
       <DefaultExpression>false</DefaultExpression>
-      <Position>4</Position>
-      <StateNumber>10114</StateNumber>
+      <Position>5</Position>
+      <StateNumber>10756</StateNumber>
       <TypeId>16</TypeId>
     </column>
     <foreign-key id="327" parent="290" name="seat_row_id_fkey">
