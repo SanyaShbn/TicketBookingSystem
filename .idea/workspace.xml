@@ -9,20 +9,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/tickets_purchases_servlets/ViewTicketsForPurchaseServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-tickets.jsp" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Working on features 5 and 6 (added visualization of available tickets and user's cart)">
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/user'sCartScript.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/DaoCrud.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/DaoCrud.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SeatDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SeatDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/TicketDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/TicketDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SeatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SeatService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/ticket_servlets/CreateTicketServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/ticket_servlets/CreateTicketServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-events.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-events.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-tickets.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-tickets.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets.jsp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/css/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,10 +30,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="JavaScript File" />
         <option value="Record" />
         <option value="Class" />
         <option value="Jsp File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -238,7 +234,8 @@
       <workItem from="1733566244105" duration="1041000" />
       <workItem from="1733650669731" duration="11057000" />
       <workItem from="1733670741416" duration="6808000" />
-      <workItem from="1733678551978" duration="185000" />
+      <workItem from="1733678551978" duration="347000" />
+      <workItem from="1733682598404" duration="13667000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -304,7 +301,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733521395062</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Working on features 5 and 6 (added visualization of available tickets and user's cart)">
+      <option name="closed" value="true" />
+      <created>1733678885305</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1733678885305</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -331,6 +336,7 @@
     <MESSAGE value="Finished feature№3" />
     <MESSAGE value="Started implementing filtration/sorting/pagination (feature №4)" />
     <MESSAGE value="Continuing working on feature №4 (added filter-bar for sport events, arenas and tickets)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Continuing working on feature №4 (added filter-bar for sport events, arenas and tickets)" />
+    <MESSAGE value="Working on features 5 and 6 (added visualization of available tickets and user's cart)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working on features 5 and 6 (added visualization of available tickets and user's cart)" />
   </component>
 </project>

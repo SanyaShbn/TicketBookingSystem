@@ -25,20 +25,7 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
             VALUES (?, ?, ?, ?);
     """;
 
-    private final static String UPDATE_SEAT_SQL = """
-            UPDATE seat
-            SET has_ticket = true
-            WHERE id = ?;
-    """;
-
     private final static String DELETE_SQL = """
-            UPDATE seat
-            set has_ticket=false
-            WHERE id=( SELECT seat_id
-                       FROM ticket
-                       WHERE id=?
-                       );
-                       
             UPDATE ticket
             SET event_id=null,
                 seat_id=null
@@ -47,18 +34,6 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
             DELETE FROM ticket WHERE id=?
             """;
     private final static String UPDATE_SQL = """
-            
-            UPDATE seat
-            set has_ticket=false
-            WHERE id=( SELECT seat_id
-                       FROM ticket
-                       WHERE id=?
-                       );
-            
-            UPDATE seat
-            set has_ticket=true
-            WHERE id=?;
-            
             UPDATE ticket
             SET status=?,
                 price=?,
@@ -185,17 +160,13 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
     @Override
     public Ticket save(Ticket ticket) {
         try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
-            var updateSeatTable = connection.prepareStatement(UPDATE_SEAT_SQL)){
+            var statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)){
             setSaveStatement(ticket, statement);
             statement.executeUpdate();
             var keys = statement.getGeneratedKeys();
             if(keys.next()){
                 ticket.setId(keys.getLong("id"));
             }
-
-            updateSeatTable.setLong(1, ticket.getSeat().getId());
-            updateSeatTable.executeUpdate();
 
             return ticket;
         } catch (SQLException e) {
@@ -208,7 +179,7 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
         try(var connection = ConnectionManager.get();
             var statement = connection.prepareStatement(UPDATE_SQL)){
             setUpdateStatement(ticket, statement);
-            statement.setLong(7, ticket.getId());
+            statement.setLong(5, ticket.getId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoCrudException(e);
@@ -221,7 +192,6 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
             var statement = connection.prepareStatement(DELETE_SQL)){
             statement.setLong(1, id);
             statement.setLong(2, id);
-            statement.setLong(3, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoCrudException(e);
@@ -245,13 +215,9 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
     }
 
     private void setUpdateStatement(Ticket ticket, PreparedStatement statement) throws SQLException {
-
-        statement.setLong(1, ticket.getId());
-        statement.setLong(2, ticket.getSeat().getId());
-
-        statement.setString(3, String.valueOf(ticket.getStatus()));
-        statement.setBigDecimal(4, ticket.getPrice());
-        statement.setLong(5, ticket.getSportEvent().getId());
-        statement.setLong(6, ticket.getSeat().getId());
+        statement.setString(1, String.valueOf(ticket.getStatus()));
+        statement.setBigDecimal(2, ticket.getPrice());
+        statement.setLong(3, ticket.getSportEvent().getId());
+        statement.setLong(4, ticket.getSeat().getId());
     }
 }

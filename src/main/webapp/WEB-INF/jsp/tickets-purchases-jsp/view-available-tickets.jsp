@@ -10,6 +10,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.ticketbookingsystem.entity.TicketStatus" %>
 
+<fmt:setBundle basename="messages" />
+
 <%
     Set<String> sectors = new HashSet<>();
     Set<Row> rows = new HashSet<>();
@@ -41,25 +43,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Доступные билеты</title>
+    <title>User's Cart</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
+    <script src="<c:url value="/js/user'sCartScript.js"/>"></script>
 </head>
 <body>
-<h1>Выберите место</h1>
+<h1><fmt:message key="choose.seat.title"/></h1>
 <div class="view-arena-seats-container">
     <div class="arena-map">
-
         <c:forEach var="sector" items="${sectors}">
             <div class="arena-section">
-                <h2>Сектор: ${sector}</h2>
+                <h2><fmt:message key="ticket.sector"/>: ${sector}</h2>
                 <c:forEach var="row" items="${rows}">
                     <c:if test="${sector == row.sector.sectorName}">
                         <div class="arena-row">
                             <c:forEach var="seat" items="${seats}">
                                 <c:if test="${seat.row.id == row.id}">
+                                    <c:set var="matchingTicket" value="${null}" />
+                                    <c:forEach var="ticket" items="${tickets}">
+                                        <c:if test="${ticket.seat.id == seat.id}">
+                                            <c:set var="matchingTicket" value="${ticket}" />
+                                        </c:if>
+                                    </c:forEach>
                                     <div class="arena-seat ${ticketSeatsIds.contains(seat.id) ? 'available' : 'unavailable'}"
                                          data-seat-id="${seat.id}"
-                                         title="Ряд: ${seat.row.rowNumber}, Место: ${seat.seatNumber}">
+                                         data-sector-name="${seat.row.sector.sectorName}"
+                                         data-row-numb="${seat.row.rowNumber}"
+                                         data-seat-numb="${seat.seatNumber}"
+                                         data-seat-price="${matchingTicket!=null ? matchingTicket.price : 'не установлена'}"
+                                         title="<fmt:message key="ticket.sector"/>: ${seat.row.sector.sectorName}, <fmt:message key="ticket.row"/>: ${seat.row.rowNumber}, <fmt:message key="ticket.seat.numb"/>: ${seat.seatNumber}, <fmt:message key="ticket.price"/>: ${matchingTicket!=null ? matchingTicket.price : 'нет в продаже'}">
                                             ${seat.seatNumber}
                                     </div>
                                 </c:if>
@@ -71,47 +83,20 @@
         </c:forEach>
     </div>
     <div class="cart">
-        <h2>Корзина</h2>
+        <h2><fmt:message key="user.cart"/> (<fmt:message key="tickets.in.user.cart"/>:<span id="cartCount">0</span>)</h2>
         <form id="cartForm" action="${pageContext.request.contextPath}/checkout" method="post">
-            <ul id="cartItems"></ul>
-            <p>Общая сумма: <span id="totalPrice">0</span> руб.</p>
-            <button type="submit">Оформить заказ</button>
+            <ul id="cartItems">
+                <li id="emptyCartMessage"><fmt:message key="user.cart.empty"/></li>
+            </ul>
+            <p><fmt:message key="general.price"/>: <span id="totalPrice">0</span> <fmt:message key="currency"/></p>
+            <button id="clearCartButton" type="button" style="display: none;">
+                <fmt:message key="delete.all.from.user.cart"/>
+            </button>
+            <button id="checkoutButton" type="submit" style="display: none;">
+                <fmt:message key="submit.purchase"/>
+            </button>
         </form>
     </div>
 </div>
-
-<script>
-    const cartItems = [];
-    const seatElements = document.querySelectorAll('.arena-seat.available');
-    const cartList = document.getElementById('cartItems');
-    const totalPriceElement = document.getElementById('totalPrice');
-
-    seatElements.forEach(seat => {
-        seat.style.cursor = 'pointer';
-        seat.addEventListener('click', function () {
-            const seatId = this.getAttribute('data-seat-id');
-            const seatPrice = parseFloat(this.getAttribute('data-seat-price'));
-
-            if (!cartItems.includes(seatId)) {
-                cartItems.push(seatId);
-                const listItem = document.createElement('li');
-                listItem.textContent = `Место: ${seat.seatNumber}, Цена: ${seatPrice} руб.`;
-                listItem.setAttribute('data-seat-id', seatId);
-                cartList.appendChild(listItem);
-
-                updateTotalPrice();
-            }
-        });
-    });
-
-    function updateTotalPrice() {
-        let totalPrice = 0;
-        cartItems.forEach(seatId => {
-            const seatElement = document.querySelector(`.arena-seat[data-seat-id="${seatId}"]`);
-            totalPrice += parseFloat(seatElement.getAttribute('data-seat-price'));
-        });
-        totalPriceElement.textContent = totalPrice.toFixed(2);
-    }
-</script>
 </body>
 </html>
