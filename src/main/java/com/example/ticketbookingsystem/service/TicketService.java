@@ -32,16 +32,6 @@ public class TicketService {
     public Optional<Ticket> findById(Long id){
         return ticketDao.findById(id);
     }
-
-    private Ticket buildTicketFromDto(TicketDto ticketDto) {
-        return Ticket.builder()
-                .status(ticketDto.getStatus())
-                .price(ticketDto.getPrice())
-                .sportEvent(ticketDto.getSportEvent())
-                .seat(ticketDto.getSeat())
-                .build();
-    }
-
     public void createTicket(TicketDto ticketDto) {
         Ticket ticket = buildTicketFromDto(ticketDto);
         ticketDao.save(ticket);
@@ -56,4 +46,14 @@ public class TicketService {
     public void deleteTicket(Long id) {
         ticketDao.delete(id);
     }
+
+    private Ticket buildTicketFromDto(TicketDto ticketDto) {
+        return Ticket.builder()
+                .status(ticketDto.getStatus())
+                .price(ticketDto.getPrice())
+                .sportEvent(ticketDto.getSportEvent())
+                .seat(ticketDto.getSeat())
+                .build();
+    }
+
 }

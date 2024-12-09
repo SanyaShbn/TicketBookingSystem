@@ -29,14 +29,6 @@ public class SportEventService {
         return sportEventDao.findById(id);
     }
 
-    private SportEvent buildSportEventFromDto(SportEventDto sportEventDto) {
-        return SportEvent.builder()
-                .eventName(sportEventDto.getEventName())
-                .eventDateTime(sportEventDto.getEventDateTime())
-                .arena(sportEventDto.getArena())
-                .build();
-    }
-
     public void createSportEvent(SportEventDto sportEventDto) {
         SportEvent sportEvent = buildSportEventFromDto(sportEventDto);
         sportEventDao.save(sportEvent);
@@ -51,4 +43,12 @@ public class SportEventService {
     public void deleteSportEvent(Long id) {
         sportEventDao.delete(id);
     }
+    private SportEvent buildSportEventFromDto(SportEventDto sportEventDto) {
+        return SportEvent.builder()
+                .eventName(sportEventDto.getEventName())
+                .eventDateTime(sportEventDto.getEventDateTime())
+                .arena(sportEventDto.getArena())
+                .build();
+    }
+
 }

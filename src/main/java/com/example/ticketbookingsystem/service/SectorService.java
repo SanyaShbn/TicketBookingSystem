@@ -30,15 +30,6 @@ public class SectorService {
         return sectorDao.findAllByArenaId(arenaId);
     }
 
-    private Sector buildSectorFromDto(SectorDto sectorDto) {
-        return Sector.builder()
-                .sectorName(sectorDto.getSectorName())
-                .arena(sectorDto.getArena())
-                .maxRowsNumb(sectorDto.getMaxRowsNumb())
-                .maxSeatsNumb(sectorDto.getMaxSeatsNumb())
-                .build();
-    }
-
     public void createSector(SectorDto sectorDto) {
         Sector sector = buildSectorFromDto(sectorDto);
         sectorDao.save(sector);
@@ -52,5 +43,14 @@ public class SectorService {
 
     public void deleteSector(Long id) {
         sectorDao.delete(id);
+    }
+
+    private Sector buildSectorFromDto(SectorDto sectorDto) {
+        return Sector.builder()
+                .sectorName(sectorDto.getSectorName())
+                .arena(sectorDto.getArena())
+                .maxRowsNumb(sectorDto.getMaxRowsNumb())
+                .maxSeatsNumb(sectorDto.getMaxSeatsNumb())
+                .build();
     }
 }

@@ -9,17 +9,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Working on features 5 and 6 (added visualization of available tickets and user's cart)">
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/user'sCartScript.js" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/UserDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/filter/AuthorizationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/filter/LoggingFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/filter/UnsafeFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/authorization_servlets/LoginServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/authorization_servlets/LogoutServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/authorization_servlets/RegistrationServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/RegisterUserValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/login.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/registration.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/login-styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/registration-styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SeatDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SeatDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/TicketDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/TicketDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/DaoCrud.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/DaoCrud.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/RowService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/RowService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-tickets.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-tickets.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/css/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,9 +48,11 @@
       <list>
         <option value="Interface" />
         <option value="Record" />
-        <option value="Class" />
-        <option value="Jsp File" />
         <option value="JavaScript File" />
+        <option value="Enum" />
+        <option value="Class" />
+        <option value="CSS File" />
+        <option value="Jsp File" />
       </list>
     </option>
   </component>
@@ -72,6 +91,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -87,6 +107,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\authorization-jsp" />
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\sectors-jsp" />
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\arena-jsp" />
       <recent name="D:\TicketBookingSystem\src\main\webapp" />
@@ -235,7 +256,10 @@
       <workItem from="1733650669731" duration="11057000" />
       <workItem from="1733670741416" duration="6808000" />
       <workItem from="1733678551978" duration="347000" />
-      <workItem from="1733682598404" duration="13667000" />
+      <workItem from="1733682598404" duration="13988000" />
+      <workItem from="1733728985722" duration="8998000" />
+      <workItem from="1733738041834" duration="526000" />
+      <workItem from="1733738603688" duration="339000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -309,7 +333,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733678885305</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Almost finished features 5 and 6 (further details depend on implementing users authorization, so they are not completely finished)">
+      <option name="closed" value="true" />
+      <created>1733696626641</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733696626641</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -337,6 +369,7 @@
     <MESSAGE value="Started implementing filtration/sorting/pagination (feature №4)" />
     <MESSAGE value="Continuing working on feature №4 (added filter-bar for sport events, arenas and tickets)" />
     <MESSAGE value="Working on features 5 and 6 (added visualization of available tickets and user's cart)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working on features 5 and 6 (added visualization of available tickets and user's cart)" />
+    <MESSAGE value="Almost finished features 5 and 6 (further details depend on implementing users authorization, so they are not completely finished)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Almost finished features 5 and 6 (further details depend on implementing users authorization, so they are not completely finished)" />
   </component>
 </project>
