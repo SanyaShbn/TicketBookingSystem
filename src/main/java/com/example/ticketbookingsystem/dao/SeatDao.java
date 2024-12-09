@@ -34,13 +34,14 @@ public class SeatDao implements DaoCrud<Long, Seat>{
             ORDER BY sec.sector_name, r.id, s.id;
             """;
     private final static String FIND_BY_EVENT_ID_WITH_NO_TICKETS_SQL = SELECT_SEATS + """
-            LEFT JOIN ticket t ON s.id = t.seat_id
-            WHERE e.id = ? AND (t.id IS NULL OR t.event_id != e.id)
+            LEFT JOIN ticket t ON s.id = t.seat_id AND t.event_id = e.id
+            WHERE e.id = ?
+            AND t.id IS NULL
             ORDER BY sec.sector_name, r.id, s.id;
             """;
     private final static String FIND_BY_EVENT_ID_WHEN_UPDATE_SQL = SELECT_SEATS + """
-            LEFT JOIN ticket t ON s.id = t.seat_id
-            WHERE e.id = ? AND ((t.id IS NULL OR t.event_id != e.id) OR s.id = ?)
+            LEFT JOIN ticket t ON s.id = t.seat_id AND t.event_id = e.id
+            WHERE e.id = ? AND (t.id IS NULL OR (t.event_id != e.id OR s.id = ?))
             ORDER BY sec.sector_name, r.id, s.id;
             """;
 
