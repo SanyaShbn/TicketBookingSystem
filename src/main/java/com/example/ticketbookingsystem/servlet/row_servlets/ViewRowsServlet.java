@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-@WebServlet("/rows")
+@WebServlet("/admin/rows")
 public class ViewRowsServlet extends HttpServlet {
     private final RowService rowService = RowService.getInstance();
     @Override

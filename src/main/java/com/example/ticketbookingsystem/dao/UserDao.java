@@ -13,6 +13,11 @@ public class UserDao implements DaoCrud<Long, User>{
     private static final UserDao INSTANCE = new UserDao();
     private static final String SAVE_SQL = "INSERT INTO users (email, password) VALUES (?, ?)";
     private static final String GET_BY_EMAIL_SQL = "SELECT * from users WHERE email=?";
+    private static final String GET_USER_ROLE_SQL = """
+        SELECT role_name FROM role
+        JOIN user_roles ON role.id = user_roles.role_id
+        WHERE user_roles.user_id = ?
+        """;
     private static final String ASSIGN_ROLE_SQL = """ 
             INSERT INTO user_roles (user_id, role_id) VALUES (?, ?)
             """;
@@ -41,6 +46,23 @@ public class UserDao implements DaoCrud<Long, User>{
             throw new DaoCrudException(e);
         }
     }
+
+    public String getUserRole(Long userId) {
+        String role = null;
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(GET_USER_ROLE_SQL)) {
+
+            statement.setLong(1, userId);
+            var resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                role = resultSet.getString("role_name");
+            }
+        } catch (SQLException e) {
+            throw new DaoCrudException(e);
+        }
+        return role;
+    }
+
     @Override
     public User save(User user) {
         try(var connection = ConnectionManager.get();

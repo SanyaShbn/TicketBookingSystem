@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-@WebServlet("/create-ticket")
+@WebServlet("/admin/create-ticket")
 public class CreateTicketServlet extends HttpServlet {
     private final TicketService ticketService = TicketService.getInstance();
     private final SportEventService sportEventService = SportEventService.getInstance();
@@ -57,7 +57,7 @@ public class CreateTicketServlet extends HttpServlet {
                     .build();
 
             ticketService.createTicket(ticketDto);
-            resp.sendRedirect(req.getContextPath() + "/tickets?eventId=" + req.getParameter("eventId"));
+            resp.sendRedirect(req.getContextPath() + "/admin/tickets?eventId=" + req.getParameter("eventId"));
         }catch (NumberFormatException e) {
             ValidationResult numberFormatValidationResult = new ValidationResult();
             numberFormatValidationResult.add(Error.of("invalid.number.format",

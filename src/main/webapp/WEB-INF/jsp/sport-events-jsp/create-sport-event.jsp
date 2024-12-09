@@ -12,7 +12,7 @@
 <body>
 <div class="form-container">
     <h1><fmt:message key="create.sport.event.title" /></h1>
-    <form action="${pageContext.request.contextPath}/create-sport-event" method="post">
+    <form action="${pageContext.request.contextPath}/admin/create-sport-event" method="post">
         <label for="eventName"><fmt:message key="sport_event.eventName" />:</label>
         <input type="text" id="eventName" name="eventName" required>
         <label for="eventDateTime"><fmt:message key="sport_event.eventDateTime" />:</label>
@@ -28,7 +28,7 @@
         </select>
 
         <div class="button-group">
-            <button type="button" onclick="location.href='${pageContext.request.contextPath}/sport_events';">
+            <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/sport_events';">
                 <fmt:message key="button.back" />
             </button>
             <button type="submit"><fmt:message key="button.save" /></button>

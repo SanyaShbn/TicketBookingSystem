@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-@WebServlet("/tickets")
+@WebServlet("/admin/tickets")
 public class ViewTicketsServlet extends HttpServlet {
     private final TicketService ticketService = TicketService.getInstance();
     @Override

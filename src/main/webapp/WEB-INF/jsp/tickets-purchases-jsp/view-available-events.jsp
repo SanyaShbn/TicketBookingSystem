@@ -12,6 +12,9 @@
     <script src="<c:url value="/js/toggleFilterFormScript.js"/>"></script>
 </head>
 <body>
+
+<%@include file="../logout.jsp"%>
+
 <div>
     <h1><fmt:message key="sport_events.list"/></h1>
 
@@ -57,9 +60,6 @@
         </form>
     </div>
 
-    <button onclick="location.href='${pageContext.request.contextPath}/'">
-        <fmt:message key="button.back"/>
-    </button>
     <div class="arena-container">
         <c:choose>
             <c:when test="${not empty requestScope.sport_events}">

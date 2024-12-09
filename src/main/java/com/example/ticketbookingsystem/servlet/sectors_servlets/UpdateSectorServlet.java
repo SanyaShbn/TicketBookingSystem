@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/update-sector")
+@WebServlet("/admin/update-sector")
 public class UpdateSectorServlet extends HttpServlet {
     private final SectorService sectorService = SectorService.getInstance();
     private final ArenaService arenaService = ArenaService.getInstance();
@@ -53,7 +53,8 @@ public class UpdateSectorServlet extends HttpServlet {
         String id = request.getParameter("id");
         SectorDto sectorDto = buildSectorDto(request);
         sectorService.updateSector(Long.parseLong(id), sectorDto);
-        response.sendRedirect(request.getContextPath() + "/sectors?arenaId=" + request.getParameter("arenaId"));
+        response.sendRedirect(request.getContextPath() + "/admin/sectors?arenaId="
+                              + request.getParameter("arenaId"));
     }
 
     private SectorDto buildSectorDto(HttpServletRequest request) throws IOException {

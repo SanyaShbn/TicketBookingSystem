@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
-@WebServlet("/arenas")
+@WebServlet("/admin/arenas")
 public class ViewArenasServlet extends HttpServlet {
     private final ArenaService arenaService = ArenaService.getInstance();
     @Override
@@ -48,14 +48,6 @@ public class ViewArenasServlet extends HttpServlet {
                 ? Integer.parseInt(req.getParameter("page")) : 1;
         req.setAttribute("page", currentPage);
     }
-
-//    @Override
-//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        resp.setContentType("text/html");
-//        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-//        req.setAttribute("arenas", arenaService.findAll());
-//        req.getRequestDispatcher(JspFilesResolver.getPath("/arena-jsp/arenas")).forward(req, resp);
-//    }
 
     private ArenaFilter buildArenaFilter(HttpServletRequest req) {
         String city = req.getParameter("city") != null ? req.getParameter("city") : "";

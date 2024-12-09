@@ -20,9 +20,13 @@ body {
     margin-bottom: 20px;
     color: #333;
 }
-.login-container label {
+.form-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+.form-group label {
     display: block;
-    margin: 15px 0 5px;
+    margin-bottom: 5px;
     color: #555;
 }
 .login-container input {
@@ -38,12 +42,12 @@ body {
     margin-top: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #28a745;
+    background-color: #333;
     color: white;
     cursor: pointer;
 }
 .login-container button:hover {
-    background-color: #218838;
+    background-color: #555;
 }
 .login-container .register-btn {
     background-color: #007bff;

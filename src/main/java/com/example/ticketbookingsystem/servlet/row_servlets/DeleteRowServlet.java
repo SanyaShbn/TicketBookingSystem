@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/delete-row")
+@WebServlet("/admin/delete-row")
 public class DeleteRowServlet extends HttpServlet {
     private final RowService rowService = RowService.getInstance();
     @Override
@@ -23,7 +23,7 @@ public class DeleteRowServlet extends HttpServlet {
 
             rowService.deleteRow(Long.parseLong(id));
 
-            response.sendRedirect(request.getContextPath() + "/rows?arenaId=" +
+            response.sendRedirect(request.getContextPath() + "/admin/rows?arenaId=" +
                                   request.getParameter("arenaId") + "&sectorId=" + request.getParameter("sectorId"));
         }catch (DaoCrudException e){
             ValidationResult validationResult = new ValidationResult();

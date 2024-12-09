@@ -13,13 +13,22 @@
 <div class="registration-container">
     <h2><fmt:message key="registration.title"/></h2>
     <form action="/registration" method="post">
-        <label for="email"><fmt:message key="email"/>:
+        <div class="form-group">
+            <label for="email"><fmt:message key="email"/>:</label>
             <input type="email" name="email" id="email" required>
-        </label>
-        <label for="pwd"><fmt:message key="password"/>:
-            <input type="password" name="pwd" id="pwd" required>
-        </label>
+        </div>
+        <div class="form-group">
+            <label for="password"><fmt:message key="password"/>:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirm-password"><fmt:message key="confirm-password"/>:</label>
+            <input type="password" name="confirm-password" id="confirm-password" required>
+        </div>
         <input type="submit" value="<fmt:message key='register'/>">
+        <a href="${pageContext.request.contextPath}/login">
+            <button type="button" class="back-to-login-btn"><fmt:message key="back.to.login.button"/></button>
+        </a>
     </form>
 
     <c:if test="${not empty requestScope.errors}">
@@ -30,6 +39,7 @@
             </c:forEach>
         </div>
     </c:if>
+
 </div>
 </body>
 </html>

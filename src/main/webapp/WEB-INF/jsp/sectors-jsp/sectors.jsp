@@ -16,7 +16,7 @@
 
     <div class="filter-bar">
         <button type="button" onclick="toggleFilterForm()">Настроить фильтр</button>
-        <form action="${pageContext.request.contextPath}/sectors" method="get">
+        <form action="${pageContext.request.contextPath}/admin/sectors" method="get">
             <div class="form-item">
                 <label for="nameSortOrder"><fmt:message key="sector.sectorName"/></label>
                 <select id="nameSortOrder" name="nameSortOrder" class="scrollable-dropdown">
@@ -64,10 +64,10 @@
         </form>
     </div>
 
-    <button onclick="location.href='${pageContext.request.contextPath}/arenas'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/arenas'">
         <fmt:message key="button.back"/>
     </button>
-    <button onclick="location.href='${pageContext.request.contextPath}/create-sector?<%= request.getQueryString() %>'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/create-sector?<%= request.getQueryString() %>'">
         <fmt:message key="button.add"/>
     </button>
     <div class="arena-container">
@@ -75,19 +75,19 @@
         <c:when test="${not empty requestScope.sectors}">
             <c:forEach var="sector" items="${requestScope.sectors}">
                 <div class="arena-card">
-                    <a href="${pageContext.request.contextPath}/rows?arenaId=<%= request.getParameter("arenaId") %>&sectorId=${sector.id}">
+                    <a href="${pageContext.request.contextPath}/admin/rows?arenaId=<%= request.getParameter("arenaId") %>&sectorId=${sector.id}">
                         <fmt:message key="sector.sectorName"/>: ${sector.sectorName}
                     </a>
                     <div><fmt:message key="sector.maxRowsNumb"/>: ${sector.maxRowsNumb}</div>
                     <div><fmt:message key="sector.availableRowsNumb"/>: ${sector.availableRowsNumb}</div>
                     <div><fmt:message key="sector.maxSeatsNumb"/>: ${sector.maxSeatsNumb}</div>
                     <div><fmt:message key="sector.availableSeatsNumb"/>: ${sector.availableSeatsNumb}</div>
-                    <form action="${pageContext.request.contextPath}/update-sector" method="get" style="display:inline;">
+                    <form action="${pageContext.request.contextPath}/admin/update-sector" method="get" style="display:inline;">
                         <input type="hidden" name="id" value="${sector.id}"/>
                         <input type="hidden" name="arenaId" value="${sector.arena.id}"/>
                         <button type="submit"><fmt:message key="button.update"/></button>
                     </form>
-                    <form action="${pageContext.request.contextPath}/delete-sector?<%= request.getQueryString() %>"
+                    <form action="${pageContext.request.contextPath}/admin/delete-sector?<%= request.getQueryString() %>"
                           method="post" style="display:inline;">
                         <input type="hidden" name="id" value="${sector.id}"/>
                         <button type="submit"><fmt:message key="button.delete"/></button>
@@ -96,11 +96,11 @@
             </c:forEach>
             <div class="pagination" style="padding-top: 100px">
                 <c:if test="${requestScope.page > 1}">
-                    <a href="${pageContext.request.contextPath}/sectors?arenaId=${param.arenaId}&page=${param.page - 1}"
+                    <a href="${pageContext.request.contextPath}/admin/sectors?arenaId=${param.arenaId}&page=${param.page - 1}"
                        class="pagination-arrow">&laquo; <fmt:message key="page.previous"/></a>
                 </c:if>
                 <c:if test="${requestScope.sectors.size() eq requestScope.limit}">
-                    <a href="${pageContext.request.contextPath}/sectors?arenaId=${param.arenaId}&page=${param.page != null
+                    <a href="${pageContext.request.contextPath}/admin/sectors?arenaId=${param.arenaId}&page=${param.page != null
           ? param.page + 1 : 2}" class="pagination-arrow"><fmt:message key="page.next"/> &raquo;</a>
                 </c:if>
             </div>

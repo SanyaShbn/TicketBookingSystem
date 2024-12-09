@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@WebServlet("/sport_events")
+@WebServlet("/admin/sport_events")
 public class ViewSportEventsServlet extends HttpServlet {
     private final SportEventService sportEventService = SportEventService.getInstance();
     private final ArenaService arenaService = ArenaService.getInstance();

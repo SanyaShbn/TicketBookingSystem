@@ -9,4 +9,5 @@ public class UserDto {
     Long id;
     String email;
     String password;
+    String confirmPassword;
 }
