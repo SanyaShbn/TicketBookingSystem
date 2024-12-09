@@ -18,7 +18,7 @@
   <!-- Filter Bar -->
   <div class="filter-bar">
     <button type="button" onclick="toggleFilterForm()">Настроить фильтр</button>
-    <form action="${pageContext.request.contextPath}/sport_events" method="get">
+    <form action="${pageContext.request.contextPath}/admin/sport_events" method="get">
       <div class="form-item">
         <label for="startDate"><fmt:message key="sport.event.startDate"/></label>
         <input type="datetime-local" step="60" id="startDate" name="startDate" value="${param.startDate}">
@@ -57,10 +57,10 @@
     </form>
   </div>
 
-  <button onclick="location.href='${pageContext.request.contextPath}/'">
+  <button onclick="location.href='${pageContext.request.contextPath}/admin'">
     <fmt:message key="button.back"/>
   </button>
-  <button onclick="location.href='${pageContext.request.contextPath}/create-sport-event'">
+  <button onclick="location.href='${pageContext.request.contextPath}/admin/create-sport-event'">
     <fmt:message key="button.add"/>
   </button>
   <div class="arena-container">
@@ -68,7 +68,7 @@
     <c:when test="${not empty requestScope.sport_events}">
       <c:forEach var="sport_event" items="${requestScope.sport_events}">
         <div class="arena-card">
-          <a href="${pageContext.request.contextPath}/tickets?eventId=${sport_event.id}">
+          <a href="${pageContext.request.contextPath}/admin/tickets?eventId=${sport_event.id}">
             <fmt:message key="sport_event.eventName"/>: ${sport_event.eventName}
           </a>
 
@@ -93,11 +93,11 @@
 
           <div><fmt:message key="sport_event.arena"/>: ${sport_event.arena.name}</div>
           <div><fmt:message key="sport_event.city"/>: ${sport_event.arena.city}</div>
-          <form action="${pageContext.request.contextPath}/update-sport-event" method="get" style="display:inline;">
+          <form action="${pageContext.request.contextPath}/admin/update-sport-event" method="get" style="display:inline;">
             <input type="hidden" name="id" value="${sport_event.id}"/>
             <button type="submit"><fmt:message key="button.update"/></button>
           </form>
-          <form action="${pageContext.request.contextPath}/delete-sport-event?<%= request.getQueryString() %>"
+          <form action="${pageContext.request.contextPath}/admin/delete-sport-event?<%= request.getQueryString() %>"
                 method="post" style="display:inline;">
             <input type="hidden" name="id" value="${sport_event.id}"/>
             <button type="submit"><fmt:message key="button.delete"/></button>
@@ -106,11 +106,11 @@
       </c:forEach>
       <div class="pagination">
         <c:if test="${requestScope.page > 1}">
-          <a href="${pageContext.request.contextPath}/sport_events?page=${param.page - 1}"
+          <a href="${pageContext.request.contextPath}/admin/sport_events?page=${param.page - 1}"
              class="pagination-arrow">&laquo; <fmt:message key="page.previous"/></a>
         </c:if>
         <c:if test="${requestScope.sport_events.size() eq requestScope.limit}">
-          <a href="${pageContext.request.contextPath}/sport_events?page=${param.page != null
+          <a href="${pageContext.request.contextPath}/admin/sport_events?page=${param.page != null
           ? param.page + 1 : 2}" class="pagination-arrow"><fmt:message key="page.next"/> &raquo;</a>
         </c:if>
       </div>

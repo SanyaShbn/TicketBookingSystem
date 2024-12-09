@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/create-sector")
+@WebServlet("/admin/create-sector")
 public class CreateSectorServlet extends HttpServlet {
     private final SectorService sectorService = SectorService.getInstance();
     private final ArenaService arenaService = ArenaService.getInstance();
@@ -48,7 +48,8 @@ public class CreateSectorServlet extends HttpServlet {
             throws IOException {
         SectorDto sectorDto = buildSectorDto(request);
         sectorService.createSector(sectorDto);
-        response.sendRedirect(request.getContextPath() + "/sectors?arenaId=" + request.getParameter("arenaId"));
+        response.sendRedirect(request.getContextPath() + "/admin/sectors?arenaId="
+                              + request.getParameter("arenaId"));
     }
 
     private SectorDto buildSectorDto(HttpServletRequest request) throws IOException {

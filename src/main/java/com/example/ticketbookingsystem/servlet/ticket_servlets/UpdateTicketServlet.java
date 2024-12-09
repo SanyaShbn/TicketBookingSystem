@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-@WebServlet("/update-ticket")
+@WebServlet("/admin/update-ticket")
 public class UpdateTicketServlet extends HttpServlet {
     private final TicketService ticketService = TicketService.getInstance();
     private final SportEventService sportEventService = SportEventService.getInstance();
@@ -59,7 +59,7 @@ public class UpdateTicketServlet extends HttpServlet {
                     .build();
 
             ticketService.updateTicket(Long.parseLong(id), ticketDto);
-            response.sendRedirect(request.getContextPath() + "/tickets?eventId=" + request.getParameter("eventId"));
+            response.sendRedirect(request.getContextPath() + "/admin/tickets?eventId=" + request.getParameter("eventId"));
         }catch (NumberFormatException e) {
             ValidationResult numberFormatValidationResult = new ValidationResult();
             numberFormatValidationResult.add(Error.of("invalid.number.format",

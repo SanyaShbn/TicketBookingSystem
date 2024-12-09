@@ -13,7 +13,7 @@
 <body>
 <div class="form-container">
     <h1><fmt:message key="update.sport.event.title" /></h1>
-    <form action="${pageContext.request.contextPath}/update-sport-event?<%= request.getQueryString() %>" method="post">
+    <form action="${pageContext.request.contextPath}/admin/update-sport-event?<%= request.getQueryString() %>" method="post">
         <input type="hidden" name="id" value="${sport_event.id}">
         <label for="eventName"><fmt:message key="sport_event.eventName" />:</label>
         <input type="text" id="eventName" name="eventName" value="${sport_event.eventName}" required>
@@ -32,7 +32,7 @@
 
         <div class="button-group">
             <button type="button"
-                    onclick="location.href='${pageContext.request.contextPath}/sport_events';">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/sport_events';">
                 <fmt:message key="button.back" />
             </button>
             <button type="submit"><fmt:message key="button.save" /></button>

@@ -16,7 +16,7 @@
 
     <div class="filter-bar">
         <button type="button" onclick="toggleFilterForm()">Настроить фильтр</button>
-        <form action="${pageContext.request.contextPath}/rows" method="get">
+        <form action="${pageContext.request.contextPath}/admin/rows" method="get">
             <div class="form-item">
                 <label for="rowNumberOrder"><fmt:message key="row.rowNumber"/></label>
                 <select id="rowNumberOrder" name="rowNumberOrder" class="scrollable-dropdown">
@@ -51,10 +51,10 @@
         </form>
     </div>
 
-    <button onclick="location.href='${pageContext.request.contextPath}/sectors?arenaId=<%= request.getParameter("arenaId") %>'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/sectors?arenaId=<%= request.getParameter("arenaId") %>'">
         <fmt:message key="button.back"/>
     </button>
-    <button onclick="location.href='${pageContext.request.contextPath}/create-row?<%= request.getQueryString() %>'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/create-row?<%= request.getQueryString() %>'">
         <fmt:message key="button.add"/>
     </button>
     <div class="arena-container">
@@ -64,13 +64,13 @@
                 <div class="arena-card">
                     <div><fmt:message key="row.rowNumber"/>: ${row.rowNumber}</div>
                     <div><fmt:message key="row.seatsNumb"/>: ${row.seatsNumb}</div>
-                    <form action="${pageContext.request.contextPath}/update-row" method="get" style="display:inline;">
+                    <form action="${pageContext.request.contextPath}/admin/update-row" method="get" style="display:inline;">
                         <input type="hidden" name="id" value="${row.id}"/>
                         <input type="hidden" name="sectorId" value="${row.sector.id}"/>
                         <input type="hidden" name="arenaId" value="${row.sector.arena.id}"/>
                         <button type="submit"><fmt:message key="button.update"/></button>
                     </form>
-                    <form action="${pageContext.request.contextPath}/delete-row?<%= request.getQueryString() %>"
+                    <form action="${pageContext.request.contextPath}/admin/delete-row?<%= request.getQueryString() %>"
                           method="post" style="display:inline;">
                         <input type="hidden" name="id" value="${row.id}"/>
                         <button type="submit"><fmt:message key="button.delete"/></button>
@@ -79,11 +79,11 @@
             </c:forEach>
             <div class="pagination" style="padding-top: 45px">
                 <c:if test="${requestScope.page > 1}">
-                    <a href="${pageContext.request.contextPath}/rows?arenaId=${param.arenaId}&sectorId=${param.sectorId}&page=${param.page - 1}"
+                    <a href="${pageContext.request.contextPath}/admin/rows?arenaId=${param.arenaId}&sectorId=${param.sectorId}&page=${param.page - 1}"
                        class="pagination-arrow">&laquo; <fmt:message key="page.previous"/></a>
                 </c:if>
                 <c:if test="${requestScope.rows.size() eq requestScope.limit}">
-                    <a href="${pageContext.request.contextPath}/rows?arenaId=${param.arenaId}&sectorId=${param.sectorId}&page=${param.page != null
+                    <a href="${pageContext.request.contextPath}/admin/rows?arenaId=${param.arenaId}&sectorId=${param.sectorId}&page=${param.page != null
           ? param.page + 1 : 2}" class="pagination-arrow"><fmt:message key="page.next"/> &raquo;</a>
                 </c:if>
             </div>

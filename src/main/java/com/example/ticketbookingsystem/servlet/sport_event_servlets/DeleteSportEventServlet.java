@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/delete-sport-event")
+@WebServlet("/admin/delete-sport-event")
 public class DeleteSportEventServlet extends HttpServlet {
     private final SportEventService sportEventService = SportEventService.getInstance();
     @Override
@@ -21,7 +21,7 @@ public class DeleteSportEventServlet extends HttpServlet {
         try {
             String id = request.getParameter("id");
             sportEventService.deleteSportEvent(Long.parseLong(id));
-            response.sendRedirect(request.getContextPath() + "/sport_events");
+            response.sendRedirect(request.getContextPath() + "/admin/sport_events");
         }catch (DaoCrudException e){
             ValidationResult validationResult = new ValidationResult();
             validationResult.add(Error.of("delete.event.error",

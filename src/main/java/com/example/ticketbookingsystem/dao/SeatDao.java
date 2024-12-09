@@ -21,26 +21,27 @@ public class SeatDao implements DaoCrud<Long, Seat>{
     private final static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
             WHERE s.id=?
             """;
-
-    private final static String FIND_BY_EVENT_ID_SQL = """
+    private final static String SELECT_SEATS = """
             SELECT s.*
             FROM seat s
             JOIN row r ON s.row_id = r.id
             JOIN sector sec ON r.sector_id = sec.id
             JOIN arena a ON sec.arena_id = a.id
             JOIN sport_event e ON a.id = e.arena_id
-            WHERE e.id = ? AND has_ticket!=true
+            """;
+    private final static String FIND_ALL_BY_EVENT_ID_SQL = SELECT_SEATS + """
+            WHERE e.id = ?
             ORDER BY sec.sector_name, r.id, s.id;
             """;
-
-    private final static String FIND_BY_EVENT_ID_WHEN_UPDATE_SQL = """
-            SELECT s.*
-            FROM seat s
-            JOIN row r ON s.row_id = r.id
-            JOIN sector sec ON r.sector_id = sec.id
-            JOIN arena a ON sec.arena_id = a.id
-            JOIN sport_event e ON a.id = e.arena_id
-            WHERE e.id = ? AND (has_ticket!=true OR s.id = ?)
+    private final static String FIND_BY_EVENT_ID_WITH_NO_TICKETS_SQL = SELECT_SEATS + """
+            LEFT JOIN ticket t ON s.id = t.seat_id AND t.event_id = e.id
+            WHERE e.id = ?
+            AND t.id IS NULL
+            ORDER BY sec.sector_name, r.id, s.id;
+            """;
+    private final static String FIND_BY_EVENT_ID_WHEN_UPDATE_SQL = SELECT_SEATS + """
+            LEFT JOIN ticket t ON s.id = t.seat_id AND t.event_id = e.id
+            WHERE e.id = ? AND (t.id IS NULL OR (t.event_id != e.id OR s.id = ?))
             ORDER BY sec.sector_name, r.id, s.id;
             """;
 
@@ -67,9 +68,9 @@ public class SeatDao implements DaoCrud<Long, Seat>{
         }
     }
 
-    public List<Seat> findAllByEventId(Long eventId) {
+    public List<Seat> findSeatsByQuery(String sql, Long eventId) {
         try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_BY_EVENT_ID_SQL)){
+            var statement = connection.prepareStatement(sql)){
             List<Seat> seatList = new ArrayList<>();
 
             statement.setLong(1, eventId);
@@ -82,6 +83,14 @@ public class SeatDao implements DaoCrud<Long, Seat>{
         } catch (SQLException e) {
             throw new DaoCrudException(e);
         }
+    }
+
+    public List<Seat> findAllByEventId(Long eventId) {
+        return findSeatsByQuery(FIND_ALL_BY_EVENT_ID_SQL, eventId);
+    }
+
+    public List<Seat> findByEventIdWithNoTickets(Long eventId) {
+        return findSeatsByQuery(FIND_BY_EVENT_ID_WITH_NO_TICKETS_SQL, eventId);
     }
 
     public List<Seat> findAllByEventIdWhenUpdate(Long eventId, Long seatId) {

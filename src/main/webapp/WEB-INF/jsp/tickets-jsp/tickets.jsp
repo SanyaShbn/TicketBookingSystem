@@ -17,7 +17,7 @@
 
     <div class="filter-bar">
         <button type="button" onclick="toggleFilterForm()">Настроить фильтр</button>
-        <form action="${pageContext.request.contextPath}/tickets" method="get">
+        <form action="${pageContext.request.contextPath}/admin/tickets" method="get">
             <div class="form-item">
                 <label for="priceSortOrder"><fmt:message key="ticket.price"/></label>
                 <select id="priceSortOrder" name="priceSortOrder" class="scrollable-dropdown">
@@ -37,10 +37,10 @@
         </form>
     </div>
 
-    <button onclick="location.href='${pageContext.request.contextPath}/sport_events'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/sport_events'">
         <fmt:message key="button.back"/>
     </button>
-    <button onclick="location.href='${pageContext.request.contextPath}/create-ticket?<%= request.getQueryString() %>'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/create-ticket?<%= request.getQueryString() %>'">
         <fmt:message key="button.add"/>
     </button>
     <div class="arena-container">
@@ -54,12 +54,12 @@
                     <div><fmt:message key="ticket.row"/>: ${ticket.seat.row.rowNumber}</div>
                     <div><fmt:message key="ticket.seat.numb"/>: ${ticket.seat.seatNumber}</div>
 
-                    <form action="${pageContext.request.contextPath}/update-ticket" method="get" style="display:inline;">
+                    <form action="${pageContext.request.contextPath}/admin/update-ticket" method="get" style="display:inline;">
                         <input type="hidden" name="id" value="${ticket.id}"/>
                         <input type="hidden" name="eventId" value="${ticket.sportEvent.id}"/>
                         <button type="submit"><fmt:message key="button.update"/></button>
                     </form>
-                    <form action="${pageContext.request.contextPath}/delete-ticket?<%= request.getQueryString() %>"
+                    <form action="${pageContext.request.contextPath}/admin/delete-ticket?<%= request.getQueryString() %>"
                           method="post" style="display:inline;">
                         <input type="hidden" name="id" value="${ticket.id}"/>
                         <button type="submit"><fmt:message key="button.delete"/></button>
@@ -68,11 +68,11 @@
             </c:forEach>
             <div class="pagination" style="padding-top: 80px">
                 <c:if test="${requestScope.page > 1}">
-                    <a href="${pageContext.request.contextPath}/tickets?eventId=${param.eventId}&page=${param.page - 1}"
+                    <a href="${pageContext.request.contextPath}/admin/tickets?eventId=${param.eventId}&page=${param.page - 1}"
                        class="pagination-arrow">&laquo; <fmt:message key="page.previous"/></a>
                 </c:if>
                 <c:if test="${requestScope.tickets.size() eq requestScope.limit}">
-                    <a href="${pageContext.request.contextPath}/tickets?eventId=${param.eventId}&page=${param.page != null
+                    <a href="${pageContext.request.contextPath}/admin/tickets?eventId=${param.eventId}&page=${param.page != null
           ? param.page + 1 : 2}" class="pagination-arrow"><fmt:message key="page.next"/> &raquo;</a>
                 </c:if>
             </div>

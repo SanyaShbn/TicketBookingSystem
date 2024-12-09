@@ -13,7 +13,7 @@
 <body>
 <div class="form-container">
     <h1><fmt:message key="update.sector.title" /></h1>
-    <form action="${pageContext.request.contextPath}/update-sector?<%= request.getQueryString() %>" method="post">
+    <form action="${pageContext.request.contextPath}/admin/update-sector?<%= request.getQueryString() %>" method="post">
         <input type="hidden" name="id" value="${sector.id}">
         <label for="sectorName"><fmt:message key="sector.sectorName" />:</label>
         <input type="text" id="sectorName" name="sectorName" value="${sector.sectorName}" required>
@@ -23,7 +23,7 @@
         <input type="text" id="maxSeatsNumb" name="maxSeatsNumb" value="${sector.maxSeatsNumb}" required>
         <div class="button-group">
             <button type="button"
-                    onclick="location.href='${pageContext.request.contextPath}/sectors?<%= request.getQueryString() %>';">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/sectors?<%= request.getQueryString() %>';">
                 <fmt:message key="button.back" />
             </button>
             <button type="submit"><fmt:message key="button.save" /></button>

@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/update-row")
+@WebServlet("/admin/update-row")
 public class UpdateRowServlet extends HttpServlet {
     private final RowService rowService = RowService.getInstance();
     private final SectorService sectorService = SectorService.getInstance();
@@ -70,7 +70,7 @@ public class UpdateRowServlet extends HttpServlet {
 
     private void redirectAfterSuccess(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        response.sendRedirect(request.getContextPath() + "/rows?arenaId=" +
+        response.sendRedirect(request.getContextPath() + "/admin/rows?arenaId=" +
                 request.getParameter("arenaId") + "&sectorId=" + request.getParameter("sectorId"));
     }
 

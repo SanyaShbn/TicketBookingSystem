@@ -12,7 +12,7 @@
 <body>
 <div class="form-container">
     <h1><fmt:message key="create.ticket.title" /></h1>
-    <form action="${pageContext.request.contextPath}/create-ticket?<%= request.getQueryString() %>" method="post">
+    <form action="${pageContext.request.contextPath}/admin/create-ticket?<%= request.getQueryString() %>" method="post">
         <label for="price"><fmt:message key="ticket.price" />:</label>
         <input type="text" id="price" name="price" required>
 
@@ -27,7 +27,7 @@
         </select>
 
         <div class="button-group">
-            <button type="button" onclick="location.href='${pageContext.request.contextPath}/tickets?<%= request.getQueryString() %>';">
+            <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/tickets?<%= request.getQueryString() %>';">
                 <fmt:message key="button.back" />
             </button>
             <button type="submit"><fmt:message key="button.save" /></button>

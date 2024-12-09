@@ -12,6 +12,9 @@
     <script src="<c:url value="/js/toggleFilterFormScript.js"/>"></script>
 </head>
 <body>
+
+<%@include file="../logout.jsp"%>
+
 <div>
     <h1><fmt:message key="sport_events.list"/></h1>
 
@@ -57,17 +60,14 @@
         </form>
     </div>
 
-    <button onclick="location.href='${pageContext.request.contextPath}/'">
-        <fmt:message key="button.back"/>
-    </button>
     <div class="arena-container">
         <c:choose>
             <c:when test="${not empty requestScope.sport_events}">
                 <c:forEach var="sport_event" items="${requestScope.sport_events}">
                     <div class="arena-card">
-                        <a href="${pageContext.request.contextPath}/tickets?eventId=${sport_event.id}">
+                        <div>
                             <fmt:message key="sport_event.eventName"/>: ${sport_event.eventName}
-                        </a>
+                        </div>
 
                         <c:set var="eventDateTime" value="${sport_event.eventDateTime}" />
                         <c:choose>
@@ -90,7 +90,7 @@
 
                         <div><fmt:message key="sport_event.arena"/>: ${sport_event.arena.name}</div>
                         <div><fmt:message key="sport_event.city"/>: ${sport_event.arena.city}</div>
-                        <form action="${pageContext.request.contextPath}/buy_tickets" method="get" style="display:inline;">
+                        <form action="${pageContext.request.contextPath}/view_available_tickets" method="get" style="display:inline;">
                             <input type="hidden" name="id" value="${sport_event.id}"/>
                             <button type="submit"><fmt:message key="buy.tickets.button"/></button>
                         </form>

@@ -13,7 +13,7 @@
 <body>
 <div class="form-container">
     <h1><fmt:message key="update.row.title" /></h1>
-    <form action="${pageContext.request.contextPath}/update-row?<%= request.getQueryString() %>" method="post">
+    <form action="${pageContext.request.contextPath}/admin/update-row?<%= request.getQueryString() %>" method="post">
         <input type="hidden" name="id" value="${row.id}">
         <label for="rowNumber"><fmt:message key="row.rowNumber" />:</label>
         <input type="text" id="rowNumber" name="rowNumber" value="${row.rowNumber}" required>
@@ -21,7 +21,7 @@
         <input type="text" id="seatsNumb" name="seatsNumb" value="${row.seatsNumb}" required>
         <div class="button-group">
             <button type="button"
-                    onclick="location.href='${pageContext.request.contextPath}/rows?<%= request.getQueryString() %>';">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/rows?<%= request.getQueryString() %>';">
                 <fmt:message key="button.back" />
             </button>
             <button type="submit"><fmt:message key="button.save" /></button>

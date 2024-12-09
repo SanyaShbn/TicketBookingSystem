@@ -9,21 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Continuing working on feature №4 (added filter-bar for sport events, arenas and tickets)">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/RowFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/SectorFilter.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Implemented authorization (for now, without user ticket purchasing functionality)">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/RowDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/RowDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SectorDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SectorDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/TicketDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/TicketDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/RowService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/RowService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/ViewRowsServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/ViewRowsServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/ArenaSectorsServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/ArenaSectorsServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/rows-jsp/rows.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/rows-jsp/rows.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/sectors.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/sectors.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SeatDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SeatDao.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,10 +24,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Jsp File" />
-        <option value="JavaScript File" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="JavaScript File" />
+        <option value="Enum" />
+        <option value="CSS File" />
+        <option value="Class" />
+        <option value="Jsp File" />
       </list>
     </option>
   </component>
@@ -76,6 +68,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -91,6 +84,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\authorization-jsp" />
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\sectors-jsp" />
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\arena-jsp" />
       <recent name="D:\TicketBookingSystem\src\main\webapp" />
@@ -234,6 +228,17 @@
       <workItem from="1733494090222" duration="5934000" />
       <workItem from="1733511668021" duration="9880000" />
       <workItem from="1733550658771" duration="5860000" />
+      <workItem from="1733557954005" duration="613000" />
+      <workItem from="1733566244105" duration="1041000" />
+      <workItem from="1733650669731" duration="11057000" />
+      <workItem from="1733670741416" duration="6808000" />
+      <workItem from="1733678551978" duration="347000" />
+      <workItem from="1733682598404" duration="13988000" />
+      <workItem from="1733728985722" duration="8998000" />
+      <workItem from="1733738041834" duration="526000" />
+      <workItem from="1733738603688" duration="450000" />
+      <workItem from="1733747377180" duration="18627000" />
+      <workItem from="1733769842188" duration="2002000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -299,7 +304,39 @@
       <option name="project" value="LOCAL" />
       <updated>1733521395062</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Working on features 5 and 6 (added visualization of available tickets and user's cart)">
+      <option name="closed" value="true" />
+      <created>1733678885305</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1733678885305</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Almost finished features 5 and 6 (further details depend on implementing users authorization, so they are not completely finished)">
+      <option name="closed" value="true" />
+      <created>1733696626641</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733696626641</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Started implementing authorization (feature №7)">
+      <option name="closed" value="true" />
+      <created>1733739033721</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1733739033721</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Implemented authorization (for now, without user ticket purchasing functionality)">
+      <option name="closed" value="true" />
+      <created>1733766074998</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1733766074998</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -326,6 +363,10 @@
     <MESSAGE value="Finished feature№3" />
     <MESSAGE value="Started implementing filtration/sorting/pagination (feature №4)" />
     <MESSAGE value="Continuing working on feature №4 (added filter-bar for sport events, arenas and tickets)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Continuing working on feature №4 (added filter-bar for sport events, arenas and tickets)" />
+    <MESSAGE value="Working on features 5 and 6 (added visualization of available tickets and user's cart)" />
+    <MESSAGE value="Almost finished features 5 and 6 (further details depend on implementing users authorization, so they are not completely finished)" />
+    <MESSAGE value="Started implementing authorization (feature №7)" />
+    <MESSAGE value="Implemented authorization (for now, without user ticket purchasing functionality)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented authorization (for now, without user ticket purchasing functionality)" />
   </component>
 </project>

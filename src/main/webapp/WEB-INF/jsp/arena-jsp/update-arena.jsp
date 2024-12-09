@@ -13,7 +13,7 @@
 <body>
 <div class="form-container">
     <h1><fmt:message key="update.arena.title" /></h1>
-    <form action="${pageContext.request.contextPath}/update-arena" method="post">
+    <form action="${pageContext.request.contextPath}/admin/update-arena" method="post">
         <input type="hidden" name="id" value="${arena.id}">
         <label for="name"><fmt:message key="arena.name" />:</label>
         <input type="text" id="name" name="name" value="${arena.name}" required>
@@ -22,7 +22,7 @@
         <label for="capacity"><fmt:message key="arena.capacity" />:</label>
         <input type="text" id="capacity" name="capacity" value="${arena.capacity}" required>
         <div class="button-group">
-            <button type="button" onclick="location.href='${pageContext.request.contextPath}/arenas';">
+            <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/arenas';">
                 <fmt:message key="button.back" />
             </button>
             <button type="submit"><fmt:message key="button.save" /></button>

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-@WebServlet("/sectors")
+@WebServlet("/admin/sectors")
 public class ArenaSectorsServlet extends HttpServlet {
     private final SectorService sectorService = SectorService.getInstance();
     @Override

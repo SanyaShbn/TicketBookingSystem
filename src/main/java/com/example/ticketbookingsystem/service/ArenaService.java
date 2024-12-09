@@ -31,14 +31,6 @@ public class ArenaService {
         return arenaDao.findById(id);
     }
 
-    private Arena buildArenaFromDto(ArenaDto arenaDto) {
-        return Arena.builder()
-                .name(arenaDto.getName())
-                .city(arenaDto.getCity())
-                .capacity(arenaDto.getCapacity())
-                .build();
-    }
-
     public void createArena(ArenaDto arenaDto) {
         Arena arena = buildArenaFromDto(arenaDto);
         var validationResult = createOrUpdateArenaValidator.isValid(arena);
@@ -64,5 +56,13 @@ public class ArenaService {
 
     public List<String> findAllArenasCities() {
         return arenaDao.findAllArenasCities();
+    }
+
+    private Arena buildArenaFromDto(ArenaDto arenaDto) {
+        return Arena.builder()
+                .name(arenaDto.getName())
+                .city(arenaDto.getCity())
+                .capacity(arenaDto.getCapacity())
+                .build();
     }
 }

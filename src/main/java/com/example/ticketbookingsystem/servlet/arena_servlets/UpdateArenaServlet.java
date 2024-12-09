@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/update-arena")
+@WebServlet("/admin/update-arena")
 public class UpdateArenaServlet extends HttpServlet {
     private final ArenaService arenaService = ArenaService.getInstance();
 
@@ -44,7 +44,7 @@ public class UpdateArenaServlet extends HttpServlet {
 
             arenaService.updateArena(Long.parseLong(id), arenaDto);
 
-            response.sendRedirect(request.getContextPath() + "/arenas");
+            response.sendRedirect(request.getContextPath() + "/admin/arenas");
         }catch (NumberFormatException e) {
             handleNumberFormatException(request, response);
         } catch (CreateUpdateEntityException e) {

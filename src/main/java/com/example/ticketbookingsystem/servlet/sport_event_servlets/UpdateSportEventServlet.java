@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-@WebServlet("/update-sport-event")
+@WebServlet("/admin/update-sport-event")
 public class UpdateSportEventServlet extends HttpServlet {
     private final SportEventService sportEventService = SportEventService.getInstance();
     private final ArenaService arenaService = ArenaService.getInstance();
@@ -59,7 +59,7 @@ public class UpdateSportEventServlet extends HttpServlet {
                     .build();
 
             sportEventService.updateSportEvent(Long.parseLong(id), sportEventDto);
-            response.sendRedirect(request.getContextPath() + "/sport_events");
+            response.sendRedirect(request.getContextPath() + "/admin/sport_events");
         }catch (DaoCrudException e) {
             ValidationResult validationResult = new ValidationResult();
             specifySQLException(e.getMessage(), validationResult);

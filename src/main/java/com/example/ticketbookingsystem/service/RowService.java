@@ -28,13 +28,6 @@ public class RowService {
     public Optional<Row> findById(Long id){
         return rowDao.findById(id);
     }
-    private Row buildRowFromDto(RowDto rowDto) {
-        return Row.builder()
-                .rowNumber(rowDto.getRowNumber())
-                .seatsNumb(rowDto.getSeatsNumb())
-                .sector(rowDto.getSector())
-                .build();
-    }
     public void createRow(RowDto rowDto) {
         Row row = buildRowFromDto(rowDto);
         rowDao.save(row);
@@ -46,5 +39,13 @@ public class RowService {
     }
     public void deleteRow(Long id) {
         rowDao.delete(id);
+    }
+
+    private Row buildRowFromDto(RowDto rowDto) {
+        return Row.builder()
+                .rowNumber(rowDto.getRowNumber())
+                .seatsNumb(rowDto.getSeatsNumb())
+                .sector(rowDto.getSector())
+                .build();
     }
 }

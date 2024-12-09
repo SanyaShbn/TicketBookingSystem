@@ -18,7 +18,12 @@ public class SeatService {
         return seatDao.findAll();
     }
 
-    public List<Seat> findAllByEventId(Long eventId){return seatDao.findAllByEventId(eventId);}
+    public List<Seat> findAllByEventId(Long eventId){
+        return seatDao.findAllByEventId(eventId);
+    }
+    public List<Seat> findByEventIdWithNoTickets(Long eventId){
+        return seatDao.findByEventIdWithNoTickets(eventId);
+    }
     public List<Seat> findAllByEventIdWhenUpdate(Long eventId, Long seatId){
         return seatDao.findAllByEventIdWhenUpdate(eventId, seatId);
     }

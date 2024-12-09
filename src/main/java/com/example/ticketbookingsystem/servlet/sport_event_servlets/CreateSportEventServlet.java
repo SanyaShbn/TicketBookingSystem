@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-@WebServlet("/create-sport-event")
+@WebServlet("/admin/create-sport-event")
 public class CreateSportEventServlet extends HttpServlet {
     private final SportEventService sportEventService = SportEventService.getInstance();
     private final ArenaService arenaService = ArenaService.getInstance();
@@ -54,7 +54,7 @@ public class CreateSportEventServlet extends HttpServlet {
                     .arena(arena.orElseThrow(() -> new IOException("Arena not found")))
                     .build();
             sportEventService.createSportEvent(sportEventDto);
-            resp.sendRedirect(req.getContextPath() + "/sport_events");
+            resp.sendRedirect(req.getContextPath() + "/admin/sport_events");
         }catch (DaoCrudException e) {
             ValidationResult validationResult = new ValidationResult();
             validationResult.add(Error.of("create.event.error",

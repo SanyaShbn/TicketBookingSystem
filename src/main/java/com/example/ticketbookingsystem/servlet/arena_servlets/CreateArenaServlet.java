@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/create-arena")
+@WebServlet("/admin/create-arena")
 public class CreateArenaServlet extends HttpServlet {
     private final ArenaService arenaService = ArenaService.getInstance();
     @Override
@@ -36,7 +36,7 @@ public class CreateArenaServlet extends HttpServlet {
 
             arenaService.createArena(arenaDto);
 
-            resp.sendRedirect(req.getContextPath() + "/arenas");
+            resp.sendRedirect(req.getContextPath() + "/admin/arenas");
         }catch (NumberFormatException e) {
             handleNumberFormatException(req, resp);
         } catch (CreateUpdateEntityException e) {

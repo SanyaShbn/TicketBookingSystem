@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/delete-arena")
+@WebServlet("/admin/delete-arena")
 public class DeleteArenaServlet extends HttpServlet {
     private final ArenaService arenaService = ArenaService.getInstance();
     @Override
@@ -23,7 +23,7 @@ public class DeleteArenaServlet extends HttpServlet {
 
             arenaService.deleteArena(Long.parseLong(id));
 
-            response.sendRedirect(request.getContextPath() + "/arenas");
+            response.sendRedirect(request.getContextPath() + "/admin/arenas");
         }catch (CreateUpdateEntityException e){
             ValidationResult validationResult = new ValidationResult();
             validationResult.add(Error.of("delete.arena.fail",
