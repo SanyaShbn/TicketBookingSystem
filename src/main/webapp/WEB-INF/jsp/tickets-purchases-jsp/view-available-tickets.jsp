@@ -20,7 +20,7 @@
     List<Ticket> tickets = (List<Ticket>) request.getAttribute("tickets");
 
     for (Ticket ticket : tickets) {
-        if(ticket.getStatus()== TicketStatus.AVAILABLE) {
+        if(ticket.getStatus() != TicketStatus.SOLD) {
             ticketSeatsIds.add(ticket.getSeat().getId());
         }
     }
@@ -45,7 +45,7 @@
 <head>
     <title>User's Cart</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
-    <script src="<c:url value="/js/user'sCartScript.js"/>"></script>
+    <script src="<c:url value="/js/test_purchase.js"/>"></script>
 </head>
 <body>
 <h1><fmt:message key="choose.seat.title"/></h1>
@@ -67,6 +67,7 @@
                                     </c:forEach>
                                     <div class="arena-seat ${ticketSeatsIds.contains(seat.id) ? 'available' : 'unavailable'}"
                                          data-seat-id="${seat.id}"
+                                         data-ticket-id="${matchingTicket.id}"
                                          data-sector-name="${seat.row.sector.sectorName}"
                                          data-row-numb="${seat.row.rowNumber}"
                                          data-seat-numb="${seat.seatNumber}"

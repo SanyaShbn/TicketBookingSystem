@@ -52,6 +52,9 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
     private final static String FIND_ALL_BY_EVENT_ID_SQL = FIND_ALL_SQL + """
             WHERE event_id=?
             """;
+    private final static String GET_TICKET_STATUS_SQL = FIND_ALL_SQL + """
+            SELECT status FROM ticket WHERE id = ?
+            """;
 
     public static TicketDao getInstance(){
         return INSTANCE;
@@ -196,6 +199,22 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
         } catch (SQLException e) {
             throw new DaoCrudException(e);
         }
+    }
+
+    public String getTicketStatus(Long ticketId){
+        String status = null;
+        try (Connection connection = ConnectionManager.get();
+             PreparedStatement checkStatement = connection.prepareStatement(GET_TICKET_STATUS_SQL)) {
+            checkStatement.setLong(1, ticketId);
+            try (ResultSet rs = checkStatement.executeQuery()) {
+                if (rs.next()) {
+                    status = rs.getString("status");
+                }
+            }
+        }catch (SQLException e) {
+            throw new DaoCrudException(e);
+        }
+        return status;
     }
 
     private Ticket buildTicket(ResultSet result) throws SQLException {

@@ -43,6 +43,10 @@ public class TicketService {
         ticketDao.update(ticket);
     }
 
+    public String getTicketStatus(Long ticketId) {
+        return ticketDao.getTicketStatus(ticketId);
+    }
+
     public void deleteTicket(Long id) {
         ticketDao.delete(id);
     }
