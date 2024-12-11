@@ -6,4 +6,3 @@
         </form>
     </c:if>
 </div>
-<script src="<c:url value='/js/logout.js'/>"></script>

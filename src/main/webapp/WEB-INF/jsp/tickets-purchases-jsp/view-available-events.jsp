@@ -9,7 +9,8 @@
 <head>
     <title>SportEventsForTicketPurchase</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
-    <script src="<c:url value="/js/toggleFilterFormScript.js"/>"></script>
+    <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
+    <script src="<c:url value="/js/handle-local-storage.js"/>"></script>
 </head>
 <body>
 

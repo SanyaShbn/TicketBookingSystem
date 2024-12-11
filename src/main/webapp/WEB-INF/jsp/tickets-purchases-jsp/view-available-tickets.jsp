@@ -45,10 +45,14 @@
 <head>
     <title>User's Cart</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
-    <script src="<c:url value="/js/test_purchase.js"/>"></script>
+    <script src="<c:url value="/js/users-cart-script.js"/>"></script>
+    <script src="<c:url value="/js/handle-confirm-form.js"/>"></script>
 </head>
 <body>
 <h1><fmt:message key="choose.seat.title"/></h1>
+<button style="margin-bottom: 10px" onclick="confirmNavigation(event)">
+    <fmt:message key="button.back"/>
+</button>
 <div class="view-arena-seats-container">
     <div class="arena-map">
         <c:forEach var="sector" items="${sectors}">
@@ -98,6 +102,15 @@
             </button>
         </form>
     </div>
+
+    <c:if test="${not empty requestScope.errors}">
+        <div class="error">
+            <c:forEach var="error" items="${requestScope.errors}">
+                <span>${error.message}</span>
+                <br/>
+            </c:forEach>
+        </div>
+    </c:if>
 </div>
 </body>
 </html>

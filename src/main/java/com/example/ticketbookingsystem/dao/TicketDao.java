@@ -52,7 +52,7 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
     private final static String FIND_ALL_BY_EVENT_ID_SQL = FIND_ALL_SQL + """
             WHERE event_id=?
             """;
-    private final static String GET_TICKET_STATUS_SQL = FIND_ALL_SQL + """
+    private final static String GET_TICKET_STATUS_SQL ="""
             SELECT status FROM ticket WHERE id = ?
             """;
 
@@ -203,7 +203,7 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
 
     public String getTicketStatus(Long ticketId){
         String status = null;
-        try (Connection connection = ConnectionManager.get();
+        try (var connection = ConnectionManager.get();
              PreparedStatement checkStatement = connection.prepareStatement(GET_TICKET_STATUS_SQL)) {
             checkStatement.setLong(1, ticketId);
             try (ResultSet rs = checkStatement.executeQuery()) {

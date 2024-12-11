@@ -142,8 +142,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         const seatNumb = seatElement.getAttribute('data-seat-numb');
                         const listItem = document.createElement('li');
                         listItem.innerHTML = `Сектор: ${sector}, Ряд: ${row}, Место: ${seatNumb}, Цена: ${seatPriceToAdd} руб. <button type="button" class="removeItem" data-ticket-id ="${matchingTicketId}" data-seat-id="${seatIdToAdd}">Удалить</button>`;
-                        // listItem.setAttribute('data-seat-id', seatIdToAdd);
-                        // listItem.setAttribute('data-ticket-id', matchingTicketId);
                         cartList.appendChild(listItem);
 
                         seatElement.classList.remove('available');

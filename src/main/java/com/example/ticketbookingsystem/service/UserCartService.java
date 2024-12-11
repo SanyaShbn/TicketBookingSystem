@@ -4,6 +4,8 @@ import com.example.ticketbookingsystem.dao.UserCartDao;
 import com.example.ticketbookingsystem.dto.UserCartDto;
 import com.example.ticketbookingsystem.entity.UserCart;
 
+import java.sql.Connection;
+
 public class UserCartService {
     private final static UserCartService INSTANCE = new UserCartService();
     private final UserCartDao userCartDao = UserCartDao.getInstance();
