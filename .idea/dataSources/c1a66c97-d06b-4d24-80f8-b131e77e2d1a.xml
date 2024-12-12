@@ -3,9 +3,17 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.49">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>10995</IntrospectionStateNumber>
+      <Grants>1||-9223372036854775808|c|G
+1||10|c|G
+1||10|C|G
+1||10|T|G
+4||-9223372036854775808|c|G
+4||10|c|G
+4||10|C|G
+4||10|T|G</Grants>
+      <IntrospectionStateNumber>11956</IntrospectionStateNumber>
       <ServerVersion>16.1</ServerVersion>
-      <StartupTime>1732950391</StartupTime>
+      <StartupTime>1733929440</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -800,7 +808,7 @@ false Zulu
 14697||10|C|G
 14697||-9223372036854775808|U|G
 14697||10|U|G</Grants>
-      <IntrospectionStateNumber>10995</IntrospectionStateNumber>
+      <IntrospectionStateNumber>11956</IntrospectionStateNumber>
       <ObjectId>22622</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4256,9 +4264,9 @@ false Zulu
     <schema id="272" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>10995</IntrospectionStateNumber>
-      <IntrospectionTimestamp>2024-12-10.11:07:56.163</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2024-12-10.08:07:56</LocalIntrospectionTimestamp>
+      <IntrospectionStateNumber>11956</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2024-12-12.11:01:00.275</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2024-12-12.08:01:01</LocalIntrospectionTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>524</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -4364,7 +4372,7 @@ false Zulu
     <sequence id="283" parent="272" name="purchased_tickets_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22887</ObjectId>
-      <SequenceIdentity>1(1)</SequenceIdentity>
+      <SequenceIdentity>1(26)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>10994</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4412,7 +4420,7 @@ false Zulu
     <sequence id="289" parent="272" name="ticket_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22796</ObjectId>
-      <SequenceIdentity>1(107)</SequenceIdentity>
+      <SequenceIdentity>1(108)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>10092</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4420,7 +4428,7 @@ false Zulu
     <sequence id="290" parent="272" name="user_cart_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22886</ObjectId>
-      <SequenceIdentity>1(1)</SequenceIdentity>
+      <SequenceIdentity>1(264)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>10992</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4428,7 +4436,7 @@ false Zulu
     <sequence id="291" parent="272" name="users_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22852</ObjectId>
-      <SequenceIdentity>1(7)</SequenceIdentity>
+      <SequenceIdentity>1(11)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>10823</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4666,14 +4674,26 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="329" parent="293" name="purchased_tickets_pkey">
+    <index id="329" parent="293" name="unique_ticket_id">
+      <ColNames>ticket_id</ColNames>
+      <ObjectId>22888</ObjectId>
+      <StateNumber>11955</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="330" parent="293" name="purchased_tickets_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22874</ObjectId>
       <Primary>1</Primary>
       <StateNumber>10989</StateNumber>
       <UnderlyingIndexId>22873</UnderlyingIndexId>
     </key>
-    <column id="330" parent="294" name="id">
+    <key id="331" parent="293" name="unique_ticket_id">
+      <ObjectId>22889</ObjectId>
+      <StateNumber>11955</StateNumber>
+      <UnderlyingIndexId>22888</UnderlyingIndexId>
+    </key>
+    <column id="332" parent="294" name="id">
       <DasType>bigint|0s</DasType>
       <IdentityKind>always</IdentityKind>
       <NotNull>1</NotNull>
@@ -4682,14 +4702,14 @@ false Zulu
       <SequenceId>22853</SequenceId>
       <TypeId>20</TypeId>
     </column>
-    <column id="331" parent="294" name="role_name">
+    <column id="333" parent="294" name="role_name">
       <DasType>varchar(50)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>10819</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="332" parent="294" name="role_pkey">
+    <index id="334" parent="294" name="role_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22833</ObjectId>
@@ -4698,7 +4718,7 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="333" parent="294" name="role_role_name_key">
+    <index id="335" parent="294" name="role_role_name_key">
       <ColNames>role_name</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22835</ObjectId>
@@ -4709,20 +4729,20 @@ false Zulu
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="334" parent="294" name="role_pkey">
+    <key id="336" parent="294" name="role_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22834</ObjectId>
       <Primary>1</Primary>
       <StateNumber>10819</StateNumber>
       <UnderlyingIndexId>22833</UnderlyingIndexId>
     </key>
-    <key id="335" parent="294" name="role_role_name_key">
+    <key id="337" parent="294" name="role_role_name_key">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22836</ObjectId>
       <StateNumber>10819</StateNumber>
       <UnderlyingIndexId>22835</UnderlyingIndexId>
     </key>
-    <column id="336" parent="295" name="id">
+    <column id="338" parent="295" name="id">
       <DasType>bigint|0s</DasType>
       <IdentityKind>always</IdentityKind>
       <NotNull>1</NotNull>
@@ -4731,25 +4751,25 @@ false Zulu
       <SequenceId>22716</SequenceId>
       <TypeId>20</TypeId>
     </column>
-    <column id="337" parent="295" name="sector_id">
+    <column id="339" parent="295" name="sector_id">
       <DasType>bigint|0s</DasType>
       <Position>2</Position>
       <StateNumber>9682</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="338" parent="295" name="row_number">
+    <column id="340" parent="295" name="row_number">
       <DasType>integer|0s</DasType>
       <Position>3</Position>
       <StateNumber>9682</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="339" parent="295" name="seats_numb">
+    <column id="341" parent="295" name="seats_numb">
       <DasType>integer|0s</DasType>
       <Position>4</Position>
       <StateNumber>9682</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <foreign-key id="340" parent="295" name="row_sector_id_fkey">
+    <foreign-key id="342" parent="295" name="row_sector_id_fkey">
       <ColNames>sector_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22723</ObjectId>
@@ -4759,7 +4779,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22693</RefTableId>
     </foreign-key>
-    <index id="341" parent="295" name="row_pkey">
+    <index id="343" parent="295" name="row_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22709</ObjectId>
@@ -4768,28 +4788,28 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="342" parent="295" name="row_pkey">
+    <key id="344" parent="295" name="row_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22710</ObjectId>
       <Primary>1</Primary>
       <StateNumber>9682</StateNumber>
-      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
+      <UnderlyingIndexId>22709</UnderlyingIndexId>
     </key>
-    <trigger id="343" parent="295" name="check_row_number_unique_trigger">
+    <trigger id="345" parent="295" name="check_row_number_unique_trigger">
       <Events>IU</Events>
       <ObjectId>22743</ObjectId>
       <StateNumber>9887</StateNumber>
       <Turn>before-row</Turn>
       <CallRoutineId>22735</CallRoutineId>
     </trigger>
-    <trigger id="344" parent="295" name="after_insert_row">
+    <trigger id="346" parent="295" name="after_insert_row">
       <Events>I</Events>
       <ObjectId>22757</ObjectId>
       <StateNumber>9973</StateNumber>
       <Turn>after-row</Turn>
       <CallRoutineId>22755</CallRoutineId>
     </trigger>
-    <trigger id="345" parent="295" name="after_update_row">
+    <trigger id="347" parent="295" name="after_update_row">
       <Events>U</Events>
       <ObjectId>22759</ObjectId>
       <StateNumber>9976</StateNumber>
@@ -4797,7 +4817,7 @@ false Zulu
       <WhenCondition>old.seats_numb IS DISTINCT FROM new.seats_numb</WhenCondition>
       <CallRoutineId>22758</CallRoutineId>
     </trigger>
-    <column id="346" parent="296" name="id">
+    <column id="348" parent="296" name="id">
       <DasType>bigint|0s</DasType>
       <IdentityKind>always</IdentityKind>
       <NotNull>1</NotNull>
@@ -4806,19 +4826,19 @@ false Zulu
       <SequenceId>22754</SequenceId>
       <TypeId>20</TypeId>
     </column>
-    <column id="347" parent="296" name="row_id">
+    <column id="349" parent="296" name="row_id">
       <DasType>bigint|0s</DasType>
       <Position>2</Position>
       <StateNumber>9961</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="348" parent="296" name="seat_number">
+    <column id="350" parent="296" name="seat_number">
       <DasType>integer|0s</DasType>
       <Position>3</Position>
       <StateNumber>9961</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <foreign-key id="349" parent="296" name="seat_row_id_fkey">
+    <foreign-key id="351" parent="296" name="seat_row_id_fkey">
       <ColNames>row_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22749</ObjectId>
@@ -4828,7 +4848,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22706</RefTableId>
     </foreign-key>
-    <index id="350" parent="296" name="seat_pkey">
+    <index id="352" parent="296" name="seat_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22747</ObjectId>
@@ -4837,14 +4857,14 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="351" parent="296" name="seat_pkey">
+    <key id="353" parent="296" name="seat_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22748</ObjectId>
       <Primary>1</Primary>
       <StateNumber>9961</StateNumber>
       <UnderlyingIndexId>22747</UnderlyingIndexId>
     </key>
-    <column id="352" parent="297" name="id">
+    <column id="354" parent="297" name="id">
       <DasType>bigint|0s</DasType>
       <IdentityKind>always</IdentityKind>
       <NotNull>1</NotNull>
@@ -4853,45 +4873,45 @@ false Zulu
       <SequenceId>22703</SequenceId>
       <TypeId>20</TypeId>
     </column>
-    <column id="353" parent="297" name="sector_name">
+    <column id="355" parent="297" name="sector_name">
       <DasType>varchar(25)|0s</DasType>
       <Position>2</Position>
       <StateNumber>9664</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="354" parent="297" name="arena_id">
+    <column id="356" parent="297" name="arena_id">
       <DasType>bigint|0s</DasType>
       <Position>3</Position>
       <StateNumber>9664</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="355" parent="297" name="max_rows_numb">
+    <column id="357" parent="297" name="max_rows_numb">
       <DasType>integer|0s</DasType>
       <Position>4</Position>
       <StateNumber>9664</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="356" parent="297" name="available_rows_numb">
+    <column id="358" parent="297" name="available_rows_numb">
       <DasType>integer|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>5</Position>
       <StateNumber>9669</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="357" parent="297" name="max_seats_numb">
+    <column id="359" parent="297" name="max_seats_numb">
       <DasType>integer|0s</DasType>
       <Position>6</Position>
       <StateNumber>9664</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="358" parent="297" name="available_seats_numb">
+    <column id="360" parent="297" name="available_seats_numb">
       <DasType>integer|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>7</Position>
       <StateNumber>9671</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <foreign-key id="359" parent="297" name="sector_arena_id_fkey">
+    <foreign-key id="361" parent="297" name="sector_arena_id_fkey">
       <ColNames>arena_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22698</ObjectId>
@@ -4900,7 +4920,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22623</RefTableId>
     </foreign-key>
-    <index id="360" parent="297" name="sector_pkey">
+    <index id="362" parent="297" name="sector_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22696</ObjectId>
@@ -4909,35 +4929,35 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="361" parent="297" name="sector_pkey">
+    <key id="363" parent="297" name="sector_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22697</ObjectId>
       <Primary>1</Primary>
       <StateNumber>9664</StateNumber>
       <UnderlyingIndexId>22696</UnderlyingIndexId>
     </key>
-    <trigger id="362" parent="297" name="check_sector_name_unique_trigger">
+    <trigger id="364" parent="297" name="check_sector_name_unique_trigger">
       <Events>IU</Events>
       <ObjectId>22741</ObjectId>
       <StateNumber>9870</StateNumber>
       <Turn>before-row</Turn>
       <CallRoutineId>22733</CallRoutineId>
     </trigger>
-    <trigger id="363" parent="297" name="check_rows_numb">
+    <trigger id="365" parent="297" name="check_rows_numb">
       <Events>U</Events>
       <ObjectId>22738</ObjectId>
       <StateNumber>9864</StateNumber>
       <Turn>before-row</Turn>
       <CallRoutineId>22717</CallRoutineId>
     </trigger>
-    <trigger id="364" parent="297" name="check_seats_numb">
+    <trigger id="366" parent="297" name="check_seats_numb">
       <Events>U</Events>
       <ObjectId>22739</ObjectId>
       <StateNumber>9866</StateNumber>
       <Turn>before-row</Turn>
       <CallRoutineId>22719</CallRoutineId>
     </trigger>
-    <column id="365" parent="298" name="id">
+    <column id="367" parent="298" name="id">
       <DasType>integer|0s</DasType>
       <IdentityKind>always</IdentityKind>
       <NotNull>1</NotNull>
@@ -4946,25 +4966,25 @@ false Zulu
       <SequenceId>22770</SequenceId>
       <TypeId>23</TypeId>
     </column>
-    <column id="366" parent="298" name="event_name">
+    <column id="368" parent="298" name="event_name">
       <DasType>varchar(50)|0s</DasType>
       <Position>2</Position>
       <StateNumber>9995</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="367" parent="298" name="event_date_time">
+    <column id="369" parent="298" name="event_date_time">
       <DasType>timestamp|0s</DasType>
       <Position>3</Position>
       <StateNumber>9995</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="368" parent="298" name="arena_id">
+    <column id="370" parent="298" name="arena_id">
       <DasType>integer|0s</DasType>
       <Position>4</Position>
       <StateNumber>9995</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <foreign-key id="369" parent="298" name="sport_event_arena_id_fkey">
+    <foreign-key id="371" parent="298" name="sport_event_arena_id_fkey">
       <ColNames>arena_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22776</ObjectId>
@@ -4972,7 +4992,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22623</RefTableId>
     </foreign-key>
-    <index id="370" parent="298" name="sport_event_pkey">
+    <index id="372" parent="298" name="sport_event_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22763</ObjectId>
@@ -4981,28 +5001,28 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="371" parent="298" name="sport_event_pkey">
+    <key id="373" parent="298" name="sport_event_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22764</ObjectId>
       <Primary>1</Primary>
       <StateNumber>9995</StateNumber>
       <UnderlyingIndexId>22763</UnderlyingIndexId>
     </key>
-    <trigger id="372" parent="298" name="event_time_trigger">
+    <trigger id="374" parent="298" name="event_time_trigger">
       <Events>IU</Events>
       <ObjectId>22819</ObjectId>
       <StateNumber>10360</StateNumber>
       <Turn>before-row</Turn>
       <CallRoutineId>22798</CallRoutineId>
     </trigger>
-    <trigger id="373" parent="298" name="check_update_delete_sport_event">
+    <trigger id="375" parent="298" name="check_update_delete_sport_event">
       <Events>U</Events>
       <ObjectId>22820</ObjectId>
       <StateNumber>10362</StateNumber>
       <Turn>before-row</Turn>
       <CallRoutineId>22806</CallRoutineId>
     </trigger>
-    <column id="374" parent="299" name="id">
+    <column id="376" parent="299" name="id">
       <DasType>bigint|0s</DasType>
       <IdentityKind>always</IdentityKind>
       <NotNull>1</NotNull>
@@ -5011,31 +5031,31 @@ false Zulu
       <SequenceId>22796</SequenceId>
       <TypeId>20</TypeId>
     </column>
-    <column id="375" parent="299" name="event_id">
+    <column id="377" parent="299" name="event_id">
       <DasType>bigint|0s</DasType>
       <Position>2</Position>
       <StateNumber>10090</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="376" parent="299" name="seat_id">
+    <column id="378" parent="299" name="seat_id">
       <DasType>bigint|0s</DasType>
       <Position>3</Position>
       <StateNumber>10090</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="377" parent="299" name="status">
+    <column id="379" parent="299" name="status">
       <DasType>varchar(25)|0s</DasType>
       <Position>4</Position>
       <StateNumber>10090</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="378" parent="299" name="price">
+    <column id="380" parent="299" name="price">
       <DasType>numeric(10,2 digit)|0s</DasType>
       <Position>5</Position>
       <StateNumber>10090</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <foreign-key id="379" parent="299" name="ticket_event_id_fkey">
+    <foreign-key id="381" parent="299" name="ticket_event_id_fkey">
       <ColNames>event_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22801</ObjectId>
@@ -5043,7 +5063,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22760</RefTableId>
     </foreign-key>
-    <foreign-key id="380" parent="299" name="ticket_seat_id_fkey">
+    <foreign-key id="382" parent="299" name="ticket_seat_id_fkey">
       <ColNames>seat_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22791</ObjectId>
@@ -5051,7 +5071,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22744</RefTableId>
     </foreign-key>
-    <index id="381" parent="299" name="ticket_pkey">
+    <index id="383" parent="299" name="ticket_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22784</ObjectId>
@@ -5060,14 +5080,14 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="382" parent="299" name="ticket_pkey">
+    <key id="384" parent="299" name="ticket_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22785</ObjectId>
       <Primary>1</Primary>
       <StateNumber>10090</StateNumber>
       <UnderlyingIndexId>22784</UnderlyingIndexId>
     </key>
-    <column id="383" parent="300" name="id">
+    <column id="385" parent="300" name="id">
       <DasType>bigint|0s</DasType>
       <IdentityKind>always</IdentityKind>
       <NotNull>1</NotNull>
@@ -5076,21 +5096,21 @@ false Zulu
       <SequenceId>22886</SequenceId>
       <TypeId>20</TypeId>
     </column>
-    <column id="384" parent="300" name="user_id">
+    <column id="386" parent="300" name="user_id">
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>10988</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="385" parent="300" name="ticket_id">
+    <column id="387" parent="300" name="ticket_id">
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>10988</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <foreign-key id="386" parent="300" name="user_cart_user_id_fkey">
+    <foreign-key id="388" parent="300" name="user_cart_user_id_fkey">
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22859</ObjectId>
@@ -5098,7 +5118,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22823</RefTableId>
     </foreign-key>
-    <foreign-key id="387" parent="300" name="user_cart_ticket_id_fkey">
+    <foreign-key id="389" parent="300" name="user_cart_ticket_id_fkey">
       <ColNames>ticket_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22864</ObjectId>
@@ -5106,7 +5126,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22781</RefTableId>
     </foreign-key>
-    <index id="388" parent="300" name="user_cart_pkey">
+    <index id="390" parent="300" name="user_cart_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22857</ObjectId>
@@ -5115,28 +5135,28 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="389" parent="300" name="user_cart_pkey">
+    <key id="391" parent="300" name="user_cart_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22858</ObjectId>
       <Primary>1</Primary>
       <StateNumber>10988</StateNumber>
       <UnderlyingIndexId>22857</UnderlyingIndexId>
     </key>
-    <column id="390" parent="301" name="user_id">
+    <column id="392" parent="301" name="user_id">
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>10820</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="391" parent="301" name="role_id">
+    <column id="393" parent="301" name="role_id">
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>10820</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <foreign-key id="392" parent="301" name="user_roles_user_id_fkey">
+    <foreign-key id="394" parent="301" name="user_roles_user_id_fkey">
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22842</ObjectId>
@@ -5144,7 +5164,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22823</RefTableId>
     </foreign-key>
-    <foreign-key id="393" parent="301" name="user_roles_role_id_fkey">
+    <foreign-key id="395" parent="301" name="user_roles_role_id_fkey">
       <ColNames>role_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22847</ObjectId>
@@ -5152,7 +5172,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>22830</RefTableId>
     </foreign-key>
-    <index id="394" parent="301" name="user_roles_pkey">
+    <index id="396" parent="301" name="user_roles_pkey">
       <ColNames>user_id
 role_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -5162,14 +5182,14 @@ role_id</ColNames>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="395" parent="301" name="user_roles_pkey">
+    <key id="397" parent="301" name="user_roles_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22841</ObjectId>
       <Primary>1</Primary>
       <StateNumber>10820</StateNumber>
       <UnderlyingIndexId>22840</UnderlyingIndexId>
     </key>
-    <column id="396" parent="302" name="id">
+    <column id="398" parent="302" name="id">
       <DasType>bigint|0s</DasType>
       <IdentityKind>always</IdentityKind>
       <NotNull>1</NotNull>
@@ -5178,21 +5198,21 @@ role_id</ColNames>
       <SequenceId>22852</SequenceId>
       <TypeId>20</TypeId>
     </column>
-    <column id="397" parent="302" name="email">
+    <column id="399" parent="302" name="email">
       <DasType>varchar(50)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>10818</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="398" parent="302" name="password">
+    <column id="400" parent="302" name="password">
       <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>10828</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="399" parent="302" name="users_pkey">
+    <index id="401" parent="302" name="users_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22826</ObjectId>
@@ -5201,7 +5221,7 @@ role_id</ColNames>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="400" parent="302" name="users_email_key">
+    <index id="402" parent="302" name="users_email_key">
       <ColNames>email</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22828</ObjectId>
@@ -5212,14 +5232,14 @@ role_id</ColNames>
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="401" parent="302" name="users_pkey">
+    <key id="403" parent="302" name="users_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22827</ObjectId>
       <Primary>1</Primary>
       <StateNumber>10818</StateNumber>
       <UnderlyingIndexId>22826</UnderlyingIndexId>
     </key>
-    <key id="402" parent="302" name="users_email_key">
+    <key id="404" parent="302" name="users_email_key">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22829</ObjectId>
       <StateNumber>10818</StateNumber>

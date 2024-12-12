@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ошибка удаления арены</title>
+    <title>Error</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
 </head>
 <body>

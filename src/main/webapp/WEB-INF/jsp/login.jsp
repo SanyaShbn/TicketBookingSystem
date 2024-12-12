@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title><fmt:message key="login.page"/></title>
+    <title>Login</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/login-styles.css"/>">
 </head>
 <body>

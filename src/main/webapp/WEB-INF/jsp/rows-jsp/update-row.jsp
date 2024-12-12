@@ -7,7 +7,7 @@
 
 <html>
 <head>
-    <title><fmt:message key="update.row.title" /></title>
+    <title>UpdateRow</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
 </head>
 <body>

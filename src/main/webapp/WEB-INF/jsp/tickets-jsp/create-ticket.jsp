@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title><fmt:message key="create.ticket.title" /></title>
+    <title>CreateTicket</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
 </head>
 <body>

@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title><fmt:message key="registration.title"/></title>
+    <title>Registration</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/registration-styles.css"/>">
 </head>
 <body>

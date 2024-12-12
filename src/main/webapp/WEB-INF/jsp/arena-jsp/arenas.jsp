@@ -80,13 +80,6 @@
                     <div><fmt:message key="arena.city"/>: ${arena.city}</div>
                     <div><fmt:message key="arena.capacity"/>: ${arena.capacity}</div>
                     <div><fmt:message key="arena.generalSeatsNumb"/>: ${arena.generalSeatsNumb}</div>
-<%--                    <form action="${pageContext.request.contextPath}/upload-arena-photo" method="post"--%>
-<%--                          enctype="multipart/form-data" style="display:inline;">--%>
-<%--                        <input type="hidden" name="id" value="${arena.id}"/>--%>
-<%--                        <input type="file" name="arenaPhoto"/>--%>
-<%--                        <button type="submit">Добавить фото арены</button>--%>
-<%--                    </form>--%>
-<%--                    <c:if test="${sessionScope.user.role == 'ADMIN'}">--%>
                         <form action="${pageContext.request.contextPath}/admin/update-arena" method="get" style="display:inline;">
                             <input type="hidden" name="id" value="${arena.id}"/>
                             <button type="submit"><fmt:message key="button.update"/></button>
@@ -95,7 +88,6 @@
                             <input type="hidden" name="id" value="${arena.id}"/>
                             <button type="submit"><fmt:message key="button.delete"/></button>
                         </form>
-<%--                    </c:if>--%>
                 </div>
             </c:forEach>
             <div class="pagination" style="padding-top: 145px">

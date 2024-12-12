@@ -5,6 +5,7 @@ import com.example.ticketbookingsystem.dto.UserCartDto;
 import com.example.ticketbookingsystem.entity.UserCart;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class UserCartService {
     private final static UserCartService INSTANCE = new UserCartService();
@@ -25,6 +26,9 @@ public class UserCartService {
     public void removeItemFromCart(UserCartDto userCartDto) {
         UserCart userCart = buildUserCartFromDto(userCartDto);
         userCartDao.delete(userCart);
+    }
+    public List<Long> getTicketIds(Long userId) {
+        return userCartDao.getTicketIdsFromUserCart(userId);
     }
     private UserCart buildUserCartFromDto(UserCartDto userCartDto) {
         return UserCart.builder()

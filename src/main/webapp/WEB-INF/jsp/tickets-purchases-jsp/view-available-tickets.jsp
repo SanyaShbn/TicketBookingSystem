@@ -89,7 +89,7 @@
     </div>
     <div class="cart">
         <h2><fmt:message key="user.cart"/> (<fmt:message key="tickets.in.user.cart"/>:<span id="cartCount">0</span>)</h2>
-        <form id="cartForm" action="${pageContext.request.contextPath}/checkout" method="post">
+        <form id="cartForm" action="${pageContext.request.contextPath}/purchase" method="get">
             <ul id="cartItems">
                 <li id="emptyCartMessage"><fmt:message key="user.cart.empty"/></li>
             </ul>
