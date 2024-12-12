@@ -20,7 +20,7 @@
     List<Ticket> tickets = (List<Ticket>) request.getAttribute("tickets");
 
     for (Ticket ticket : tickets) {
-        if(ticket.getStatus()== TicketStatus.AVAILABLE) {
+        if(ticket.getStatus() != TicketStatus.SOLD) {
             ticketSeatsIds.add(ticket.getSeat().getId());
         }
     }
@@ -45,10 +45,15 @@
 <head>
     <title>User's Cart</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
-    <script src="<c:url value="/js/user'sCartScript.js"/>"></script>
+    <script src="<c:url value="/js/error-notification.js"/>"></script>
+    <script src="<c:url value="/js/users-cart-script.js"/>"></script>
+    <script src="<c:url value="/js/handle-confirm-form.js"/>"></script>
 </head>
 <body>
 <h1><fmt:message key="choose.seat.title"/></h1>
+<button style="margin-bottom: 10px" onclick="confirmNavigation(event)">
+    <fmt:message key="button.back"/>
+</button>
 <div class="view-arena-seats-container">
     <div class="arena-map">
         <c:forEach var="sector" items="${sectors}">
@@ -67,6 +72,7 @@
                                     </c:forEach>
                                     <div class="arena-seat ${ticketSeatsIds.contains(seat.id) ? 'available' : 'unavailable'}"
                                          data-seat-id="${seat.id}"
+                                         data-ticket-id="${matchingTicket.id}"
                                          data-sector-name="${seat.row.sector.sectorName}"
                                          data-row-numb="${seat.row.rowNumber}"
                                          data-seat-numb="${seat.seatNumber}"
@@ -84,7 +90,7 @@
     </div>
     <div class="cart">
         <h2><fmt:message key="user.cart"/> (<fmt:message key="tickets.in.user.cart"/>:<span id="cartCount">0</span>)</h2>
-        <form id="cartForm" action="${pageContext.request.contextPath}/checkout" method="post">
+        <form id="cartForm" action="${pageContext.request.contextPath}/purchase" method="get">
             <ul id="cartItems">
                 <li id="emptyCartMessage"><fmt:message key="user.cart.empty"/></li>
             </ul>
@@ -97,6 +103,15 @@
             </button>
         </form>
     </div>
+
+    <c:if test="${not empty requestScope.errors}">
+        <div class="error">
+            <c:forEach var="error" items="${requestScope.errors}">
+                <span>${error.message}</span>
+                <br/>
+            </c:forEach>
+        </div>
+    </c:if>
 </div>
 </body>
 </html>

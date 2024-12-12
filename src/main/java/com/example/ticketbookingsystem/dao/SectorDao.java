@@ -202,16 +202,6 @@ public class SectorDao implements DaoCrud<Long, Sector>{
     }
     @Override
     public boolean update(Sector sector) {
-//        try(var connection = ConnectionManager.get();
-//            var statement = connection.prepareStatement(UPDATE_SQL)){
-//            setStatement(sector, statement);
-//            statement.setLong(5, sector.getId());
-//
-//            return statement.executeUpdate() > 0;
-//        } catch (SQLException e) {
-//            throw new CreateUpdateSectorException(e.getMessage());
-//        }
-
         boolean isSuccessful = false;
         try (Connection connection = ConnectionManager.get()) {
             connection.setAutoCommit(false);
@@ -245,14 +235,6 @@ public class SectorDao implements DaoCrud<Long, Sector>{
 
     @Override
     public boolean delete(Long id) {
-//        try(var connection = ConnectionManager.get();
-//            var statement = connection.prepareStatement(DELETE_SQL)){
-//            statement.setLong(1, id);
-//
-//            return statement.executeUpdate() > 0;
-//        } catch (SQLException e) {
-//            throw new DaoCrudException(e);
-//        }
         boolean isSuccessful = false;
         try (Connection connection = ConnectionManager.get()) {
             connection.setAutoCommit(false);

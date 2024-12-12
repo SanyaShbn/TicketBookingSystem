@@ -8,7 +8,7 @@
 <head>
     <title>Arenas</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
-    <script src="<c:url value="/js/toggleFilterFormScript.js"/>"></script>
+    <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
 </head>
 <body>
 <div>
@@ -80,13 +80,6 @@
                     <div><fmt:message key="arena.city"/>: ${arena.city}</div>
                     <div><fmt:message key="arena.capacity"/>: ${arena.capacity}</div>
                     <div><fmt:message key="arena.generalSeatsNumb"/>: ${arena.generalSeatsNumb}</div>
-<%--                    <form action="${pageContext.request.contextPath}/upload-arena-photo" method="post"--%>
-<%--                          enctype="multipart/form-data" style="display:inline;">--%>
-<%--                        <input type="hidden" name="id" value="${arena.id}"/>--%>
-<%--                        <input type="file" name="arenaPhoto"/>--%>
-<%--                        <button type="submit">Добавить фото арены</button>--%>
-<%--                    </form>--%>
-<%--                    <c:if test="${sessionScope.user.role == 'ADMIN'}">--%>
                         <form action="${pageContext.request.contextPath}/admin/update-arena" method="get" style="display:inline;">
                             <input type="hidden" name="id" value="${arena.id}"/>
                             <button type="submit"><fmt:message key="button.update"/></button>
@@ -95,7 +88,6 @@
                             <input type="hidden" name="id" value="${arena.id}"/>
                             <button type="submit"><fmt:message key="button.delete"/></button>
                         </form>
-<%--                    </c:if>--%>
                 </div>
             </c:forEach>
             <div class="pagination" style="padding-top: 145px">

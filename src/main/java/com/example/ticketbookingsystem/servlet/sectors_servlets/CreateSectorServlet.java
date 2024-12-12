@@ -99,7 +99,7 @@ public class CreateSectorServlet extends HttpServlet {
                         "Ошибка! Запись о секторе с заданным наименованием уже существует. " +
                         "Проверьте корректность ввода данных"));
                 case "ERROR_CHECK_CAPACITY" -> sqlExceptionResult.add(Error.of("create.sector.fail",
-                        "Ошибка! Общее максимально возможное количество мест в секторах для" +
+                        "Ошибка! Общее максимально возможное количество мест в секторах для " +
                         "заданной арены превышает ее вместимость. Проверьте корреткность ввода данных"));
                 default -> sqlExceptionResult.add(Error.of("create.row.fail", errorMessage));
             }

@@ -12,10 +12,11 @@ import java.util.Set;
 
 @WebFilter("/*")
 public class AuthorizationFilter implements Filter {
-    private static final Set<String> PUBLIC_PATH = Set.of("/login", "/registration", "/logout", "/css/", "/js/");
+    private static final Set<String> PUBLIC_PATH = Set.of("/login", "/registration", "/logout",
+            "/css/", "/js/");
     private static final Map<String, Set<String>> ROLE_URL_MAP = Map.of(
             "ADMIN", Set.of("/admin", "/admin/*"),
-            "USER", Set.of("/view_available_events", "/view_available_tickets")
+            "USER", Set.of("/view_available_events", "/view_available_tickets", "/user_cart", "/purchase")
     );
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
