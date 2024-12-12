@@ -154,6 +154,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     else {
                         console.error('Failed to add item to cart.');
+                        showErrorMessage("Данный билет бронируется другим пользователем. " +
+                            "Просим прощения за доставленные неудобства");
                     }
                 }).catch(error => console.error('Error:', error));
         }

@@ -45,6 +45,7 @@
 <head>
     <title>User's Cart</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
+    <script src="<c:url value="/js/error-notification.js"/>"></script>
     <script src="<c:url value="/js/users-cart-script.js"/>"></script>
     <script src="<c:url value="/js/handle-confirm-form.js"/>"></script>
 </head>

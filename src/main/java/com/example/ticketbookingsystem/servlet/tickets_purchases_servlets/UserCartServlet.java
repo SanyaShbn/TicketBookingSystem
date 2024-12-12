@@ -36,29 +36,19 @@ public class UserCartServlet extends HttpServlet {
         String ticketId = request.getParameter("ticketId");
         String action = request.getParameter("action");
 
-        try{
-            if ("clear".equals(action) || ticketId == null || ticketId.isEmpty()) {
-                handleClearAction(user, response);
+        if ("clear".equals(action) || ticketId == null || ticketId.isEmpty()) {
+            handleClearAction(user, response);
+        }
+        else {
+            Long ticketIdLong = Long.parseLong(ticketId);
+            UserCartDto userCartDto = buildUserCartDto(user, ticketIdLong);
+            String status = ticketService.getTicketStatus(ticketIdLong);
+            if (status != null) {
+                handleAction(action, status, userCartDto, response);
             }
             else {
-                Long ticketIdLong = Long.parseLong(ticketId);
-                UserCartDto userCartDto = buildUserCartDto(user, ticketIdLong);
-                String status = ticketService.getTicketStatus(ticketIdLong);
-                if (status != null) {
-                    handleAction(action, status, userCartDto, response);
-                }
-                else {
-                    sendErrorResponse(response, "Ticket not found");
-                }
+                sendErrorResponse(response, "Ticket not found");
             }
-        } catch (SQLException e) {
-            ValidationResult validationResult = new ValidationResult();
-            validationResult.add(Error.of("user.cart.items.error",
-                    "Данный билет бронируется другим пользователем." +
-                            " Просим прощения за доставленные неудобства"));
-            request.setAttribute("errors", validationResult.getErrors());
-            request.getRequestDispatcher(JspFilesResolver.getPath("/error-jsp/error-page"))
-                    .forward(request, response);
         }
     }
 
@@ -75,14 +65,14 @@ public class UserCartServlet extends HttpServlet {
     }
 
     private void handleAction(String action, String status, UserCartDto userCartDto, HttpServletResponse response)
-            throws IOException, SQLException {
+            throws IOException {
         switch (action) {
             case "add" -> {
                 if ("AVAILABLE".equals(status)) {
                     userCartService.addItemToCart(userCartDto);
                     sendSuccessResponse(response);
                 } else {
-                    throw new SQLException();
+                    sendErrorResponse(response, "Concurrency error");
                 }
             }
             case "remove" -> {
