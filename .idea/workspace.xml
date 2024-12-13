@@ -9,14 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tomcat/conf/context.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tomcat/conf/logging.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Tried to deploy (not fully successful yet)">
+      <change afterPath="$PROJECT_DIR$/initdb/init.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/login.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tomcat/conf/context.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tomcat/conf/context.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tomcat/logs/catalina.2024-12-13.log" beforeDir="false" afterPath="$PROJECT_DIR$/tomcat/logs/catalina.2024-12-13.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tomcat/logs/localhost_access_log.2024-12-13.txt" beforeDir="false" afterPath="$PROJECT_DIR$/tomcat/logs/localhost_access_log.2024-12-13.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -266,7 +266,10 @@
       <workItem from="1734076616037" duration="2771000" />
       <workItem from="1734080481622" duration="1804000" />
       <workItem from="1734082758612" duration="44000" />
-      <workItem from="1734089535659" duration="1379000" />
+      <workItem from="1734089535659" duration="1498000" />
+      <workItem from="1734106323544" duration="4932000" />
+      <workItem from="1734117352864" duration="591000" />
+      <workItem from="1734118164221" duration="3637000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -388,7 +391,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734000101795</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Tried to deploy (not fully successful yet)">
+      <option name="closed" value="true" />
+      <created>1734091024393</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1734091024393</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -422,6 +433,7 @@
     <MESSAGE value="Started ticket purchase functionality (with implemented authorization)" />
     <MESSAGE value="Managed concurrency when adding tickets into user's cart before committing purchase" />
     <MESSAGE value="Implemented committing purchase functionality + viewing purchased tickets" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented committing purchase functionality + viewing purchased tickets" />
+    <MESSAGE value="Tried to deploy (not fully successful yet)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tried to deploy (not fully successful yet)" />
   </component>
 </project>

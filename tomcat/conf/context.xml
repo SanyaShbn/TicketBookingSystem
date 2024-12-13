@@ -1,4 +1,4 @@
-<Context>
+<Context path="/">
     <Resource name="jdbc/ticket-booking-system"
               auth="Container"
               type="javax.sql.DataSource"
