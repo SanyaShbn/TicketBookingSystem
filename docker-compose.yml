@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:13
+    container_name: postgres_container
+    environment:
+      POSTGRES_DB: ticket-booking-system
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: tomcat_container
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=ticket-booking-system
+      - DB_USER=postgres
+      - DB_PASSWORD=12345
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./tomcat/logs:/usr/local/tomcat/logs
+
+volumes:
+  db_data:
