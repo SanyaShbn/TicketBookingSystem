@@ -7,7 +7,7 @@ import com.example.ticketbookingsystem.exception.ValidationException;
 import java.util.List;
 
 public class PurchasedTicketsService {
-    private final static PurchasedTicketsService INSTANCE = new PurchasedTicketsService();
+    private static final PurchasedTicketsService INSTANCE = new PurchasedTicketsService();
     private final PurchasedTicketsDao purchasedTicketsDao = PurchasedTicketsDao.getInstance();
     private PurchasedTicketsService(){}
     public static PurchasedTicketsService getInstance(){

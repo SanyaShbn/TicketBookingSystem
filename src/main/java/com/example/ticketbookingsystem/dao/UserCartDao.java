@@ -13,25 +13,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserCartDao {
-    private final static UserCartDao INSTANCE = new UserCartDao();
-    private final static String SAVE_SQL = """
+    private static final UserCartDao INSTANCE = new UserCartDao();
+    private static final String SAVE_SQL = """
             INSERT INTO user_cart (user_id, ticket_id) VALUES (?, ?)
             """;
-    private final static String DELETE_SQL = """
+    private static final String DELETE_SQL = """
             DELETE FROM user_cart WHERE user_id = ? AND ticket_id = ?
             """;
-    private final static String UPDATE_TICKET_STATUS_SQL = """
+    private static final String UPDATE_TICKET_STATUS_SQL = """
             UPDATE ticket SET status = ? WHERE id = ?
             """;
-    private final static String CLEAR_USER_CART_SQL = """
+    private static final String CLEAR_USER_CART_SQL = """
             DELETE FROM user_cart WHERE user_id = ?
             """;
-    private final static String UPDATE_ALL_TICKET_STATUS_SQL = """
+    private static final String UPDATE_ALL_TICKET_STATUS_SQL = """
             UPDATE ticket SET status = 'AVAILABLE'
             WHERE id IN (SELECT ticket_id FROM user_cart WHERE user_id = ?) AND status = 'RESERVED'
             """;
 
-    private final static String GET_TICKET_IDS = """
+    private static final String GET_TICKET_IDS = """
             SELECT ticket_id FROM user_cart WHERE user_id = ?
             """;
     public static UserCartDao getInstance(){

@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.util.List;
 
 public class UserCartService {
-    private final static UserCartService INSTANCE = new UserCartService();
+    private static final UserCartService INSTANCE = new UserCartService();
     private final UserCartDao userCartDao = UserCartDao.getInstance();
     private UserCartService(){}
 

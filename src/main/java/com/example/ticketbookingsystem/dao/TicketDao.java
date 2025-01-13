@@ -16,16 +16,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TicketDao implements DaoCrud<Long, Ticket>{
-    private final static TicketDao INSTANCE = new TicketDao();
-    private final static SportEventService sportEventService = SportEventService.getInstance();
+    private static final TicketDao INSTANCE = new TicketDao();
+    private static final SportEventService sportEventService = SportEventService.getInstance();
 
-    private final static SeatService seatService = SeatService.getInstance();
-    private final static String SAVE_SQL = """ 
+    private static final SeatService seatService = SeatService.getInstance();
+    private static final String SAVE_SQL = """ 
             INSERT INTO ticket (status, price, event_id, seat_id)
             VALUES (?, ?, ?, ?);
     """;
 
-    private final static String DELETE_SQL = """
+    private static final String DELETE_SQL = """
             UPDATE ticket
             SET event_id=null,
                 seat_id=null
@@ -33,7 +33,7 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
             
             DELETE FROM ticket WHERE id=?
             """;
-    private final static String UPDATE_SQL = """
+    private static final String UPDATE_SQL = """
             UPDATE ticket
             SET status=?,
                 price=?,
@@ -41,18 +41,18 @@ public class TicketDao implements DaoCrud<Long, Ticket>{
                 seat_id=?
             WHERE id=?
             """;
-    private final static String FIND_ALL_SQL = """
+    private static final String FIND_ALL_SQL = """
             SELECT id, status, price, event_id, seat_id FROM ticket
             """;
 
-    private final static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
+    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
             WHERE id=?
             """;
 
-    private final static String FIND_ALL_BY_EVENT_ID_SQL = FIND_ALL_SQL + """
+    private static final String FIND_ALL_BY_EVENT_ID_SQL = FIND_ALL_SQL + """
             WHERE event_id=?
             """;
-    private final static String GET_TICKET_STATUS_SQL ="""
+    private static final String GET_TICKET_STATUS_SQL ="""
             SELECT status FROM ticket WHERE id = ?
             """;
 

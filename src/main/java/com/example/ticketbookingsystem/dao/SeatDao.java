@@ -12,16 +12,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class SeatDao implements DaoCrud<Long, Seat>{
-    private final static SeatDao INSTANCE = new SeatDao();
-    private final static RowService rowService = RowService.getInstance();
-    private final static String FIND_ALL_SQL = """
+    private static final SeatDao INSTANCE = new SeatDao();
+    private static final RowService rowService = RowService.getInstance();
+    private static final String FIND_ALL_SQL = """
             SELECT id, row_id, seat_number FROM seat s
             """;
 
-    private final static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
+    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
             WHERE s.id=?
             """;
-    private final static String SELECT_SEATS = """
+    private static final String SELECT_SEATS = """
             SELECT s.*
             FROM seat s
             JOIN row r ON s.row_id = r.id
@@ -29,17 +29,17 @@ public class SeatDao implements DaoCrud<Long, Seat>{
             JOIN arena a ON sec.arena_id = a.id
             JOIN sport_event e ON a.id = e.arena_id
             """;
-    private final static String FIND_ALL_BY_EVENT_ID_SQL = SELECT_SEATS + """
+    private static final String FIND_ALL_BY_EVENT_ID_SQL = SELECT_SEATS + """
             WHERE e.id = ?
             ORDER BY sec.sector_name, r.id, s.id;
             """;
-    private final static String FIND_BY_EVENT_ID_WITH_NO_TICKETS_SQL = SELECT_SEATS + """
+    private static final String FIND_BY_EVENT_ID_WITH_NO_TICKETS_SQL = SELECT_SEATS + """
             LEFT JOIN ticket t ON s.id = t.seat_id AND t.event_id = e.id
             WHERE e.id = ?
             AND t.id IS NULL
             ORDER BY sec.sector_name, r.id, s.id;
             """;
-    private final static String FIND_BY_EVENT_ID_WHEN_UPDATE_SQL = SELECT_SEATS + """
+    private static final String FIND_BY_EVENT_ID_WHEN_UPDATE_SQL = SELECT_SEATS + """
             LEFT JOIN ticket t ON s.id = t.seat_id AND t.event_id = e.id
             WHERE e.id = ? AND (t.id IS NULL OR (t.event_id != e.id OR s.id = ?))
             ORDER BY sec.sector_name, r.id, s.id;

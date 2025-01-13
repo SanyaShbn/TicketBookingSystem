@@ -10,7 +10,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.Optional;
 
 public class UserService {
-    private final static UserService INSTANCE = new UserService();
+    private static final UserService INSTANCE = new UserService();
     private final RegisterUserValidator registerUserValidator = RegisterUserValidator.getInstance();
     private final UserDao userDao = UserDao.getInstance();
     private UserService(){}

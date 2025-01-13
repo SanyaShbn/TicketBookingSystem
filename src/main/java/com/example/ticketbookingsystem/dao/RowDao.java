@@ -15,50 +15,50 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class RowDao implements DaoCrud<Long, Row>{
-    private final static RowDao INSTANCE = new RowDao();
-    private final static SectorService sectorService = SectorService.getInstance();
-    private final static String SAVE_SQL = """
+    private static final RowDao INSTANCE = new RowDao();
+    private static final SectorService sectorService = SectorService.getInstance();
+    private static final String SAVE_SQL = """
             INSERT INTO row (row_number, seats_numb, sector_id)
             VALUES (?, ?, ?)
             """;
-    private final static String UPDATE_SECTOR_AFTER_ROW_SAVE_SQL = """
+    private static final String UPDATE_SECTOR_AFTER_ROW_SAVE_SQL = """
             UPDATE sector
             SET available_rows_numb=available_rows_numb + 1,
                 available_seats_numb=available_seats_numb + ?
             WHERE id=?
             """;
-    private final static String UPDATE_SECTOR_AFTER_ROW_DELETE_SQL = """
+    private static final String UPDATE_SECTOR_AFTER_ROW_DELETE_SQL = """
             UPDATE sector
             SET available_rows_numb=available_rows_numb - 1,
                 available_seats_numb=available_seats_numb - ?
             WHERE id=?
             """;
-    private final static String UPDATE_SECTOR_AFTER_ROW_UPDATE_SQL = """
+    private static final String UPDATE_SECTOR_AFTER_ROW_UPDATE_SQL = """
             UPDATE sector
             SET available_seats_numb=available_seats_numb - ? + ?
             WHERE id=?
             """;
-    private final static String DELETE_SQL = """
+    private static final String DELETE_SQL = """
             DELETE FROM row WHERE id=?
             """;
-    private final static String UPDATE_SQL = """
+    private static final String UPDATE_SQL = """
             UPDATE row
             SET row_number=?,
                 seats_numb=?,
                 sector_id=?
             WHERE id=?
             """;
-    private final static String FIND_ALL_SQL = """
+    private static final String FIND_ALL_SQL = """
             SELECT r.id, r.row_number, r.seats_numb, r.sector_id
             FROM public.row r
             JOIN public.sector s on s.id = r.sector_id
             """;
 
-    private final static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
+    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
             WHERE r.id=?
             """;
 
-    private final static String FIND_ALL_BY_SECTOR_ID_SQL = FIND_ALL_SQL + """
+    private static final String FIND_ALL_BY_SECTOR_ID_SQL = FIND_ALL_SQL + """
             WHERE r.sector_id=?
             """;
     public static RowDao getInstance(){

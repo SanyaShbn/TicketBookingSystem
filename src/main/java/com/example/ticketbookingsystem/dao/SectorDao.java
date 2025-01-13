@@ -15,17 +15,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SectorDao implements DaoCrud<Long, Sector>{
-    private final static SectorDao INSTANCE = new SectorDao();
-    private final static ArenaService arenaService = ArenaService.getInstance();
-    private final static String SAVE_SQL = """
+    private static final SectorDao INSTANCE = new SectorDao();
+    private static final ArenaService arenaService = ArenaService.getInstance();
+    private static final String SAVE_SQL = """
             INSERT INTO sector (sector_name, arena_id, max_rows_numb,
             max_seats_numb)
             VALUES (?, ?, ?, ?)
             """;
-    private final static String DELETE_SQL = """
+    private static final String DELETE_SQL = """
             DELETE FROM sector WHERE id=?
             """;
-    private final static String UPDATE_SQL = """
+    private static final String UPDATE_SQL = """
             UPDATE sector
             SET sector_name=?,
                 arena_id=?,
@@ -33,32 +33,32 @@ public class SectorDao implements DaoCrud<Long, Sector>{
                 max_seats_numb=?
             WHERE id=?
             """;
-    private final static String FIND_ALL_SQL = """
+    private static final String FIND_ALL_SQL = """
             SELECT s.id, s.sector_name, s.arena_id, s.max_rows_numb, s.available_rows_numb,
             s.max_seats_numb, s.available_seats_numb
             FROM public.sector s
             JOIN public.arena a on a.id = s.arena_id
             """;
 
-    private final static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
+    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
             WHERE s.id=?
             """;
 
-    private final static String FIND_ALL_BY_ARENA_ID_SQL = FIND_ALL_SQL + """
+    private static final String FIND_ALL_BY_ARENA_ID_SQL = FIND_ALL_SQL + """
             WHERE s.arena_id=?
             """;
 
-    private final static String UPDATE_ARENA_AFTER_SECTOR_SAVE_SQL = """
+    private static final String UPDATE_ARENA_AFTER_SECTOR_SAVE_SQL = """
             UPDATE arena
             SET general_seats_numb=general_seats_numb + ?
             WHERE id=?
             """;
-    private final static String UPDATE_ARENA_AFTER_SECTOR_UPDATE_SQL = """
+    private static final String UPDATE_ARENA_AFTER_SECTOR_UPDATE_SQL = """
             UPDATE arena
             SET general_seats_numb=arena.general_seats_numb - ? + ?
             WHERE id=?
             """;
-    private final static String UPDATE_ARENA_AFTER_SECTOR_DELETE_SQL = """
+    private static final String UPDATE_ARENA_AFTER_SECTOR_DELETE_SQL = """
             UPDATE arena
             SET general_seats_numb=general_seats_numb - ?
             WHERE id=?

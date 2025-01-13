@@ -14,27 +14,27 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SportEventDao implements DaoCrud<Long, SportEvent>{
-    private final static SportEventDao INSTANCE = new SportEventDao();
-    private final static ArenaService arenaService = ArenaService.getInstance();
-    private final static String SAVE_SQL = """
+    private static final SportEventDao INSTANCE = new SportEventDao();
+    private static final ArenaService arenaService = ArenaService.getInstance();
+    private static final String SAVE_SQL = """
             INSERT INTO sport_event (event_name, event_date_time, arena_id)
             VALUES (?, ?, ?)
             """;
-    private final static String DELETE_SQL = """
+    private static final String DELETE_SQL = """
             DELETE FROM sport_event WHERE id=?
             """;
-    private final static String UPDATE_SQL = """
+    private static final String UPDATE_SQL = """
             UPDATE sport_event
             SET event_name=?,
                 event_date_time=?,
                 arena_id=?
             WHERE id=?
             """;
-    private final static String FIND_ALL_SQL = """
+    private static final String FIND_ALL_SQL = """
             SELECT id, event_name, event_date_time, arena_id FROM sport_event
             """;
 
-    private final static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
+    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
             WHERE id=?
             """;
     public static SportEventDao getInstance(){

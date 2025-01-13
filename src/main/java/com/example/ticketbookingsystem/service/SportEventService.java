@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SportEventService {
-    private final static SportEventService INSTANCE = new SportEventService();
+    private static final SportEventService INSTANCE = new SportEventService();
     private final SportEventDao sportEventDao = SportEventDao.getInstance();
     private SportEventService(){}
 

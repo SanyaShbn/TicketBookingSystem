@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class TicketService {
-    private final static TicketService INSTANCE = new TicketService();
+    private static final TicketService INSTANCE = new TicketService();
     private final TicketDao ticketDao = TicketDao.getInstance();
     private TicketService(){}
 

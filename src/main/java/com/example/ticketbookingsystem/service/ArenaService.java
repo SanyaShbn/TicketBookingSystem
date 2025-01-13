@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ArenaService {
-    private final static ArenaService INSTANCE = new ArenaService();
+    private static final ArenaService INSTANCE = new ArenaService();
     private final ArenaDao arenaDao = ArenaDao.getInstance();
     private final CreateOrUpdateArenaValidator createOrUpdateArenaValidator = CreateOrUpdateArenaValidator.getInstance();
     private ArenaService(){}

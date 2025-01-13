@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SeatService {
-    private final static SeatService INSTANCE = new SeatService();
+    private static final SeatService INSTANCE = new SeatService();
     private final SeatDao seatDao = SeatDao.getInstance();
     private SeatService(){}
 

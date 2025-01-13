@@ -12,16 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PurchasedTicketsDao {
-    private final static PurchasedTicketsDao INSTANCE = new PurchasedTicketsDao();
+    private static final PurchasedTicketsDao INSTANCE = new PurchasedTicketsDao();
 
-    private final static String UPDATE_TICKET_TABLE_SQL = """
+    private static final String UPDATE_TICKET_TABLE_SQL = """
             UPDATE ticket SET status = 'SOLD' WHERE id = ?
             """;
 
-    private final static String SAVE_SQL = """
+    private static final String SAVE_SQL = """
             INSERT INTO purchased_tickets (user_id, ticket_id) VALUES (?, ?)
             """;
-    private final static String FIND_ALL_BY_USER_ID_SQL = """
+    private static final String FIND_ALL_BY_USER_ID_SQL = """
             SELECT t.id as ticket_id, e.event_name, e.event_date_time, a.name as arena_name, a.city as arena_city,
                             s.sector_name, r.row_number, se.seat_number, t.price
                             FROM purchased_tickets pt

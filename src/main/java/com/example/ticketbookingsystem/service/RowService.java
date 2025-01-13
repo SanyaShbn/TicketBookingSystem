@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class RowService {
-    private final static RowService INSTANCE = new RowService();
+    private static final RowService INSTANCE = new RowService();
     private final RowDao rowDao = RowDao.getInstance();
     private RowService(){}
     public static RowService getInstance(){

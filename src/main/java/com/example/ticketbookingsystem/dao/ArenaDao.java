@@ -14,30 +14,30 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ArenaDao implements DaoCrud<Long, Arena>{
-    private final static ArenaDao INSTANCE = new ArenaDao();
-    private final static String SAVE_SQL = """
+    private static final ArenaDao INSTANCE = new ArenaDao();
+    private static final String SAVE_SQL = """
             INSERT INTO arena (name, city, capacity)
             VALUES (?, ?, ?)
             """;
-    private final static String DELETE_SQL = """
+    private static final String DELETE_SQL = """
             DELETE FROM arena WHERE id=?
             """;
-    private final static String UPDATE_SQL = """
+    private static final String UPDATE_SQL = """
             UPDATE arena
             SET name=?,
                 city=?,
                 capacity=?
             WHERE id=?
             """;
-    private final static String FIND_ALL_SQL = """
+    private static final String FIND_ALL_SQL = """
             SELECT id, name, city, capacity, general_seats_numb FROM arena
             """;
 
-    private final static String FIND_ALL_CITIES_SQL = """
+    private static final String FIND_ALL_CITIES_SQL = """
             SELECT DISTINCT city FROM arena
             """;
 
-    private final static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
+    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
             WHERE id=?
             """;
     public static ArenaDao getInstance(){

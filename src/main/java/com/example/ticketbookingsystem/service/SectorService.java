@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SectorService {
-    private final static SectorService INSTANCE = new SectorService();
+    private static final SectorService INSTANCE = new SectorService();
     private final SectorDao sectorDao = SectorDao.getInstance();
     private SectorService(){}
     public static SectorService getInstance(){
