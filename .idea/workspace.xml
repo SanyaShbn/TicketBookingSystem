@@ -9,22 +9,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Connected Hibernate. Started implementing Hibernate for User entity">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/AbstractHibernateDao.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Implemented Hibernate for User and Arena entities">
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/hibernate/HibernateRunner.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/HibernateRunnerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/hibernate.cfg.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/ArenaDaoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/UserDaoTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/ArenaDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/ArenaDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Arena.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/utils/HibernateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/utils/HibernateUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,31 +108,81 @@
       <recent name="D:\TicketBookingSystem\src\main\webapp" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.1">
-    <configuration name="HibernateRunner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.example.ticketbookingsystem.hibernate.HibernateRunner" />
+  <component name="RunManager" selected="JUnit.UserDaoTest.testRegisterUser">
+    <configuration name="HibernateUtilTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.ticketbookingsystem.hibernate.*" />
+          <option name="PATTERN" value="ticketbookingsystem.utils.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.utils" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.utils.HibernateUtilTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HibernateRunnerTest.checkH2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserDaoTest.testFindByEmail" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.*" />
+          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.HibernateRunnerTest" />
-      <option name="METHOD_NAME" value="checkH2" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.UserDaoTest" />
+      <option name="METHOD_NAME" value="testFindByEmail" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserDaoTest.testFindByEmailNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.UserDaoTest" />
+      <option name="METHOD_NAME" value="testFindByEmailNotFound" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserDaoTest.testRegisterUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.UserDaoTest" />
+      <option name="METHOD_NAME" value="testRegisterUser" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserDaoTest.testRegisterUserThrowsException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.UserDaoTest" />
+      <option name="METHOD_NAME" value="testRegisterUserThrowsException" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -232,8 +276,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.HibernateRunnerTest.checkH2" />
-        <item itemvalue="Application.HibernateRunner" />
+        <item itemvalue="JUnit.UserDaoTest.testRegisterUser" />
+        <item itemvalue="JUnit.UserDaoTest.testFindByEmail" />
+        <item itemvalue="JUnit.UserDaoTest.testFindByEmailNotFound" />
+        <item itemvalue="JUnit.UserDaoTest.testRegisterUserThrowsException" />
+        <item itemvalue="JUnit.HibernateUtilTest" />
       </list>
     </recent_temporary>
   </component>
@@ -335,7 +382,7 @@
       <workItem from="1736851681616" duration="8825000" />
       <workItem from="1736862354235" duration="1474000" />
       <workItem from="1736871307301" duration="3058000" />
-      <workItem from="1736876892562" duration="7363000" />
+      <workItem from="1736876892562" duration="10832000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -489,7 +536,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736860875265</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Implemented Hibernate for User and Arena entities">
+      <option name="closed" value="true" />
+      <created>1736884428177</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1736884428177</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -527,6 +582,7 @@
     <MESSAGE value="Deployed with Docker (please, check README file in order to get info about admin credentials and check admin functionality when running the app)" />
     <MESSAGE value="Did some refactoring" />
     <MESSAGE value="Connected Hibernate. Started implementing Hibernate for User entity" />
-    <option name="LAST_COMMIT_MESSAGE" value="Connected Hibernate. Started implementing Hibernate for User entity" />
+    <MESSAGE value="Implemented Hibernate for User and Arena entities" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented Hibernate for User and Arena entities" />
   </component>
 </project>
