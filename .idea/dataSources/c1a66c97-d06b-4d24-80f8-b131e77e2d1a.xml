@@ -11,9 +11,9 @@
 4||10|c|G
 4||10|C|G
 4||10|T|G</Grants>
-      <IntrospectionStateNumber>11956</IntrospectionStateNumber>
+      <IntrospectionStateNumber>12692</IntrospectionStateNumber>
       <ServerVersion>16.1</ServerVersion>
-      <StartupTime>1733929440</StartupTime>
+      <StartupTime>1734893364</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -808,7 +808,7 @@ false Zulu
 14697||10|C|G
 14697||-9223372036854775808|U|G
 14697||10|U|G</Grants>
-      <IntrospectionStateNumber>11956</IntrospectionStateNumber>
+      <IntrospectionStateNumber>12692</IntrospectionStateNumber>
       <ObjectId>22622</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -849,50 +849,50 @@ false Zulu
       <ObjectId>20130</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
-    <role id="12" parent="1" name="pg_database_owner">
+    <role id="12" parent="1" name="pg_checkpoint">
+      <ObjectId>4544</ObjectId>
+    </role>
+    <role id="13" parent="1" name="pg_create_subscription">
+      <ObjectId>6304</ObjectId>
+    </role>
+    <role id="14" parent="1" name="pg_database_owner">
       <ObjectId>6171</ObjectId>
     </role>
-    <role id="13" parent="1" name="pg_read_all_data">
-      <ObjectId>6181</ObjectId>
+    <role id="15" parent="1" name="pg_execute_server_program">
+      <ObjectId>4571</ObjectId>
     </role>
-    <role id="14" parent="1" name="pg_write_all_data">
-      <ObjectId>6182</ObjectId>
-    </role>
-    <role id="15" parent="1" name="pg_monitor">
+    <role id="16" parent="1" name="pg_monitor">
       <ObjectId>3373</ObjectId>
       <RoleGrants>3374
 3375
 3377</RoleGrants>
     </role>
-    <role id="16" parent="1" name="pg_read_all_settings">
+    <role id="17" parent="1" name="pg_read_all_data">
+      <ObjectId>6181</ObjectId>
+    </role>
+    <role id="18" parent="1" name="pg_read_all_settings">
       <ObjectId>3374</ObjectId>
     </role>
-    <role id="17" parent="1" name="pg_read_all_stats">
+    <role id="19" parent="1" name="pg_read_all_stats">
       <ObjectId>3375</ObjectId>
     </role>
-    <role id="18" parent="1" name="pg_stat_scan_tables">
-      <ObjectId>3377</ObjectId>
-    </role>
-    <role id="19" parent="1" name="pg_read_server_files">
+    <role id="20" parent="1" name="pg_read_server_files">
       <ObjectId>4569</ObjectId>
     </role>
-    <role id="20" parent="1" name="pg_write_server_files">
-      <ObjectId>4570</ObjectId>
-    </role>
-    <role id="21" parent="1" name="pg_execute_server_program">
-      <ObjectId>4571</ObjectId>
-    </role>
-    <role id="22" parent="1" name="pg_signal_backend">
+    <role id="21" parent="1" name="pg_signal_backend">
       <ObjectId>4200</ObjectId>
     </role>
-    <role id="23" parent="1" name="pg_checkpoint">
-      <ObjectId>4544</ObjectId>
+    <role id="22" parent="1" name="pg_stat_scan_tables">
+      <ObjectId>3377</ObjectId>
     </role>
-    <role id="24" parent="1" name="pg_use_reserved_connections">
+    <role id="23" parent="1" name="pg_use_reserved_connections">
       <ObjectId>4550</ObjectId>
     </role>
-    <role id="25" parent="1" name="pg_create_subscription">
-      <ObjectId>6304</ObjectId>
+    <role id="24" parent="1" name="pg_write_all_data">
+      <ObjectId>6182</ObjectId>
+    </role>
+    <role id="25" parent="1" name="pg_write_server_files">
+      <ObjectId>4570</ObjectId>
     </role>
     <role id="26" parent="1" name="postgres">
       <BypassRls>1</BypassRls>
@@ -4264,9 +4264,9 @@ false Zulu
     <schema id="272" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>11956</IntrospectionStateNumber>
-      <IntrospectionTimestamp>2024-12-12.11:01:00.275</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2024-12-12.08:01:01</LocalIntrospectionTimestamp>
+      <IntrospectionStateNumber>12692</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2025-01-14.15:44:10.988</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2025-01-14.12:44:11</LocalIntrospectionTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>524</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -4364,7 +4364,7 @@ false Zulu
     <sequence id="282" parent="272" name="arena_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22630</ObjectId>
-      <SequenceIdentity>1(54)</SequenceIdentity>
+      <SequenceIdentity>1(57)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9558</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4372,7 +4372,7 @@ false Zulu
     <sequence id="283" parent="272" name="purchased_tickets_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22887</ObjectId>
-      <SequenceIdentity>1(26)</SequenceIdentity>
+      <SequenceIdentity>1(54)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>10994</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4388,7 +4388,7 @@ false Zulu
     <sequence id="285" parent="272" name="row_row_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22716</ObjectId>
-      <SequenceIdentity>1(95)</SequenceIdentity>
+      <SequenceIdentity>1(115)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9684</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4396,7 +4396,7 @@ false Zulu
     <sequence id="286" parent="272" name="seat_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22754</ObjectId>
-      <SequenceIdentity>1(20541)</SequenceIdentity>
+      <SequenceIdentity>1(21026)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9963</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4404,7 +4404,7 @@ false Zulu
     <sequence id="287" parent="272" name="sector_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22703</ObjectId>
-      <SequenceIdentity>1(39)</SequenceIdentity>
+      <SequenceIdentity>1(44)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9667</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4412,7 +4412,7 @@ false Zulu
     <sequence id="288" parent="272" name="sport_event_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>22770</ObjectId>
-      <SequenceIdentity>1(61)</SequenceIdentity>
+      <SequenceIdentity>1(65)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9997</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4420,7 +4420,7 @@ false Zulu
     <sequence id="289" parent="272" name="ticket_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22796</ObjectId>
-      <SequenceIdentity>1(108)</SequenceIdentity>
+      <SequenceIdentity>1(121)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>10092</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4428,7 +4428,7 @@ false Zulu
     <sequence id="290" parent="272" name="user_cart_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22886</ObjectId>
-      <SequenceIdentity>1(264)</SequenceIdentity>
+      <SequenceIdentity>1(355)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>10992</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4436,7 +4436,7 @@ false Zulu
     <sequence id="291" parent="272" name="users_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22852</ObjectId>
-      <SequenceIdentity>1(11)</SequenceIdentity>
+      <SequenceIdentity>1(16)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>10823</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4503,7 +4503,7 @@ false Zulu
     </table>
     <table id="302" parent="272" name="users">
       <ObjectId>22823</ObjectId>
-      <StateNumber>10820</StateNumber>
+      <StateNumber>12691</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
@@ -5212,7 +5212,13 @@ role_id</ColNames>
       <StateNumber>10828</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="401" parent="302" name="users_pkey">
+    <column id="401" parent="302" name="role">
+      <DasType>varchar(32)|0s</DasType>
+      <Position>4</Position>
+      <StateNumber>12691</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <index id="402" parent="302" name="users_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22826</ObjectId>
@@ -5221,7 +5227,7 @@ role_id</ColNames>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="402" parent="302" name="users_email_key">
+    <index id="403" parent="302" name="users_email_key">
       <ColNames>email</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22828</ObjectId>
@@ -5232,14 +5238,14 @@ role_id</ColNames>
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="403" parent="302" name="users_pkey">
+    <key id="404" parent="302" name="users_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22827</ObjectId>
       <Primary>1</Primary>
       <StateNumber>10818</StateNumber>
       <UnderlyingIndexId>22826</UnderlyingIndexId>
     </key>
-    <key id="404" parent="302" name="users_email_key">
+    <key id="405" parent="302" name="users_email_key">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>22829</ObjectId>
       <StateNumber>10818</StateNumber>

@@ -1,6 +1,7 @@
 package com.example.ticketbookingsystem.servlet.authorization_servlets;
 
 import com.example.ticketbookingsystem.dto.UserDto;
+import com.example.ticketbookingsystem.entity.Role;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.UserService;
@@ -28,6 +29,7 @@ public class RegistrationServlet extends HttpServlet {
         var userDto = UserDto.builder()
                 .email(req.getParameter("email"))
                 .password(req.getParameter("password"))
+                .role(Role.USER.name())
                 .confirmPassword(req.getParameter("confirm-password"))
                 .build();
         try {

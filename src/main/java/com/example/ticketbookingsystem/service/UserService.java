@@ -2,6 +2,7 @@ package com.example.ticketbookingsystem.service;
 
 import com.example.ticketbookingsystem.dao.UserDao;
 import com.example.ticketbookingsystem.dto.UserDto;
+import com.example.ticketbookingsystem.entity.Role;
 import com.example.ticketbookingsystem.entity.User;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.validator.RegisterUserValidator;
@@ -42,12 +43,14 @@ public class UserService {
         return User.builder()
                 .email(userDto.getEmail())
                 .password(hashedPassword)
+                .role(Role.valueOf(userDto.getRole()))
                 .build();
     }
     private UserDto mapToDto(User user) {
         return UserDto.builder()
                 .email(user.getEmail())
                 .password(user.getPassword())
+                .role(user.getRole().name())
                 .build();
     }
 }

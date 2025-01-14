@@ -48,7 +48,9 @@ public class LoginServlet extends HttpServlet {
         optionalUser.ifPresentOrElse(user -> {
             req.getSession().setAttribute("user", user);
 
-            String userRole = userService.getUserRole(user.getId());
+//            String userRole = userService.getUserRole(user.getId());
+            String userRole = user.getRole().name();
+
             req.getSession().setAttribute("role", userRole);
             try {
                 if(userRole.equals(Role.ADMIN.name())){

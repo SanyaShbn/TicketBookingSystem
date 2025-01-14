@@ -1,8 +1,12 @@
 package com.example.ticketbookingsystem.dao;
 
+import com.example.ticketbookingsystem.entity.Role;
 import com.example.ticketbookingsystem.entity.User;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.utils.ConnectionManager;
+import com.example.ticketbookingsystem.utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,33 +67,57 @@ public class UserDao implements DaoCrud<Long, User>{
         return role;
     }
 
+    // save() using JDBC
+
+//    @Override
+//    public User save(User user) {
+//        try(var connection = ConnectionManager.get();
+//            var statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
+//            var findRoleStatement = connection.prepareStatement(FIND_ROLE_ID_SQL)
+//            ){
+//            statement.setString(1, user.getEmail());
+//            statement.setString(2, user.getPassword());
+//            statement.executeUpdate();
+//            var keys = statement.getGeneratedKeys();
+//            if(keys.next()){
+//                user.setId(keys.getLong("id"));
+//            }
+//
+//            findRoleStatement.setString(1, "USER");
+//            var resultSet = findRoleStatement.executeQuery();
+//            if (resultSet.next()) {
+//                long roleId = resultSet.getLong("id");
+//                try (var assignUserRoleStatement = connection.prepareStatement(ASSIGN_ROLE_SQL)) {
+//                    assignUserRoleStatement.setLong(1, user.getId());
+//                    assignUserRoleStatement.setLong(2, roleId);
+//                    assignUserRoleStatement.executeUpdate();
+//                }
+//            }
+//
+//            return user;
+//        } catch (SQLException e) {
+//            throw new DaoCrudException(e);
+//        }
+//    }
+
+    // save() using Hibernate
+
     @Override
     public User save(User user) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
-            var findRoleStatement = connection.prepareStatement(FIND_ROLE_ID_SQL)
-            ){
-            statement.setString(1, user.getEmail());
-            statement.setString(2, user.getPassword());
-            statement.executeUpdate();
-            var keys = statement.getGeneratedKeys();
-            if(keys.next()){
-                user.setId(keys.getLong("id"));
-            }
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
 
-            findRoleStatement.setString(1, "USER");
-            var resultSet = findRoleStatement.executeQuery();
-            if (resultSet.next()) {
-                long roleId = resultSet.getLong("id");
-                try (var assignUserRoleStatement = connection.prepareStatement(ASSIGN_ROLE_SQL)) {
-                    assignUserRoleStatement.setLong(1, user.getId());
-                    assignUserRoleStatement.setLong(2, roleId);
-                    assignUserRoleStatement.executeUpdate();
-                }
-            }
+            // Сохранение пользователя
+            Long userId = (Long) session.save(user);
+            user.setId(userId);
 
+            transaction.commit();
             return user;
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new DaoCrudException(e);
         }
     }
@@ -99,6 +127,7 @@ public class UserDao implements DaoCrud<Long, User>{
                 .id(resultSet.getLong("id"))
                 .email(resultSet.getString("email"))
                 .password(resultSet.getString("password"))
+                .role(Role.valueOf(resultSet.getString("role")))
                 .build();
     }
 }
