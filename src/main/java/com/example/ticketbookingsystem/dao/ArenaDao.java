@@ -2,208 +2,91 @@ package com.example.ticketbookingsystem.dao;
 
 import com.example.ticketbookingsystem.dto.ArenaFilter;
 import com.example.ticketbookingsystem.entity.Arena;
-import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.utils.ConnectionManager;
-import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;;
+import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;
+import com.example.ticketbookingsystem.utils.HibernateUtil;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ArenaDao implements DaoCrud<Long, Arena>{
+public class ArenaDao extends AbstractHibernateDao<Arena> {
     private static final ArenaDao INSTANCE = new ArenaDao();
-    private static final String SAVE_SQL = """
-            INSERT INTO arena (name, city, capacity)
-            VALUES (?, ?, ?)
-            """;
-    private static final String DELETE_SQL = """
-            DELETE FROM arena WHERE id=?
-            """;
-    private static final String UPDATE_SQL = """
-            UPDATE arena
-            SET name=?,
-                city=?,
-                capacity=?
-            WHERE id=?
-            """;
-    private static final String FIND_ALL_SQL = """
-            SELECT id, name, city, capacity, general_seats_numb FROM arena
-            """;
 
-    private static final String FIND_ALL_CITIES_SQL = """
-            SELECT DISTINCT city FROM arena
-            """;
+    private ArenaDao() {
+        super(Arena.class);
+    }
 
-    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
-            WHERE id=?
-            """;
-    public static ArenaDao getInstance(){
+    public static ArenaDao getInstance() {
         return INSTANCE;
     }
-    private ArenaDao(){
-    }
+
     public List<Arena> findAll(ArenaFilter arenaFilter) {
         FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(arenaFilter);
-        String sql = filtrationSqlQueryParameters.sql();
+        String hql = filtrationSqlQueryParameters.sql();
         List<Object> parameters = filtrationSqlQueryParameters.parameters();
 
-        return executeFilterQuery(sql, parameters);
+        return executeFilterQuery(hql, arenaFilter, parameters);
     }
 
     private FiltrationSqlQueryParameters buildSqlQuery(ArenaFilter arenaFilter) {
         List<Object> parameters = new ArrayList<>();
-        List<String> whereSql = new ArrayList<>();
-        List<String> sortSql = new ArrayList<>();
+        List<String> whereHql = new ArrayList<>();
+        List<String> sortHql = new ArrayList<>();
 
         if (arenaFilter.city() != null) {
             parameters.add("%" + arenaFilter.city() + "%");
-            whereSql.add("city LIKE ?");
+            whereHql.add("city LIKE :city");
         }
         if (!arenaFilter.capacitySortOrder().isEmpty()) {
-            sortSql.add("capacity " + arenaFilter.capacitySortOrder());
+            sortHql.add("capacity " + arenaFilter.capacitySortOrder());
         }
         if (!arenaFilter.seatsNumbSortOrder().isEmpty()) {
-            sortSql.add("general_seats_numb " + arenaFilter.seatsNumbSortOrder());
+            sortHql.add("generalSeatsNumb " + arenaFilter.seatsNumbSortOrder());
         }
 
-        var orderBy = sortSql.stream().collect(Collectors.joining(
-                " , ",
-                !sortSql.isEmpty() ? " ORDER BY " : " ",
+        var orderBy = sortHql.stream().collect(Collectors.joining(
+                ", ",
+                !sortHql.isEmpty() ? " ORDER BY " : "",
                 ""
         ));
 
-        parameters.add(arenaFilter.limit());
-        parameters.add(arenaFilter.offset());
-
-        var where = whereSql.stream().collect(Collectors.joining(
+        var where = whereHql.stream().collect(Collectors.joining(
                 " AND ",
-                parameters.size() > 2 ? " WHERE " : " ",
-                orderBy + " LIMIT ? OFFSET ? "
+                !whereHql.isEmpty() ? " WHERE " : "",
+                ""
         ));
 
-        String sql = FIND_ALL_SQL + where;
+        String hql = "FROM Arena " + where + orderBy;
 
-        return new FiltrationSqlQueryParameters(sql, parameters);
+        return new FiltrationSqlQueryParameters(hql, parameters);
     }
-    private List<Arena> executeFilterQuery(String sql, List<Object> parameters) {
-        try (var connection = ConnectionManager.get();
-             var statement = connection.prepareStatement(sql)) {
 
-            for (int i = 0; i < parameters.size(); i++) {
-                statement.setObject(i + 1, parameters.get(i));
+    private List<Arena> executeFilterQuery(String hql, ArenaFilter arenaFilter, List<Object> parameters) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Arena> query = session.createQuery(hql, Arena.class);
+
+            if (arenaFilter.city() != null) {
+                query.setParameter("city", "%" + arenaFilter.city() + "%");
             }
 
-            try (var result = statement.executeQuery()) {
-                List<Arena> arenaList = new ArrayList<>();
-                while (result.next()) {
-                    arenaList.add(buildArena(result));
-                }
-                return arenaList;
-            }
-        } catch (SQLException e) {
+            query.setFirstResult(arenaFilter.offset());
+            query.setMaxResults(arenaFilter.limit());
+
+            return query.list();
+        } catch (HibernateException e) {
             throw new DaoCrudException(e);
         }
-    }
-    @Override
-    public List<Arena> findAll() {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_ALL_SQL)){
-            List<Arena> arenasList = new ArrayList<>();
-
-            var result = statement.executeQuery();
-            while (result.next()){
-                arenasList.add(buildArena(result));
-            }
-            return arenasList;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    @Override
-    public Optional<Arena> findById(Long id) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_BY_ID_SQL)){
-            statement.setLong(1, id);
-            var result = statement.executeQuery();
-            Arena arena = null;
-            if (result.next()){
-                arena = buildArena(result);
-            }
-            return Optional.ofNullable(arena);
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-    @Override
-    public Arena save(Arena arena) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)){
-            setStatement(arena, statement);
-
-            statement.executeUpdate();
-            var keys = statement.getGeneratedKeys();
-            if(keys.next()){
-                arena.setId(keys.getLong("id"));
-            }
-
-            return arena;
-        } catch (SQLException e) {
-            throw new CreateUpdateEntityException(e.getMessage());
-        }
-    }
-    @Override
-    public boolean update(Arena arena) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(UPDATE_SQL)){
-            setStatement(arena, statement);
-            statement.setLong(4, arena.getId());
-
-            return statement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new CreateUpdateEntityException(e.getMessage());
-        }
-    }
-    @Override
-    public boolean delete(Long id) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(DELETE_SQL)){
-            statement.setLong(1, id);
-
-            return statement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new CreateUpdateEntityException(e.getMessage());
-        }
-    }
-    private Arena buildArena(ResultSet result) throws SQLException {
-        return Arena.builder()
-                .id(result.getLong("id"))
-                .name(result.getString("name"))
-                .city(result.getString("city"))
-                .capacity(result.getInt("capacity"))
-                .generalSeatsNumb(result.getInt("general_seats_numb"))
-                .build();
-    }
-    private void setStatement(Arena arena, PreparedStatement statement) throws SQLException {
-        statement.setString(1, arena.getName());
-        statement.setString(2, arena.getCity());
-        statement.setInt(3, arena.getCapacity());
     }
 
     public List<String> findAllArenasCities() {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_ALL_CITIES_SQL)){
-            List<String> cities = new ArrayList<>();
-
-            var result = statement.executeQuery();
-            while (result.next()){
-                cities.add(result.getString("city"));
-            }
-            return cities;
-        } catch (SQLException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<String> query = session.createQuery("select distinct city from Arena", String.class);
+            return query.list();
+        } catch (HibernateException e) {
             throw new DaoCrudException(e);
         }
     }

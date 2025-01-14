@@ -24,14 +24,16 @@ public class UserService {
             throw new ValidationException(validationResult.getErrors());
         }
         User user = buildUserFromDto(userDto);
-        userDao.save(user);
+        userDao.registerUser(user);
     }
     public Optional<User> findByEmail(String email){
         return userDao.findByEmail(email);
     }
-    public String getUserRole(Long userId){
-        return userDao.getUserRole(userId);
-    }
+
+//    public String getUserRole(Long userId){
+//        return userDao.getUserRole(userId);
+//    }
+
     public Optional<UserDto> login(String email, String password) {
         return userDao.findByEmail(email)
                 .filter(user -> BCrypt.checkpw(password, user.getPassword()))
