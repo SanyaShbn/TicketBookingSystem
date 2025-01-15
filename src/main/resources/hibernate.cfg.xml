@@ -21,6 +21,7 @@
     <mapping class="com.example.ticketbookingsystem.entity.User"/>
     <mapping class="com.example.ticketbookingsystem.entity.Arena"/>
     <mapping class="com.example.ticketbookingsystem.entity.Sector"/>
+    <mapping class="com.example.ticketbookingsystem.entity.Row"/>
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
   </session-factory>
