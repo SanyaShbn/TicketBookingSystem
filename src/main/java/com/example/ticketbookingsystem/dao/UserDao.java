@@ -10,8 +10,11 @@ import org.hibernate.Transaction;
 
 import java.util.Optional;
 
+/**
+ * Implementation of the {@link UserAuthentication} interface for managing {@link User} entities.
+ */
 @Slf4j
-public class UserDao{
+public class UserDao implements UserAuthentication{
     private static final UserDao INSTANCE = new UserDao();
 
     public static UserDao getInstance(){
@@ -19,6 +22,7 @@ public class UserDao{
     }
     private UserDao() {}
 
+    @Override
     public Optional<User> findByEmail(String email){
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             User user = session.createQuery("from User where email = :email", User.class)
@@ -31,6 +35,7 @@ public class UserDao{
         }
     }
 
+    @Override
     public void registerUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
