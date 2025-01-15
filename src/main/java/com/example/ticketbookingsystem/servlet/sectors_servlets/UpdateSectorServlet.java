@@ -4,6 +4,8 @@ import com.example.ticketbookingsystem.dto.SectorDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.Sector;
 import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.service.SectorService;
@@ -41,8 +43,8 @@ public class UpdateSectorServlet extends HttpServlet {
             handleUpdateSectorRequest(request, response);
         } catch (NumberFormatException e) {
             handleNumberFormatException(request, response);
-        } catch (CreateUpdateEntityException e) {
-            handleCreateUpdateSectorException(request, response, e);
+        } catch (DaoCrudException e) {
+            handleUpdateSectorException(request, response, e);
         } catch (ValidationException e) {
             handleValidationException(request, response, e);
         }
@@ -80,8 +82,8 @@ public class UpdateSectorServlet extends HttpServlet {
         doGet(request, response);
     }
 
-    private void handleCreateUpdateSectorException(HttpServletRequest request, HttpServletResponse response,
-                                                   CreateUpdateEntityException e)
+    private void handleUpdateSectorException(HttpServletRequest request, HttpServletResponse response,
+                                                   DaoCrudException e)
             throws ServletException, IOException {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);

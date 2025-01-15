@@ -10,6 +10,11 @@ import org.hibernate.Transaction;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Abstract class that provides generic CRUD operations for Hibernate.
+ *
+ * @param <T> The type of the entity.
+ */
 @Slf4j
 public abstract class AbstractHibernateDao<T> {
     private final Class<T> entityClass;
@@ -18,6 +23,12 @@ public abstract class AbstractHibernateDao<T> {
         this.entityClass = entityClass;
     }
 
+    /**
+     * Finds all entities of provided class.
+     *
+     * @return A list of all entities.
+     * @throws DaoCrudException If there is an error during the retrieval process.
+     */
     public List<T> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("from " + entityClass.getName(), entityClass).list();
@@ -27,6 +38,13 @@ public abstract class AbstractHibernateDao<T> {
         }
     }
 
+    /**
+     * Retrieves an entity by its ID.
+     *
+     * @param id The ID of the entity.
+     * @return An Optional containing the entity if found, or an empty Optional if not.
+     * @throws DaoCrudException If there is an error during the retrieval process.
+     */
     public Optional<T> findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return Optional.ofNullable(session.get(entityClass, id));
@@ -36,45 +54,85 @@ public abstract class AbstractHibernateDao<T> {
         }
     }
 
+    /**
+     * Saves a new entity to the database.
+     *
+     * @param entity The entity to be saved.
+     * @throws DaoCrudException If there is an error during the save process.
+     */
     public void save(T entity) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
+        Transaction transaction = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            transaction = session.beginTransaction();
             session.save(entity);
             transaction.commit();
             log.info("Entity saved: {}", entity);
         } catch (HibernateException e) {
+            if(transaction != null){
+                transaction.rollback();
+            }
             log.error("Failed to save entity: {}", entity);
             throw new DaoCrudException(e);
+        } finally {
+            session.close();
         }
     }
 
+    /**
+     * Updates an existing entity in the database.
+     *
+     * @param entity The entity to be updated.
+     * @throws DaoCrudException If there is an error during the update process.
+     */
     public void update(T entity) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
+        Transaction transaction = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            transaction = session.beginTransaction();
             session.update(entity);
             transaction.commit();
             log.info("Entity updated: {}", entity);
         } catch (HibernateException e) {
+            if(transaction != null){
+                transaction.rollback();
+            }
             log.error("Failed to update entity: {}", entity);
             throw new DaoCrudException(e);
+        } finally {
+            session.close();
         }
     }
 
+    /**
+     * Deletes an entity by its ID.
+     *
+     * @param id The ID of the entity to be deleted.
+     * @throws DaoCrudException If there is an error during the delete process.
+     */
     public void delete(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
+        Transaction transaction = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            transaction = session.beginTransaction();
             T entity = session.load(entityClass, id);
             if (entity != null) {
                 session.delete(entity);
+                transaction.commit();
                 log.info("Entity {} deleted with given id: {}", entityClass.getSimpleName(), id);
             }
             else {
-                log.error("Failed to find entity to be deleted: {}", entity);
+                transaction.rollback();
+                log.error("Failed to find entity to be deleted");
             }
-            transaction.commit();
         } catch (HibernateException e) {
+            if(transaction != null){
+                transaction.rollback();
+            }
             log.error("Failed to delete entity: {}", entityClass.getSimpleName());
             throw new DaoCrudException(e);
+        } finally {
+            session.close();
         }
     }
 }

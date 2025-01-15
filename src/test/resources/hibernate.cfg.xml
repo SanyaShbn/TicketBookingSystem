@@ -15,5 +15,6 @@
 
     <mapping class="com.example.ticketbookingsystem.entity.User"/>
     <mapping class="com.example.ticketbookingsystem.entity.Arena"/>
+    <mapping class="com.example.ticketbookingsystem.entity.Sector"/>
   </session-factory>
 </hibernate-configuration>

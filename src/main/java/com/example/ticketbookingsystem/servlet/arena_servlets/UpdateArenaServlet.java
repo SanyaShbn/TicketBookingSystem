@@ -48,7 +48,7 @@ public class UpdateArenaServlet extends HttpServlet {
         }catch (NumberFormatException e) {
             handleNumberFormatException(request, response);
         } catch (CreateUpdateEntityException e) {
-            handleCreateUpdateSectorException(request, response, e);
+            handleCreateUpdateArenaException(request, response, e);
         } catch (ValidationException e) {
             handleValidationException(request, response, e);
         }
@@ -63,7 +63,7 @@ public class UpdateArenaServlet extends HttpServlet {
         doGet(request, response);
     }
 
-    private void handleCreateUpdateSectorException(HttpServletRequest request, HttpServletResponse response,
+    private void handleCreateUpdateArenaException(HttpServletRequest request, HttpServletResponse response,
                                                    CreateUpdateEntityException e)
             throws ServletException, IOException {
         ValidationResult sqlExceptionResult = new ValidationResult();

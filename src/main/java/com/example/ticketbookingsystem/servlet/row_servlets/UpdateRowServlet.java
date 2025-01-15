@@ -40,7 +40,7 @@ public class UpdateRowServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             handleNumberFormatException(request, response);
         } catch (CreateUpdateEntityException e) {
-            handleCreateUpdateSectorException(request, response, e);
+            handleCreateUpdateRowException(request, response, e);
         } catch (ValidationException e) {
             handleValidationException(request, response, e);
         }
@@ -83,7 +83,7 @@ public class UpdateRowServlet extends HttpServlet {
         forwardToUpdateRowPage(request, response);
     }
 
-    private void handleCreateUpdateSectorException(HttpServletRequest request, HttpServletResponse response,
+    private void handleCreateUpdateRowException(HttpServletRequest request, HttpServletResponse response,
                                                    CreateUpdateEntityException e) throws ServletException, IOException {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);

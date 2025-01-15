@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * DAO class for managing {@link Arena} entities.
+ * Provides methods for performing CRUD operations and custom queries.
+ */
 public class ArenaDao extends AbstractHibernateDao<Arena> {
     private static final ArenaDao INSTANCE = new ArenaDao();
 
@@ -20,16 +24,26 @@ public class ArenaDao extends AbstractHibernateDao<Arena> {
         super(Arena.class);
     }
 
+    /**
+     * Returns the singleton instance of {@link ArenaDao}.
+     *
+     * @return the singleton instance
+     */
     public static ArenaDao getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * Finds all {@link Arena} entities based on the specified filter.
+     *
+     * @param arenaFilter the filter to apply
+     * @return the list of matching arenas
+     */
     public List<Arena> findAll(ArenaFilter arenaFilter) {
         FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(arenaFilter);
         String hql = filtrationSqlQueryParameters.sql();
-        List<Object> parameters = filtrationSqlQueryParameters.parameters();
 
-        return executeFilterQuery(hql, arenaFilter, parameters);
+        return executeFilterQuery(hql, arenaFilter);
     }
 
     private FiltrationSqlQueryParameters buildSqlQuery(ArenaFilter arenaFilter) {
@@ -65,7 +79,7 @@ public class ArenaDao extends AbstractHibernateDao<Arena> {
         return new FiltrationSqlQueryParameters(hql, parameters);
     }
 
-    private List<Arena> executeFilterQuery(String hql, ArenaFilter arenaFilter, List<Object> parameters) {
+    private List<Arena> executeFilterQuery(String hql, ArenaFilter arenaFilter) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Arena> query = session.createQuery(hql, Arena.class);
 
@@ -82,6 +96,11 @@ public class ArenaDao extends AbstractHibernateDao<Arena> {
         }
     }
 
+    /**
+     * Finds all distinct cities where arenas are located.
+     *
+     * @return the list of distinct city names
+     */
     public List<String> findAllArenasCities() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<String> query = session.createQuery("select distinct city from Arena", String.class);

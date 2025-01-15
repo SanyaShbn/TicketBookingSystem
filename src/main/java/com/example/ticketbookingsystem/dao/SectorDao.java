@@ -2,350 +2,269 @@ package com.example.ticketbookingsystem.dao;
 
 import com.example.ticketbookingsystem.dto.SectorFilter;
 import com.example.ticketbookingsystem.entity.Sector;
-import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.service.ArenaService;
-import com.example.ticketbookingsystem.utils.ConnectionManager;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;
+import com.example.ticketbookingsystem.utils.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class SectorDao implements DaoCrud<Long, Sector>{
+/**
+ * DAO class for managing {@link Sector} entities.
+ */
+@Slf4j
+public class SectorDao extends AbstractHibernateDao<Sector> {
     private static final SectorDao INSTANCE = new SectorDao();
-    private static final ArenaService arenaService = ArenaService.getInstance();
-    private static final String SAVE_SQL = """
-            INSERT INTO sector (sector_name, arena_id, max_rows_numb,
-            max_seats_numb)
-            VALUES (?, ?, ?, ?)
-            """;
-    private static final String DELETE_SQL = """
-            DELETE FROM sector WHERE id=?
-            """;
-    private static final String UPDATE_SQL = """
-            UPDATE sector
-            SET sector_name=?,
-                arena_id=?,
-                max_rows_numb=?,
-                max_seats_numb=?
-            WHERE id=?
-            """;
-    private static final String FIND_ALL_SQL = """
-            SELECT s.id, s.sector_name, s.arena_id, s.max_rows_numb, s.available_rows_numb,
-            s.max_seats_numb, s.available_seats_numb
-            FROM public.sector s
-            JOIN public.arena a on a.id = s.arena_id
-            """;
 
-    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
-            WHERE s.id=?
-            """;
+    private SectorDao() {
+        super(Sector.class);
+    }
 
-    private static final String FIND_ALL_BY_ARENA_ID_SQL = FIND_ALL_SQL + """
-            WHERE s.arena_id=?
-            """;
-
-    private static final String UPDATE_ARENA_AFTER_SECTOR_SAVE_SQL = """
-            UPDATE arena
-            SET general_seats_numb=general_seats_numb + ?
-            WHERE id=?
-            """;
-    private static final String UPDATE_ARENA_AFTER_SECTOR_UPDATE_SQL = """
-            UPDATE arena
-            SET general_seats_numb=arena.general_seats_numb - ? + ?
-            WHERE id=?
-            """;
-    private static final String UPDATE_ARENA_AFTER_SECTOR_DELETE_SQL = """
-            UPDATE arena
-            SET general_seats_numb=general_seats_numb - ?
-            WHERE id=?
-            """;
-    public static SectorDao getInstance(){
+    /**
+     * Returns the singleton instance of {@link SectorDao}.
+     *
+     * @return the singleton instance
+     */
+    public static SectorDao getInstance() {
         return INSTANCE;
     }
-    private SectorDao(){
-    }
 
+    /**
+     * Retrieves all sectors based on the specified filter and arena ID.
+     *
+     * @param sectorFilter the filter criteria for sectors
+     * @param arenaId the ID of the arena
+     * @return a list of sectors matching the criteria
+     */
     public List<Sector> findAll(SectorFilter sectorFilter, Long arenaId) {
-        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(sectorFilter);
-        String sql = filtrationSqlQueryParameters.sql();
+        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(sectorFilter, arenaId);
+        String hql = filtrationSqlQueryParameters.sql();
         List<Object> parameters = filtrationSqlQueryParameters.parameters();
 
-        return executeFilterQuery(sql, parameters, arenaId);
+        return executeFilterQuery(hql, parameters);
     }
 
-    private FiltrationSqlQueryParameters buildSqlQuery(SectorFilter sectorFilter) {
+    private FiltrationSqlQueryParameters buildSqlQuery(SectorFilter sectorFilter, Long arenaId) {
         List<Object> parameters = new ArrayList<>();
-        List<String> sortSql = new ArrayList<>();
+        List<String> whereHql = new ArrayList<>();
+        List<String> sortHql = new ArrayList<>();
+
+        whereHql.add("arena.id = :arenaId");
+        parameters.add(arenaId);
 
         if (!sectorFilter.nameSortOrder().isEmpty()) {
-            sortSql.add("sector_name " + sectorFilter.nameSortOrder());
+            sortHql.add("sectorName " + sectorFilter.nameSortOrder());
         }
         if (!sectorFilter.maxRowsNumbSortOrder().isEmpty()) {
-            sortSql.add("max_rows_numb " + sectorFilter.maxRowsNumbSortOrder());
+            sortHql.add("maxRowsNumb " + sectorFilter.maxRowsNumbSortOrder());
         }
         if (!sectorFilter.maxSeatsNumbSortOrder().isEmpty()) {
-            sortSql.add("max_seats_numb " + sectorFilter.maxSeatsNumbSortOrder());
+            sortHql.add("maxSeatsNumb " + sectorFilter.maxSeatsNumbSortOrder());
         }
 
-        var orderBy = sortSql.stream().collect(Collectors.joining(
-                " , ",
-                !sortSql.isEmpty() ? " ORDER BY " : " ",
-                " LIMIT ? OFFSET ? "
+        var orderBy = sortHql.stream().collect(Collectors.joining(
+                ", ",
+                !sortHql.isEmpty() ? " ORDER BY " : "",
+                ""
         ));
 
-        parameters.add(sectorFilter.limit());
-        parameters.add(sectorFilter.offset());
+        var where = whereHql.stream().collect(Collectors.joining(
+                " AND ",
+                !whereHql.isEmpty() ? " WHERE " : "",
+                ""
+        ));
 
-        String sql = FIND_ALL_BY_ARENA_ID_SQL + orderBy;
+        String hql = "FROM Sector " + where + orderBy;
 
-        return new FiltrationSqlQueryParameters(sql, parameters);
+        return new FiltrationSqlQueryParameters(hql, parameters);
     }
-    private List<Sector> executeFilterQuery(String sql, List<Object> parameters, Long arenaId) {
-        try (var connection = ConnectionManager.get();
-             var statement = connection.prepareStatement(sql)) {
 
-            statement.setLong(1, arenaId);
+    private List<Sector> executeFilterQuery(String hql, List<Object> parameters) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Sector> query = session.createQuery(hql, Sector.class);
 
-            for (int i = 1; i <= parameters.size(); i++) {
-                statement.setObject(i + 1, parameters.get(i - 1));
-            }
-
-            try (var result = statement.executeQuery()) {
-                List<Sector> ticketList = new ArrayList<>();
-                while (result.next()) {
-                    ticketList.add(buildSector(result));
+            if (parameters.size() == 1) {
+                query.setParameter("arenaId", parameters.get(0));
+            } else {
+                for (int i = 0; i < parameters.size(); i++) {
+                    query.setParameter(i + 1, parameters.get(i));
                 }
-                return ticketList;
             }
-        } catch (SQLException e) {
+
+            return query.list();
+        } catch (HibernateException e) {
             throw new DaoCrudException(e);
         }
     }
 
+    /**
+     * Retrieves all sectors.
+     *
+     * @return a list of all sectors
+     */
     @Override
     public List<Sector> findAll() {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_ALL_SQL)){
-            List<Sector> sectorsList = new ArrayList<>();
-
-            var result = statement.executeQuery();
-            while (result.next()){
-                sectorsList.add(buildSector(result));
-            }
-            return sectorsList;
-        } catch (SQLException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Sector> query = session.createQuery("FROM Sector", Sector.class);
+            return query.list();
+        } catch (HibernateException e) {
             throw new DaoCrudException(e);
         }
     }
+
+    /**
+     * Finds a sector by its ID.
+     *
+     * @param id the ID of the sector
+     * @return an {@link Optional} containing the found sector, or empty if not found
+     */
     @Override
     public Optional<Sector> findById(Long id) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_BY_ID_SQL)){
-            statement.setLong(1, id);
-            var result = statement.executeQuery();
-            Sector sector = null;
-            if (result.next()){
-                sector = buildSector(result);
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Sector sector = session.get(Sector.class, id);
             return Optional.ofNullable(sector);
-        } catch (SQLException e) {
+        } catch (HibernateException e) {
             throw new DaoCrudException(e);
-        }
-    }
-    public List<Sector> findAllByArenaId(Long id){
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_ALL_BY_ARENA_ID_SQL)){
-            List<Sector> sectorList = new ArrayList<>();
-            statement.setLong(1, id);
-            var result = statement.executeQuery();
-            while (result.next()){
-                sectorList.add(buildSector(result));
-            }
-            return sectorList;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-    @Override
-    public Sector save(Sector sector) {
-        try(var connection = ConnectionManager.get()){
-            connection.setAutoCommit(false);
-            try{
-                performSave(sector, connection);
-                updateArenaAfterSectorSave(connection, sector);
-                connection.commit();
-            }catch (SQLException e) {
-                handleRollback(connection);
-                throw new CreateUpdateEntityException(e.getMessage());
-            } finally {
-                resetAutoCommit(connection);
-            }
-            return sector;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-    private void performSave(Sector sector, Connection connection) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
-            setStatement(sector, statement);
-            statement.executeUpdate();
-            try (ResultSet keys = statement.getGeneratedKeys()) {
-                if (keys.next()) {
-                    sector.setId(keys.getLong("id"));
-                }
-            }
-        }
-    }
-    @Override
-    public boolean update(Sector sector) {
-        boolean isSuccessful = false;
-        try (Connection connection = ConnectionManager.get()) {
-            connection.setAutoCommit(false);
-            try {
-                isSuccessful = performUpdate(sector, connection);
-                if (isSuccessful) {
-                    connection.commit();
-                } else {
-                    connection.rollback();
-                }
-            } catch (SQLException e) {
-                handleRollback(connection);
-                throw new CreateUpdateEntityException(e.getMessage());
-            } finally {
-                resetAutoCommit(connection);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return isSuccessful;
-    }
-
-    private boolean performUpdate(Sector sector, Connection connection) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_SQL)) {
-            setStatement(sector, statement);
-            statement.setLong(5, sector.getId());
-            updateArenaAfterSectorUpdate(connection, sector);
-            return statement.executeUpdate() > 0;
         }
     }
 
-    @Override
-    public boolean delete(Long id) {
-        boolean isSuccessful = false;
-        try (Connection connection = ConnectionManager.get()) {
-            connection.setAutoCommit(false);
-            try {
-                isSuccessful = performDelete(id, connection);
-                if (isSuccessful) {
-                    connection.commit();
-                } else {
-                    connection.rollback();
-                }
-            } catch (SQLException e) {
-                handleRollback(connection);
-                throw new DaoCrudException(e);
-            } finally {
-                resetAutoCommit(connection);
-            }
-        } catch (SQLException e) {
+    /**
+     * Finds all sectors by the specified arena ID.
+     *
+     * @param arenaId the ID of the arena
+     * @return a list of sectors for the specified arena
+     */
+    public List<Sector> findAllByArenaId(Long arenaId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Sector> query = session.createQuery("FROM Sector WHERE arena.id = :arenaId", Sector.class);
+            query.setParameter("arenaId", arenaId);
+            return query.list();
+        } catch (HibernateException e) {
             throw new DaoCrudException(e);
         }
-        return isSuccessful;
     }
 
-    private boolean performDelete(Long id, Connection connection) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_SQL)) {
-            statement.setLong(1, id);
-            updateArenaAfterSectorDelete(connection, id);
-            return statement.executeUpdate() > 0;
-        }
-    }
-    private void handleRollback(Connection connection) {
+    /**
+     * Saves a sector.
+     *
+     * @param sector the sector to be saved
+     */
+    @Override
+    public void save(Sector sector) {
+        Transaction transaction = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            if (connection != null) {
-                connection.rollback();
+            transaction = session.beginTransaction();
+            session.save(sector);
+            updateArenaAfterSectorSave(session, sector);
+            transaction.commit();
+            log.info("Sector saved: {}", sector);
+        } catch (HibernateException e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
             }
-        } catch (SQLException rollbackEx) {
-            rollbackEx.printStackTrace();
+            log.error("Failed to save sector: {}", sector);
+            throw new DaoCrudException(e);
+        } finally {
+            session.close();
         }
     }
-    private void resetAutoCommit(Connection connection) {
+
+    /**
+     * Updates a sector.
+     *
+     * @param sector the sector to be updated
+     */
+    @Override
+    public void update(Sector sector) {
+        Optional<Sector> sectorBeforeUpdate = findById(sector.getId());
+        if (sectorBeforeUpdate.isEmpty()) {
+            log.error("Failed to find sector: {}", sector);
+            throw new DaoResourceNotFoundException("Sector not found");
+        }
+        Transaction transaction = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            if (connection != null) {
-                connection.setAutoCommit(true);
+            transaction = session.beginTransaction();
+            updateArenaBeforeSectorUpdate(session, sectorBeforeUpdate.get(), sector);
+            session.update(sector);
+            transaction.commit();
+            log.info("Sector updated: {}", sector);
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-    private Sector buildSector(ResultSet result) throws SQLException {
-        return new Sector(
-                result.getLong("id"),
-                result.getString("sector_name"),
-                arenaService.findById((long) result.getInt("arena_id")).get(),
-                result.getInt("max_rows_numb"),
-                result.getInt("available_rows_numb"),
-                result.getInt("max_seats_numb"),
-                result.getInt("available_seats_numb")
-        );
-    }
-    private void setStatement(Sector sector, PreparedStatement statement) throws SQLException {
-        statement.setString(1, sector.getSectorName());
-        statement.setLong(2, sector.getArena().getId());
-        statement.setInt(3, sector.getMaxRowsNumb());
-        statement.setInt(4, sector.getMaxSeatsNumb());
-    }
-    private void updateArenaAfterSectorSave(Connection connection, Sector sector) throws SQLException {
-        try (var updateStatement = connection.prepareStatement(UPDATE_ARENA_AFTER_SECTOR_SAVE_SQL)) {
-            updateStatement.setInt(1, sector.getMaxSeatsNumb());
-            updateStatement.setLong(2, sector.getArena().getId());
-            updateStatement.executeUpdate();
-        }
-    }
-    private void updateArenaAfterSectorUpdate(Connection connection, Sector sector) throws SQLException {
-        try (var updateStatement = connection.prepareStatement(UPDATE_ARENA_AFTER_SECTOR_UPDATE_SQL)) {
-
-            Optional<Sector> sectorBeforeUpdate= findByIdBeforeUpdateOrDelete(connection, sector.getId());
-
-            if(sectorBeforeUpdate.isPresent()){
-                updateStatement.setInt(1, sectorBeforeUpdate.get().getMaxSeatsNumb());
-                updateStatement.setInt(2, sector.getMaxSeatsNumb());
-                updateStatement.setLong(3, sector.getArena().getId());
-                updateStatement.executeUpdate();
-            }else{
-                throw new SQLException("Row not found with id: " + sector.getId());
-            }
-        }
-    }
-    private void updateArenaAfterSectorDelete(Connection connection, Long id) {
-        try (var updateStatement = connection.prepareStatement(UPDATE_ARENA_AFTER_SECTOR_DELETE_SQL)) {
-
-            Optional<Sector> sectorBeforeDelete = findByIdBeforeUpdateOrDelete(connection, id);
-
-            if(sectorBeforeDelete.isPresent()){
-                updateStatement.setInt(1, sectorBeforeDelete.get().getMaxSeatsNumb());
-                updateStatement.setLong(2, sectorBeforeDelete.get().getArena().getId());
-                updateStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
+            log.error("Failed to update sector: {}", sector);
             throw new DaoCrudException(e);
+        } finally {
+            session.close();
         }
     }
-    private Optional<Sector> findByIdBeforeUpdateOrDelete(Connection connection, Long id) {
-        try(var statement = connection.prepareStatement(FIND_BY_ID_SQL)){
-            statement.setLong(1, id);
-            var result = statement.executeQuery();
-            Sector sector = null;
-            if (result.next()){
-                sector = buildSector(result);
+
+    /**
+     * Deletes a sector.
+     *
+     * @param id the ID of the sector to be deleted
+     */
+    @Override
+    public void delete(Long id) {
+        Transaction transaction = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            transaction = session.beginTransaction();
+            Sector sector = session.load(Sector.class, id);
+            if (sector != null) {
+                updateArenaAfterSectorDelete(session, sector);
+                session.delete(sector);
+                transaction.commit();
+                log.info("Sector {} deleted with given id: {}", sector, id);
             }
-            return Optional.ofNullable(sector);
-        } catch (SQLException e) {
+            else {
+                transaction.rollback();
+                log.error("Failed to find sector to be deleted");
+            }
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            log.error("Failed to delete sector");
             throw new DaoCrudException(e);
+        } finally {
+            session.close();
         }
+    }
+
+    private void updateArenaAfterSectorSave(Session session, Sector sector) throws HibernateException{
+        Query<?> query = session.createQuery("UPDATE Arena SET generalSeatsNumb = generalSeatsNumb + :seatsNumb "
+                + "WHERE id = :arenaId");
+        query.setParameter("seatsNumb", sector.getMaxSeatsNumb());
+        query.setParameter("arenaId", sector.getArena().getId());
+        query.executeUpdate();
+    }
+
+    private void updateArenaBeforeSectorUpdate(Session session, Sector sectorBeforeUpdate, Sector sector)
+            throws HibernateException {
+        Query<?> query = session.createQuery("UPDATE Arena SET generalSeatsNumb = generalSeatsNumb - :oldSeatsNumb + "
+                + ":newSeatsNumb WHERE id = :arenaId");
+        query.setParameter("oldSeatsNumb", sectorBeforeUpdate.getMaxSeatsNumb());
+        query.setParameter("newSeatsNumb", sector.getMaxSeatsNumb());
+        query.setParameter("arenaId", sector.getArena().getId());
+        query.executeUpdate();
+    }
+
+    private void updateArenaAfterSectorDelete(Session session, Sector sector) throws HibernateException{
+        Query<?> query = session.createQuery("UPDATE Arena SET generalSeatsNumb = generalSeatsNumb - :seatsNumb "
+                + "WHERE id = :arenaId");
+        query.setParameter("seatsNumb", sector.getMaxSeatsNumb());
+        query.setParameter("arenaId", sector.getArena().getId());
+        query.executeUpdate();
     }
 }
