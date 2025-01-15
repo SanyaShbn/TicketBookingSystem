@@ -9,22 +9,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Added HikariCP connection pool + did some refactoring">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/exception/DaoResourceNotFoundException.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Implemented Hibernate for SectorDao, added tests for SectorDao class + again some refactoring and java doc">
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/hibernate/HibernateRunner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/messages_en.properties" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/HibernateRunnerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SectorDaoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/RowDaoTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/AbstractHibernateDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/AbstractHibernateDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/ArenaDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/ArenaDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/RowDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/RowDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SectorDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SectorDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Sector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Sector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/CreateArenaServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/CreateArenaServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/UpdateArenaServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/arena_servlets/UpdateArenaServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Row.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Row.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/CreateRowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/CreateRowServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/UpdateRowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/UpdateRowServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/CreateSectorServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/CreateSectorServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/UpdateSectorServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/UpdateSectorServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
@@ -116,8 +112,37 @@
       <recent name="D:\TicketBookingSystem\src\main\webapp" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.1">
-    <configuration name="SectorDaoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.RowDaoTest.testSave">
+    <configuration name="HibernateRunner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.ticketbookingsystem.hibernate.HibernateRunner" />
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.ticketbookingsystem.hibernate.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HikariCPTest.testConnectionPool" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.connection_pool.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.connection_pool" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.connection_pool.HikariCPTest" />
+      <option name="METHOD_NAME" value="testConnectionPool" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RowDaoTest.testDelete" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
@@ -126,8 +151,25 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.SectorDaoTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.RowDaoTest" />
+      <option name="METHOD_NAME" value="testDelete" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RowDaoTest.testSave" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.RowDaoTest" />
+      <option name="METHOD_NAME" value="testSave" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -143,54 +185,6 @@
       <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
       <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.SectorDaoTest" />
       <option name="METHOD_NAME" value="testDelete" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SectorDaoTest.testFindAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.SectorDaoTest" />
-      <option name="METHOD_NAME" value="testFindAll" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SectorDaoTest.testFindById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.SectorDaoTest" />
-      <option name="METHOD_NAME" value="testFindById" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SectorDaoTest.testSave" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.SectorDaoTest" />
-      <option name="METHOD_NAME" value="testSave" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -284,11 +278,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RowDaoTest.testSave" />
+        <item itemvalue="JUnit.RowDaoTest.testDelete" />
+        <item itemvalue="Application.HibernateRunner" />
+        <item itemvalue="JUnit.HikariCPTest.testConnectionPool" />
         <item itemvalue="JUnit.SectorDaoTest.testDelete" />
-        <item itemvalue="JUnit.SectorDaoTest.testFindAll" />
-        <item itemvalue="JUnit.SectorDaoTest.testFindById" />
-        <item itemvalue="JUnit.SectorDaoTest.testSave" />
-        <item itemvalue="JUnit.SectorDaoTest" />
       </list>
     </recent_temporary>
   </component>
@@ -395,7 +389,7 @@
       <workItem from="1736933540567" duration="3079000" />
       <workItem from="1736945438096" duration="3462000" />
       <workItem from="1736949185578" duration="141000" />
-      <workItem from="1736964255946" duration="6694000" />
+      <workItem from="1736964255946" duration="15996000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -573,7 +567,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736926491053</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Implemented Hibernate for SectorDao, added tests for SectorDao class + again some refactoring and java doc">
+      <option name="closed" value="true" />
+      <created>1736971074426</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1736971074426</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -614,6 +616,7 @@
     <MESSAGE value="Implemented Hibernate for User and Arena entities" />
     <MESSAGE value="Written tests for UserDao and ArenaDao" />
     <MESSAGE value="Added HikariCP connection pool + did some refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added HikariCP connection pool + did some refactoring" />
+    <MESSAGE value="Implemented Hibernate for SectorDao, added tests for SectorDao class + again some refactoring and java doc" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented Hibernate for SectorDao, added tests for SectorDao class + again some refactoring and java doc" />
   </component>
 </project>

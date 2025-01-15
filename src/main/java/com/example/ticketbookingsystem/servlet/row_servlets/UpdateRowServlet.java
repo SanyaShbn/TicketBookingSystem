@@ -4,6 +4,7 @@ import com.example.ticketbookingsystem.dto.RowDto;
 import com.example.ticketbookingsystem.entity.Row;
 import com.example.ticketbookingsystem.entity.Sector;
 import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.RowService;
 import com.example.ticketbookingsystem.service.SectorService;
@@ -39,8 +40,8 @@ public class UpdateRowServlet extends HttpServlet {
             redirectAfterSuccess(request, response);
         } catch (NumberFormatException e) {
             handleNumberFormatException(request, response);
-        } catch (CreateUpdateEntityException e) {
-            handleCreateUpdateRowException(request, response, e);
+        } catch (DaoCrudException e) {
+            handleUpdateRowException(request, response, e);
         } catch (ValidationException e) {
             handleValidationException(request, response, e);
         }
@@ -83,8 +84,8 @@ public class UpdateRowServlet extends HttpServlet {
         forwardToUpdateRowPage(request, response);
     }
 
-    private void handleCreateUpdateRowException(HttpServletRequest request, HttpServletResponse response,
-                                                   CreateUpdateEntityException e) throws ServletException, IOException {
+    private void handleUpdateRowException(HttpServletRequest request, HttpServletResponse response,
+                                                   DaoCrudException e) throws ServletException, IOException {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         request.setAttribute("errors", sqlExceptionResult.getErrors());

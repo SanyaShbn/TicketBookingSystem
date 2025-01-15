@@ -49,7 +49,7 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         String hql = filtrationSqlQueryParameters.sql();
         List<Object> parameters = filtrationSqlQueryParameters.parameters();
 
-        return executeFilterQuery(hql, parameters);
+        return executeFilterQuery(hql, parameters, sectorFilter);
     }
 
     private FiltrationSqlQueryParameters buildSqlQuery(SectorFilter sectorFilter, Long arenaId) {
@@ -87,7 +87,7 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         return new FiltrationSqlQueryParameters(hql, parameters);
     }
 
-    private List<Sector> executeFilterQuery(String hql, List<Object> parameters) {
+    private List<Sector> executeFilterQuery(String hql, List<Object> parameters, SectorFilter sectorFilter) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Sector> query = session.createQuery(hql, Sector.class);
 
@@ -99,38 +99,10 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
                 }
             }
 
-            return query.list();
-        } catch (HibernateException e) {
-            throw new DaoCrudException(e);
-        }
-    }
+            query.setFirstResult(sectorFilter.offset());
+            query.setMaxResults(sectorFilter.limit());
 
-    /**
-     * Retrieves all sectors.
-     *
-     * @return a list of all sectors
-     */
-    @Override
-    public List<Sector> findAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Sector> query = session.createQuery("FROM Sector", Sector.class);
             return query.list();
-        } catch (HibernateException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    /**
-     * Finds a sector by its ID.
-     *
-     * @param id the ID of the sector
-     * @return an {@link Optional} containing the found sector, or empty if not found
-     */
-    @Override
-    public Optional<Sector> findById(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Sector sector = session.get(Sector.class, id);
-            return Optional.ofNullable(sector);
         } catch (HibernateException e) {
             throw new DaoCrudException(e);
         }
@@ -152,11 +124,6 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         }
     }
 
-    /**
-     * Saves a sector.
-     *
-     * @param sector the sector to be saved
-     */
     @Override
     public void save(Sector sector) {
         Transaction transaction = null;
@@ -178,11 +145,6 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         }
     }
 
-    /**
-     * Updates a sector.
-     *
-     * @param sector the sector to be updated
-     */
     @Override
     public void update(Sector sector) {
         Optional<Sector> sectorBeforeUpdate = findById(sector.getId());
@@ -209,11 +171,6 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         }
     }
 
-    /**
-     * Deletes a sector.
-     *
-     * @param id the ID of the sector to be deleted
-     */
     @Override
     public void delete(Long id) {
         Transaction transaction = null;
