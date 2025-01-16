@@ -1,137 +1,179 @@
 package com.example.ticketbookingsystem.dao;
 
 import com.example.ticketbookingsystem.entity.Seat;
+import com.example.ticketbookingsystem.entity.SportEvent;
+import com.example.ticketbookingsystem.entity.Ticket;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.service.RowService;
-import com.example.ticketbookingsystem.utils.ConnectionManager;
+import com.example.ticketbookingsystem.utils.HibernateUtil;
+import jakarta.persistence.criteria.*;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class SeatDao implements DaoCrud<Long, Seat>{
+/**
+ * DAO class for managing {@link Seat} entities.
+ */
+@Slf4j
+public class SeatDao extends AbstractHibernateDao<Seat>{
     private static final SeatDao INSTANCE = new SeatDao();
-    private static final RowService rowService = RowService.getInstance();
-    private static final String FIND_ALL_SQL = """
-            SELECT id, row_id, seat_number FROM seat s
-            """;
 
-    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
-            WHERE s.id=?
-            """;
-    private static final String SELECT_SEATS = """
-            SELECT s.*
-            FROM seat s
-            JOIN row r ON s.row_id = r.id
-            JOIN sector sec ON r.sector_id = sec.id
-            JOIN arena a ON sec.arena_id = a.id
-            JOIN sport_event e ON a.id = e.arena_id
-            """;
-    private static final String FIND_ALL_BY_EVENT_ID_SQL = SELECT_SEATS + """
-            WHERE e.id = ?
-            ORDER BY sec.sector_name, r.id, s.id;
-            """;
-    private static final String FIND_BY_EVENT_ID_WITH_NO_TICKETS_SQL = SELECT_SEATS + """
-            LEFT JOIN ticket t ON s.id = t.seat_id AND t.event_id = e.id
-            WHERE e.id = ?
-            AND t.id IS NULL
-            ORDER BY sec.sector_name, r.id, s.id;
-            """;
-    private static final String FIND_BY_EVENT_ID_WHEN_UPDATE_SQL = SELECT_SEATS + """
-            LEFT JOIN ticket t ON s.id = t.seat_id AND t.event_id = e.id
-            WHERE e.id = ? AND (t.id IS NULL OR (t.event_id != e.id OR s.id = ?))
-            ORDER BY sec.sector_name, r.id, s.id;
-            """;
+    private SeatDao(){
+        super(Seat.class);
+    }
 
+    /**
+     * Returns the singleton instance of {@link SeatDao}.
+     *
+     * @return the singleton instance
+     */
     public static SeatDao getInstance(){
         return INSTANCE;
     }
 
-    private SeatDao(){
-    }
-
-    @Override
-    public List<Seat> findAll() {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_ALL_SQL)){
-            List<Seat> seatList = new ArrayList<>();
-
-            var result = statement.executeQuery();
-            while (result.next()){
-                seatList.add(buildSeat(result));
-            }
-            return seatList;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    public List<Seat> findSeatsByQuery(String sql, Long eventId) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(sql)){
-            List<Seat> seatList = new ArrayList<>();
-
-            statement.setLong(1, eventId);
-
-            var result = statement.executeQuery();
-            while (result.next()){
-                seatList.add(buildSeat(result));
-            }
-            return seatList;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
+    /**
+     * Retrieves all seats by event ID.
+     *
+     * @param eventId the ID of the event
+     * @return a list of seats for the event
+     */
     public List<Seat> findAllByEventId(Long eventId) {
-        return findSeatsByQuery(FIND_ALL_BY_EVENT_ID_SQL, eventId);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
+            Root<Seat> seatRoot = cq.from(Seat.class);
+
+            seatRoot.fetch("row", JoinType.INNER).fetch("sector", JoinType.INNER)
+                    .fetch("arena", JoinType.INNER);
+
+            Join<Object, Object> rowJoin = seatRoot.join("row", JoinType.INNER);
+            Join<Object, Object> sectorJoin = rowJoin.join("sector", JoinType.INNER);
+            Join<Object, Object> arenaJoin = sectorJoin.join("arena", JoinType.INNER);
+
+            Subquery<Long> sportEventSubquery = cq.subquery(Long.class);
+            Root<SportEvent> eventRoot = sportEventSubquery.from(SportEvent.class);
+            sportEventSubquery.select(eventRoot.get("arena").get("id"))
+                    .where(cb.equal(eventRoot.get("id"), eventId));
+
+            cq.select(seatRoot)
+                    .where(cb.and(
+                            cb.equal(arenaJoin.get("id"), sportEventSubquery)
+                    ))
+                    .orderBy(cb.asc(
+                            sectorJoin.get("sectorName")),
+                            cb.asc(rowJoin.get("id")),
+                            cb.asc(seatRoot.get("id"))
+                    );
+
+            return session.createQuery(cq).getResultList();
+        } catch (HibernateException e) {
+            log.error("Failed to find seats by provided event ID: {}", eventId);
+            throw new DaoCrudException(e);
+        }
     }
 
+    /**
+     * Retrieves all seats by event ID that do not have tickets.
+     *
+     * @param eventId the ID of the event
+     * @return a list of seats with no tickets for the event
+     */
     public List<Seat> findByEventIdWithNoTickets(Long eventId) {
-        return findSeatsByQuery(FIND_BY_EVENT_ID_WITH_NO_TICKETS_SQL, eventId);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
+            Root<Seat> seatRoot = cq.from(Seat.class);
+
+            seatRoot.fetch("row", JoinType.INNER).fetch("sector", JoinType.INNER)
+                    .fetch("arena", JoinType.INNER);
+
+            Join<Object, Object> rowJoin = seatRoot.join("row", JoinType.INNER);
+            Join<Object, Object> sectorJoin = rowJoin.join("sector", JoinType.INNER);
+            Join<Object, Object> arenaJoin = sectorJoin.join("arena", JoinType.INNER);
+
+            Subquery<Long> sportEventSubquery = cq.subquery(Long.class);
+            Root<SportEvent> eventRoot = sportEventSubquery.from(SportEvent.class);
+            sportEventSubquery.select(eventRoot.get("arena").get("id"))
+                    .where(cb.equal(eventRoot.get("id"), eventId));
+
+            Subquery<Long> ticketSubquery = cq.subquery(Long.class);
+            Root<Ticket> ticketRoot = ticketSubquery.from(Ticket.class);
+            ticketSubquery.select(ticketRoot.get("seat").get("id"))
+                    .where(cb.and(
+                            cb.equal(ticketRoot.get("sportEvent").get("id"), eventId),
+                            cb.equal(ticketRoot.get("seat").get("id"), seatRoot.get("id"))
+                    ));
+
+            cq.select(seatRoot)
+                    .where(cb.and(
+                            cb.equal(arenaJoin.get("id"), sportEventSubquery),
+                            cb.not(cb.exists(ticketSubquery))
+                    ))
+                    .orderBy(cb.asc(
+                            sectorJoin.get("sectorName")),
+                            cb.asc(rowJoin.get("id")),
+                            cb.asc(seatRoot.get("id"))
+                    );
+
+            return session.createQuery(cq).getResultList();
+        } catch (HibernateException e) {
+            log.error("Failed to find available seats by provided event ID: {}", eventId);
+            throw new DaoCrudException(e);
+        }
     }
 
+    /**
+     * Retrieves all seats by event ID when updating a ticket.
+     *
+     * @param eventId the ID of the event
+     * @param seatId the ID of the seat
+     * @return a list of seats for the event when updating
+     */
     public List<Seat> findAllByEventIdWhenUpdate(Long eventId, Long seatId) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_BY_EVENT_ID_WHEN_UPDATE_SQL)){
-            List<Seat> seatList = new ArrayList<>();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
+            Root<Seat> seatRoot = cq.from(Seat.class);
 
-            statement.setLong(1, eventId);
-            statement.setLong(2, seatId);
+            seatRoot.fetch("row", JoinType.INNER).fetch("sector", JoinType.INNER)
+                    .fetch("arena", JoinType.INNER);
 
-            var result = statement.executeQuery();
-            while (result.next()){
-                seatList.add(buildSeat(result));
-            }
-            return seatList;
-        } catch (SQLException e) {
+            Join<Object, Object> rowJoin = seatRoot.join("row", JoinType.INNER);
+            Join<Object, Object> sectorJoin = rowJoin.join("sector", JoinType.INNER);
+            Join<Object, Object> arenaJoin = sectorJoin.join("arena", JoinType.INNER);
+
+            Subquery<Long> sportEventSubquery = cq.subquery(Long.class);
+            Root<SportEvent> eventRoot = sportEventSubquery.from(SportEvent.class);
+            sportEventSubquery.select(eventRoot.get("arena").get("id"))
+                    .where(cb.equal(eventRoot.get("id"), eventId));
+
+            Subquery<Long> ticketSubquery = cq.subquery(Long.class);
+            Root<Ticket> ticketRoot = ticketSubquery.from(Ticket.class);
+            ticketSubquery.select(ticketRoot.get("seat").get("id"))
+                    .where(cb.and(
+                            cb.equal(ticketRoot.get("sportEvent").get("id"), eventId),
+                            cb.equal(ticketRoot.get("seat").get("id"), seatRoot.get("id"))
+                    ));
+
+            cq.select(seatRoot).where(cb.and(
+                            cb.equal(arenaJoin.get("id"), sportEventSubquery),
+                            cb.or(
+                                    cb.isNull(ticketRoot.get("id")),
+                                    cb.notEqual(ticketRoot.get("sportEvent").get("id"), eventId),
+                                    cb.equal(seatRoot.get("id"), seatId)
+                            )
+                    ))
+                    .orderBy(cb.asc(
+                            sectorJoin.get("sectorName")),
+                            cb.asc(rowJoin.get("id")),
+                            cb.asc(seatRoot.get("id"))
+                    );
+
+            return session.createQuery(cq).getResultList();
+        } catch (HibernateException e) {
+            log.error("Failed to find seats by provided event ID: {}", eventId);
             throw new DaoCrudException(e);
         }
-    }
-
-    @Override
-    public Optional<Seat> findById(Long id) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_BY_ID_SQL)){
-            statement.setLong(1, id);
-            var result = statement.executeQuery();
-            Seat seat = null;
-            if (result.next()){
-                seat = buildSeat(result);
-            }
-            return Optional.ofNullable(seat);
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    private Seat buildSeat(ResultSet result) throws SQLException {
-        return Seat.builder()
-                .id(result.getLong("id"))
-                .seatNumber(result.getInt("seat_number"))
-                .row(rowService.findById((long) result.getInt("row_id")).get())
-                .build();
     }
 }

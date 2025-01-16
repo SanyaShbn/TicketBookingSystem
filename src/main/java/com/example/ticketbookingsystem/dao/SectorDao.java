@@ -45,14 +45,14 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
      * @return a list of sectors matching the criteria
      */
     public List<Sector> findAll(SectorFilter sectorFilter, Long arenaId) {
-        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(sectorFilter, arenaId);
+        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildHqlQuery(sectorFilter, arenaId);
         String hql = filtrationSqlQueryParameters.sql();
         List<Object> parameters = filtrationSqlQueryParameters.parameters();
 
         return executeFilterQuery(hql, parameters, sectorFilter);
     }
 
-    private FiltrationSqlQueryParameters buildSqlQuery(SectorFilter sectorFilter, Long arenaId) {
+    private FiltrationSqlQueryParameters buildHqlQuery(SectorFilter sectorFilter, Long arenaId) {
         List<Object> parameters = new ArrayList<>();
         List<String> whereHql = new ArrayList<>();
         List<String> sortHql = new ArrayList<>();
@@ -104,6 +104,7 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
 
             return query.list();
         } catch (HibernateException e) {
+            log.error("Failed to retrieve sectors, which are suitable for provided filter");
             throw new DaoCrudException(e);
         }
     }
@@ -120,6 +121,7 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
             query.setParameter("arenaId", arenaId);
             return query.list();
         } catch (HibernateException e) {
+            log.error("Failed to retrieve sectors by provided arena ID: {}", arenaId);
             throw new DaoCrudException(e);
         }
     }
@@ -205,6 +207,7 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         query.setParameter("seatsNumb", sector.getMaxSeatsNumb());
         query.setParameter("arenaId", sector.getArena().getId());
         query.executeUpdate();
+        log.info("Arena associated with saved sector {} has been updated", sector);
     }
 
     private void updateArenaBeforeSectorUpdate(Session session, Sector sectorBeforeUpdate, Sector sector)
@@ -215,6 +218,7 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         query.setParameter("newSeatsNumb", sector.getMaxSeatsNumb());
         query.setParameter("arenaId", sector.getArena().getId());
         query.executeUpdate();
+        log.info("Arena associated with updating sector {} has been updated", sector);
     }
 
     private void updateArenaAfterSectorDelete(Session session, Sector sector) throws HibernateException{
@@ -223,5 +227,6 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         query.setParameter("seatsNumb", sector.getMaxSeatsNumb());
         query.setParameter("arenaId", sector.getArena().getId());
         query.executeUpdate();
+        log.info("Arena associated with deleted sector {} has been updated", sector);
     }
 }

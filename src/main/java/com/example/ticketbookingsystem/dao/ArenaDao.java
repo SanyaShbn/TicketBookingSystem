@@ -5,6 +5,7 @@ import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;
 import com.example.ticketbookingsystem.utils.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
  * DAO class for managing {@link Arena} entities.
  * Provides methods for performing CRUD operations and custom queries.
  */
+@Slf4j
 public class ArenaDao extends AbstractHibernateDao<Arena> {
     private static final ArenaDao INSTANCE = new ArenaDao();
 
@@ -40,13 +42,13 @@ public class ArenaDao extends AbstractHibernateDao<Arena> {
      * @return the list of matching arenas
      */
     public List<Arena> findAll(ArenaFilter arenaFilter) {
-        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(arenaFilter);
+        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildHqlQuery(arenaFilter);
         String hql = filtrationSqlQueryParameters.sql();
 
         return executeFilterQuery(hql, arenaFilter);
     }
 
-    private FiltrationSqlQueryParameters buildSqlQuery(ArenaFilter arenaFilter) {
+    private FiltrationSqlQueryParameters buildHqlQuery(ArenaFilter arenaFilter) {
         List<Object> parameters = new ArrayList<>();
         List<String> whereHql = new ArrayList<>();
         List<String> sortHql = new ArrayList<>();
@@ -92,6 +94,7 @@ public class ArenaDao extends AbstractHibernateDao<Arena> {
 
             return query.list();
         } catch (HibernateException e) {
+            log.error("Failed to retrieve arenas, which are suitable for provided filter");
             throw new DaoCrudException(e);
         }
     }
@@ -106,6 +109,7 @@ public class ArenaDao extends AbstractHibernateDao<Arena> {
             Query<String> query = session.createQuery("select distinct city from Arena", String.class);
             return query.list();
         } catch (HibernateException e) {
+            log.error("Failed to retrieve arena cities");
             throw new DaoCrudException(e);
         }
     }

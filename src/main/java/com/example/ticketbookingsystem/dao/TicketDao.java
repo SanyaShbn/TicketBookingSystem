@@ -4,239 +4,124 @@ import com.example.ticketbookingsystem.dto.TicketFilter;
 import com.example.ticketbookingsystem.entity.Ticket;
 import com.example.ticketbookingsystem.entity.TicketStatus;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.service.SeatService;
-import com.example.ticketbookingsystem.service.SportEventService;
-import com.example.ticketbookingsystem.utils.ConnectionManager;
 import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;
+import com.example.ticketbookingsystem.utils.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class TicketDao implements DaoCrud<Long, Ticket>{
+
+/**
+ * DAO class for managing {@link Ticket} entities.
+ */
+@Slf4j
+public class TicketDao extends AbstractHibernateDao<Ticket>{
     private static final TicketDao INSTANCE = new TicketDao();
-    private static final SportEventService sportEventService = SportEventService.getInstance();
 
-    private static final SeatService seatService = SeatService.getInstance();
-    private static final String SAVE_SQL = """ 
-            INSERT INTO ticket (status, price, event_id, seat_id)
-            VALUES (?, ?, ?, ?);
-    """;
+    private TicketDao(){
+        super(Ticket.class);
+    }
 
-    private static final String DELETE_SQL = """
-            UPDATE ticket
-            SET event_id=null,
-                seat_id=null
-            WHERE id=?;
-            
-            DELETE FROM ticket WHERE id=?
-            """;
-    private static final String UPDATE_SQL = """
-            UPDATE ticket
-            SET status=?,
-                price=?,
-                event_id=?,
-                seat_id=?
-            WHERE id=?
-            """;
-    private static final String FIND_ALL_SQL = """
-            SELECT id, status, price, event_id, seat_id FROM ticket
-            """;
-
-    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
-            WHERE id=?
-            """;
-
-    private static final String FIND_ALL_BY_EVENT_ID_SQL = FIND_ALL_SQL + """
-            WHERE event_id=?
-            """;
-    private static final String GET_TICKET_STATUS_SQL ="""
-            SELECT status FROM ticket WHERE id = ?
-            """;
-
+    /**
+     * Returns the singleton instance of {@link TicketDao}.
+     *
+     * @return the singleton instance
+     */
     public static TicketDao getInstance(){
         return INSTANCE;
     }
-    private TicketDao(){
-    }
 
+    /**
+     * Finds all {@link Ticket} entities based on the specified filter.
+     *
+     * @param ticketFilter the filter to apply
+     * @return the list of matching tickets
+     */
     public List<Ticket> findAll(TicketFilter ticketFilter, Long eventId) {
-        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(ticketFilter);
-        String sql = filtrationSqlQueryParameters.sql();
+        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildHqlQuery(ticketFilter);
+        String hql = filtrationSqlQueryParameters.sql();
         List<Object> parameters = filtrationSqlQueryParameters.parameters();
 
-        return executeFilterQuery(sql, parameters, eventId);
+        return executeFilterQuery(hql, parameters, eventId, ticketFilter);
     }
 
-    private FiltrationSqlQueryParameters buildSqlQuery(TicketFilter ticketFilter) {
+    private FiltrationSqlQueryParameters buildHqlQuery(TicketFilter ticketFilter) {
         List<Object> parameters = new ArrayList<>();
-        List<String> sortSql = new ArrayList<>();
+        List<String> sortHql = new ArrayList<>();
 
         if (!ticketFilter.priceSortOrder().isEmpty()) {
-            sortSql.add("price " + ticketFilter.priceSortOrder());
+            sortHql.add("price " + ticketFilter.priceSortOrder());
         }
 
-        var orderBy = sortSql.stream().collect(Collectors.joining(
+        var orderBy = sortHql.stream().collect(Collectors.joining(
                 " , ",
-                !sortSql.isEmpty() ? " ORDER BY " : " ",
-                " LIMIT ? OFFSET ? "
+                !sortHql.isEmpty() ? " ORDER BY " : " ",
+                ""
         ));
 
-        parameters.add(ticketFilter.limit());
-        parameters.add(ticketFilter.offset());
+        String hql = "FROM Ticket t JOIN FETCH t.sportEvent se JOIN FETCH t.seat s JOIN FETCH s.row r "
+        + "JOIN FETCH r.sector sec JOIN FETCH sec.arena a WHERE t.sportEvent.id = :eventId " + orderBy;
 
-        String sql = FIND_ALL_BY_EVENT_ID_SQL + orderBy;
-
-        return new FiltrationSqlQueryParameters(sql, parameters);
+        return new FiltrationSqlQueryParameters(hql, parameters);
     }
-    private List<Ticket> executeFilterQuery(String sql, List<Object> parameters, Long eventId) {
-        try (var connection = ConnectionManager.get();
-             var statement = connection.prepareStatement(sql)) {
+    private List<Ticket> executeFilterQuery(String hql, List<Object> parameters, Long eventId, TicketFilter ticketFilter) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Ticket> query = session.createQuery(hql, Ticket.class);
+            query.setParameter("eventId", eventId);
 
-            statement.setLong(1, eventId);
-
-            for (int i = 1; i <= parameters.size(); i++) {
-                statement.setObject(i + 1, parameters.get(i - 1));
+            for (int i = 0; i < parameters.size(); i++) {
+                query.setParameter(i + 1, parameters.get(i));
             }
 
-            try (var result = statement.executeQuery()) {
-                List<Ticket> ticketList = new ArrayList<>();
-                while (result.next()) {
-                    ticketList.add(buildTicket(result));
-                }
-                return ticketList;
-            }
-        } catch (SQLException e) {
+            query.setFirstResult(ticketFilter.offset());
+            query.setMaxResults(ticketFilter.limit());
+
+            return query.list();
+        } catch (HibernateException e) {
+            log.error("Failed to retrieve tickets matching the provided filter");
             throw new DaoCrudException(e);
         }
     }
 
-    public List<Ticket> findAllByEventId(Long id){
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_ALL_BY_EVENT_ID_SQL)){
-            List<Ticket> ticketList = new ArrayList<>();
-            statement.setLong(1, id);
-            var result = statement.executeQuery();
-            while (result.next()){
-                ticketList.add(buildTicket(result));
-            }
-            return ticketList;
-        } catch (SQLException e) {
+    /**
+     * Finds all {@link Ticket} entities by specific event ID.
+     *
+     * @param eventId event ID to search specific event tickets
+     * @return the list of matching tickets
+     */
+    public List<Ticket> findAllByEventId(Long eventId){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Ticket> query = session.createQuery("FROM Ticket WHERE sportEvent.id = :eventId",
+                    Ticket.class);
+            query.setParameter("eventId", eventId);
+            return query.list();
+        } catch (HibernateException e) {
+            log.error("Failed to retrieve tickets by event ID: {}", eventId);
             throw new DaoCrudException(e);
         }
     }
 
-    @Override
-    public List<Ticket> findAll() {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_ALL_SQL)){
-            List<Ticket> ticketList = new ArrayList<>();
-
-            var result = statement.executeQuery();
-            while (result.next()){
-                ticketList.add(buildTicket(result));
-            }
-            return ticketList;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    @Override
-    public Optional<Ticket> findById(Long id) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_BY_ID_SQL)){
-            statement.setLong(1, id);
-            var result = statement.executeQuery();
-            Ticket ticket = null;
-            if (result.next()){
-                ticket = buildTicket(result);
-            }
-            return Optional.ofNullable(ticket);
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    @Override
-    public Ticket save(Ticket ticket) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)){
-            setSaveStatement(ticket, statement);
-            statement.executeUpdate();
-            var keys = statement.getGeneratedKeys();
-            if(keys.next()){
-                ticket.setId(keys.getLong("id"));
-            }
-
-            return ticket;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    @Override
-    public boolean update(Ticket ticket) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(UPDATE_SQL)){
-            setUpdateStatement(ticket, statement);
-            statement.setLong(5, ticket.getId());
-            return statement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(DELETE_SQL)){
-            statement.setLong(1, id);
-            statement.setLong(2, id);
-            return statement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
+    /**
+     * Retrieves {@link Ticket} entity status.
+     *
+     * @param ticketId ticket ID to get status
+     * @return specific ticket's status
+     */
     public String getTicketStatus(Long ticketId){
-        String status = null;
-        try (var connection = ConnectionManager.get();
-             PreparedStatement checkStatement = connection.prepareStatement(GET_TICKET_STATUS_SQL)) {
-            checkStatement.setLong(1, ticketId);
-            try (ResultSet rs = checkStatement.executeQuery()) {
-                if (rs.next()) {
-                    status = rs.getString("status");
-                }
-            }
-        }catch (SQLException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<TicketStatus> query = session.createQuery(
+                    "SELECT status FROM Ticket WHERE id = :ticketId", TicketStatus.class
+            );
+            query.setParameter("ticketId", ticketId);
+            return query.uniqueResult().name();
+        } catch (HibernateException e) {
+            log.error("Failed to retrieve status of ticket with ID: {}", ticketId);
             throw new DaoCrudException(e);
         }
-        return status;
-    }
-
-    private Ticket buildTicket(ResultSet result) throws SQLException {
-        return Ticket.builder()
-                .id(result.getLong("id"))
-                .status(TicketStatus.valueOf(result.getString("status")))
-                .price(result.getBigDecimal("price"))
-                .sportEvent(sportEventService.findById((long) result.getInt("event_id")).get())
-                .seat(seatService.findById((long) result.getInt("seat_id")).get())
-                .build();
-    }
-    private void setSaveStatement(Ticket ticket, PreparedStatement statement) throws SQLException {
-        statement.setString(1, String.valueOf(ticket.getStatus()));
-        statement.setBigDecimal(2, ticket.getPrice());
-        statement.setLong(3, ticket.getSportEvent().getId());
-        statement.setLong(4, ticket.getSeat().getId());
-    }
-
-    private void setUpdateStatement(Ticket ticket, PreparedStatement statement) throws SQLException {
-        statement.setString(1, String.valueOf(ticket.getStatus()));
-        statement.setBigDecimal(2, ticket.getPrice());
-        statement.setLong(3, ticket.getSportEvent().getId());
-        statement.setLong(4, ticket.getSeat().getId());
     }
 }

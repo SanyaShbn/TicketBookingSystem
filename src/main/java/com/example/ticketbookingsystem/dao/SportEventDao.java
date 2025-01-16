@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * DAO class for managing {@link SportEventDao} entities.
+ * DAO class for managing {@link SportEvent} entities.
  */
 @Slf4j
 public class SportEventDao extends AbstractHibernateDao<SportEvent>{

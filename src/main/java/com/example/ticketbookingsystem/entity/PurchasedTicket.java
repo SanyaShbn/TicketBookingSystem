@@ -6,21 +6,27 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
+@Table(name = "purchased_tickets")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Seat {
+public class PurchasedTicket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "seat_number", nullable = false)
-    private int seatNumber;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
+    @Column(name = "purchase_date", nullable = false)
+    private LocalDateTime purchaseDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "row_id", nullable = false)
-    private Row row;
+    @JoinColumn(name = "ticket_id", nullable = false)
+    private Ticket ticket;
 }
