@@ -3,188 +3,108 @@ package com.example.ticketbookingsystem.dao;
 import com.example.ticketbookingsystem.dto.SportEventFilter;
 import com.example.ticketbookingsystem.entity.SportEvent;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.service.ArenaService;
-import com.example.ticketbookingsystem.utils.ConnectionManager;
 import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;
+import com.example.ticketbookingsystem.utils.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class SportEventDao implements DaoCrud<Long, SportEvent>{
+/**
+ * DAO class for managing {@link SportEventDao} entities.
+ */
+@Slf4j
+public class SportEventDao extends AbstractHibernateDao<SportEvent>{
     private static final SportEventDao INSTANCE = new SportEventDao();
-    private static final ArenaService arenaService = ArenaService.getInstance();
-    private static final String SAVE_SQL = """
-            INSERT INTO sport_event (event_name, event_date_time, arena_id)
-            VALUES (?, ?, ?)
-            """;
-    private static final String DELETE_SQL = """
-            DELETE FROM sport_event WHERE id=?
-            """;
-    private static final String UPDATE_SQL = """
-            UPDATE sport_event
-            SET event_name=?,
-                event_date_time=?,
-                arena_id=?
-            WHERE id=?
-            """;
-    private static final String FIND_ALL_SQL = """
-            SELECT id, event_name, event_date_time, arena_id FROM sport_event
-            """;
 
-    private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
-            WHERE id=?
-            """;
+    private SportEventDao(){
+        super(SportEvent.class);
+    }
+
+    /**
+     * Returns the singleton instance of {@link SportEventDao}.
+     *
+     * @return the singleton instance
+     */
     public static SportEventDao getInstance(){
         return INSTANCE;
     }
-    private SportEventDao(){
-    }
 
+    /**
+     * Finds all {@link SportEvent} entities based on the specified filter.
+     *
+     * @param sportEventFilter the filter to apply
+     * @return the list of matching sport events
+     */
     public List<SportEvent> findAll(SportEventFilter sportEventFilter) {
-        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildSqlQuery(sportEventFilter);
-        String sql = filtrationSqlQueryParameters.sql();
-        List<Object> parameters = filtrationSqlQueryParameters.parameters();
+        FiltrationSqlQueryParameters filtrationSqlQueryParameters = buildHqlQuery(sportEventFilter);
+        String hql = filtrationSqlQueryParameters.sql();
 
-        return executeFilterQuery(sql, parameters);
+        return executeFilterQuery(hql, sportEventFilter);
     }
 
-    private FiltrationSqlQueryParameters buildSqlQuery(SportEventFilter sportEventFilter) {
+    private FiltrationSqlQueryParameters buildHqlQuery(SportEventFilter sportEventFilter) {
         List<Object> parameters = new ArrayList<>();
-        List<String> whereSql = new ArrayList<>();
+        List<String> whereHql = new ArrayList<>();
+        List<String> sortHql = new ArrayList<>();
 
         if (sportEventFilter.startDate() != null) {
             parameters.add(sportEventFilter.startDate());
-            whereSql.add("event_date_time>?");
+            whereHql.add("eventDateTime >= :startDate");
         }
         if (sportEventFilter.endDate() != null) {
             parameters.add(sportEventFilter.endDate());
-            whereSql.add("event_date_time<?");
+            whereHql.add("eventDateTime <= :endDate");
         }
-        if(sportEventFilter.arenaId() != null){
+        if (sportEventFilter.arenaId() != null) {
             parameters.add(sportEventFilter.arenaId());
-            whereSql.add("arena_id=?");
+            whereHql.add("arena.id = :arenaId");
+        }
+        if (!sportEventFilter.sortOrder().isEmpty()) {
+            sortHql.add("eventDateTime " + sportEventFilter.sortOrder());
         }
 
-        parameters.add(sportEventFilter.limit());
-        parameters.add(sportEventFilter.offset());
-
-        var where = whereSql.stream().collect(Collectors.joining(
-                " AND ",
-                parameters.size() > 2 ? " WHERE " : " ",
-                !sportEventFilter.sortOrder().isEmpty() ?
-                " ORDER BY event_date_time " + sportEventFilter.sortOrder() +
-                " LIMIT ? OFFSET ? " : " LIMIT ? OFFSET ? "
+        var orderBy = sortHql.stream().collect(Collectors.joining(
+                ", ",
+                !sortHql.isEmpty() ? " ORDER BY " : "",
+                ""
         ));
 
-        String sql = FIND_ALL_SQL + where;
+        var where = whereHql.stream().collect(Collectors.joining(
+                " AND ",
+                !whereHql.isEmpty() ? " WHERE " : "",
+                ""
+        ));
 
-        return new FiltrationSqlQueryParameters(sql, parameters);
+        String hql = "FROM SportEvent se JOIN FETCH se.arena a " + where + orderBy;
+
+        return new FiltrationSqlQueryParameters(hql, parameters);
     }
-    private List<SportEvent> executeFilterQuery(String sql, List<Object> parameters) {
-        try (var connection = ConnectionManager.get();
-             var statement = connection.prepareStatement(sql)) {
+    private List<SportEvent> executeFilterQuery(String hql, SportEventFilter sportEventFilter) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<SportEvent> query = session.createQuery(hql, SportEvent.class);
 
-            for (int i = 0; i < parameters.size(); i++) {
-                statement.setObject(i + 1, parameters.get(i));
+            if (sportEventFilter.startDate() != null) {
+                query.setParameter("startDate", sportEventFilter.startDate());
+            }
+            if (sportEventFilter.endDate() != null) {
+                query.setParameter("endDate", sportEventFilter.endDate());
+            }
+            if (sportEventFilter.arenaId() != null) {
+                query.setParameter("arenaId", sportEventFilter.arenaId());
             }
 
-            try (var result = statement.executeQuery()) {
-                List<SportEvent> sportEventList = new ArrayList<>();
-                while (result.next()) {
-                    sportEventList.add(buildSportEvent(result));
-                }
-                return sportEventList;
-            }
-        } catch (SQLException e) {
+            query.setFirstResult(sportEventFilter.offset());
+            query.setMaxResults(sportEventFilter.limit());
+
+            return query.list();
+        } catch (HibernateException e) {
+            log.error("Failed to retrieve sport events matching the provided filter");
             throw new DaoCrudException(e);
         }
-    }
-
-    @Override
-    public List<SportEvent> findAll() {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_ALL_SQL)){
-            List<SportEvent> sportEventList = new ArrayList<>();
-
-            var result = statement.executeQuery();
-            while (result.next()){
-                sportEventList.add(buildSportEvent(result));
-            }
-            return sportEventList;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    @Override
-    public Optional<SportEvent> findById(Long id) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(FIND_BY_ID_SQL)){
-            statement.setLong(1, id);
-            var result = statement.executeQuery();
-            SportEvent sportEvent = null;
-            if (result.next()){
-                sportEvent = buildSportEvent(result);
-            }
-            return Optional.ofNullable(sportEvent);
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    @Override
-    public SportEvent save(SportEvent sportEvent) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)){
-            setStatement(sportEvent, statement);
-            statement.executeUpdate();
-            var keys = statement.getGeneratedKeys();
-            if(keys.next()){
-                sportEvent.setId(keys.getLong("id"));
-            }
-            return sportEvent;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    @Override
-    public boolean update(SportEvent sportEvent) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(UPDATE_SQL)){
-            setStatement(sportEvent, statement);
-            statement.setLong(4, sportEvent.getId());
-            return statement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        try(var connection = ConnectionManager.get();
-            var statement = connection.prepareStatement(DELETE_SQL)){
-            statement.setLong(1, id);
-            return statement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new DaoCrudException(e);
-        }
-    }
-
-    private SportEvent buildSportEvent(ResultSet result) throws SQLException {
-        return SportEvent.builder()
-                .id(result.getLong("id"))
-                .eventName(result.getString("event_name"))
-                .eventDateTime(result.getTimestamp("event_date_time").toLocalDateTime())
-                .arena(arenaService.findById((long) result.getInt("arena_id")).get())
-                .build();
-    }
-    private void setStatement(SportEvent sportEvent, PreparedStatement statement) throws SQLException {
-        statement.setString(1, sportEvent.getEventName());
-        statement.setTimestamp(2, Timestamp.valueOf(sportEvent.getEventDateTime()));
-        statement.setLong(3, sportEvent.getArena().getId());
     }
 }
