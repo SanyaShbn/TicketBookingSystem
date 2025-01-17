@@ -3,12 +3,9 @@ package ticketbookingsystem.dao;
 import com.example.ticketbookingsystem.dao.ArenaDao;
 import com.example.ticketbookingsystem.dao.SportEventDao;
 import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.entity.Sector;
 import com.example.ticketbookingsystem.entity.SportEvent;
-import com.example.ticketbookingsystem.utils.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -16,52 +13,22 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static ticketbookingsystem.utils.TestUtils.createTestArena;
+import static ticketbookingsystem.utils.TestUtils.createTestSportEvent;
 
 class SportEventDaoTest {
 
-    private SportEventDao sportEventDao;
+    private static final Long SPORT_EVENT_ID = 1L;
 
-    private ArenaDao arenaDao;
+    private static final String SPORT_EVENT_NAME = "Event A";
+    private static SportEventDao sportEventDao;
 
-    private Session session;
-    private Transaction transaction;
+    private static ArenaDao arenaDao;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    public static void setUp() {
         sportEventDao = SportEventDao.getInstance();
         arenaDao = ArenaDao.getInstance();
-
-        session = mock(Session.class);
-        transaction = mock(Transaction.class);
-    }
-
-    @Test
-    void testSave() {
-        Arena arena = createTestArena();
-        arenaDao.save(arena);
-
-        SportEvent sportEvent = createTestSportEvent("Event A", LocalDateTime.now(), arena);
-        when(session.beginTransaction()).thenReturn(transaction);
-
-        sportEventDao.save(sportEvent);
-
-        verify(session).save(sportEvent);
-        verify(transaction).commit();
-    }
-
-    @Test
-    void testFindById() {
-        Arena arena = createTestArena();
-        arenaDao.save(arena);
-
-        SportEvent sportEvent = createTestSportEvent("Event A", LocalDateTime.now(), arena);
-        when(session.get(SportEvent.class, sportEvent.getId())).thenReturn(sportEvent);
-
-        Optional<SportEvent> foundSportEvent = sportEventDao.findById(sportEvent.getId());
-
-        assertTrue(foundSportEvent.isPresent());
-        assertEquals("Event A", foundSportEvent.get().getEventName());
     }
 
     @Test
@@ -72,13 +39,60 @@ class SportEventDaoTest {
         SportEvent sportEvent1 = createTestSportEvent("Event A1", LocalDateTime.now(), arena);
         SportEvent sportEvent2 = createTestSportEvent("Event A2", LocalDateTime.now(), arena);
 
-        when(session.createQuery("from SportEvent", SportEvent.class)).thenReturn(mock(Query.class));
-        Query<SportEvent> query = session.createQuery("from SportEvent", SportEvent.class);
-        when(query.list()).thenReturn(List.of(sportEvent1, sportEvent2));
+        sportEventDao.save(sportEvent1);
+        sportEventDao.save(sportEvent2);
 
         List<SportEvent> sportEvents = sportEventDao.findAll();
 
         assertEquals(2, sportEvents.size());
+    }
+
+    @Test
+    void testFindById() {
+        Arena arena = createTestArena();
+        arenaDao.save(arena);
+
+        SportEvent sportEvent = createTestSportEvent("Event A", LocalDateTime.now(), arena);
+
+        sportEventDao.save(sportEvent);
+
+        Optional<SportEvent> foundSportEvent = sportEventDao.findById(SPORT_EVENT_ID);
+
+        assertTrue(foundSportEvent.isPresent());
+        assertEquals(SPORT_EVENT_NAME, foundSportEvent.get().getEventName());
+    }
+
+    @Test
+    void testSave() {
+        Arena arena = createTestArena();
+        arenaDao.save(arena);
+
+        SportEvent sportEvent = createTestSportEvent("Event A", LocalDateTime.now(), arena);
+
+        sportEventDao.save(sportEvent);
+
+        Optional<SportEvent> savedSportEvent = sportEventDao.findById(SPORT_EVENT_ID);
+
+        assertTrue(savedSportEvent.isPresent());
+        assertNotNull(savedSportEvent.get().getId());
+        assertEquals(SPORT_EVENT_NAME, savedSportEvent.get().getEventName());
+    }
+
+    @Test
+    void testUpdate() {
+        Arena arena = createTestArena();
+        arenaDao.save(arena);
+
+        SportEvent sportEvent = createTestSportEvent("Event A", LocalDateTime.now(), arena);
+        sportEventDao.save(sportEvent);
+
+        sportEvent.setEventName("Updated Event A");
+        sportEventDao.update(sportEvent);
+
+        Optional<SportEvent> updatedSportEvent = sportEventDao.findById(SPORT_EVENT_ID);
+
+        assertTrue(updatedSportEvent.isPresent());
+        assertEquals("Updated Event A", updatedSportEvent.get().getEventName());
     }
 
     @Test
@@ -87,30 +101,13 @@ class SportEventDaoTest {
         arenaDao.save(arena);
 
         SportEvent sportEvent = createTestSportEvent("Event A", LocalDateTime.now(), arena);
-        when(session.beginTransaction()).thenReturn(transaction);
-        when(session.load(SportEvent.class, sportEvent.getId())).thenReturn(sportEvent);
 
+        sportEventDao.save(sportEvent);
         sportEventDao.delete(sportEvent.getId());
 
-        verify(session).delete(sportEvent);
-        verify(transaction).commit();
-    }
+        Optional<SportEvent> foundSportEvent = sportEventDao.findById(SPORT_EVENT_ID);
 
-    private SportEvent createTestSportEvent(String eventName, LocalDateTime eventDateTime, Arena arena) {
-        return SportEvent.builder()
-                .eventName(eventName)
-                .eventDateTime(eventDateTime)
-                .arena(arena)
-                .build();
-    }
-
-    private Arena createTestArena() {
-        return Arena.builder()
-                .name("Test Arena")
-                .city("Test City")
-                .capacity(5000)
-                .generalSeatsNumb(1000)
-                .build();
+        assertFalse(foundSportEvent.isPresent());
     }
 }
 

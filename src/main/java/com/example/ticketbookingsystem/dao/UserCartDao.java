@@ -33,7 +33,7 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
     }
 
     /**
-     * Saves the user cart and updates the ticket status to 'RESERVED'.
+     * Saves the record with ticket reservation into user cart and updates the ticket status to 'RESERVED'.
      *
      * @param userCart the user cart entity to save
      */
@@ -63,7 +63,7 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
     }
 
     /**
-     * Deletes the user cart and updates the ticket status to 'AVAILABLE'.
+     * Deletes single record with ticket reservation from user cart and updates the ticket status to 'AVAILABLE'.
      *
      * @param userCart the user cart entity to delete
      */
@@ -93,7 +93,7 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
     }
 
     /**
-     * Clears the user cart and updates the status of all tickets to 'AVAILABLE'.
+     * Deletes all the records from user cart and updates the status of all tickets to 'AVAILABLE'.
      *
      * @param userId the ID of the user
      */
@@ -103,28 +103,8 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
         try {
             transaction = session.beginTransaction();
 
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaUpdate<Ticket> update = cb.createCriteriaUpdate(Ticket.class);
-            Root<Ticket> ticketRoot = update.from(Ticket.class);
-
-            Subquery<Long> subquery = update.subquery(Long.class);
-            Root<UserCart> cartRoot = subquery.from(UserCart.class);
-            subquery.select(cartRoot.get("id").get("ticketId"))
-                    .where(cb.equal(cartRoot.get("id").get("userId"), userId));
-
-            update.set("status", TicketStatus.AVAILABLE)
-                    .where(cb.and(
-                            cb.in(ticketRoot.get("id")).value(subquery),
-                            cb.equal(ticketRoot.get("status"), TicketStatus.RESERVED)
-                    ));
-
-            session.createQuery(update).executeUpdate();
-
-            CriteriaDelete<UserCart> delete = cb.createCriteriaDelete(UserCart.class);
-            Root<UserCart> deleteRoot = delete.from(UserCart.class);
-            delete.where(cb.equal(deleteRoot.get("id").get("userId"), userId));
-
-            session.createQuery(delete).executeUpdate();
+            updateTicketStatus(session, userId);
+            deleteUserCart(session, userId);
 
             transaction.commit();
             log.info("Removed all records from user cart with user ID: {}", userId);
@@ -136,6 +116,35 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
             session.close();
         }
     }
+
+    private void updateTicketStatus(Session session, Long userId) {
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaUpdate<Ticket> update = cb.createCriteriaUpdate(Ticket.class);
+        Root<Ticket> ticketRoot = update.from(Ticket.class);
+
+        Subquery<Long> subquery = update.subquery(Long.class);
+        Root<UserCart> cartRoot = subquery.from(UserCart.class);
+        subquery.select(cartRoot.get("id").get("ticketId"))
+                .where(cb.equal(cartRoot.get("id").get("userId"), userId));
+
+        update.set("status", TicketStatus.AVAILABLE)
+                .where(cb.and(
+                        cb.in(ticketRoot.get("id")).value(subquery),
+                        cb.equal(ticketRoot.get("status"), TicketStatus.RESERVED)
+                ));
+
+        session.createQuery(update).executeUpdate();
+    }
+
+    private void deleteUserCart(Session session, Long userId) {
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaDelete<UserCart> delete = cb.createCriteriaDelete(UserCart.class);
+        Root<UserCart> deleteRoot = delete.from(UserCart.class);
+        delete.where(cb.equal(deleteRoot.get("id").get("userId"), userId));
+
+        session.createQuery(delete).executeUpdate();
+    }
+
 
     /**
      * Gets the list of ticket IDs from the user cart.

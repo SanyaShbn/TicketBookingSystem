@@ -1,6 +1,7 @@
 package com.example.ticketbookingsystem.servlet.arena_servlets;
 
 import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import com.example.ticketbookingsystem.validator.Error;
@@ -24,7 +25,7 @@ public class DeleteArenaServlet extends HttpServlet {
             arenaService.deleteArena(Long.parseLong(id));
 
             response.sendRedirect(request.getContextPath() + "/admin/arenas");
-        }catch (CreateUpdateEntityException e){
+        }catch (DaoCrudException e){
             ValidationResult validationResult = new ValidationResult();
             validationResult.add(Error.of("delete.arena.fail",
                     "Ошибка! Данные о выбранной арене нельзя удалить. Для нее уже запланированы события " +

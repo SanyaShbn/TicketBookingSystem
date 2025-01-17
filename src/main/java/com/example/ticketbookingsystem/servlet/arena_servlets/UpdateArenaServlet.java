@@ -2,7 +2,7 @@ package com.example.ticketbookingsystem.servlet.arena_servlets;
 
 import com.example.ticketbookingsystem.dto.ArenaDto;
 import com.example.ticketbookingsystem.entity.Arena;
-import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
@@ -47,8 +47,8 @@ public class UpdateArenaServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/admin/arenas");
         }catch (NumberFormatException e) {
             handleNumberFormatException(request, response);
-        } catch (CreateUpdateEntityException e) {
-            handleCreateUpdateArenaException(request, response, e);
+        } catch (DaoCrudException e) {
+            handleUpdateArenaException(request, response, e);
         } catch (ValidationException e) {
             handleValidationException(request, response, e);
         }
@@ -63,8 +63,8 @@ public class UpdateArenaServlet extends HttpServlet {
         doGet(request, response);
     }
 
-    private void handleCreateUpdateArenaException(HttpServletRequest request, HttpServletResponse response,
-                                                   CreateUpdateEntityException e)
+    private void handleUpdateArenaException(HttpServletRequest request, HttpServletResponse response,
+                                                   DaoCrudException e)
             throws ServletException, IOException {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);

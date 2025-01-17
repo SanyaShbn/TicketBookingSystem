@@ -4,66 +4,55 @@ import com.example.ticketbookingsystem.dao.ArenaDao;
 import com.example.ticketbookingsystem.dao.SectorDao;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.Sector;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ticketbookingsystem.utils.TestUtils.*;
 
 class SectorDaoTest {
 
-    private SectorDao sectorDao;
+    private static final Long SECTOR_ID = 1L;
 
-    private ArenaDao arenaDao;
+    private static final String SECTOR_NAME = "Test Sector";
 
-    @BeforeEach
-    void setUp() {
+    private static SectorDao sectorDao;
+
+    private static ArenaDao arenaDao;
+
+    @BeforeAll
+    public static void setUp() {
         sectorDao = SectorDao.getInstance();
         arenaDao = ArenaDao.getInstance();
     }
 
-    @Test
-    void testSave() {
+    public void saveEntities() {
         Arena arena = createTestArena();
         arenaDao.save(arena);
 
-        Sector sector = createTestSector("Sector A", arena, 10, 10,
-                100, 100);
-        sectorDao.save(sector);
+        Sector sector1 = createTestSector(arena);
+        Sector sector2 = createTestSector(arena);
+        sectorDao.save(sector1);
+        sectorDao.save(sector2);
 
-        assertNotNull(sector.getId());
-        assertEquals("Sector A", sector.getSectorName());
     }
 
     @Test
     void testFindById() {
-        Arena arena = createTestArena();
-        arenaDao.save(arena);
+        saveEntities();
 
-        Sector sector = createTestSector("Sector A", arena, 10, 10,
-                100, 100);
-        sectorDao.save(sector);
-
-        Optional<Sector> foundSector = sectorDao.findById(sector.getId());
+        Optional<Sector> foundSector = sectorDao.findById(SECTOR_ID);
 
         assertTrue(foundSector.isPresent());
-        assertEquals("Sector A", foundSector.get().getSectorName());
+        assertEquals(SECTOR_NAME, foundSector.get().getSectorName());
     }
 
     @Test
     void testFindAll() {
-        Arena arena = createTestArena();
-        arenaDao.save(arena);
-
-        Sector sector1 = createTestSector("Sector A1", arena, 10, 10,
-                100, 100);
-        Sector sector2 = createTestSector("Sector A2", arena, 20, 20,
-                200, 200);
-
-        sectorDao.save(sector1);
-        sectorDao.save(sector2);
+        saveEntities();
 
         List<Sector> sectors = sectorDao.findAll();
 
@@ -71,38 +60,41 @@ class SectorDaoTest {
     }
 
     @Test
-    void testDelete() {
+    void testSave() {
+        saveEntities();
+
+        Optional<Sector> savedSector = sectorDao.findById(SECTOR_ID);
+
+        assertTrue(savedSector.isPresent());
+        assertNotNull(savedSector.get().getId());
+        assertEquals(SECTOR_NAME, savedSector.get().getSectorName());
+    }
+
+    @Test
+    void testUpdate() {
         Arena arena = createTestArena();
         arenaDao.save(arena);
 
-        Sector sector = createTestSector("Sector A", arena, 10, 10,
-                100, 100);
+        Sector sector = createTestSector(arena);
         sectorDao.save(sector);
-        sectorDao.delete(sector.getId());
 
-        Optional<Sector> foundSector = sectorDao.findById(sector.getId());
+        sector.setSectorName("Sector B");
+        sectorDao.update(sector);
+
+        Optional<Sector> updatedSector = sectorDao.findById(SECTOR_ID);
+
+        assertTrue(updatedSector.isPresent());
+        assertEquals("Sector B", updatedSector.get().getSectorName());
+    }
+
+    @Test
+    void testDelete() {
+        saveEntities();
+
+        sectorDao.delete(SECTOR_ID);
+
+        Optional<Sector> foundSector = sectorDao.findById(SECTOR_ID);
 
         assertFalse(foundSector.isPresent());
-    }
-
-    private Sector createTestSector(String sectorName, Arena arena, int maxRowsNumb, int availableRowsNumb,
-                                    int maxSeatsNumb, int availableSeatsNumb) {
-        return Sector.builder()
-                .sectorName(sectorName)
-                .arena(arena)
-                .maxRowsNumb(maxRowsNumb)
-                .availableRowsNumb(availableRowsNumb)
-                .maxSeatsNumb(maxSeatsNumb)
-                .availableSeatsNumb(availableSeatsNumb)
-                .build();
-    }
-
-    private Arena createTestArena() {
-        return Arena.builder()
-                .name("Test Arena")
-                .city("Test City")
-                .capacity(5000)
-                .generalSeatsNumb(1000)
-                .build();
     }
 }

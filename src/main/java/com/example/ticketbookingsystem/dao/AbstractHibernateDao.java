@@ -1,13 +1,19 @@
 package com.example.ticketbookingsystem.dao;
 
 import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.utils.FilterParameters;
 import com.example.ticketbookingsystem.utils.HibernateUtil;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -17,6 +23,9 @@ import java.util.Optional;
  */
 @Slf4j
 public abstract class AbstractHibernateDao<T> {
+
+    private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     private final Class<T> entityClass;
 
     public AbstractHibernateDao(Class<T> entityClass) {
@@ -30,7 +39,7 @@ public abstract class AbstractHibernateDao<T> {
      * @throws DaoCrudException If there is an error during the retrieval process.
      */
     public List<T> findAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from " + entityClass.getName(), entityClass).list();
         } catch (HibernateException e) {
             log.error("Failed to get all {} entities", entityClass.getSimpleName(), e);
@@ -46,7 +55,7 @@ public abstract class AbstractHibernateDao<T> {
      * @throws DaoCrudException If there is an error during the retrieval process.
      */
     public Optional<T> findById(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return Optional.ofNullable(session.get(entityClass, id));
         } catch (HibernateException e) {
             log.error("Failed to get {} entity by id {}", entityClass.getSimpleName(), id, e);
@@ -62,17 +71,17 @@ public abstract class AbstractHibernateDao<T> {
      */
     public void save(T entity) {
         Transaction transaction = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         try {
             transaction = session.beginTransaction();
             session.save(entity);
             transaction.commit();
-            log.info("Entity saved: {}", entity);
+            log.info("Entity {} saved", entityClass.getSimpleName());
         } catch (HibernateException e) {
             if(transaction != null){
                 transaction.rollback();
             }
-            log.error("Failed to save entity: {}", entity);
+            log.error("Failed to save {} entity", entityClass.getSimpleName());
             throw new DaoCrudException(e);
         } finally {
             session.close();
@@ -87,17 +96,17 @@ public abstract class AbstractHibernateDao<T> {
      */
     public void update(T entity) {
         Transaction transaction = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         try {
             transaction = session.beginTransaction();
             session.update(entity);
             transaction.commit();
-            log.info("Entity updated: {}", entity);
+            log.info("Entity {} updated", entityClass.getSimpleName());
         } catch (HibernateException e) {
             if(transaction != null){
                 transaction.rollback();
             }
-            log.error("Failed to update entity: {}", entity);
+            log.error("Failed to update {} entity", entityClass.getSimpleName());
             throw new DaoCrudException(e);
         } finally {
             session.close();
@@ -112,7 +121,7 @@ public abstract class AbstractHibernateDao<T> {
      */
     public void delete(Long id) {
         Transaction transaction = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         try {
             transaction = session.beginTransaction();
             T entity = session.load(entityClass, id);

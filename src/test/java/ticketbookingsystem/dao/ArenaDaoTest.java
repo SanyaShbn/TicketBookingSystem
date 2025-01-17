@@ -2,36 +2,27 @@ package ticketbookingsystem.dao;
 
 import com.example.ticketbookingsystem.dao.ArenaDao;
 import com.example.ticketbookingsystem.entity.Arena;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ticketbookingsystem.utils.TestUtils.createTestArena;
 
 class ArenaDaoTest {
 
-    private ArenaDao arenaDao;
+    private static ArenaDao arenaDao;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    public static void setUp() {
         arenaDao = ArenaDao.getInstance();
     }
 
     @Test
-    void testSave() {
-        Arena arena = createTestArena("Test Arena", "Test City", 5000, 1000);
-
-        arenaDao.save(arena);
-
-        assertNotNull(arena.getId());
-        assertEquals("Test Arena", arena.getName());
-    }
-
-    @Test
     void testFindById() {
-        Arena arena = createTestArena("Test Arena", "Test City", 5000, 1000);
+        Arena arena = createTestArena();
 
         arenaDao.save(arena);
 
@@ -57,8 +48,35 @@ class ArenaDaoTest {
     }
 
     @Test
+    void testSave() {
+        Arena arena = createTestArena();
+
+        arenaDao.save(arena);
+
+        Optional<Arena> savedArena = arenaDao.findById(arena.getId());
+
+        assertTrue(savedArena.isPresent());
+        assertNotNull(savedArena.get().getId());
+        assertEquals(savedArena.get().getName(), arena.getName());
+    }
+
+    @Test
+    void testUpdate() {
+        Arena arena = createTestArena();
+        arenaDao.save(arena);
+
+        arena.setName("Updated Test Arena");
+        arenaDao.update(arena);
+
+        Optional<Arena> updatedArena = arenaDao.findById(arena.getId());
+
+        assertTrue(updatedArena.isPresent());
+        assertEquals(updatedArena.get().getName(), arena.getName());
+    }
+
+    @Test
     void testDelete() {
-        Arena arena = createTestArena("Test Arena", "Test City", 5000, 1000);
+        Arena arena = createTestArena();
 
         arenaDao.save(arena);
         arenaDao.delete(arena.getId());
@@ -66,15 +84,6 @@ class ArenaDaoTest {
         Optional<Arena> foundArena = arenaDao.findById(arena.getId());
 
         assertFalse(foundArena.isPresent());
-    }
-
-    private Arena createTestArena(String name, String city, int capacity, int generalSeatsNumb) {
-        return Arena.builder()
-                .name(name)
-                .city(city)
-                .capacity(capacity)
-                .generalSeatsNumb(generalSeatsNumb)
-                .build();
     }
 }
 

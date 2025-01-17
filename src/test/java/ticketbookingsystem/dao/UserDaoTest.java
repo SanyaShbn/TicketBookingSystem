@@ -3,7 +3,7 @@ package ticketbookingsystem.dao;
 import com.example.ticketbookingsystem.dao.UserDao;
 import com.example.ticketbookingsystem.entity.User;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -12,10 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserDaoTest {
 
-    private UserDao userDao;
+    private static final String USER_EMAIL = "test@example.com";
 
-    @BeforeEach
-    void setUp() {
+    private static final String USER_PASSWORD = "password123";
+
+    private static UserDao userDao;
+
+    @BeforeAll
+    public static void setUp() {
         userDao = UserDao.getInstance();
     }
 
@@ -28,24 +32,24 @@ class UserDaoTest {
 
     @Test
     void testRegisterUser() {
-        User user = createTestUser("test@example.com", "password123");
+        User user = createTestUser(USER_EMAIL, USER_PASSWORD);
 
         userDao.registerUser(user);
 
         assertNotNull(user.getId());
-        assertEquals("test@example.com", user.getEmail());
+        assertEquals(USER_EMAIL, user.getEmail());
     }
 
     @Test
     void testFindByEmail() {
-        User user = createTestUser("test@example.com", "password123");
+        User user = createTestUser(USER_EMAIL, USER_PASSWORD);
 
         userDao.registerUser(user);
 
-        Optional<User> foundUser = userDao.findByEmail("test@example.com");
+        Optional<User> foundUser = userDao.findByEmail(USER_EMAIL);
 
         assertTrue(foundUser.isPresent());
-        assertEquals("test@example.com", foundUser.get().getEmail());
+        assertEquals(USER_EMAIL, foundUser.get().getEmail());
     }
 
     @Test

@@ -37,38 +37,9 @@ public class SeatDao extends AbstractHibernateDao<Seat>{
      * @return a list of seats for the event
      */
     public List<Seat> findAllByEventId(Long eventId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
-            Root<Seat> seatRoot = cq.from(Seat.class);
-
-            seatRoot.fetch("row", JoinType.INNER).fetch("sector", JoinType.INNER)
-                    .fetch("arena", JoinType.INNER);
-
-            Join<Object, Object> rowJoin = seatRoot.join("row", JoinType.INNER);
-            Join<Object, Object> sectorJoin = rowJoin.join("sector", JoinType.INNER);
-            Join<Object, Object> arenaJoin = sectorJoin.join("arena", JoinType.INNER);
-
-            Subquery<Long> sportEventSubquery = cq.subquery(Long.class);
-            Root<SportEvent> eventRoot = sportEventSubquery.from(SportEvent.class);
-            sportEventSubquery.select(eventRoot.get("arena").get("id"))
-                    .where(cb.equal(eventRoot.get("id"), eventId));
-
-            cq.select(seatRoot)
-                    .where(cb.and(
-                            cb.equal(arenaJoin.get("id"), sportEventSubquery)
-                    ))
-                    .orderBy(cb.asc(
-                            sectorJoin.get("sectorName")),
-                            cb.asc(rowJoin.get("id")),
-                            cb.asc(seatRoot.get("id"))
-                    );
-
-            return session.createQuery(cq).getResultList();
-        } catch (HibernateException e) {
-            log.error("Failed to find seats by provided event ID: {}", eventId);
-            throw new DaoCrudException(e);
-        }
+        CriteriaBuilder cb = HibernateUtil.getSessionFactory().getCriteriaBuilder();
+        CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
+        return findSeats(cq, eventId, false, null);
     }
 
     /**
@@ -78,47 +49,9 @@ public class SeatDao extends AbstractHibernateDao<Seat>{
      * @return a list of seats with no tickets for the event
      */
     public List<Seat> findByEventIdWithNoTickets(Long eventId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
-            Root<Seat> seatRoot = cq.from(Seat.class);
-
-            seatRoot.fetch("row", JoinType.INNER).fetch("sector", JoinType.INNER)
-                    .fetch("arena", JoinType.INNER);
-
-            Join<Object, Object> rowJoin = seatRoot.join("row", JoinType.INNER);
-            Join<Object, Object> sectorJoin = rowJoin.join("sector", JoinType.INNER);
-            Join<Object, Object> arenaJoin = sectorJoin.join("arena", JoinType.INNER);
-
-            Subquery<Long> sportEventSubquery = cq.subquery(Long.class);
-            Root<SportEvent> eventRoot = sportEventSubquery.from(SportEvent.class);
-            sportEventSubquery.select(eventRoot.get("arena").get("id"))
-                    .where(cb.equal(eventRoot.get("id"), eventId));
-
-            Subquery<Long> ticketSubquery = cq.subquery(Long.class);
-            Root<Ticket> ticketRoot = ticketSubquery.from(Ticket.class);
-            ticketSubquery.select(ticketRoot.get("seat").get("id"))
-                    .where(cb.and(
-                            cb.equal(ticketRoot.get("sportEvent").get("id"), eventId),
-                            cb.equal(ticketRoot.get("seat").get("id"), seatRoot.get("id"))
-                    ));
-
-            cq.select(seatRoot)
-                    .where(cb.and(
-                            cb.equal(arenaJoin.get("id"), sportEventSubquery),
-                            cb.not(cb.exists(ticketSubquery))
-                    ))
-                    .orderBy(cb.asc(
-                            sectorJoin.get("sectorName")),
-                            cb.asc(rowJoin.get("id")),
-                            cb.asc(seatRoot.get("id"))
-                    );
-
-            return session.createQuery(cq).getResultList();
-        } catch (HibernateException e) {
-            log.error("Failed to find available seats by provided event ID: {}", eventId);
-            throw new DaoCrudException(e);
-        }
+        CriteriaBuilder cb = HibernateUtil.getSessionFactory().getCriteriaBuilder();
+        CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
+        return findSeats(cq, eventId, true, null);
     }
 
     /**
@@ -129,48 +62,76 @@ public class SeatDao extends AbstractHibernateDao<Seat>{
      * @return a list of seats for the event when updating
      */
     public List<Seat> findAllByEventIdWhenUpdate(Long eventId, Long seatId) {
+        CriteriaBuilder cb = HibernateUtil.getSessionFactory().getCriteriaBuilder();
+        CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
+        return findSeats(cq, eventId, false, seatId);
+    }
+
+    private List<Seat> findSeats(CriteriaQuery<Seat> cq, Long eventId, boolean withTickets, Long seatId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
             Root<Seat> seatRoot = cq.from(Seat.class);
 
-            seatRoot.fetch("row", JoinType.INNER).fetch("sector", JoinType.INNER)
-                    .fetch("arena", JoinType.INNER);
+            setupFetches(seatRoot);
 
-            Join<Seat, Row> rowJoin = seatRoot.join("row", JoinType.INNER);
-            Join<Row, Sector> sectorJoin = rowJoin.join("sector", JoinType.INNER);
-            Join<Sector, Arena> arenaJoin = sectorJoin.join("arena", JoinType.INNER);
+            Join<Object, Object> arenaJoin = setupJoins(seatRoot);
 
-            Subquery<Long> sportEventSubquery = cq.subquery(Long.class);
-            Root<SportEvent> eventRoot = sportEventSubquery.from(SportEvent.class);
-            sportEventSubquery.select(eventRoot.get("arena").get("id"))
-                    .where(cb.equal(eventRoot.get("id"), eventId));
+            Subquery<Long> sportEventSubquery = setupSportEventSubquery(cb, cq, eventId);
+            Subquery<Long> ticketSubquery = setupTicketSubquery(cb, cq, eventId, seatRoot);
 
-            Subquery<Long> ticketSubquery = cq.subquery(Long.class);
-            Root<Ticket> ticketRoot = ticketSubquery.from(Ticket.class);
-            ticketSubquery.select(ticketRoot.get("seat").get("id"))
-                    .where(cb.and(
-                            cb.equal(ticketRoot.get("sportEvent").get("id"), eventId),
-                            cb.equal(ticketRoot.get("seat").get("id"), seatRoot.get("id"))
-                    ));
+            setupWhereClauses(cb, cq, seatRoot, arenaJoin, sportEventSubquery, ticketSubquery, withTickets, seatId);
 
-            cq.select(seatRoot).where(cb.and(
-                            cb.equal(arenaJoin.get("id"), sportEventSubquery),
-                            cb.or(
-                                    cb.not(cb.exists(ticketSubquery)),
-                                    cb.equal(seatRoot.get("id"), seatId)
-                            )
-                    ))
-                    .orderBy(cb.asc(
-                            sectorJoin.get("sectorName")),
-                            cb.asc(rowJoin.get("id")),
-                            cb.asc(seatRoot.get("id"))
-                    );
+            setupOrderBy(cb, cq, seatRoot);
 
             return session.createQuery(cq).getResultList();
         } catch (HibernateException e) {
-            log.error("Failed to find seats by provided event ID: {}", eventId);
+            log.error("Failed to find seats by provided event ID: {}", eventId, e);
             throw new DaoCrudException(e);
         }
+    }
+
+    private void setupFetches(Root<Seat> seatRoot) {
+        seatRoot.fetch("row", JoinType.INNER).fetch("sector", JoinType.INNER).fetch("arena", JoinType.INNER);
+    }
+
+    private Join<Object, Object> setupJoins(Root<Seat> seatRoot) {
+        Join<Object, Object> rowJoin = seatRoot.join("row", JoinType.INNER);
+        Join<Object, Object> sectorJoin = rowJoin.join("sector", JoinType.INNER);
+        return sectorJoin.join("arena", JoinType.INNER);
+    }
+
+    private Subquery<Long> setupSportEventSubquery(CriteriaBuilder cb, CriteriaQuery<?> cq, Long eventId) {
+        Subquery<Long> sportEventSubquery = cq.subquery(Long.class);
+        Root<SportEvent> eventRoot = sportEventSubquery.from(SportEvent.class);
+        sportEventSubquery.select(eventRoot.get("arena").get("id"))
+                .where(cb.equal(eventRoot.get("id"), eventId));
+        return sportEventSubquery;
+    }
+
+    private Subquery<Long> setupTicketSubquery(CriteriaBuilder cb, CriteriaQuery<?> cq, Long eventId, Root<Seat> seatRoot) {
+        Subquery<Long> ticketSubquery = cq.subquery(Long.class);
+        Root<Ticket> ticketRoot = ticketSubquery.from(Ticket.class);
+        ticketSubquery.select(ticketRoot.get("seat").get("id"))
+                .where(cb.and(cb.equal(ticketRoot.get("sportEvent").get("id"), eventId),
+                        cb.equal(ticketRoot.get("seat").get("id"), seatRoot.get("id"))));
+        return ticketSubquery;
+    }
+
+    private void setupWhereClauses(CriteriaBuilder cb, CriteriaQuery<Seat> cq, Root<Seat> seatRoot, Join<Object, Object> arenaJoin,
+                                   Subquery<Long> sportEventSubquery, Subquery<Long> ticketSubquery, boolean withTickets, Long seatId) {
+        if (seatId != null) {
+            cq.where(cb.and(cb.equal(arenaJoin.get("id"), sportEventSubquery),
+                    cb.or(cb.not(cb.exists(ticketSubquery)), cb.equal(seatRoot.get("id"), seatId))));
+        } else if (withTickets) {
+            cq.where(cb.and(cb.equal(arenaJoin.get("id"), sportEventSubquery), cb.not(cb.exists(ticketSubquery))));
+        } else {
+            cq.where(cb.equal(arenaJoin.get("id"), sportEventSubquery));
+        }
+    }
+
+    private void setupOrderBy(CriteriaBuilder cb, CriteriaQuery<Seat> cq, Root<Seat> seatRoot) {
+        Join<Object, Object> rowJoin = seatRoot.join("row", JoinType.INNER);
+        Join<Object, Object> sectorJoin = rowJoin.join("sector", JoinType.INNER);
+        cq.orderBy(cb.asc(sectorJoin.get("sectorName")), cb.asc(rowJoin.get("id")), cb.asc(seatRoot.get("id")));
     }
 }
