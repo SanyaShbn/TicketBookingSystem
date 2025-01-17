@@ -1,8 +1,6 @@
 package com.example.ticketbookingsystem.dao;
 
-import com.example.ticketbookingsystem.entity.Seat;
-import com.example.ticketbookingsystem.entity.SportEvent;
-import com.example.ticketbookingsystem.entity.Ticket;
+import com.example.ticketbookingsystem.entity.*;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.utils.HibernateUtil;
 import jakarta.persistence.criteria.*;
@@ -139,9 +137,9 @@ public class SeatDao extends AbstractHibernateDao<Seat>{
             seatRoot.fetch("row", JoinType.INNER).fetch("sector", JoinType.INNER)
                     .fetch("arena", JoinType.INNER);
 
-            Join<Object, Object> rowJoin = seatRoot.join("row", JoinType.INNER);
-            Join<Object, Object> sectorJoin = rowJoin.join("sector", JoinType.INNER);
-            Join<Object, Object> arenaJoin = sectorJoin.join("arena", JoinType.INNER);
+            Join<Seat, Row> rowJoin = seatRoot.join("row", JoinType.INNER);
+            Join<Row, Sector> sectorJoin = rowJoin.join("sector", JoinType.INNER);
+            Join<Sector, Arena> arenaJoin = sectorJoin.join("arena", JoinType.INNER);
 
             Subquery<Long> sportEventSubquery = cq.subquery(Long.class);
             Root<SportEvent> eventRoot = sportEventSubquery.from(SportEvent.class);
@@ -159,8 +157,7 @@ public class SeatDao extends AbstractHibernateDao<Seat>{
             cq.select(seatRoot).where(cb.and(
                             cb.equal(arenaJoin.get("id"), sportEventSubquery),
                             cb.or(
-                                    cb.isNull(ticketRoot.get("id")),
-                                    cb.notEqual(ticketRoot.get("sportEvent").get("id"), eventId),
+                                    cb.not(cb.exists(ticketSubquery)),
                                     cb.equal(seatRoot.get("id"), seatId)
                             )
                     ))

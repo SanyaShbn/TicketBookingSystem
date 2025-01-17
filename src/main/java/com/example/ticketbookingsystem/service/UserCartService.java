@@ -3,6 +3,7 @@ package com.example.ticketbookingsystem.service;
 import com.example.ticketbookingsystem.dao.UserCartDao;
 import com.example.ticketbookingsystem.dto.UserCartDto;
 import com.example.ticketbookingsystem.entity.UserCart;
+import com.example.ticketbookingsystem.entity.UserCartId;
 
 import java.sql.Connection;
 import java.util.List;
@@ -31,9 +32,9 @@ public class UserCartService {
         return userCartDao.getTicketIdsFromUserCart(userId);
     }
     private UserCart buildUserCartFromDto(UserCartDto userCartDto) {
+        UserCartId userCartId = new UserCartId(userCartDto.getUserId(), userCartDto.getTicketId());
         return UserCart.builder()
-                .user(userCartDto.getUser())
-                .ticket(userCartDto.getTicket())
+                .id(userCartId)
                 .build();
     }
 }

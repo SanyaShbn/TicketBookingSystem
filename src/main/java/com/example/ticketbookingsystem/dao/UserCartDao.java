@@ -18,26 +18,6 @@ import java.util.List;
 @Slf4j
 public class UserCartDao extends AbstractHibernateDao<UserCart>{
     private static final UserCartDao INSTANCE = new UserCartDao();
-//    private static final String SAVE_SQL = """
-//            INSERT INTO user_cart (user_id, ticket_id) VALUES (?, ?)
-//            """;
-//    private static final String DELETE_SQL = """
-//            DELETE FROM user_cart WHERE user_id = ? AND ticket_id = ?
-//            """;
-//    private static final String UPDATE_TICKET_STATUS_SQL = """
-//            UPDATE ticket SET status = ? WHERE id = ?
-//            """;
-//    private static final String CLEAR_USER_CART_SQL = """
-//            DELETE FROM user_cart WHERE user_id = ?
-//            """;
-//    private static final String UPDATE_ALL_TICKET_STATUS_SQL = """
-//            UPDATE ticket SET status = 'AVAILABLE'
-//            WHERE id IN (SELECT ticket_id FROM user_cart WHERE user_id = ?) AND status = 'RESERVED'
-//            """;
-//
-//    private static final String GET_TICKET_IDS = """
-//            SELECT ticket_id FROM user_cart WHERE user_id = ?
-//            """;
 
     private UserCartDao(){
         super(UserCart.class);
@@ -63,9 +43,11 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
         try {
             transaction = session.beginTransaction();
 
-            Ticket ticket = userCart.getTicket();
-            ticket.setStatus(TicketStatus.RESERVED);
-            session.update(ticket);
+            Ticket ticket = session.get(Ticket.class, userCart.getId().getTicketId());
+            if (ticket != null) {
+                ticket.setStatus(TicketStatus.RESERVED);
+                session.update(ticket);
+            }
 
             session.save(userCart);
 
@@ -91,9 +73,11 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
         try {
             transaction = session.beginTransaction();
 
-            Ticket ticket = userCart.getTicket();
-            ticket.setStatus(TicketStatus.AVAILABLE);
-            session.update(ticket);
+            Ticket ticket = session.get(Ticket.class, userCart.getId().getTicketId());
+            if (ticket != null) {
+                ticket.setStatus(TicketStatus.AVAILABLE);
+                session.update(ticket);
+            }
 
             session.delete(userCart);
 
@@ -121,24 +105,24 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
 
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaUpdate<Ticket> update = cb.createCriteriaUpdate(Ticket.class);
-            Root<Ticket> root = update.from(Ticket.class);
+            Root<Ticket> ticketRoot = update.from(Ticket.class);
 
             Subquery<Long> subquery = update.subquery(Long.class);
             Root<UserCart> cartRoot = subquery.from(UserCart.class);
-            subquery.select(cartRoot.get("ticket").get("id"))
-                    .where(cb.equal(cartRoot.get("user").get("id"), userId));
+            subquery.select(cartRoot.get("id").get("ticketId"))
+                    .where(cb.equal(cartRoot.get("id").get("userId"), userId));
 
             update.set("status", TicketStatus.AVAILABLE)
                     .where(cb.and(
-                            cb.in(root.get("id")).value(subquery),
-                            cb.equal(root.get("status"), TicketStatus.RESERVED)
+                            cb.in(ticketRoot.get("id")).value(subquery),
+                            cb.equal(ticketRoot.get("status"), TicketStatus.RESERVED)
                     ));
 
             session.createQuery(update).executeUpdate();
 
             CriteriaDelete<UserCart> delete = cb.createCriteriaDelete(UserCart.class);
             Root<UserCart> deleteRoot = delete.from(UserCart.class);
-            delete.where(cb.equal(deleteRoot.get("user").get("id"), userId));
+            delete.where(cb.equal(deleteRoot.get("id").get("userId"), userId));
 
             session.createQuery(delete).executeUpdate();
 
@@ -165,8 +149,8 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
             CriteriaQuery<Long> cq = cb.createQuery(Long.class);
             Root<UserCart> root = cq.from(UserCart.class);
 
-            cq.select(root.get("ticket").get("id"))
-                    .where(cb.equal(root.get("user").get("id"), userId));
+            cq.select(root.get("id").get("ticketId"))
+                    .where(cb.equal(root.get("id").get("userId"), userId));
 
             return session.createQuery(cq).getResultList();
         } catch (HibernateException e) {

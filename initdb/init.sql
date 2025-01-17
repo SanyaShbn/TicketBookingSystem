@@ -315,12 +315,11 @@ alter table user_roles
 
 create table user_cart
 (
-    id        bigint generated always as identity
-        primary key,
     user_id   bigint not null
         references users,
     ticket_id bigint not null
-        references ticket
+        references ticket,
+    PRIMARY KEY (user_id, ticket_id)
 );
 
 alter table user_cart
@@ -335,8 +334,7 @@ create table purchased_tickets
     ticket_id     bigint                              not null
         constraint unique_ticket_id
             unique
-        references ticket,
-    purchase_date timestamp default CURRENT_TIMESTAMP not null
+        references ticket
 );
 
 alter table purchased_tickets

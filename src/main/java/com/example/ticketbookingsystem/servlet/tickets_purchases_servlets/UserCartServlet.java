@@ -59,8 +59,8 @@ public class UserCartServlet extends HttpServlet {
 
     private UserCartDto buildUserCartDto(User user, Long ticketIdLong) {
         return UserCartDto.builder()
-                .user(user)
-                .ticket(ticketService.findById(ticketIdLong).get())
+                .userId(user.getId())
+                .ticketId(ticketIdLong)
                 .build();
     }
 

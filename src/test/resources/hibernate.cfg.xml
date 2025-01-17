@@ -20,5 +20,7 @@
     <mapping class="com.example.ticketbookingsystem.entity.Seat"/>
     <mapping class="com.example.ticketbookingsystem.entity.SportEvent"/>
     <mapping class="com.example.ticketbookingsystem.entity.Ticket"/>
+    <mapping class="com.example.ticketbookingsystem.entity.UserCart"/>
+    <mapping class="com.example.ticketbookingsystem.entity.PurchasedTicket"/>
   </session-factory>
 </hibernate-configuration>

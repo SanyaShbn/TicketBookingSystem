@@ -13,7 +13,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -22,26 +22,6 @@ import java.util.List;
 @Slf4j
 public class PurchasedTicketsDao extends AbstractHibernateDao<PurchasedTicket>{
     private static final PurchasedTicketsDao INSTANCE = new PurchasedTicketsDao();
-
-//    private static final String UPDATE_TICKET_TABLE_SQL = """
-//            UPDATE ticket SET status = 'SOLD' WHERE id = ?
-//            """;
-//
-//    private static final String SAVE_SQL = """
-//            INSERT INTO purchased_tickets (user_id, ticket_id) VALUES (?, ?)
-//            """;
-//    private static final String FIND_ALL_BY_USER_ID_SQL = """
-//            SELECT t.id as ticket_id, e.event_name, e.event_date_time, a.name as arena_name, a.city as arena_city,
-//                            s.sector_name, r.row_number, se.seat_number, t.price
-//                            FROM purchased_tickets pt
-//                            JOIN ticket t ON pt.ticket_id = t.id
-//                            JOIN sport_event e ON t.event_id = e.id
-//                            JOIN seat se ON t.seat_id = se.id
-//                            JOIN row r ON se.row_id = r.id
-//                            JOIN sector s ON r.sector_id = s.id
-//                            JOIN arena a ON e.arena_id = a.id
-//                            WHERE pt.user_id = ?
-//            """;
 
     private PurchasedTicketsDao(){
         super(PurchasedTicket.class);
@@ -76,6 +56,7 @@ public class PurchasedTicketsDao extends AbstractHibernateDao<PurchasedTicket>{
 
                     PurchasedTicket purchasedTicket = PurchasedTicket.builder()
                             .userId(userId)
+                            .purchaseDate(LocalDateTime.now())
                             .ticket(ticket)
                             .build();
                     session.save(purchasedTicket);
@@ -99,7 +80,6 @@ public class PurchasedTicketsDao extends AbstractHibernateDao<PurchasedTicket>{
      * @return the list of purchased tickets
      */
     public List<PurchasedTicketDto> findAllByUserId(Long userId) {
-        List<PurchasedTicketDto> tickets = new ArrayList<>();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<PurchasedTicketDto> cq = cb.createQuery(PurchasedTicketDto.class);

@@ -9,27 +9,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Implemented Hibernate for SportEventDao">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/PurchasedTicket.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Started implementing Hibernate for remaining dao classes (for now, have some bugs and no unit-tests)">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/UserCartId.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/hibernate/HibernateRunner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/messages_en.properties" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/HibernateRunnerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SportEventDaoTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/ArenaDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/ArenaDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/initdb/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/initdb/init.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/PurchasedTicketsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/PurchasedTicketsDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/RowDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/RowDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SeatDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SeatDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SectorDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SectorDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SportEventDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SportEventDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/TicketDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/TicketDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserCartDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserCartDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Seat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Seat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Ticket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/UserCartDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/UserCartDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/UserCart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/UserCart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserCartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserCartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/tickets_purchases_servlets/UserCartServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/tickets_purchases_servlets/UserCartServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
@@ -404,7 +398,8 @@
       <workItem from="1736964255946" duration="15996000" />
       <workItem from="1737006217622" duration="6292000" />
       <workItem from="1737032241942" duration="6080000" />
-      <workItem from="1737047957313" duration="13058000" />
+      <workItem from="1737047957313" duration="13269000" />
+      <workItem from="1737093614004" duration="11000000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -598,7 +593,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737036544196</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Started implementing Hibernate for remaining dao classes (for now, have some bugs and no unit-tests)">
+      <option name="closed" value="true" />
+      <created>1737061225157</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1737061225157</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -641,7 +644,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Initial commit" />
     <MESSAGE value="Started developing and partly implementing user input validation functionality" />
     <MESSAGE value="Refactoring (implemented dto into Arena module)" />
     <MESSAGE value="Continuing working on feature№2 (for now, CRUD operations with sector's rows) + implementing necessary validation" />
@@ -666,6 +668,7 @@
     <MESSAGE value="Added HikariCP connection pool + did some refactoring" />
     <MESSAGE value="Implemented Hibernate for SectorDao, added tests for SectorDao class + again some refactoring and java doc" />
     <MESSAGE value="Implemented Hibernate for SportEventDao" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented Hibernate for SportEventDao" />
+    <MESSAGE value="Started implementing Hibernate for remaining dao classes (for now, have some bugs and no unit-tests)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Started implementing Hibernate for remaining dao classes (for now, have some bugs and no unit-tests)" />
   </component>
 </project>
