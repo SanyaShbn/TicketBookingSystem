@@ -1,7 +1,9 @@
+<%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<fmt:setLocale value="${locale}" />
 <fmt:setBundle basename="messages" />
 
 <html>
@@ -10,7 +12,10 @@
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/login-styles.css"/>">
 </head>
 <body>
+<a href="<c:url value="${pageContext.request.contextPath}?lang=en"/>">English</a> |
+<a href="<c:url value="${pageContext.request.contextPath}?lang=ru"/>">Русский</a>
 <div class="login-container">
+
     <h2><fmt:message key="login.page"/></h2>
     <form action="${pageContext.request.contextPath}/login" method="post">
         <div class="form-group">
@@ -35,7 +40,6 @@
             </c:forEach>
         </div>
     </c:if>
-
 </div>
 </body>
 </html>

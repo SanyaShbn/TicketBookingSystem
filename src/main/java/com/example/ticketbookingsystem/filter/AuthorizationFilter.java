@@ -7,13 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 @WebFilter("/*")
 public class AuthorizationFilter implements Filter {
     private static final Set<String> PUBLIC_PATH = Set.of("/login", "/registration", "/logout",
-            "/css/", "/js/");
+            "/css/", "/js/", "/changeLanguage");
     private static final Map<String, Set<String>> ROLE_URL_MAP = Map.of(
             "ADMIN", Set.of("/admin", "/admin/*"),
             "USER", Set.of("/view_available_events", "/view_available_tickets", "/user_cart", "/purchase")
@@ -27,6 +28,11 @@ public class AuthorizationFilter implements Filter {
         var uri = request.getRequestURI();
         var user = (User) request.getSession().getAttribute("user");
         var role = (String) request.getSession().getAttribute("role");
+
+        Locale locale = (Locale) request.getSession().getAttribute("locale");
+        if (locale != null) {
+            request.setAttribute("locale", locale);
+        }
 
         if (isPublicPath(uri) || (user != null && isRoleAllowed(role, uri))) {
             filterChain.doFilter(servletRequest, servletResponse);
