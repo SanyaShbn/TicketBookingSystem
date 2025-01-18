@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>Rows</title>
+    <title><fmt:message key="rows.list"/></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
     <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
 </head>
@@ -15,33 +15,33 @@
     <h1><fmt:message key="rows.list"/></h1>
 
     <div class="filter-bar">
-        <button type="button" onclick="toggleFilterForm()">Настроить фильтр</button>
+        <button type="button" onclick="toggleFilterForm()"><fmt:message key="setup.filter.button" /></button>
         <form action="${pageContext.request.contextPath}/admin/rows" method="get">
             <div class="form-item">
                 <label for="rowNumberOrder"><fmt:message key="row.rowNumber"/></label>
                 <select id="rowNumberOrder" name="rowNumberOrder" class="scrollable-dropdown">
-                    <option value="">-- Сортировка --</option>
+                    <option value="">-- <fmt:message key="sorting" /> --</option>
                     <option value="ASC" ${param.rowNumberOrder != null
                             && param.rowNumberOrder == 'ASC' ? 'selected' : ''}>
-                        По возрастанию
+                        <fmt:message key="sorting.asc" />
                     </option>
                     <option value="DESC" ${param.nameSortOrder != null
                             && param.rowNumberOrder == 'DESC' ? 'selected' : ''}>
-                        По убыванию
+                        <fmt:message key="sorting.desc" />
                     </option>
                 </select>
             </div>
             <div class="form-item">
                 <label for="seatsNumbOrder"><fmt:message key="row.seatsNumb"/></label>
                 <select id="seatsNumbOrder" name="seatsNumbOrder" class="scrollable-dropdown">
-                    <option value="">-- Сортировка --</option>
+                    <option value="">-- <fmt:message key="sorting" /> --</option>
                     <option value="ASC" ${param.seatsNumbOrder != null
                             && param.seatsNumbOrder == 'ASC' ? 'selected' : ''}>
-                        По возрастанию
+                        <fmt:message key="sorting.asc" />
                     </option>
                     <option value="DESC" ${param.seatsNumbOrder != null
                             && param.seatsNumbOrder == 'DESC' ? 'selected' : ''}>
-                        По убыванию
+                        <fmt:message key="sorting.desc" />
                     </option>
                 </select>
             </div>

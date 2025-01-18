@@ -1,15 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<fmt:setBundle basename="messages" />
+<%@ include file="localization/localization.jsp" %>
 
 <html>
 <head>
-    <title>Registration</title>
+    <title><fmt:message key="registration.page.title"/></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/registration-styles.css"/>">
 </head>
 <body>
+<%@ include file="localization/language-switcher.jsp" %>
 <div class="registration-container">
     <h2><fmt:message key="registration.title"/></h2>
     <form action="/registration" method="post">

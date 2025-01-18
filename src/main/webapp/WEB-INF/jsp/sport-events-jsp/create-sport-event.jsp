@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>CreateSportEvent</title>
+    <title><fmt:message key="create.sport.event.title" /></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
 </head>
 <body>

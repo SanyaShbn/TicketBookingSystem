@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>Sectors</title>
+    <title><fmt:message key="sectors.list"/></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
     <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
 </head>
@@ -15,47 +15,47 @@
     <h1><fmt:message key="sectors.list"/></h1>
 
     <div class="filter-bar">
-        <button type="button" onclick="toggleFilterForm()">Настроить фильтр</button>
+        <button type="button" onclick="toggleFilterForm()"><fmt:message key="setup.filter.button" /></button>
         <form action="${pageContext.request.contextPath}/admin/sectors" method="get">
             <div class="form-item">
                 <label for="nameSortOrder"><fmt:message key="sector.sectorName"/></label>
                 <select id="nameSortOrder" name="nameSortOrder" class="scrollable-dropdown">
-                    <option value="">-- Сортировка --</option>
+                    <option value="">-- <fmt:message key="sorting" /> --</option>
                     <option value="ASC" ${param.nameSortOrder != null
                             && param.nameSortOrder == 'ASC' ? 'selected' : ''}>
-                        По возрастанию
+                        <fmt:message key="sorting.asc" />
                     </option>
                     <option value="DESC" ${param.nameSortOrder != null
                             && param.nameSortOrder == 'DESC' ? 'selected' : ''}>
-                        По убыванию
+                        <fmt:message key="sorting.desc" />
                     </option>
                 </select>
             </div>
             <div class="form-item">
                 <label for="maxRowsNumbSortOrder"><fmt:message key="sector.maxRowsNumb"/></label>
                 <select id="maxRowsNumbSortOrder" name="maxRowsNumbSortOrder" class="scrollable-dropdown">
-                    <option value="">-- Сортировка --</option>
+                    <option value="">-- <fmt:message key="sorting" /> --</option>
                     <option value="ASC" ${param.maxRowsNumbSortOrder != null
                             && param.maxRowsNumbSortOrder == 'ASC' ? 'selected' : ''}>
-                        По возрастанию
+                        <fmt:message key="sorting.asc" />
                     </option>
                     <option value="DESC" ${param.maxRowsNumbSortOrder != null
                             && param.maxRowsNumbSortOrder == 'DESC' ? 'selected' : ''}>
-                        По убыванию
+                        <fmt:message key="sorting.desc" />
                     </option>
                 </select>
             </div>
             <div class="form-item">
                 <label for="maxSeatsNumbSortOrder"><fmt:message key="sector.maxSeatsNumb"/></label>
                 <select id="maxSeatsNumbSortOrder" name="maxSeatsNumbSortOrder" class="scrollable-dropdown">
-                    <option value="">-- Сортировка --</option>
+                    <option value="">-- <fmt:message key="sorting" /> --</option>
                     <option value="ASC" ${param.maxSeatsNumbSortOrder != null
                             && param.maxSeatsNumbSortOrder == 'ASC' ? 'selected' : ''}>
-                        По возрастанию
+                        <fmt:message key="sorting.asc" />
                     </option>
                     <option value="DESC" ${param.maxSeatsNumbSortOrder != null
                             && param.maxSeatsNumbSortOrder == 'DESC' ? 'selected' : ''}>
-                        По убыванию
+                        <fmt:message key="sorting.desc" />
                     </option>
                 </select>
             </div>

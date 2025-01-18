@@ -7,7 +7,7 @@
 
 <html>
 <head>
-  <title>SportEvents</title>
+  <title><fmt:message key="sport_events.list"/></title>
   <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
   <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
 </head>
@@ -17,7 +17,7 @@
 
   <!-- Filter Bar -->
   <div class="filter-bar">
-    <button type="button" onclick="toggleFilterForm()">Настроить фильтр</button>
+    <button type="button" onclick="toggleFilterForm()"><fmt:message key="setup.filter.button" /></button>
     <form action="${pageContext.request.contextPath}/admin/sport_events" method="get">
       <div class="form-item">
         <label for="startDate"><fmt:message key="sport.event.startDate"/></label>
@@ -31,7 +31,7 @@
       <div class="form-item">
       <label for="arenaId"><fmt:message key="sport_event.arena" />:</label>
       <select id="arenaId" name="arenaId" class="scrollable-dropdown">
-        <option value="">-- Выберите арену --</option>
+        <option value="">-- <fmt:message key="choose.arena"/> --</option>
         <c:forEach var="arena" items="${arenas}">
           <option value="${arena.id}" ${param.arenaId != null && param.arenaId == arena.id ? 'selected' : ''}>
               ${arena.name}. ${arena.city}.
@@ -43,12 +43,12 @@
       <div class="form-item">
         <label for="sortOrder"><fmt:message key="sport.event.sortOrder"/></label>
         <select id="sortOrder" name="sortOrder" class="scrollable-dropdown">
-          <option value="">-- Сортировка --</option>
+          <option value="">-- <fmt:message key="sorting" /> --</option>
           <option value="ASC" ${param.sortOrder != null && param.sortOrder == 'ASC' ? 'selected' : ''}>
-            По возрастанию
+            <fmt:message key="sorting.asc" />
           </option>
           <option value="DESC" ${param.sortOrder != null && param.sortOrder == 'DESC' ? 'selected' : ''}>
-            По убыванию
+            <fmt:message key="sorting.desc" />
           </option>
         </select>
       </div>

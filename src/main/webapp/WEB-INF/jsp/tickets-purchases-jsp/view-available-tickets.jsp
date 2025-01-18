@@ -43,7 +43,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User's Cart</title>
+    <title><fmt:message key="view.available.tickets.page.title"/></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
     <script src="<c:url value="/js/error-notification.js"/>"></script>
     <script src="<c:url value="/js/users-cart-script.js"/>"></script>

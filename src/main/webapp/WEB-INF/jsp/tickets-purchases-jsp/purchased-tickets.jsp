@@ -7,7 +7,7 @@
 
 <html>
 <head>
-    <title>Purchased Tickets</title>
+    <title><fmt:message key="purchased.tickets"/></title>
     <link rel="stylesheet" type="text/css" href="<c:url value='/css/view-purchased-tickets.css' />">
     <script src="<c:url value="/js/view-purchased-tickets.js"/>"></script>
 </head>

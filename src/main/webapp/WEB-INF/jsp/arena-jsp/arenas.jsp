@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>Arenas</title>
+    <title><fmt:message key="arenas.list"/></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
     <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
 </head>
@@ -15,12 +15,12 @@
     <h1><fmt:message key="arenas.list"/></h1>
 
     <div class="filter-bar">
-        <button type="button" onclick="toggleFilterForm()">Настроить фильтр</button>
+        <button type="button" onclick="toggleFilterForm()"><fmt:message key="setup.filter.button" /></button>
         <form action="${pageContext.request.contextPath}/admin/arenas" method="get">
             <div class="form-item">
                 <label for="city"><fmt:message key="arena.city" />:</label>
                 <select id="city" name="city" class="scrollable-dropdown">
-                    <option value="">-- Выберите город --</option>
+                    <option value="">-- <fmt:message key="choose.city" /> --</option>
                     <c:forEach var="city" items="${cities}">
                         <option value="${city}" ${param.city != null && param.city == city
                         ? 'selected' : ''}>
@@ -33,28 +33,28 @@
             <div class="form-item">
                 <label for="capacitySortOrder"><fmt:message key="arena.capacitySortOrder"/></label>
                 <select id="capacitySortOrder" name="capacitySortOrder" class="scrollable-dropdown">
-                    <option value="">-- Сортировка --</option>
+                    <option value="">-- <fmt:message key="sorting" /> --</option>
                     <option value="ASC" ${param.capacitySortOrder != null
                     && param.capacitySortOrder == 'ASC' ? 'selected' : ''}>
-                        По возрастанию
+                        <fmt:message key="sorting.asc" />
                     </option>
                     <option value="DESC" ${param.capacitySortOrder != null
                     && param.capacitySortOrder == 'DESC' ? 'selected' : ''}>
-                        По убыванию
+                        <fmt:message key="sorting.desc" />
                     </option>
                 </select>
             </div>
             <div class="form-item">
                 <label for="seatsNumbSortOrder"><fmt:message key="arena.seatsNumbSortOrder"/></label>
                 <select id="seatsNumbSortOrder" name="seatsNumbSortOrder" class="scrollable-dropdown">
-                    <option value="">-- Сортировка --</option>
+                    <option value="">-- <fmt:message key="sorting" /> --</option>
                     <option value="ASC" ${param.seatsNumbSortOrder != null
                             && param.seatsNumbSortOrder == 'ASC' ? 'selected' : ''}>
-                        По возрастанию
+                        <fmt:message key="sorting.asc" />
                     </option>
                     <option value="DESC" ${param.seatsNumbSortOrder != null
                             && param.seatsNumbSortOrder == 'DESC' ? 'selected' : ''}>
-                        По убыванию
+                        <fmt:message key="sorting.desc" />
                     </option>
                 </select>
             </div>

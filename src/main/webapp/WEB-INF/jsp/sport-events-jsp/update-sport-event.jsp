@@ -7,7 +7,7 @@
 
 <html>
 <head>
-    <title>UpdateSportEvent</title>
+    <title><fmt:message key="update.sport.event.title" /></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
 </head>
 <body>

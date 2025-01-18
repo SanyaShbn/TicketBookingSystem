@@ -7,7 +7,7 @@
 
 <html>
 <head>
-    <title>Tickets</title>
+    <title><fmt:message key="tickets.list"/></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
     <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
 </head>
@@ -16,19 +16,19 @@
     <h1><fmt:message key="tickets.list"/></h1>
 
     <div class="filter-bar">
-        <button type="button" onclick="toggleFilterForm()">Настроить фильтр</button>
+        <button type="button" onclick="toggleFilterForm()"><fmt:message key="setup.filter.button"/></button>
         <form action="${pageContext.request.contextPath}/admin/tickets" method="get">
             <div class="form-item">
                 <label for="priceSortOrder"><fmt:message key="ticket.price"/></label>
                 <select id="priceSortOrder" name="priceSortOrder" class="scrollable-dropdown">
-                    <option value="">-- Сортировка --</option>
+                    <option value="">-- <fmt:message key="sorting"/> --</option>
                     <option value="ASC" ${param.priceSortOrder != null
                             && param.priceSortOrder == 'ASC' ? 'selected' : ''}>
-                        По возрастанию
+                        <fmt:message key="sorting.asc"/>
                     </option>
                     <option value="DESC" ${param.priceSortOrder != null
                             && param.priceSortOrder == 'DESC' ? 'selected' : ''}>
-                        По убыванию
+                        <fmt:message key="sorting.desc"/>
                     </option>
                 </select>
             </div>

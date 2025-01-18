@@ -7,7 +7,7 @@
 
 <html>
 <head>
-    <title>UpdateArena</title>
+    <title><fmt:message key="update.arena.title" /></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
 </head>
 <body>

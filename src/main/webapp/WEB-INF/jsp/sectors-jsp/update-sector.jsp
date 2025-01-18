@@ -7,7 +7,7 @@
 
 <html>
 <head>
-    <title>UpdateSector</title>
+    <title><fmt:message key="update.sector.title" /></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
 </head>
 <body>
