@@ -34,10 +34,13 @@ function showCustomConfirmation() {
     confirmBox.style.textAlign = 'center';
 
     const message = document.createElement('p');
-    message.textContent = 'Вы уверены, что хотите покинуть эту страницу? Убедитесь, что вы сохранили информацию о приобретенных билетах';
+    const locale = getLocaleCookie()
+    message.textContent = locale === 'ru'
+        ? 'Вы уверены, что хотите покинуть эту страницу? Убедитесь, что вы сохранили информацию о приобретенных билетах'
+        : 'Are you sure you want to leave this page? Make sure you save your purchased ticket information'
 
     const confirmButton = document.createElement('button');
-    confirmButton.textContent = 'Да';
+    confirmButton.textContent = locale === 'ru' ? 'Да' : 'Confirm';
     confirmButton.style.margin = '10px';
     confirmButton.onclick = function() {
         document.body.removeChild(overlay);
@@ -45,7 +48,7 @@ function showCustomConfirmation() {
     };
 
     const cancelButton = document.createElement('button');
-    cancelButton.textContent = 'Отмена';
+    cancelButton.textContent = locale === 'ru' ? 'Отмена' : 'Cancel';
     cancelButton.style.margin = '10px';
     cancelButton.onclick = function() {
         document.body.removeChild(overlay);

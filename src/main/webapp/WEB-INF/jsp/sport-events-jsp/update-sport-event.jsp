@@ -2,8 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<fmt:setBundle basename="messages" />
+<%@ include file="../localization/localization.jsp" %>
 
 <html>
 <head>
@@ -11,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
 </head>
 <body>
+<%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="update.sport.event.title" /></h1>
     <form action="${pageContext.request.contextPath}/admin/update-sport-event?<%= request.getQueryString() %>" method="post">

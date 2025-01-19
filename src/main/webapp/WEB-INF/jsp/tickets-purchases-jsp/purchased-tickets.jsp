@@ -2,16 +2,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-<fmt:setBundle basename="messages" />
+<%@ include file="../localization/localization.jsp" %>
 
 <html>
 <head>
     <title><fmt:message key="purchased.tickets"/></title>
     <link rel="stylesheet" type="text/css" href="<c:url value='/css/view-purchased-tickets.css' />">
+    <script src="<c:url value="/js/cookieUtils.js"/>"></script>
     <script src="<c:url value="/js/view-purchased-tickets.js"/>"></script>
 </head>
 <body>
+<%@ include file="../localization/language-switcher.jsp" %>
 <h1><fmt:message key="purchased.tickets"/></h1>
 <button type="button"
         style="margin-bottom: 20px"

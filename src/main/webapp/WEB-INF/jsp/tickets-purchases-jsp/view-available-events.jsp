@@ -4,17 +4,21 @@
 <%@ page import="java.time.format.DateTimeFormatter, java.time.LocalDateTime" %>
 <%@ include file="../localization/localization.jsp" %>
 
-<fmt:setBundle basename="messages" />
-
 <html>
 <head>
     <title><fmt:message key="sport_events.list"/></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
     <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
     <script src="<c:url value="/js/handle-local-storage.js"/>"></script>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/css/language-switcher.css"/>">
 </head>
 <body>
-<%@ include file="../localization/language-switcher.jsp" %>
+<div class="language-switcher" style="right: 120px; top: 20px">
+    <select onchange="window.location.href=this.value;">
+        <option value="<c:url value='${pageContext.request.contextPath}?lang=en'/>" <c:if test="${locale == 'en'}">selected</c:if>>English</option>
+        <option value="<c:url value='${pageContext.request.contextPath}?lang=ru'/>" <c:if test="${locale == 'ru'}">selected</c:if>>Русский</option>
+    </select>
+</div>
 <%@include file="../logout.jsp"%>
 
 <div>

@@ -26,7 +26,8 @@ function showErrorMessage(message) {
     messageElement.style.marginBottom = '20px';
 
     const closeButton = document.createElement('button');
-    closeButton.textContent = 'Закрыть';
+    const locale = getLocaleCookie();
+    closeButton.textContent = locale === 'ru' ? 'Закрыть' : 'Close';
     closeButton.style.marginTop = '10px';
     closeButton.onclick = function() {
         document.body.removeChild(overlay);

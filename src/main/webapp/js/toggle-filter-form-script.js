@@ -3,9 +3,9 @@ function toggleFilterForm() {
     var button = document.querySelector('.filter-bar button');
     if (form.style.display === 'none' || form.style.display === '') {
         form.style.display = 'flex';
-        button.innerText = 'Скрыть фильтр';
+        button.innerText = getLocaleCookie() === 'ru' ? 'Скрыть фильтр' : 'Hide filter bar';
     } else {
         form.style.display = 'none';
-        button.innerText = 'Настроить фильтр';
+        button.innerText = getLocaleCookie() === 'ru' ? 'Настроить фильтр' : 'Setup filter';
     }
 }

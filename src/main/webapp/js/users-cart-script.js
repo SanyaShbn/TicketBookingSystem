@@ -24,11 +24,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateCartMessage() {
         const emptyCartMessage = document.getElementById('emptyCartMessage');
+        const locale = getLocaleCookie()
         if (cartItems.length === 0) {
             if (!emptyCartMessage) {
                 const message = document.createElement('li');
                 message.id = 'emptyCartMessage';
-                message.textContent = 'Корзина пуста';
+                message.textContent = locale === 'ru' ? 'Корзина пуста' : 'Cart is empty';
                 cartList.appendChild(message);
             }
             checkoutButton.style.display = 'none';
@@ -54,7 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const ticketId = seatElement.getAttribute('data-ticket-id');
 
                 const listItem = document.createElement('li');
-                listItem.innerHTML = `Сектор: ${sector}, Ряд: ${row}, Место: ${seatNumb}, Цена: ${seatPrice} руб. <button type="button" class="removeItem" data-ticket-id ="${ticketId}" data-seat-id="${seatId}">Удалить</button>`;
+                const locale = getLocaleCookie()
+                listItem.innerHTML = locale === 'ru'
+                    ? `Сектор: ${sector}, Ряд: ${row}, Место: ${seatNumb}, Цена: ${seatPrice} руб. <button type="button" class="removeItem" data-ticket-id ="${ticketId}" data-seat-id="${seatId}">Удалить</button>`
+                    : `Sector: ${sector}, Row: ${row}, Seat: ${seatNumb}, Price: ${seatPrice} byn. <button type="button" class="removeItem" data-ticket-id ="${ticketId}" data-seat-id="${seatId}">Delete</button>`
                 listItem.setAttribute('data-seat-id', seatId);
                 listItem.setAttribute('data-ticket-id', ticketId);
                 cartList.appendChild(listItem);
@@ -141,7 +145,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         const row = parseFloat(seatElement.getAttribute('data-row-numb'));
                         const seatNumb = seatElement.getAttribute('data-seat-numb');
                         const listItem = document.createElement('li');
-                        listItem.innerHTML = `Сектор: ${sector}, Ряд: ${row}, Место: ${seatNumb}, Цена: ${seatPriceToAdd} руб. <button type="button" class="removeItem" data-ticket-id ="${matchingTicketId}" data-seat-id="${seatIdToAdd}">Удалить</button>`;
+                        const locale = getLocaleCookie()
+                        listItem.innerHTML = locale === 'ru'
+                            ? `Сектор: ${sector}, Ряд: ${row}, Место: ${seatNumb}, Цена: ${seatPriceToAdd} руб. <button type="button" class="removeItem" data-ticket-id ="${matchingTicketId}" data-seat-id="${seatIdToAdd}">Удалить</button>`
+                            : `Sector: ${sector}, Row: ${row}, Seat: ${seatNumb}, Price: ${seatPriceToAdd} byn <button type="button" class="removeItem" data-ticket-id ="${matchingTicketId}" data-seat-id="${seatIdToAdd}">Delete</button>`
                         cartList.appendChild(listItem);
 
                         seatElement.classList.remove('available');
@@ -153,9 +160,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         buttonListener(document.querySelectorAll('.removeItem'));
                     }
                     else {
+                        const locale = getLocaleCookie()
                         console.error('Failed to add item to cart.');
-                        showErrorMessage("Данный билет бронируется другим пользователем. " +
-                            "Просим прощения за доставленные неудобства");
+                        showErrorMessage(
+                            locale === 'ru'
+                                ? "Данный билет бронируется другим пользователем. Просим прощения за доставленные неудобства"
+                                : "This ticket is being booked by another user. We apologize for the inconvenience caused"
+                        )
                     }
                 }).catch(error => console.error('Error:', error));
         }

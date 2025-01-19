@@ -39,11 +39,18 @@ public class LocaleFilter implements Filter {
         Locale locale = new Locale(language);
         session.setAttribute("locale", locale);
 
-        Cookie localeCookie = new Cookie("locale", "");
-        localeCookie.setMaxAge(0);
-        response.addCookie(localeCookie);
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("locale".equals(cookie.getName())) {
+                    cookie.setValue("");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
+        }
 
-        localeCookie = new Cookie("locale", locale.toString());
+        Cookie localeCookie = new Cookie("locale", locale.toString());
         localeCookie.setMaxAge(COOKIE_MAX_AGE);
         response.addCookie(localeCookie);
 

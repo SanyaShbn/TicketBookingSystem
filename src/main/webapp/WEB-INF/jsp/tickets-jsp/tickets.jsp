@@ -2,8 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.time.format.DateTimeFormatter, java.time.LocalDateTime" %>
-
-<fmt:setBundle basename="messages" />
+<%@ include file="../localization/localization.jsp" %>
 
 <html>
 <head>
@@ -12,9 +11,9 @@
     <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
 </head>
 <body>
+<%@ include file="../localization/language-switcher.jsp" %>
 <div>
     <h1><fmt:message key="tickets.list"/></h1>
-
     <div class="filter-bar">
         <button type="button" onclick="toggleFilterForm()"><fmt:message key="setup.filter.button"/></button>
         <form action="${pageContext.request.contextPath}/admin/tickets" method="get">

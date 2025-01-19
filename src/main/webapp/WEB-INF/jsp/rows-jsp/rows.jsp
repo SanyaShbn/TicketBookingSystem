@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<fmt:setBundle basename="messages" />
+<%@ include file="../localization/localization.jsp" %>
 
 <html>
 <head>
@@ -11,6 +10,7 @@
     <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
 </head>
 <body>
+<%@ include file="../localization/language-switcher.jsp" %>
 <div>
     <h1><fmt:message key="rows.list"/></h1>
 

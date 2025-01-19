@@ -9,6 +9,7 @@ import com.example.ticketbookingsystem.validator.CreateOrUpdateArenaValidator;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ArenaService {
     private static final ArenaService INSTANCE = new ArenaService();
