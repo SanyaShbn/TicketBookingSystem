@@ -59,6 +59,7 @@ public class LocaleFilter implements Filter {
             for (Cookie cookie : cookies) {
                 if ("locale".equals(cookie.getName())) {
                     cookie.setValue(locale.toString());
+                    cookie.setPath("/");
                     cookie.setMaxAge(COOKIE_MAX_AGE);
                     response.addCookie(cookie);
                 }
@@ -66,6 +67,7 @@ public class LocaleFilter implements Filter {
         }
 
         Cookie localeCookie = new Cookie("locale", locale.toString());
+        localeCookie.setPath("/");
         localeCookie.setMaxAge(COOKIE_MAX_AGE);
         response.addCookie(localeCookie);
 

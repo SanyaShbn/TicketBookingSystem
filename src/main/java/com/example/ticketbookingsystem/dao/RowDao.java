@@ -184,7 +184,7 @@ public class RowDao extends AbstractHibernateDao<Row>{
         query.setParameter("seatsNumb", row.getSeatsNumb());
         query.setParameter("sectorId", row.getSector().getId());
         query.executeUpdate();
-        log.info("Sector associated with saved row {} has been updated", row);
+        log.info("Sector associated with saved row has been updated");
     }
 
     private void updateSectorBeforeRowUpdate(Session session, Row rowBeforeUpdate, Row row) throws HibernateException {
@@ -194,7 +194,7 @@ public class RowDao extends AbstractHibernateDao<Row>{
         query.setParameter("newSeatsNumb", row.getSeatsNumb());
         query.setParameter("sectorId", row.getSector().getId());
         query.executeUpdate();
-        log.info("Sector associated with updating row {} has been updated", row);
+        log.info("Sector associated with updating row has been updated");
     }
 
     private void updateSectorAfterRowDelete(Session session, Row row) throws HibernateException {
@@ -203,6 +203,6 @@ public class RowDao extends AbstractHibernateDao<Row>{
         query.setParameter("seatsNumb", row.getSeatsNumb());
         query.setParameter("sectorId", row.getSector().getId());
         query.executeUpdate();
-        log.info("Sector associated with deleted row {} has been updated", row);
+        log.info("Sector associated with deleted row has been updated");
     }
 }

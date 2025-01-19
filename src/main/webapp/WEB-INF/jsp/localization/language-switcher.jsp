@@ -9,8 +9,14 @@
 <body>
 <div class="language-switcher">
     <select onchange="window.location.href=this.value;">
-        <option value="<c:url value='${pageContext.request.contextPath}?lang=en'/>" <c:if test="${locale == 'en'}">selected</c:if>>English</option>
-        <option value="<c:url value='${pageContext.request.contextPath}?lang=ru'/>" <c:if test="${locale == 'ru'}">selected</c:if>>Русский</option>
+        <option value="<c:url value='${pageContext.request.contextPath}?lang=en'/>"
+                <c:if test="${locale == 'en'}">selected</c:if>>
+            English
+        </option>
+        <option value="<c:url value='${pageContext.request.contextPath}?lang=ru'/>"
+                <c:if test="${locale == 'ru'}">selected</c:if>>
+            Русский
+        </option>
     </select>
 </div>
 </body>

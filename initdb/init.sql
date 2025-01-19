@@ -284,7 +284,8 @@ create table users
         primary key,
     email    varchar(50)  not null
         unique,
-    password varchar(100) not null
+    password varchar(100) not null,
+    role     varchar(32)
 );
 
 alter table users
@@ -329,12 +330,13 @@ create table purchased_tickets
 (
     id            bigint generated always as identity
         primary key,
-    user_id       bigint                              not null
+    user_id       bigint    not null
         references users,
-    ticket_id     bigint                              not null
+    ticket_id     bigint    not null
         constraint unique_ticket_id
             unique
-        references ticket
+        references ticket,
+    purchase_date timestamp not null
 );
 
 alter table purchased_tickets
@@ -342,8 +344,8 @@ alter table purchased_tickets
 
 insert into role (role_name) values ('ADMIN'), ('USER');
 
-insert into users (email, password)
-values ('admin@gmail.com', '$2a$10$q/a9kx3bFYPe013IbWnJDeyYc6PjXWmNTpdB1198yUYqNjJQtKkC.');
+insert into users (email, password, role)
+values ('admin@gmail.com', '$2a$10$q/a9kx3bFYPe013IbWnJDeyYc6PjXWmNTpdB1198yUYqNjJQtKkC.', 'ADMIN');
 
 insert into user_roles (user_id, role_id)
 values (1, 1);

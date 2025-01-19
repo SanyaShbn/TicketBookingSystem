@@ -3,7 +3,6 @@ package ticketbookingsystem.dao;
 import com.example.ticketbookingsystem.dao.ArenaDao;
 import com.example.ticketbookingsystem.dao.SportEventDao;
 import com.example.ticketbookingsystem.entity.Arena;
-import com.example.ticketbookingsystem.entity.Sector;
 import com.example.ticketbookingsystem.entity.SportEvent;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
