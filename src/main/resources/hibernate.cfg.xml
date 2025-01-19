@@ -6,9 +6,9 @@
   <session-factory>
     <!-- HikariCP settings for Hibernate -->
     <property name="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSource</property>
-    <property name="hibernate.hikari.dataSource.url">jdbc:postgresql://localhost:5432/ticket-booking-system</property>
-    <property name="hibernate.hikari.dataSource.user">postgres</property>
-    <property name="hibernate.hikari.dataSource.password">12345</property>
+    <property name="hibernate.hikari.dataSource.url"/>
+    <property name="hibernate.hikari.dataSource.user"/>
+    <property name="hibernate.hikari.dataSource.password"/>
     <property name="hibernate.hikari.minimumIdle">5</property>
     <property name="hibernate.hikari.maximumPoolSize">20</property>
     <property name="hibernate.hikari.idleTimeout">30000</property>

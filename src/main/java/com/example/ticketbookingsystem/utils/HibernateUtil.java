@@ -6,6 +6,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 /**
  * Utility class for Hibernate {@link SessionFactory} management.
  * Provides methods for initializing and shutting down the {@link SessionFactory}.
@@ -19,7 +23,14 @@ public class HibernateUtil {
 
     static {
         try{
+            Properties properties = new Properties();
+
+            properties.setProperty("hibernate.hikari.dataSource.url", System.getenv("DB_URL"));
+            properties.setProperty("hibernate.hikari.dataSource.user", System.getenv("DB_USERNAME"));
+            properties.setProperty("hibernate.hikari.dataSource.password", System.getenv("DB_PASSWORD"));
+
             Configuration configuration = new Configuration().configure();
+            configuration.setProperties(properties);
             sessionFactory = configuration.buildSessionFactory();
         } catch (HibernateException e) {
             log.error("Initial SessionFactory creation failed: {}", e.getMessage(), e);
