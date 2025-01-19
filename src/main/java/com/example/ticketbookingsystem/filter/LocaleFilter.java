@@ -9,10 +9,25 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Locale;
 
+/**
+ * LocaleFilter is a servlet filter that handles the locale setting for the application
+ * based on user preferences, session attributes, and cookies.
+ */
 @WebFilter("/*")
 public class LocaleFilter implements Filter {
     private static final int COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 дней
 
+    /**
+     * Filters incoming requests to handle locale settings.
+     * If a language parameter is provided, it updates the session and cookie with the new locale.
+     * Otherwise, it sets the locale from the session or cookie.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param chain the filter chain
+     * @throws IOException if an I/O error occurs
+     * @throws ServletException if a servlet error occurs
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -34,8 +49,8 @@ public class LocaleFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    private void handleLanguageChange(HttpServletRequest request, HttpServletResponse response, HttpSession session, String language)
-            throws IOException {
+    private void handleLanguageChange(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+                                      String language) throws IOException {
         Locale locale = new Locale(language);
         session.setAttribute("locale", locale);
 
@@ -43,8 +58,8 @@ public class LocaleFilter implements Filter {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("locale".equals(cookie.getName())) {
-                    cookie.setValue("");
-                    cookie.setMaxAge(0);
+                    cookie.setValue(locale.toString());
+                    cookie.setMaxAge(COOKIE_MAX_AGE);
                     response.addCookie(cookie);
                 }
             }

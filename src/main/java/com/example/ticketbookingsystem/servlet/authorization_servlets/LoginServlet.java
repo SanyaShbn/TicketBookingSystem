@@ -16,6 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Servlet for managing user authentication.
+ */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private final UserService userService = UserService.getInstance();
@@ -48,7 +51,6 @@ public class LoginServlet extends HttpServlet {
         optionalUser.ifPresentOrElse(user -> {
             req.getSession().setAttribute("user", user);
 
-//            String userRole = userService.getUserRole(user.getId());
             String userRole = user.getRole().name();
 
             req.getSession().setAttribute("role", userRole);

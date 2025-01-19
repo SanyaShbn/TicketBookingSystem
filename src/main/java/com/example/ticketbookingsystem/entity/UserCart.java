@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// Корзина билетов пользователя
+/**
+ * Represents a cart where user can put tickets before committing purchase
+ */
 @Entity
 @Table(name = "user_cart")
 @Data

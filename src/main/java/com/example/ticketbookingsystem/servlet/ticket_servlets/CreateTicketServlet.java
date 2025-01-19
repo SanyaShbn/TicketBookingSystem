@@ -21,6 +21,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Servlet for managing requests to create a ticket.
+ */
 @WebServlet("/admin/create-ticket")
 public class CreateTicketServlet extends HttpServlet {
     private final TicketService ticketService = TicketService.getInstance();

@@ -17,6 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servlet for managing requests to get the list of available sporting events for ticket purchasing.
+ */
 @WebServlet("/view_available_events")
 public class ViewEventsForTicketsPurchaseServlet extends HttpServlet {
     private final SportEventService sportEventService = SportEventService.getInstance();

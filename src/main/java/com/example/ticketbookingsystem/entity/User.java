@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents user entity in the system
+ */
 @Entity
 @Table(name = "users")
 @Data

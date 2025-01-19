@@ -21,6 +21,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Servlet for managing requests to update a sector.
+ */
 @WebServlet("/admin/update-sector")
 public class UpdateSectorServlet extends HttpServlet {
     private final SectorService sectorService = SectorService.getInstance();

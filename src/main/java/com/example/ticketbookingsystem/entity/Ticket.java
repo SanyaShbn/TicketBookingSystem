@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * Represents a ticket for a sporting event
+ */
 @Entity
 @Data
 @AllArgsConstructor

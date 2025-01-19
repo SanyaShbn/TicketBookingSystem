@@ -6,6 +6,9 @@ import lombok.Value;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * PurchasedTicketDto - Data Transfer Object representing information about a purchased ticket.
+ */
 @Value
 @Builder
 public class PurchasedTicketDto {

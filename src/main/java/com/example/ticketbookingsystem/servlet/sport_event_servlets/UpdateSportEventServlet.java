@@ -22,6 +22,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Servlet for managing requests to update a sporting event.
+ */
 @WebServlet("/admin/update-sport-event")
 public class UpdateSportEventServlet extends HttpServlet {
     private final SportEventService sportEventService = SportEventService.getInstance();

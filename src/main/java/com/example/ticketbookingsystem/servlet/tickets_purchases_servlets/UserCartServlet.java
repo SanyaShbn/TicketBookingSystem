@@ -17,6 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Servlet for managing user cart requests.
+ */
 @WebServlet("/user_cart")
 public class UserCartServlet extends HttpServlet {
 

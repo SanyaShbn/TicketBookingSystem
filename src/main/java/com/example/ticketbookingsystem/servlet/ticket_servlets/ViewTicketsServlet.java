@@ -1,8 +1,6 @@
 package com.example.ticketbookingsystem.servlet.ticket_servlets;
 
-import com.example.ticketbookingsystem.dto.ArenaFilter;
 import com.example.ticketbookingsystem.dto.TicketFilter;
-import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.Ticket;
 import com.example.ticketbookingsystem.service.TicketService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
@@ -16,6 +14,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/**
+ * Servlet for managing requests to get the list of available tickets.
+ */
 @WebServlet("/admin/tickets")
 public class ViewTicketsServlet extends HttpServlet {
     private final TicketService ticketService = TicketService.getInstance();

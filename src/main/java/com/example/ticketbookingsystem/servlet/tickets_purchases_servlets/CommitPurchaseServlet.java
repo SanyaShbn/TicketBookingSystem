@@ -16,6 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Servlet for managing ticket purchase commitment.
+ */
 @WebServlet("/purchase")
 public class CommitPurchaseServlet extends HttpServlet {
     private final UserCartService userCartService = UserCartService.getInstance();

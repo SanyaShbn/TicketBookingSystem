@@ -15,6 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet for managing requests to create an arena.
+ */
 @WebServlet("/admin/create-arena")
 public class CreateArenaServlet extends HttpServlet {
     private final ArenaService arenaService = ArenaService.getInstance();

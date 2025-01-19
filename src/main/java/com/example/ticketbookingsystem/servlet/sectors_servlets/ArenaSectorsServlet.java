@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/**
+ * Servlet for managing requests to get the list of available sectors.
+ */
 @WebServlet("/admin/sectors")
 public class ArenaSectorsServlet extends HttpServlet {
     private final SectorService sectorService = SectorService.getInstance();

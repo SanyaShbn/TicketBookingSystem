@@ -21,6 +21,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Servlet for managing requests to create a sporting event.
+ */
 @WebServlet("/admin/create-sport-event")
 public class CreateSportEventServlet extends HttpServlet {
     private final SportEventService sportEventService = SportEventService.getInstance();

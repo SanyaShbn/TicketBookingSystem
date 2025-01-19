@@ -8,6 +8,9 @@ import lombok.Value;
 
 import java.math.BigDecimal;
 
+/**
+ * TicketDto - Data Transfer Object representing information about a ticket.
+ */
 @Value
 @Builder
 public class TicketDto {

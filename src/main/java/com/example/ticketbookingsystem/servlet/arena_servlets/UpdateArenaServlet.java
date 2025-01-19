@@ -17,6 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Servlet for managing requests to update an arena.
+ */
 @WebServlet("/admin/update-arena")
 public class UpdateArenaServlet extends HttpServlet {
     private final ArenaService arenaService = ArenaService.getInstance();

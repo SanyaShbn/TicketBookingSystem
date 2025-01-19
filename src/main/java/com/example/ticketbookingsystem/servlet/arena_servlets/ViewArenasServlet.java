@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Servlet for managing requests to get the list of available arenas.
+ */
 @WebServlet("/admin/arenas")
 public class ViewArenasServlet extends HttpServlet {
     private final ArenaService arenaService = ArenaService.getInstance();

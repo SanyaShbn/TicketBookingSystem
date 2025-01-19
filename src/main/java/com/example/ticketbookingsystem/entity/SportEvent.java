@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a sporting event which users may want to visit and buy tickets for
+ */
 @Entity
 @Table(name = "sport_event")
 @Data

@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/**
+ * Servlet for managing requests to get the list of available rows.
+ */
 @WebServlet("/admin/rows")
 public class ViewRowsServlet extends HttpServlet {
     private final RowService rowService = RowService.getInstance();

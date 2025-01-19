@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents arena's sectors (collection of rows and seats in the specific part of the arena) in the system
+ */
 @Entity
 @Data
 @AllArgsConstructor

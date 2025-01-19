@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet for managing requests to delete a row.
+ */
 @WebServlet("/admin/delete-row")
 public class DeleteRowServlet extends HttpServlet {
     private final RowService rowService = RowService.getInstance();

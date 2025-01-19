@@ -19,6 +19,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Servlet for managing requests to update a ticket.
+ */
 @WebServlet("/admin/update-ticket")
 public class UpdateTicketServlet extends HttpServlet {
     private final TicketService ticketService = TicketService.getInstance();

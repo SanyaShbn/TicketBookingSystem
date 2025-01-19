@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents an embeddable entity for identifying user carts
+ */
 @Embeddable
 @Data
 @AllArgsConstructor

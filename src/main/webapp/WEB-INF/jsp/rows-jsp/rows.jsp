@@ -7,6 +7,7 @@
 <head>
     <title><fmt:message key="rows.list"/></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/styles.css"/>">
+    <script src="<c:url value="/js/cookieUtils.js"/>"></script>
     <script src="<c:url value="/js/toggle-filter-form-script.js"/>"></script>
 </head>
 <body>

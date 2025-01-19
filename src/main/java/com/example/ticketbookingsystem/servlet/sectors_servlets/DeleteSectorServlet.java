@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet for managing requests to delete a sector.
+ */
 @WebServlet("/admin/delete-sector")
 public class DeleteSectorServlet extends HttpServlet {
     private final SectorService sectorService = SectorService.getInstance();

@@ -16,6 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Servlet for managing requests to get the list of tickets purchased by a user.
+ */
 @WebServlet("/purchasedTickets")
 public class PurchasedTicketsServlet extends HttpServlet {
     private final PurchasedTicketsService purchasedTicketsService = PurchasedTicketsService.getInstance();

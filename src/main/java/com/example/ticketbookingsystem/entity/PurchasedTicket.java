@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents sold ticket to user in the ticket booking system
+ */
 @Entity
 @Table(name = "purchased_tickets")
 @Data

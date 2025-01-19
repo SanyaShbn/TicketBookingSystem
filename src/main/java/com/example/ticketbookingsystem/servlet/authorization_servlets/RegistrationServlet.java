@@ -16,6 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet for managing user registration.
+ */
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
     private final UserService userService = UserService.getInstance();

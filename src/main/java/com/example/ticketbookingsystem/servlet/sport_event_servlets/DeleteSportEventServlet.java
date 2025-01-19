@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet for managing requests to delete a sporting event.
+ */
 @WebServlet("/admin/delete-sport-event")
 public class DeleteSportEventServlet extends HttpServlet {
     private final SportEventService sportEventService = SportEventService.getInstance();

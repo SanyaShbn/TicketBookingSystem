@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet for managing requests to delete a ticket.
+ */
 @WebServlet("/admin/delete-ticket")
 public class DeleteTicketServlet extends HttpServlet {
     private final TicketService ticketService = TicketService.getInstance();

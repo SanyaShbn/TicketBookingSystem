@@ -2,9 +2,20 @@ package com.example.ticketbookingsystem.validator;
 
 import com.example.ticketbookingsystem.dto.UserDto;
 
+/**
+ * Validator class for validating the registration of {@link UserDto}
+ */
 public class RegisterUserValidator implements Validator<UserDto> {
     private static final RegisterUserValidator INSTANCE = new RegisterUserValidator();
 
+    /**
+     * Validates the given {@link UserDto} for registration.
+     * Checks if the password is at least 8 characters long, matches the confirmation password,
+     * and meets complexity requirements.
+     *
+     * @param userDto the user DTO to validate
+     * @return the validation result containing any validation errors
+     */
     @Override
     public ValidationResult isValid(UserDto userDto) {
         var validationResult = new ValidationResult();
@@ -38,6 +49,10 @@ public class RegisterUserValidator implements Validator<UserDto> {
         }
     }
 
+    /**
+     * Gets the singleton instance of {@link RegisterUserValidator}.
+     * @return the singleton instance
+     */
     public static RegisterUserValidator getInstance(){
         return INSTANCE;
     }

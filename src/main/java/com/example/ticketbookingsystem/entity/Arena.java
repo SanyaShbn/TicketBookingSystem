@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents an arena in the ticket booking system where sporting events can be held
+ */
 @Entity
 @Data
 @AllArgsConstructor

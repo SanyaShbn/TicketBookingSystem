@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a sector's row of seats for which users can buy tickets
+ */
 @Entity
 @Data
 @AllArgsConstructor

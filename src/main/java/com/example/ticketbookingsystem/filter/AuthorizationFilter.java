@@ -11,6 +11,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * AuthorizationFilter is a servlet filter that handles authorization checks
+ * for incoming HTTP requests based on user roles and public paths.
+ */
 @WebFilter("/*")
 public class AuthorizationFilter implements Filter {
     private static final Set<String> PUBLIC_PATH = Set.of("/login", "/registration", "/logout",
@@ -19,6 +23,19 @@ public class AuthorizationFilter implements Filter {
             "ADMIN", Set.of("/admin", "/admin/*"),
             "USER", Set.of("/view_available_events", "/view_available_tickets", "/user_cart", "/purchase")
     );
+
+    /**
+     * Filters incoming requests to check user authorization.
+     * If the user is not logged in, they are redirected to the login page.
+     * If the user is logged in but does not have the proper role,
+     * a forbidden status is returned.
+     *
+     * @param servletRequest the request object
+     * @param servletResponse the response object
+     * @param filterChain the filter chain
+     * @throws IOException if an I/O error occurs
+     * @throws ServletException if a servlet error occurs
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {

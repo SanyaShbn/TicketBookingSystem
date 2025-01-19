@@ -19,6 +19,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Servlet for managing requests to create a row.
+ */
 @WebServlet("/admin/create-row")
 public class CreateRowServlet extends HttpServlet {
     private final RowService rowService = RowService.getInstance();

@@ -6,6 +6,9 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 
+/**
+ * SportEventDto - Data Transfer Object representing information about a sport event.
+ */
 @Value
 @Builder
 public class SportEventDto {

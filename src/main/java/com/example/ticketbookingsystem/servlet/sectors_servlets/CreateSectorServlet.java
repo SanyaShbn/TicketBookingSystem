@@ -19,6 +19,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Servlet for managing requests to create a sector.
+ */
 @WebServlet("/admin/create-sector")
 public class CreateSectorServlet extends HttpServlet {
     private final SectorService sectorService = SectorService.getInstance();

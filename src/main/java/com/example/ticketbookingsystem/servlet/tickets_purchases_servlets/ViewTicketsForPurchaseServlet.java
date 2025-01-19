@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/**
+ * Servlet for managing requests to get the list of tickets available for purchase by users.
+ */
 @WebServlet("/view_available_tickets")
 public class ViewTicketsForPurchaseServlet extends HttpServlet {
     private final TicketService ticketService = TicketService.getInstance();

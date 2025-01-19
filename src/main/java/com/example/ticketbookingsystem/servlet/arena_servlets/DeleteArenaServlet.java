@@ -1,6 +1,5 @@
 package com.example.ticketbookingsystem.servlet.arena_servlets;
 
-import com.example.ticketbookingsystem.exception.CreateUpdateEntityException;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
@@ -14,6 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet for managing requests to delete an arena.
+ */
 @WebServlet("/admin/delete-arena")
 public class DeleteArenaServlet extends HttpServlet {
     private final ArenaService arenaService = ArenaService.getInstance();

@@ -6,6 +6,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+/**
+ * Utility class for Hibernate {@link SessionFactory} management.
+ * Provides methods for initializing and shutting down the {@link SessionFactory}.
+ */
 @Slf4j
 public class HibernateUtil {
     @Getter
@@ -23,6 +27,9 @@ public class HibernateUtil {
         }
     }
 
+    /**
+     * Shuts down the {@link SessionFactory}, closing all resources.
+     */
     public static void shutdown(){
         if (sessionFactory != null) {
             sessionFactory.close();

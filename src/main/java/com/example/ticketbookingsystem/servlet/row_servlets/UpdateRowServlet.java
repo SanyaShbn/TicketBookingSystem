@@ -20,6 +20,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Servlet for managing requests to update a row.
+ */
 @WebServlet("/admin/update-row")
 public class UpdateRowServlet extends HttpServlet {
     private final RowService rowService = RowService.getInstance();
