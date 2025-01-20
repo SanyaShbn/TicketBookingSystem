@@ -46,10 +46,10 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
             Ticket ticket = session.get(Ticket.class, userCart.getId().getTicketId());
             if (ticket != null) {
                 ticket.setStatus(TicketStatus.RESERVED);
-                session.update(ticket);
+                session.merge(ticket);
             }
 
-            session.save(userCart);
+            session.persist(userCart);
 
             transaction.commit();
             log.info("Record saved into user card: {}", userCart);
@@ -76,10 +76,10 @@ public class UserCartDao extends AbstractHibernateDao<UserCart>{
             Ticket ticket = session.get(Ticket.class, userCart.getId().getTicketId());
             if (ticket != null) {
                 ticket.setStatus(TicketStatus.AVAILABLE);
-                session.update(ticket);
+                session.merge(ticket);
             }
 
-            session.delete(userCart);
+            session.remove(userCart);
 
             transaction.commit();
             log.info("Record removed from user card: {}", userCart);

@@ -109,38 +109,21 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         }
     }
 
-    /**
-     * Finds all sectors by the specified arena ID.
-     *
-     * @param arenaId the ID of the arena
-     * @return a list of sectors for the specified arena
-     */
-    public List<Sector> findAllByArenaId(Long arenaId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Sector> query = session.createQuery("FROM Sector WHERE arena.id = :arenaId", Sector.class);
-            query.setParameter("arenaId", arenaId);
-            return query.list();
-        } catch (HibernateException e) {
-            log.error("Failed to retrieve sectors by provided arena ID: {}", arenaId);
-            throw new DaoCrudException(e);
-        }
-    }
-
     @Override
     public void save(Sector sector) {
         Transaction transaction = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            session.save(sector);
+            session.persist(sector);
             updateArenaAfterSectorSave(session, sector);
             transaction.commit();
-            log.info("Sector saved: {}", sector);
+            log.info("Sector saved");
         } catch (HibernateException e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            log.error("Failed to save sector: {}", sector);
+            log.error("Failed to save sector");
             throw new DaoCrudException(e);
         } finally {
             session.close();
@@ -159,14 +142,14 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         try {
             transaction = session.beginTransaction();
             updateArenaBeforeSectorUpdate(session, sectorBeforeUpdate.get(), sector);
-            session.update(sector);
+            session.merge(sector);
             transaction.commit();
-            log.info("Sector updated: {}", sector);
+            log.info("Sector updated");
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            log.error("Failed to update sector: {}", sector);
+            log.error("Failed to update sector");
             throw new DaoCrudException(e);
         } finally {
             session.close();
@@ -179,12 +162,12 @@ public class SectorDao extends AbstractHibernateDao<Sector> {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            Sector sector = session.load(Sector.class, id);
+            Sector sector = session.find(Sector.class, id);
             if (sector != null) {
                 updateArenaAfterSectorDelete(session, sector);
-                session.delete(sector);
+                session.remove(sector);
                 transaction.commit();
-                log.info("Sector {} deleted with given id: {}", sector, id);
+                log.info("Sector deleted with given id: {}", id);
             }
             else {
                 transaction.rollback();

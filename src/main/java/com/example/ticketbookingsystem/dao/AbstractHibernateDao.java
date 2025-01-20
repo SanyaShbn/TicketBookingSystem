@@ -74,7 +74,7 @@ public abstract class AbstractHibernateDao<T> {
         Session session = sessionFactory.openSession();
         try {
             transaction = session.beginTransaction();
-            session.save(entity);
+            session.persist(entity);
             transaction.commit();
             log.info("Entity {} saved", entityClass.getSimpleName());
         } catch (HibernateException e) {
@@ -99,7 +99,7 @@ public abstract class AbstractHibernateDao<T> {
         Session session = sessionFactory.openSession();
         try {
             transaction = session.beginTransaction();
-            session.update(entity);
+            session.merge(entity);
             transaction.commit();
             log.info("Entity {} updated", entityClass.getSimpleName());
         } catch (HibernateException e) {
@@ -124,9 +124,9 @@ public abstract class AbstractHibernateDao<T> {
         Session session = sessionFactory.openSession();
         try {
             transaction = session.beginTransaction();
-            T entity = session.load(entityClass, id);
+            T entity = session.find(entityClass, id);
             if (entity != null) {
-                session.delete(entity);
+                session.remove(entity);
                 transaction.commit();
                 log.info("Entity {} deleted with given id: {}", entityClass.getSimpleName(), id);
             }

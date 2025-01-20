@@ -110,15 +110,15 @@ public class RowDao extends AbstractHibernateDao<Row>{
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            session.save(row);
+            session.persist(row);
             updateSectorAfterRowSave(session, row);
             transaction.commit();
-            log.info("Row saved: {}", row);
+            log.info("Row saved");
         } catch (HibernateException e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            log.error("Failed to save row: {}", row);
+            log.error("Failed to save row");
             throw new DaoCrudException(e);
         } finally {
             session.close();
@@ -129,7 +129,7 @@ public class RowDao extends AbstractHibernateDao<Row>{
     public void update(Row row) {
         Optional<Row> rowBeforeUpdate = findById(row.getId());
         if (rowBeforeUpdate.isEmpty()) {
-            log.error("Failed to find row: {}", row);
+            log.error("Failed to find row");
             throw new DaoResourceNotFoundException("Row not found");
         }
         Transaction transaction = null;
@@ -137,14 +137,14 @@ public class RowDao extends AbstractHibernateDao<Row>{
         try {
             transaction = session.beginTransaction();
             updateSectorBeforeRowUpdate(session, rowBeforeUpdate.get(), row);
-            session.update(row);
+            session.merge(row);
             transaction.commit();
-            log.info("row updated: {}", row);
+            log.info("Row updated");
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            log.error("Failed to update row: {}", row);
+            log.error("Failed to update row");
             throw new DaoCrudException(e);
         } finally {
             session.close();
@@ -156,12 +156,12 @@ public class RowDao extends AbstractHibernateDao<Row>{
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            Row row = session.load(Row.class, id);
+            Row row = session.find(Row.class, id);
             if (row != null) {
                 updateSectorAfterRowDelete(session, row);
-                session.delete(row);
+                session.remove(row);
                 transaction.commit();
-                log.info("Row {} deleted with given id: {}", row, id);
+                log.info("Row deleted with given id: {}", id);
             }
             else {
                 transaction.rollback();

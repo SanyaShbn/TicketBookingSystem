@@ -39,7 +39,7 @@ public class UserDao implements UserAuthentication{
     public void registerUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.save(user);
+            session.persist(user);
             transaction.commit();
             log.info("User saved: {}", user);
         } catch (HibernateException e) {

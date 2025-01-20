@@ -52,14 +52,14 @@ public class PurchasedTicketsDao extends AbstractHibernateDao<PurchasedTicket>{
                 Ticket ticket = session.get(Ticket.class, ticketId);
                 if (ticket != null) {
                     ticket.setStatus(TicketStatus.SOLD);
-                    session.update(ticket);
+                    session.merge(ticket);
 
                     PurchasedTicket purchasedTicket = PurchasedTicket.builder()
                             .userId(userId)
                             .purchaseDate(LocalDateTime.now())
                             .ticket(ticket)
                             .build();
-                    session.save(purchasedTicket);
+                    session.persist(purchasedTicket);
                 }
             }
             transaction.commit();
