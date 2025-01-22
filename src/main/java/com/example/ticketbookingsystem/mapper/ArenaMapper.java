@@ -23,11 +23,12 @@ public class ArenaMapper implements Mapper<Arena, ArenaDto> {
      */
     @Override
     public Arena toEntity(ArenaDto arenaDto) {
-        return Arena.builder()
-                .name(arenaDto.getName())
-                .city(arenaDto.getCity())
-                .capacity(arenaDto.getCapacity())
-                .build();
+//        return Arena.builder()
+//                .name(arenaDto.getName())
+//                .city(arenaDto.getCity())
+//                .capacity(arenaDto.getCapacity())
+//                .build();
+        return new Arena();
     }
 
     /**
