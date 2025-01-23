@@ -24,7 +24,7 @@ public class ArenaController {
     private final ArenaService arenaService;
 
     @GetMapping
-    public String getAllArenas(@RequestParam(value = "city", required = false) String city,
+    public String findAllArenas(@RequestParam(value = "city", required = false) String city,
                                @RequestParam(value = "capacitySortOrder", required = false) String capacitySortOrder,
                                @RequestParam(value = "seatsNumbSortOrder", required = false) String seatsNumbSortOrder,
                                @RequestParam(value = "page", required = false, defaultValue = "1") int page,
