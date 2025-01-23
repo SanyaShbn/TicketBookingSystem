@@ -13,7 +13,7 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="update.arena.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/update-arena" method="post">
+    <form action="${pageContext.request.contextPath}/admin/arenas/${arena.id}/update" method="post">
         <input type="hidden" name="id" value="${arena.id}">
         <label for="name"><fmt:message key="arena.name" />:</label>
         <input type="text" id="name" name="name" value="${arena.name}" required>

@@ -3,13 +3,14 @@ package com.example.ticketbookingsystem.validator;
 import com.example.ticketbookingsystem.entity.Arena;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * Validator class for validating the creation or update of {@link Arena} entities.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Component
+@NoArgsConstructor
 public class CreateOrUpdateArenaValidator implements Validator<Arena>{
-    private static final CreateOrUpdateArenaValidator INSTANCE = new CreateOrUpdateArenaValidator();
 
     /**
      * Validates the given {@link Arena} entity.
@@ -27,13 +28,5 @@ public class CreateOrUpdateArenaValidator implements Validator<Arena>{
         }
 
         return validationResult;
-    }
-
-    /**
-     * Gets the singleton instance of {@link CreateOrUpdateArenaValidator}.
-     * @return the singleton instance
-     */
-    public static CreateOrUpdateArenaValidator getInstance(){
-        return INSTANCE;
     }
 }

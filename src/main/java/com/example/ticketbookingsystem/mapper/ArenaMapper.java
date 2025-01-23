@@ -2,18 +2,15 @@ package com.example.ticketbookingsystem.mapper;
 
 import com.example.ticketbookingsystem.dto.ArenaDto;
 import com.example.ticketbookingsystem.entity.Arena;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * Mapper class for converting between {@link Arena} entity and {@link ArenaDto} DTO.
  */
+@Component
+@NoArgsConstructor
 public class ArenaMapper implements Mapper<Arena, ArenaDto> {
-
-    private static final ArenaMapper INSTANCE = new ArenaMapper();
-
-    private ArenaMapper(){}
-    public static ArenaMapper getInstance(){
-        return INSTANCE;
-    }
 
     /**
      * Converts an {@link ArenaDto} to an {@link Arena} entity.
@@ -23,12 +20,13 @@ public class ArenaMapper implements Mapper<Arena, ArenaDto> {
      */
     @Override
     public Arena toEntity(ArenaDto arenaDto) {
-//        return Arena.builder()
-//                .name(arenaDto.getName())
-//                .city(arenaDto.getCity())
-//                .capacity(arenaDto.getCapacity())
-//                .build();
-        return new Arena();
+        return Arena.builder()
+                .id(arenaDto.getId())
+                .name(arenaDto.getName())
+                .city(arenaDto.getCity())
+                .capacity(arenaDto.getCapacity())
+                .generalSeatsNumb(arenaDto.getGeneralSeatsNumb())
+                .build();
     }
 
     /**
@@ -40,9 +38,11 @@ public class ArenaMapper implements Mapper<Arena, ArenaDto> {
     @Override
     public ArenaDto toDto(Arena arena) {
         return ArenaDto.builder()
+                .id(arena.getId())
                 .name(arena.getName())
                 .city(arena.getCity())
                 .capacity(arena.getCapacity())
+                .generalSeatsNumb(arena.getGeneralSeatsNumb())
                 .build();
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Component
+@Builder
 public class Arena {
 
     @Id

@@ -9,7 +9,9 @@ import lombok.Value;
 @Value
 @Builder
 public class ArenaDto {
+    Long id;
     String name;
     String city;
     int capacity;
+    int generalSeatsNumb;
 }

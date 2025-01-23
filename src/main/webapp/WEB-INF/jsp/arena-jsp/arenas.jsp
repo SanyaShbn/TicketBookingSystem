@@ -67,7 +67,7 @@
     <button onclick="location.href='${pageContext.request.contextPath}/admin'">
         <fmt:message key="button.back"/>
     </button>
-    <button onclick="location.href='${pageContext.request.contextPath}/admin/create-arena'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/arenas/create'">
         <fmt:message key="button.create"/>
     </button>
     <div class="arena-container">
@@ -81,11 +81,11 @@
                     <div><fmt:message key="arena.city"/>: ${arena.city}</div>
                     <div><fmt:message key="arena.capacity"/>: ${arena.capacity}</div>
                     <div><fmt:message key="arena.generalSeatsNumb"/>: ${arena.generalSeatsNumb}</div>
-                        <form action="${pageContext.request.contextPath}/admin/update-arena" method="get" style="display:inline;">
+                        <form action="${pageContext.request.contextPath}/admin/arenas/${arena.id}/update" method="get" style="display:inline;">
                             <input type="hidden" name="id" value="${arena.id}"/>
                             <button type="submit"><fmt:message key="button.update"/></button>
                         </form>
-                        <form action="${pageContext.request.contextPath}/admin/delete-arena" method="post" style="display:inline;">
+                        <form action="${pageContext.request.contextPath}/admin/arenas/${arena.id}/delete" method="post" style="display:inline;">
                             <input type="hidden" name="id" value="${arena.id}"/>
                             <button type="submit"><fmt:message key="button.delete"/></button>
                         </form>

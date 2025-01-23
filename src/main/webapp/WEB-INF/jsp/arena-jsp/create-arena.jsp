@@ -13,7 +13,7 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="create.arena.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/create-arena" method="post">
+    <form action="${pageContext.request.contextPath}/admin/arenas/create" method="post">
         <label for="name"><fmt:message key="arena.name" />:</label>
         <input type="text" id="name" name="name" required>
         <label for="city"><fmt:message key="arena.city" />:</label>
