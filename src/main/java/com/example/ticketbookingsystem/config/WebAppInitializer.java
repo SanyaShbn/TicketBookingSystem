@@ -1,27 +1,22 @@
 package com.example.ticketbookingsystem.config;
 
 import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRegistration;
 import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 public class WebAppInitializer implements WebApplicationInitializer {
+
     @Override
-    public void onStartup(final ServletContext sc) throws ServletException {
+    public void onStartup(ServletContext servletContext) {
 
-        AnnotationConfigWebApplicationContext root =
-                new AnnotationConfigWebApplicationContext();
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.register(ApplicationConfiguration.class);
 
-        root.scan("com.example.ticketbookingsystem");
-        sc.addListener(new ContextLoaderListener(root));
-
-        ServletRegistration.Dynamic appServlet =
-                sc.addServlet("mvc", new DispatcherServlet(new GenericWebApplicationContext()));
-        appServlet.setLoadOnStartup(1);
-        appServlet.addMapping("/");
+        DispatcherServlet servlet = new DispatcherServlet(context);
+        ServletRegistration.Dynamic registration = servletContext.addServlet("dispatcher", servlet);
+        registration.setLoadOnStartup(1);
+        registration.addMapping("/");
     }
 }
