@@ -13,7 +13,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +45,16 @@ public class ArenaController {
     }
 
     @PostMapping("/create")
-    public String createArena(@ModelAttribute ArenaCreateEditDto arenaCreateEditDto, Model model) {
+    public String createArena(@ModelAttribute @Validated ArenaCreateEditDto arenaCreateEditDto,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes,
+                              Model model) {
         try {
+            if(bindingResult.hasErrors()){
+                redirectAttributes.addFlashAttribute("arena", arenaCreateEditDto);
+                redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+                return "redirect:/admin/arenas/create";
+            }
             log.info("Creating new arena with details: {}", arenaCreateEditDto);
             arenaService.createArena(arenaCreateEditDto);
             return "redirect:/admin/arenas";
@@ -53,9 +64,6 @@ public class ArenaController {
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating arena: {}", e.getMessage());
             return handleCreateArenaException(model, e);
-        } catch (ValidationException e) {
-            log.error("Validation exception occurred while creating arena: {}", e.getErrors());
-            return handleValidationException(model, e);
         }
     }
 

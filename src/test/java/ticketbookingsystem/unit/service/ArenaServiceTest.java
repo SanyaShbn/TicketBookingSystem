@@ -3,13 +3,11 @@ package ticketbookingsystem.unit.service;
 import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.dto.ArenaReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
-import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.mapper.ArenaCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.ArenaReadMapper;
 import com.example.ticketbookingsystem.repository.ArenaRepository;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.validator.CreateOrUpdateArenaValidator;
-import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,9 +33,6 @@ public class ArenaServiceTest {
     @Mock
     private ArenaReadMapper arenaReadMapper;
 
-    @Mock
-    private CreateOrUpdateArenaValidator createOrUpdateArenaValidator;
-
     @InjectMocks
     private ArenaService arenaService;
 
@@ -57,7 +52,6 @@ public class ArenaServiceTest {
 
         when(arenaCreateEditMapper.toEntity(any(ArenaCreateEditDto.class))).thenReturn(arena);
         when(arenaReadMapper.toDto(any(Arena.class))).thenReturn(arenaReadDto);
-        when(createOrUpdateArenaValidator.isValid(any(Arena.class))).thenReturn(new ValidationResult());
     }
 
     @Test
@@ -84,52 +78,16 @@ public class ArenaServiceTest {
 
     @Test
     void createArena() {
-        var validationResult = new ValidationResult();
-        when(createOrUpdateArenaValidator.isValid(any(Arena.class))).thenReturn(validationResult);
-
         arenaService.createArena(arenaCreateEditDto);
 
         verify(arenaRepository, times(1)).save(arena);
-        verify(createOrUpdateArenaValidator, times(1)).isValid(arena);
-    }
-
-    @Test
-    void createArenaValidationFails() {
-        var validationResult = new ValidationResult();
-        validationResult.add(Error.of("error.test", "Test Error occurred"));
-        when(createOrUpdateArenaValidator.isValid(any(Arena.class))).thenReturn(validationResult);
-
-        ValidationException exception = assertThrows(ValidationException.class,
-                () -> arenaService.createArena(arenaCreateEditDto));
-
-        assertFalse(exception.getErrors().isEmpty());
-        verify(arenaRepository, times(0)).save(any(Arena.class));
-        verify(createOrUpdateArenaValidator, times(1)).isValid(arena);
     }
 
     @Test
     void updateArena() {
-        var validationResult = new ValidationResult();
-        when(createOrUpdateArenaValidator.isValid(any(Arena.class))).thenReturn(validationResult);
-
         arenaService.updateArena(1L, arenaCreateEditDto);
 
         verify(arenaRepository, times(1)).save(arena);
-        verify(createOrUpdateArenaValidator, times(1)).isValid(arena);
-    }
-
-    @Test
-    void updateArenaValidationFails() {
-        var validationResult = new ValidationResult();
-        validationResult.add(Error.of("error.test", "Test Error occurred"));
-        when(createOrUpdateArenaValidator.isValid(any(Arena.class))).thenReturn(validationResult);
-
-        ValidationException exception = assertThrows(ValidationException.class,
-                () -> arenaService.updateArena(1L, arenaCreateEditDto));
-
-        assertFalse(exception.getErrors().isEmpty());
-        verify(arenaRepository, times(0)).save(any(Arena.class));
-        verify(createOrUpdateArenaValidator, times(1)).isValid(arena);
     }
 
     @Test

@@ -75,11 +75,6 @@ public class ArenaService {
      */
     public void createArena(ArenaCreateEditDto arenaCreateEditDto) {
         Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
-        var validationResult = createOrUpdateArenaValidator.isValid(arena);
-        if(!validationResult.isValid()){
-            log.warn("Validation failed while creating arena with data: {}", arenaCreateEditDto);
-            throw new ValidationException(validationResult.getErrors());
-        }
         arenaRepository.save(arena);
         log.info("Arena created successfully with dto: {}", arenaCreateEditDto);
     }
@@ -93,11 +88,6 @@ public class ArenaService {
     public void updateArena(Long id, ArenaCreateEditDto arenaCreateEditDto) {
         Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
         arena.setId(id);
-        var validationResult = createOrUpdateArenaValidator.isValid(arena);
-        if(!validationResult.isValid()){
-            log.warn("Validation failed while updating arena with data: {}", arenaCreateEditDto);
-            throw new ValidationException(validationResult.getErrors());
-        }
         arenaRepository.save(arena);
         log.info("Arena with id {} updated successfully with dto: {}", id, arenaCreateEditDto);
     }

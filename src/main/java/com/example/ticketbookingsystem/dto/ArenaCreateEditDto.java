@@ -1,5 +1,7 @@
 package com.example.ticketbookingsystem.dto;
 
+import com.example.ticketbookingsystem.validator.CapacityCheck;
+import com.example.ticketbookingsystem.validator.LocalizedNotBlank;
 import lombok.Builder;
 import lombok.Value;
 
@@ -9,7 +11,13 @@ import lombok.Value;
 @Value
 @Builder
 public class ArenaCreateEditDto {
+
+    @LocalizedNotBlank
     String name;
+
+    @LocalizedNotBlank
     String city;
-    int capacity;
+
+    @CapacityCheck(min = 1, max = 22000)
+    Integer capacity;
 }
