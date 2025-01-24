@@ -4,14 +4,12 @@ import lombok.Builder;
 import lombok.Value;
 
 /**
- * ArenaDto - Data Transfer Object representing information about an arena.
+ * ArenaCreateEditDto - Data Transfer Object representing information about an arena when creating or updating arena.
  */
 @Value
 @Builder
-public class ArenaDto {
-    Long id;
+public class ArenaCreateEditDto {
     String name;
     String city;
     int capacity;
-    int generalSeatsNumb;
 }

@@ -9,11 +9,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Fixed existing configs. Now, application is starting, at least">
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Fixed Spring MVC config classes">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/ArenaCreateEditDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/ArenaCreateEditMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/ArenaReadMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/ArenaControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/ArenaServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebAppInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebAppInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebMvcConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/filter/AuthorizationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/filter/AuthorizationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/ApplicationConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/ApplicationConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/ArenaDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/ArenaReadDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/ArenaMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/ArenaMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/ArenaDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/ArenaDaoTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/PurchasedTicketsDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/PurchasedTicketsDaoTest.java" afterDir="false" />
@@ -38,8 +48,8 @@
         <option value="Dockerfile" />
         <option value="Jsp File" />
         <option value="JavaScript File" />
-        <option value="Interface" />
         <option value="CSS File" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -115,78 +125,80 @@
     </key>
   </component>
   <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.1">
-    <configuration name="SpringRunner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.example.ticketbookingsystem.spring.SpringRunner" />
+    <configuration name="ArenaControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.ticketbookingsystem.spring.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TicketDaoTest.testFindAllByEventId" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ArenaControllerTest.testCreateArena" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.TicketDaoTest" />
-      <option name="METHOD_NAME" value="testFindAllByEventId" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
+      <option name="METHOD_NAME" value="testCreateArena" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TicketDaoTest.testFindById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ArenaControllerTest.testCreateArenaWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.TicketDaoTest" />
-      <option name="METHOD_NAME" value="testFindById" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
+      <option name="METHOD_NAME" value="testCreateArenaWithException" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TicketDaoTest.testSave" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ArenaControllerTest.testDeleteArenaWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.TicketDaoTest" />
-      <option name="METHOD_NAME" value="testSave" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
+      <option name="METHOD_NAME" value="testDeleteArenaWithException" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TicketDaoTest.testUpdate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ArenaControllerTest.testFindAllArenas" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.TicketDaoTest" />
-      <option name="METHOD_NAME" value="testUpdate" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
+      <option name="METHOD_NAME" value="testFindAllArenas" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -280,11 +292,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.SpringRunner" />
-        <item itemvalue="JUnit.TicketDaoTest.testUpdate" />
-        <item itemvalue="JUnit.TicketDaoTest.testSave" />
-        <item itemvalue="JUnit.TicketDaoTest.testFindById" />
-        <item itemvalue="JUnit.TicketDaoTest.testFindAllByEventId" />
+        <item itemvalue="JUnit.ArenaControllerTest.testDeleteArenaWithException" />
+        <item itemvalue="JUnit.ArenaControllerTest" />
+        <item itemvalue="JUnit.ArenaControllerTest.testCreateArenaWithException" />
+        <item itemvalue="JUnit.ArenaControllerTest.testFindAllArenas" />
+        <item itemvalue="JUnit.ArenaControllerTest.testCreateArena" />
       </list>
     </recent_temporary>
   </component>
@@ -416,7 +428,7 @@
       <workItem from="1737647603579" duration="329000" />
       <workItem from="1737659115700" duration="4383000" />
       <workItem from="1737704004322" duration="5220000" />
-      <workItem from="1737715751785" duration="1203000" />
+      <workItem from="1737715751785" duration="14184000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -682,7 +694,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737663453885</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Fixed Spring MVC config classes">
+      <option name="closed" value="true" />
+      <created>1737717529565</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1737717529565</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -725,7 +745,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Working on features 5 and 6 (added visualization of available tickets and user's cart)" />
     <MESSAGE value="Almost finished features 5 and 6 (further details depend on implementing users authorization, so they are not completely finished)" />
     <MESSAGE value="Started implementing authorization (feature №7)" />
     <MESSAGE value="Implemented authorization (for now, without user ticket purchasing functionality)" />
@@ -750,7 +769,8 @@
     <MESSAGE value="Moved some of the Hibernate db connection properties values into env vars" />
     <MESSAGE value="Started implementing Spring in Arena module (+ necessary config classes, dependencies)" />
     <MESSAGE value="Fixed existing configs. Now, application is starting, at least" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed existing configs. Now, application is starting, at least" />
+    <MESSAGE value="Fixed Spring MVC config classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Spring MVC config classes" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

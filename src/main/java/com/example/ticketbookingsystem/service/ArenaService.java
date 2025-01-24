@@ -1,13 +1,16 @@
 package com.example.ticketbookingsystem.service;
 
-import com.example.ticketbookingsystem.dto.ArenaDto;
+import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.dto.ArenaFilter;
+import com.example.ticketbookingsystem.dto.ArenaReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.exception.ValidationException;
-import com.example.ticketbookingsystem.mapper.ArenaMapper;
+import com.example.ticketbookingsystem.mapper.ArenaCreateEditMapper;
+import com.example.ticketbookingsystem.mapper.ArenaReadMapper;
 import com.example.ticketbookingsystem.repository.ArenaRepository;
 import com.example.ticketbookingsystem.validator.CreateOrUpdateArenaValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,34 +22,37 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ArenaService {
 
     private final ArenaRepository arenaRepository;
 
-    private final ArenaMapper arenaMapper;
+    private final ArenaCreateEditMapper arenaCreateEditMapper;
+
+    private final ArenaReadMapper arenaReadMapper;
 
     private final CreateOrUpdateArenaValidator createOrUpdateArenaValidator;
 
     /**
-     * Finds all arenas.
+     * Finds all arenas mapped to ArenaReadDto class.
      *
      * @return a list of all arenas
      */
-    public List<ArenaDto> findAll(){
+    public List<ArenaReadDto> findAll(){
         return arenaRepository.findAll().stream()
-                .map(arenaMapper::toDto)
+                .map(arenaReadMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Finds all arenas matching the given filter.
+     * Finds all arenas matching the given filter and mapped to ArenaReadDto class.
      *
      * @param arenaFilter the filter to apply
      * @return a list of arenas matching the filter
      */
-//    public List<ArenaDto> findAll(ArenaFilter arenaFilter){
+//    public List<ArenaReadDto> findAll(ArenaFilter arenaFilter){
 //        return arenaRepository.findAll(arenaFilter).stream()
-//                .map(arenaMapper::toDto)
+//                .map(arenaReadMapper::toDto)
 //                .collect(Collectors.toList());
 //    }
 
@@ -54,41 +60,46 @@ public class ArenaService {
      * Finds an arena by its ID.
      *
      * @param id the ID of the arena
-     * @return an {@link Optional} containing the found arena, or empty if not found
+     * @return an {@link Optional} containing the found arena mapped to ArenaReadDto, or empty if not found
      */
-    public Optional<ArenaDto> findById(Long id){
+    public Optional<ArenaReadDto> findById(Long id){
         return arenaRepository.findById(id)
-                .map(arenaMapper::toDto);
+                .map(arenaReadMapper::toDto);
     }
 
     /**
      * Creates a new arena.
      *
-     * @param arenaDto the DTO of the arena to create
+     * @param arenaCreateEditDto the DTO of the arena to create
      * @throws ValidationException if the arena is not valid
      */
-    public void createArena(ArenaDto arenaDto) {
-        Arena arena = arenaMapper.toEntity(arenaDto);
+    public void createArena(ArenaCreateEditDto arenaCreateEditDto) {
+        Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
         var validationResult = createOrUpdateArenaValidator.isValid(arena);
         if(!validationResult.isValid()){
+            log.warn("Validation failed while creating arena with data: {}", arenaCreateEditDto);
             throw new ValidationException(validationResult.getErrors());
         }
         arenaRepository.save(arena);
+        log.info("Arena created successfully with dto: {}", arenaCreateEditDto);
     }
 
     /**
      * Updates an existing arena.
      *
-     * @param arenaDto the DTO of the updated arena
+     * @param arenaCreateEditDto the DTO of the updated arena
      * @throws ValidationException if the updated arena is not valid
      */
-    public void updateArena(ArenaDto arenaDto) {
-        Arena arena = arenaMapper.toEntity(arenaDto);
+    public void updateArena(Long id, ArenaCreateEditDto arenaCreateEditDto) {
+        Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
+        arena.setId(id);
         var validationResult = createOrUpdateArenaValidator.isValid(arena);
         if(!validationResult.isValid()){
+            log.warn("Validation failed while updating arena with data: {}", arenaCreateEditDto);
             throw new ValidationException(validationResult.getErrors());
         }
         arenaRepository.save(arena);
+        log.info("Arena with id {} updated successfully with dto: {}", id, arenaCreateEditDto);
     }
 
     /**
@@ -98,6 +109,7 @@ public class ArenaService {
      */
     public void deleteArena(Long id) {
         arenaRepository.deleteById(id);
+        log.info("Arena with id {} deleted successfully.", id);
     }
 
     /**

@@ -1,7 +1,8 @@
 package com.example.ticketbookingsystem.controller;
 
-import com.example.ticketbookingsystem.dto.ArenaDto;
+import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.dto.ArenaFilter;
+import com.example.ticketbookingsystem.dto.ArenaReadDto;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.ArenaService;
@@ -9,6 +10,7 @@ import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/admin/arenas")
 @RequiredArgsConstructor
+@Slf4j
 public class ArenaController {
 
     private final ArenaService arenaService;
@@ -39,22 +42,26 @@ public class ArenaController {
     }
 
     @PostMapping("/create")
-    public String createArena(@ModelAttribute ArenaDto arenaDto, Model model) {
+    public String createArena(@ModelAttribute ArenaCreateEditDto arenaCreateEditDto, Model model) {
         try {
-            arenaService.createArena(arenaDto);
+            log.info("Creating new arena with details: {}", arenaCreateEditDto);
+            arenaService.createArena(arenaCreateEditDto);
             return "redirect:/admin/arenas";
         } catch (NumberFormatException e) {
+            log.error("Number format exception occurred: {}", e.getMessage());
             return handleNumberFormatException(model);
         } catch (DaoCrudException e) {
+            log.error("CRUD exception occurred while creating arena: {}", e.getMessage());
             return handleCreateArenaException(model, e);
         } catch (ValidationException e) {
+            log.error("Validation exception occurred while creating arena: {}", e.getErrors());
             return handleValidationException(model, e);
         }
     }
 
     @GetMapping("/{id}/update")
     public String showUpdateArenaForm(@PathVariable Long id, Model model) {
-        Optional<ArenaDto> arena = arenaService.findById(id);
+        Optional<ArenaReadDto> arena = arenaService.findById(id);
         if (arena.isPresent()) {
             model.addAttribute("arena", arena.get());
             return JspFilesResolver.getPath("/arena-jsp/update-arena");
@@ -63,25 +70,32 @@ public class ArenaController {
     }
 
     @PostMapping("/{id}/update")
-    public String updateArena(@PathVariable Long id, @ModelAttribute ArenaDto arenaDto, Model model) {
+    public String updateArena(@PathVariable("id") Long id, @ModelAttribute ArenaCreateEditDto arenaCreateEditDto,
+                              Model model) {
         try {
-            arenaService.updateArena(arenaDto);
+            log.info("Updating arena {} with details: {}", id, arenaCreateEditDto);
+            arenaService.updateArena(id, arenaCreateEditDto);
             return "redirect:/admin/arenas";
         } catch (NumberFormatException e) {
+            log.error("Number format exception occurred: {}", e.getMessage());
             return handleNumberFormatException(model);
         } catch (DaoCrudException e) {
+            log.error("CRUD exception occurred while updating arena: {}", e.getMessage());
             return handleUpdateArenaException(model, e);
         } catch (ValidationException e) {
+            log.error("Validation exception occurred while updating arena: {}", e.getErrors());
             return handleValidationException(model, e);
         }
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteArena(@PathVariable Long id, Model model) {
+    public String deleteArena(@PathVariable("id") Long id, Model model) {
         try {
+            log.info("Deleting arena with id: {}", id);
             arenaService.deleteArena(id);
             return "redirect:/admin/arenas";
         } catch (DaoCrudException e) {
+            log.error("CRUD exception occurred while trying to delete arena: {}", e.getMessage());
             ValidationResult validationResult = new ValidationResult();
             validationResult.add(Error.of("delete.arena.fail",
                     "Ошибка! Данные о выбранной арене нельзя удалить. Для нее уже запланированы события " +
@@ -93,8 +107,8 @@ public class ArenaController {
 
     private void setRequestAttributes(String city, String capacitySortOrder, String seatsNumbSortOrder, int page, Model model) {
         ArenaFilter arenaFilter = buildArenaFilter(city, capacitySortOrder, seatsNumbSortOrder, page);
-//        List<ArenaDto> arenaList = arenaService.findAll(arenaFilter);
-        List<ArenaDto> arenaList = arenaService.findAll();
+//        List<ArenaReadDto> arenaList = arenaService.findAll(arenaFilter);
+        List<ArenaReadDto> arenaList = arenaService.findAll();
         List<String> cities = arenaService.findAllArenasCities();
 
         model.addAttribute("arenas", arenaList);
