@@ -68,7 +68,7 @@
     <button onclick="location.href='${pageContext.request.contextPath}/admin/arenas'">
         <fmt:message key="button.back"/>
     </button>
-    <button onclick="location.href='${pageContext.request.contextPath}/admin/create-sector?<%= request.getQueryString() %>'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/sectors/create?<%= request.getQueryString() %>'">
         <fmt:message key="button.add"/>
     </button>
     <div class="arena-container">
@@ -83,12 +83,11 @@
                     <div><fmt:message key="sector.availableRowsNumb"/>: ${sector.availableRowsNumb}</div>
                     <div><fmt:message key="sector.maxSeatsNumb"/>: ${sector.maxSeatsNumb}</div>
                     <div><fmt:message key="sector.availableSeatsNumb"/>: ${sector.availableSeatsNumb}</div>
-                    <form action="${pageContext.request.contextPath}/admin/update-sector" method="get" style="display:inline;">
-                        <input type="hidden" name="id" value="${sector.id}"/>
+                    <form action="${pageContext.request.contextPath}/admin/sectors/${sector.id}/update" method="get" style="display:inline;">
                         <input type="hidden" name="arenaId" value="${sector.arena.id}"/>
                         <button type="submit"><fmt:message key="button.update"/></button>
                     </form>
-                    <form action="${pageContext.request.contextPath}/admin/delete-sector?<%= request.getQueryString() %>"
+                    <form action="${pageContext.request.contextPath}/admin/sectors/${sector.id}/delete?<%= request.getQueryString() %>"
                           method="post" style="display:inline;">
                         <input type="hidden" name="id" value="${sector.id}"/>
                         <button type="submit"><fmt:message key="button.delete"/></button>

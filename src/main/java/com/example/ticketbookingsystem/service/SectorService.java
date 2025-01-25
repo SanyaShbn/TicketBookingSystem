@@ -1,44 +1,68 @@
 package com.example.ticketbookingsystem.service;
 
-import com.example.ticketbookingsystem.dao.SectorDao;
-import com.example.ticketbookingsystem.dto.SectorDto;
+import com.example.ticketbookingsystem.dto.ArenaReadDto;
+import com.example.ticketbookingsystem.dto.SectorCreateEditDto;
 import com.example.ticketbookingsystem.dto.SectorFilter;
+import com.example.ticketbookingsystem.dto.SectorReadDto;
+import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.Sector;
-import com.example.ticketbookingsystem.mapper.SectorMapper;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
+import com.example.ticketbookingsystem.mapper.SectorCreateEditMapper;
+import com.example.ticketbookingsystem.mapper.SectorReadMapper;
+import com.example.ticketbookingsystem.repository.SectorRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing arena's sectors.
  */
+@Service
+@RequiredArgsConstructor
+@Slf4j
 public class SectorService {
-    private static final SectorService INSTANCE = new SectorService();
-    private final SectorDao sectorDao = SectorDao.getInstance();
-    private final SectorMapper sectorMapper = SectorMapper.getInstance();
-    private SectorService(){}
-    public static SectorService getInstance(){
-        return INSTANCE;
-    }
+
+    private final SectorRepository sectorRepository;
+
+    private final SectorReadMapper sectorReadMapper;
+
+    private final SectorCreateEditMapper sectorCreateEditMapper;
+
+    private final ArenaService arenaService;
 
     /**
      * Finds all sectors.
      *
      * @return a list of all sectors
      */
-    public List<Sector> findAll(){
-        return sectorDao.findAll();
+    public List<SectorReadDto> findAll(){
+        return sectorRepository.findAll().stream()
+                .map(sectorReadMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    /**
-     * Finds all sectors matching the given filter.
-     *
-     * @param sectorFilter the filter to apply
-     * @param arenaId the ID of the arena which sectors is needed to get
-     * @return a list of sectors matching the filter
-     */
-    public List<Sector> findAll(SectorFilter sectorFilter, Long arenaId){
-        return sectorDao.findAll(sectorFilter, arenaId);
+//    /**
+//     * Finds all sectors matching the given filter.
+//     *
+//     * @param sectorFilter the filter to apply
+//     * @param arenaId the ID of the arena which sectors is needed to get
+//     * @return a list of sectors matching the filter
+//     */
+//    public List<SectorReadDto> findAll(SectorFilter sectorFilter, Long arenaId){
+//        return sectorRepository.findAll(sectorFilter, arenaId).stream()
+//                .map(sectorReadMapper::toDto)
+//                .collect(Collectors.toList());;
+//    }
+
+    public List<SectorReadDto> findAllByArenaId(Long arenaId){
+        return sectorRepository.findAllByArenaId(arenaId).stream()
+                .map(sectorReadMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -47,30 +71,48 @@ public class SectorService {
      * @param id the ID of the sector
      * @return an {@link Optional} containing the found sector, or empty if not found
      */
-    public Optional<Sector> findById(Long id){
-        return sectorDao.findById(id);
+    public Optional<SectorReadDto> findById(Long id){
+        return sectorRepository.findById(id)
+                .map(sectorReadMapper::toDto);
     }
 
     /**
      * Creates a new sector.
      *
-     * @param sectorDto the DTO of the sector to create
+     * @param sectorCreateEditDto the DTO of the sector to create
      */
-    public void createSector(SectorDto sectorDto) {
-        Sector sector = sectorMapper.toEntity(sectorDto);
-        sectorDao.save(sector);
+    @Transactional
+    public void createSector(SectorCreateEditDto sectorCreateEditDto, Long arenaId) {
+        Sector sector = sectorCreateEditMapper.toEntity(sectorCreateEditDto);
+        Arena arena = arenaService.findArenaById(arenaId);
+        sector.setArena(arena);
+        sectorRepository.save(sector);
+        sectorRepository.updateArenaAfterSectorSave(sector.getArena().getId(), sector.getMaxSeatsNumb());
+        log.info("Sector created successfully with dto: {}", sectorCreateEditDto);
     }
 
     /**
      * Updates an existing sector.
      *
      * @param id the ID of the sector to update
-     * @param sectorDto the DTO of the updated sector
+     * @param sectorCreateEditDto the DTO of the updated sector
      */
-    public void updateSector(Long id, SectorDto sectorDto) {
-        Sector sector = sectorMapper.toEntity(sectorDto);
+    @Transactional
+    public void updateSector(Long id, SectorCreateEditDto sectorCreateEditDto, Long arenaId) {
+        Optional<Sector> sectorBeforeUpdate = sectorRepository.findById(id);
+        if (sectorBeforeUpdate.isEmpty()) {
+            log.error("Failed to find sector with provided id: {}", id);
+            throw new DaoResourceNotFoundException("Sector not found");
+        }
+
+        Sector sector = sectorCreateEditMapper.toEntity(sectorCreateEditDto);
+        Arena arena = arenaService.findArenaById(arenaId);
         sector.setId(id);
-        sectorDao.update(sector);
+        sector.setArena(arena);
+        sectorRepository.updateArenaBeforeSectorUpdate(sector.getArena().getId(),
+                sectorBeforeUpdate.get().getMaxSeatsNumb(), sector.getMaxSeatsNumb());
+        sectorRepository.save(sector);
+        log.info("Sector with id {} updated successfully with dto: {}", id, sectorCreateEditDto);
     }
 
     /**
@@ -78,7 +120,17 @@ public class SectorService {
      *
      * @param id the ID of the sector to delete
      */
+    @Transactional
     public void deleteSector(Long id) {
-        sectorDao.delete(id);
+        Optional<Sector> sector = sectorRepository.findById(id);
+        if (sector.isPresent()) {
+            sectorRepository.updateArenaAfterSectorDelete(sector.get().getArena().getId(),
+                    sector.get().getMaxSeatsNumb());
+            sectorRepository.delete(sector.get());
+            log.info("Sector with id {} deleted successfully.", id);
+        } else {
+            log.error("Failed to find sector with provided id: {}", id);
+            throw new DaoResourceNotFoundException("Sector not found");
+        }
     }
 }

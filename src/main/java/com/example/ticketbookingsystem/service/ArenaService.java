@@ -4,11 +4,11 @@ import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.dto.ArenaFilter;
 import com.example.ticketbookingsystem.dto.ArenaReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.mapper.ArenaCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.ArenaReadMapper;
 import com.example.ticketbookingsystem.repository.ArenaRepository;
-import com.example.ticketbookingsystem.validator.CreateOrUpdateArenaValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,8 +30,6 @@ public class ArenaService {
     private final ArenaCreateEditMapper arenaCreateEditMapper;
 
     private final ArenaReadMapper arenaReadMapper;
-
-    private final CreateOrUpdateArenaValidator createOrUpdateArenaValidator;
 
     /**
      * Finds all arenas mapped to ArenaReadDto class.
@@ -65,6 +63,11 @@ public class ArenaService {
     public Optional<ArenaReadDto> findById(Long id){
         return arenaRepository.findById(id)
                 .map(arenaReadMapper::toDto);
+    }
+
+    public Arena findArenaById(Long id) {
+        return arenaRepository.findById(id)
+                .orElseThrow(() -> new DaoResourceNotFoundException("Arena not found"));
     }
 
     /**
