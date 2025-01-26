@@ -1,6 +1,5 @@
 package com.example.ticketbookingsystem.service;
 
-import com.example.ticketbookingsystem.dto.ArenaReadDto;
 import com.example.ticketbookingsystem.dto.SectorCreateEditDto;
 import com.example.ticketbookingsystem.dto.SectorFilter;
 import com.example.ticketbookingsystem.dto.SectorReadDto;
@@ -76,6 +75,11 @@ public class SectorService {
                 .map(sectorReadMapper::toDto);
     }
 
+    public Sector findSectorById(Long id) {
+        return sectorRepository.findById(id)
+                .orElseThrow(() -> new DaoResourceNotFoundException("Sector not found"));
+    }
+
     /**
      * Creates a new sector.
      *
@@ -87,7 +91,7 @@ public class SectorService {
         Arena arena = arenaService.findArenaById(arenaId);
         sector.setArena(arena);
         sectorRepository.save(sector);
-        sectorRepository.updateArenaAfterSectorSave(sector.getArena().getId(), sector.getMaxSeatsNumb());
+        sectorRepository.updateArenaAfterSectorSave(arenaId, sector.getMaxSeatsNumb());
         log.info("Sector created successfully with dto: {}", sectorCreateEditDto);
     }
 
@@ -109,7 +113,7 @@ public class SectorService {
         Arena arena = arenaService.findArenaById(arenaId);
         sector.setId(id);
         sector.setArena(arena);
-        sectorRepository.updateArenaBeforeSectorUpdate(sector.getArena().getId(),
+        sectorRepository.updateArenaBeforeSectorUpdate(arenaId,
                 sectorBeforeUpdate.get().getMaxSeatsNumb(), sector.getMaxSeatsNumb());
         sectorRepository.save(sector);
         log.info("Sector with id {} updated successfully with dto: {}", id, sectorCreateEditDto);

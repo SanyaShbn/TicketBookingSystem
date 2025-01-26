@@ -161,8 +161,11 @@
             <version>11.0.2</version>
             <scope>test</scope>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>8.0.2.Final</version>
+        </dependency>
 
     </dependencies>
 

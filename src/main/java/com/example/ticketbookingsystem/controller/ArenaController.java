@@ -78,9 +78,17 @@ public class ArenaController {
     }
 
     @PostMapping("/{id}/update")
-    public String updateArena(@PathVariable("id") Long id, @ModelAttribute ArenaCreateEditDto arenaCreateEditDto,
+    public String updateArena(@PathVariable("id") Long id,
+                              @ModelAttribute @Validated ArenaCreateEditDto arenaCreateEditDto,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes,
                               Model model) {
         try {
+            if(bindingResult.hasErrors()){
+                redirectAttributes.addFlashAttribute("arena", arenaCreateEditDto);
+                redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+                return "redirect:/admin/arenas/" + id + "/update";
+            }
             log.info("Updating arena {} with details: {}", id, arenaCreateEditDto);
             arenaService.updateArena(id, arenaCreateEditDto);
             return "redirect:/admin/arenas";
@@ -90,9 +98,6 @@ public class ArenaController {
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating arena: {}", e.getMessage());
             return handleUpdateArenaException(model, e);
-        } catch (ValidationException e) {
-            log.error("Validation exception occurred while updating arena: {}", e.getErrors());
-            return handleValidationException(model, e);
         }
     }
 

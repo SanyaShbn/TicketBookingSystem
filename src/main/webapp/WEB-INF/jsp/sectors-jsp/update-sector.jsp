@@ -15,6 +15,7 @@
     <h1><fmt:message key="update.sector.title" /></h1>
     <form action="${pageContext.request.contextPath}/admin/sectors/${sector.id}/update" method="post">
         <input type="hidden" name="arenaId" value="${arenaId}">
+
         <input type="hidden" name="id" value="${sector.id}">
         <label for="sectorName"><fmt:message key="sector.sectorName" />:</label>
         <input type="text" id="sectorName" name="sectorName" value="${sector.sectorName}" required>

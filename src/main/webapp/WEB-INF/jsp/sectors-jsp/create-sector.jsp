@@ -15,6 +15,7 @@
     <h1><fmt:message key="create.sector.title" /></h1>
     <form action="${pageContext.request.contextPath}/admin/sectors/create" method="post">
         <input type="hidden" name="arenaId" value="${arenaId}">
+
         <label for="sectorName"><fmt:message key="sector.sectorName" />:</label>
         <input type="text" id="sectorName" name="sectorName" required>
         <label for="maxRowsNumb"><fmt:message key="sector.maxRowsNumb" />:</label>

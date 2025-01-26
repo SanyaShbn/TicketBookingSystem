@@ -55,7 +55,7 @@
     <button onclick="location.href='${pageContext.request.contextPath}/admin/sectors?arenaId=<%= request.getParameter("arenaId") %>'">
         <fmt:message key="button.back"/>
     </button>
-    <button onclick="location.href='${pageContext.request.contextPath}/admin/create-row?<%= request.getQueryString() %>'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/rows/create?<%= request.getQueryString() %>'">
         <fmt:message key="button.add"/>
     </button>
     <div class="arena-container">
@@ -65,13 +65,13 @@
                 <div class="arena-card">
                     <div><fmt:message key="row.rowNumber"/>: ${row.rowNumber}</div>
                     <div><fmt:message key="row.seatsNumb"/>: ${row.seatsNumb}</div>
-                    <form action="${pageContext.request.contextPath}/admin/update-row" method="get" style="display:inline;">
+                    <form action="${pageContext.request.contextPath}/admin/rows/${row.id}/update" method="get" style="display:inline;">
                         <input type="hidden" name="id" value="${row.id}"/>
                         <input type="hidden" name="sectorId" value="${row.sector.id}"/>
-                        <input type="hidden" name="arenaId" value="${row.sector.arena.id}"/>
+                        <input type="hidden" name="arenaId" value="${param.arenaId}"/>
                         <button type="submit"><fmt:message key="button.update"/></button>
                     </form>
-                    <form action="${pageContext.request.contextPath}/admin/delete-row?<%= request.getQueryString() %>"
+                    <form action="${pageContext.request.contextPath}/admin/rows/${row.id}/delete?<%= request.getQueryString() %>"
                           method="post" style="display:inline;">
                         <input type="hidden" name="id" value="${row.id}"/>
                         <button type="submit"><fmt:message key="button.delete"/></button>

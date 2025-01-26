@@ -9,11 +9,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Fixed controller and service unit-tests for Arena and Sector entities (+ refactored dto for Row entity)">
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/ArenaControllerIT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SectorControllerIT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/test_config/TestJpaConfig.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Wrote integration tests for ArenaController and ServiceController functionality">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/RowController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/RowRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/RowControllerIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/RowControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/RowServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebMvcConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SectorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SectorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/RowDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/SectorDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/filter/LocaleFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/filter/LocaleFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/ArenaMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/RowMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/SectorMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/RowService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/RowService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/update-arena.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/update-arena.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/rows-jsp/create-row.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/rows-jsp/create-row.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/rows-jsp/rows.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/rows-jsp/rows.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/rows-jsp/update-row.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/rows-jsp/update-row.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/create-sector.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/create-sector.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/update-sector.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/update-sector.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +124,7 @@
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\sectors-jsp" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.1">
+  <component name="RunManager" selected="JUnit.RowControllerIT">
     <configuration name="ArenaControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
@@ -120,7 +140,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ArenaControllerIT.testCreateArenaWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RowControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
@@ -129,25 +149,38 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.ArenaControllerIT" />
-      <option name="METHOD_NAME" value="testCreateArenaWithException" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.RowControllerIT" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ArenaControllerIT.testFindAllArenas" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RowControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.ArenaControllerIT" />
-      <option name="METHOD_NAME" value="testFindAllArenas" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.RowControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RowServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.RowServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -163,22 +196,6 @@
       <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
       <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.SectorControllerIT" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SectorControllerIntegrationTest.testUpdateSector" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.SectorControllerIntegrationTest" />
-      <option name="METHOD_NAME" value="testUpdateSector" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -271,11 +288,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RowControllerIT" />
+        <item itemvalue="JUnit.RowControllerTest" />
+        <item itemvalue="JUnit.RowServiceTest" />
         <item itemvalue="JUnit.SectorControllerIT" />
         <item itemvalue="JUnit.ArenaControllerIT" />
-        <item itemvalue="JUnit.ArenaControllerIT.testCreateArenaWithException" />
-        <item itemvalue="JUnit.ArenaControllerIT.testFindAllArenas" />
-        <item itemvalue="JUnit.SectorControllerIntegrationTest.testUpdateSector" />
       </list>
     </recent_temporary>
   </component>
@@ -413,7 +430,8 @@
       <workItem from="1737804710355" duration="8590000" />
       <workItem from="1737842154615" duration="4146000" />
       <workItem from="1737846322416" duration="16000" />
-      <workItem from="1737879247219" duration="8419000" />
+      <workItem from="1737879247219" duration="13047000" />
+      <workItem from="1737896015184" duration="5019000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -711,7 +729,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737883642066</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Wrote integration tests for ArenaController and ServiceController functionality">
+      <option name="closed" value="true" />
+      <created>1737889171672</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1737889171672</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -754,7 +780,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started ticket purchase functionality (with implemented authorization)" />
     <MESSAGE value="Managed concurrency when adding tickets into user's cart before committing purchase" />
     <MESSAGE value="Implemented committing purchase functionality + viewing purchased tickets" />
     <MESSAGE value="Tried to deploy (not fully successful yet)" />
@@ -779,9 +804,15 @@
     <MESSAGE value="Implemented MapStruct, fully implemented Spring into Arena module (except validation and filters/sorting/pagination), wrote tests" />
     <MESSAGE value="Implemented Spring into Sector module (basic CRUD operations, for now - now tests, no filtration/sorting/pagination)" />
     <MESSAGE value="Fixed controller and service unit-tests for Arena and Sector entities (+ refactored dto for Row entity)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed controller and service unit-tests for Arena and Sector entities (+ refactored dto for Row entity)" />
+    <MESSAGE value="Wrote integration tests for ArenaController and ServiceController functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="Wrote integration tests for ArenaController and ServiceController functionality" />
   </component>
   <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.util.Locale" memberName="languageTag" />
+      </pinned-members>
+    </pin-to-top-manager>
     <watches-manager>
       <configuration name="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory">
         <watch expression="lang" />

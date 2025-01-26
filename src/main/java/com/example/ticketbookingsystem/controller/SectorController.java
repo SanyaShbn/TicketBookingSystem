@@ -27,8 +27,7 @@ public class SectorController {
     private final SectorService sectorService;
 
     @GetMapping
-    public String findAllSectors(@RequestParam("arenaId") Long arenaId,
-                                Model model) {
+    public String findAllSectors(@RequestParam("arenaId") Long arenaId, Model model) {
         List<SectorReadDto> sectorReadDtoList = sectorService.findAllByArenaId(arenaId);
         model.addAttribute("sectors", sectorReadDtoList);
         return JspFilesResolver.getPath("/sectors-jsp/sectors");
@@ -43,9 +42,9 @@ public class SectorController {
     @PostMapping("/create")
     public String createSector(@RequestParam("arenaId") Long arenaId,
                                @ModelAttribute SectorCreateEditDto sectorCreateEditDto,
-                              BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes,
-                              Model model) {
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes,
+                               Model model) {
         try {
             if(bindingResult.hasErrors()){
                 redirectAttributes.addFlashAttribute("sector", sectorCreateEditDto);
