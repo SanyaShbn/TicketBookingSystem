@@ -2,7 +2,6 @@ package com.example.ticketbookingsystem.service;
 
 import com.example.ticketbookingsystem.dao.UserDao;
 import com.example.ticketbookingsystem.dto.UserDto;
-import com.example.ticketbookingsystem.entity.Role;
 import com.example.ticketbookingsystem.entity.User;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.mapper.UserMapper;
