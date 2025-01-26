@@ -9,17 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Implemented Spring into Sector module (basic CRUD operations, for now - now tests, no filtration/sorting/pagination)">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/RowCreateEditDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/RowReadDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/RowCreateEditMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/RowReadMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SectorControllerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SectorServiceTest.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Fixed controller and service unit-tests for Arena and Sector entities (+ refactored dto for Row entity)">
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/ArenaControllerIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SectorControllerIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/test_config/TestJpaConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/ArenaControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/ArenaControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/ArenaServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/ArenaServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,80 +104,80 @@
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\sectors-jsp" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ArenaControllerTest">
-    <configuration name="ArenaControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.1">
+    <configuration name="ArenaControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.ArenaControllerIT" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ArenaControllerTest.testDeleteArenaWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ArenaControllerIT.testCreateArenaWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
-      <option name="METHOD_NAME" value="testDeleteArenaWithException" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.ArenaControllerIT" />
+      <option name="METHOD_NAME" value="testCreateArenaWithException" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ArenaControllerTest.testUpdateArenaWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ArenaControllerIT.testFindAllArenas" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
-      <option name="METHOD_NAME" value="testUpdateArenaWithException" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.ArenaControllerIT" />
+      <option name="METHOD_NAME" value="testFindAllArenas" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SectorControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SectorControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.SectorControllerTest" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.SectorControllerIT" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SectorControllerTest.testShowUpdateSectorForm" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SectorControllerIntegrationTest.testUpdateSector" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.SectorControllerTest" />
-      <option name="METHOD_NAME" value="testShowUpdateSectorForm" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.SectorControllerIntegrationTest" />
+      <option name="METHOD_NAME" value="testUpdateSector" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -277,11 +271,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ArenaControllerTest" />
-        <item itemvalue="JUnit.SectorControllerTest" />
-        <item itemvalue="JUnit.SectorControllerTest.testShowUpdateSectorForm" />
-        <item itemvalue="JUnit.ArenaControllerTest.testDeleteArenaWithException" />
-        <item itemvalue="JUnit.ArenaControllerTest.testUpdateArenaWithException" />
+        <item itemvalue="JUnit.SectorControllerIT" />
+        <item itemvalue="JUnit.ArenaControllerIT" />
+        <item itemvalue="JUnit.ArenaControllerIT.testCreateArenaWithException" />
+        <item itemvalue="JUnit.ArenaControllerIT.testFindAllArenas" />
+        <item itemvalue="JUnit.SectorControllerIntegrationTest.testUpdateSector" />
       </list>
     </recent_temporary>
   </component>
@@ -419,7 +413,7 @@
       <workItem from="1737804710355" duration="8590000" />
       <workItem from="1737842154615" duration="4146000" />
       <workItem from="1737846322416" duration="16000" />
-      <workItem from="1737879247219" duration="4213000" />
+      <workItem from="1737879247219" duration="8419000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -709,7 +703,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737813354087</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Fixed controller and service unit-tests for Arena and Sector entities (+ refactored dto for Row entity)">
+      <option name="closed" value="true" />
+      <created>1737883642066</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1737883642066</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -752,7 +754,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implemented authorization (for now, without user ticket purchasing functionality)" />
     <MESSAGE value="Started ticket purchase functionality (with implemented authorization)" />
     <MESSAGE value="Managed concurrency when adding tickets into user's cart before committing purchase" />
     <MESSAGE value="Implemented committing purchase functionality + viewing purchased tickets" />
@@ -777,7 +778,8 @@
     <MESSAGE value="Fixed Spring MVC config classes" />
     <MESSAGE value="Implemented MapStruct, fully implemented Spring into Arena module (except validation and filters/sorting/pagination), wrote tests" />
     <MESSAGE value="Implemented Spring into Sector module (basic CRUD operations, for now - now tests, no filtration/sorting/pagination)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented Spring into Sector module (basic CRUD operations, for now - now tests, no filtration/sorting/pagination)" />
+    <MESSAGE value="Fixed controller and service unit-tests for Arena and Sector entities (+ refactored dto for Row entity)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed controller and service unit-tests for Arena and Sector entities (+ refactored dto for Row entity)" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
