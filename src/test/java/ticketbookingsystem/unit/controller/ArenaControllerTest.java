@@ -4,6 +4,7 @@ import com.example.ticketbookingsystem.controller.ArenaController;
 import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.ArenaService;
+import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,7 +23,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 public class ArenaControllerTest {
 
-    private MockMvc mockMvc;
+    private static final Long ARENA_ID = 1L;
+
+    MockMvc mockMvc;
 
     @Mock
     private ArenaService arenaService;
@@ -33,14 +36,14 @@ public class ArenaControllerTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(arenaController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(arenaController).build();
     }
 
     @Test
     public void testFindAllArenas() throws Exception {
         mockMvc.perform(get("/admin/arenas"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/arena-jsp/arenas"))
+                .andExpect(view().name(JspFilesResolver.getPath("/arena-jsp/arenas")))
                 .andExpect(model().attributeExists("arenas"))
                 .andExpect(model().attributeExists("cities"))
                 .andExpect(model().attribute("limit", 8));
@@ -48,11 +51,7 @@ public class ArenaControllerTest {
 
     @Test
     public void testCreateArena() throws Exception {
-        ArenaCreateEditDto arenaCreateEditDto = ArenaCreateEditDto.builder()
-                .name("Test")
-                .city("Test city")
-                .capacity(1)
-                .build();
+        ArenaCreateEditDto arenaCreateEditDto = buildArenaCreateEditDto();
 
         doNothing().when(arenaService).createArena(any(ArenaCreateEditDto.class));
 
@@ -64,32 +63,24 @@ public class ArenaControllerTest {
 
     @Test
     public void testCreateArenaWithException() throws Exception {
-        ArenaCreateEditDto arenaCreateEditDto = ArenaCreateEditDto.builder()
-                .name("Test")
-                .city("Test city")
-                .capacity(1)
-                .build();
+        ArenaCreateEditDto arenaCreateEditDto = buildArenaCreateEditDto();
 
         doThrow(new DaoCrudException(new Throwable())).when(arenaService).createArena(any(ArenaCreateEditDto.class));
 
         mockMvc.perform(post("/admin/arenas/create")
                         .flashAttr("arenaCreateEditDto", arenaCreateEditDto))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/arena-jsp/create-arena"))
+                .andExpect(view().name(JspFilesResolver.getPath("/arena-jsp/create-arena")))
                 .andExpect(model().attributeExists("errors"));
     }
 
     @Test
     public void testUpdateArena() throws Exception {
-        ArenaCreateEditDto arenaCreateEditDto = ArenaCreateEditDto.builder()
-                .name("Test")
-                .city("Test city")
-                .capacity(1)
-                .build();
+        ArenaCreateEditDto arenaCreateEditDto = buildArenaCreateEditDto();
 
         doNothing().when(arenaService).updateArena(anyLong(), any(ArenaCreateEditDto.class));
 
-        mockMvc.perform(post("/admin/arenas/{id}/update", 1L)
+        mockMvc.perform(post("/admin/arenas/{id}/update", ARENA_ID)
                         .flashAttr("arenaCreateEditDto", arenaCreateEditDto))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/arenas"));
@@ -97,19 +88,15 @@ public class ArenaControllerTest {
 
     @Test
     public void testUpdateArenaWithException() throws Exception {
-        ArenaCreateEditDto arenaCreateEditDto = ArenaCreateEditDto.builder()
-                .name("Test")
-                .city("Test city")
-                .capacity(1)
-                .build();
+        ArenaCreateEditDto arenaCreateEditDto = buildArenaCreateEditDto();
 
         doThrow(new DaoCrudException(new Throwable())).when(arenaService).updateArena(anyLong(),
                 any(ArenaCreateEditDto.class));
 
-        mockMvc.perform(post("/admin/arenas/{id}/update", 1L)
+        mockMvc.perform(post("/admin/arenas/{id}/update", ARENA_ID)
                         .flashAttr("arenaCreateEditDto", arenaCreateEditDto))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/arena-jsp/update-arena"))
+                .andExpect(view().name(JspFilesResolver.getPath("/arena-jsp/update-arena")))
                 .andExpect(model().attributeExists("errors"));
     }
 
@@ -117,7 +104,7 @@ public class ArenaControllerTest {
     public void testDeleteArena() throws Exception {
         doNothing().when(arenaService).deleteArena(anyLong());
 
-        mockMvc.perform(post("/admin/arenas/{id}/delete", 1L))
+        mockMvc.perform(post("/admin/arenas/{id}/delete", ARENA_ID))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/arenas"));
     }
@@ -126,9 +113,17 @@ public class ArenaControllerTest {
     public void testDeleteArenaWithException() throws Exception {
         doThrow(new DaoCrudException(new Throwable())).when(arenaService).deleteArena(anyLong());
 
-        mockMvc.perform(post("/admin/arenas/{id}/delete", 1L))
+        mockMvc.perform(post("/admin/arenas/{id}/delete", ARENA_ID))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/error-jsp/error-page"))
+                .andExpect(view().name(JspFilesResolver.getPath("/error-jsp/error-page")))
                 .andExpect(model().attributeExists("errors"));
+    }
+
+    private ArenaCreateEditDto buildArenaCreateEditDto(){
+        return ArenaCreateEditDto.builder()
+                .name("Test")
+                .city("Test city")
+                .capacity(1)
+                .build();
     }
 }

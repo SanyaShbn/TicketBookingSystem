@@ -7,8 +7,6 @@ import com.example.ticketbookingsystem.mapper.ArenaCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.ArenaReadMapper;
 import com.example.ticketbookingsystem.repository.ArenaRepository;
 import com.example.ticketbookingsystem.service.ArenaService;
-import com.example.ticketbookingsystem.validator.CreateOrUpdateArenaValidator;
-import com.example.ticketbookingsystem.validator.ValidationResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,6 +21,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class ArenaServiceTest {
+
+    private static final Long ENTITY_ID = 1L;
 
     @Mock
     private ArenaRepository arenaRepository;
@@ -46,7 +46,7 @@ public class ArenaServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         arena = new Arena();
-        arena.setId(1L);
+        arena.setId(ENTITY_ID);
         arenaCreateEditDto = ArenaCreateEditDto.builder().build();
         arenaReadDto = ArenaReadDto.builder().build();
 
@@ -67,13 +67,13 @@ public class ArenaServiceTest {
 
     @Test
     public void testFindById() {
-        when(arenaRepository.findById(1L)).thenReturn(Optional.of(arena));
+        when(arenaRepository.findById(ENTITY_ID)).thenReturn(Optional.of(arena));
 
-        var result = arenaService.findById(1L);
+        var result = arenaService.findById(ENTITY_ID);
 
         assertTrue(result.isPresent());
         assertEquals(arenaReadDto, result.get());
-        verify(arenaRepository, times(1)).findById(1L);
+        verify(arenaRepository, times(1)).findById(ENTITY_ID);
     }
 
     @Test
@@ -85,16 +85,16 @@ public class ArenaServiceTest {
 
     @Test
     void updateArena() {
-        arenaService.updateArena(1L, arenaCreateEditDto);
+        arenaService.updateArena(ENTITY_ID, arenaCreateEditDto);
 
         verify(arenaRepository, times(1)).save(arena);
     }
 
     @Test
     void deleteArena() {
-        arenaService.deleteArena(1L);
+        arenaService.deleteArena(ENTITY_ID);
 
-        verify(arenaRepository, times(1)).deleteById(1L);
+        verify(arenaRepository, times(1)).deleteById(ENTITY_ID);
     }
 
 }

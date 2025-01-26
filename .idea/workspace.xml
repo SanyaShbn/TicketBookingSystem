@@ -9,39 +9,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Managing Spring Validation for ArenaCreateEditDto (not successful yet)">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SectorController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/SectorCreateEditDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/SectorReadDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/SectorCreateEditMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/SectorReadMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SectorRepository.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Implemented Spring into Sector module (basic CRUD operations, for now - now tests, no filtration/sorting/pagination)">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/RowCreateEditDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/RowReadDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/RowCreateEditMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/RowReadMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SectorControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SectorServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/CreateRowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/CreateRowServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/DeleteRowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/DeleteRowServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/UpdateRowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/UpdateRowServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/ViewRowsServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/row_servlets/ViewRowsServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/ArenaSectorsServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/ArenaSectorsServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/DeleteSectorServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sectors_servlets/DeleteSectorServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/arenas.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/arenas.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/create-sector.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/create-sector.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/sectors.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/sectors.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/update-sector.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sectors-jsp/update-sector.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/ArenaDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/ArenaDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/PurchasedTicketsDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/PurchasedTicketsDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/RowDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/RowDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SeatDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SeatDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SectorDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SectorDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SportEventDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SportEventDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/TicketDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/TicketDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/UserCartDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/UserCartDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/UserDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/UserDaoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/ArenaControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/ArenaControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/ArenaServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/ArenaServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/utils/TestUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/utils/TestUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +110,7 @@
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\sectors-jsp" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.1">
+  <component name="RunManager" selected="JUnit.ArenaControllerTest">
     <configuration name="ArenaControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
@@ -144,22 +122,6 @@
       <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
       <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ArenaControllerTest.testCreateArenaWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
-      <option name="METHOD_NAME" value="testCreateArenaWithException" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -180,32 +142,48 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ArenaServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ArenaControllerTest.testUpdateArenaWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.ArenaServiceTest" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
+      <option name="METHOD_NAME" value="testUpdateArenaWithException" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SectorControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.SectorControllerTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ArenaServiceTest.updateArena" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SectorControllerTest.testShowUpdateSectorForm" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.ArenaServiceTest" />
-      <option name="METHOD_NAME" value="updateArena" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.SectorControllerTest" />
+      <option name="METHOD_NAME" value="testShowUpdateSectorForm" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -299,11 +277,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ArenaServiceTest.updateArena" />
-        <item itemvalue="JUnit.ArenaServiceTest" />
-        <item itemvalue="JUnit.ArenaControllerTest.testDeleteArenaWithException" />
         <item itemvalue="JUnit.ArenaControllerTest" />
-        <item itemvalue="JUnit.ArenaControllerTest.testCreateArenaWithException" />
+        <item itemvalue="JUnit.SectorControllerTest" />
+        <item itemvalue="JUnit.SectorControllerTest.testShowUpdateSectorForm" />
+        <item itemvalue="JUnit.ArenaControllerTest.testDeleteArenaWithException" />
+        <item itemvalue="JUnit.ArenaControllerTest.testUpdateArenaWithException" />
       </list>
     </recent_temporary>
   </component>
@@ -438,7 +416,10 @@
       <workItem from="1737715751785" duration="14541000" />
       <workItem from="1737745499374" duration="8360000" />
       <workItem from="1737754296405" duration="17000" />
-      <workItem from="1737804710355" duration="8328000" />
+      <workItem from="1737804710355" duration="8590000" />
+      <workItem from="1737842154615" duration="4146000" />
+      <workItem from="1737846322416" duration="16000" />
+      <workItem from="1737879247219" duration="4213000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -720,7 +701,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737731314086</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Implemented Spring into Sector module (basic CRUD operations, for now - now tests, no filtration/sorting/pagination)">
+      <option name="closed" value="true" />
+      <created>1737813354087</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1737813354087</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -763,7 +752,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started implementing authorization (feature №7)" />
     <MESSAGE value="Implemented authorization (for now, without user ticket purchasing functionality)" />
     <MESSAGE value="Started ticket purchase functionality (with implemented authorization)" />
     <MESSAGE value="Managed concurrency when adding tickets into user's cart before committing purchase" />
@@ -788,7 +776,8 @@
     <MESSAGE value="Fixed existing configs. Now, application is starting, at least" />
     <MESSAGE value="Fixed Spring MVC config classes" />
     <MESSAGE value="Implemented MapStruct, fully implemented Spring into Arena module (except validation and filters/sorting/pagination), wrote tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented MapStruct, fully implemented Spring into Arena module (except validation and filters/sorting/pagination), wrote tests" />
+    <MESSAGE value="Implemented Spring into Sector module (basic CRUD operations, for now - now tests, no filtration/sorting/pagination)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented Spring into Sector module (basic CRUD operations, for now - now tests, no filtration/sorting/pagination)" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
