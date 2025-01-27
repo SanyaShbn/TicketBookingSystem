@@ -52,7 +52,8 @@ public class RowController {
             return "redirect:/admin/rows?arenaId=" + arenaId + "&sectorId=" + sectorId;
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
-            return handleNumberFormatException(model);
+            handleNumberFormatException(model);
+            return JspFilesResolver.getPath("/rows-jsp/create-row");
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating sector: {}", e.getMessage());
             return handleCreateRowException(model, e);
@@ -86,7 +87,8 @@ public class RowController {
             return "redirect:/admin/rows?arenaId=" + arenaId + "&sectorId=" + sectorId;
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
-            return handleNumberFormatException(model);
+            handleNumberFormatException(model);
+            return JspFilesResolver.getPath("/rows-jsp/update-row");
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating row: {}", e.getMessage());
             return handleUpdateRowException(model, e);
@@ -113,12 +115,11 @@ public class RowController {
         }
     }
 
-    private String handleNumberFormatException(Model model) {
+    private void handleNumberFormatException(Model model) {
         ValidationResult validationResult = new ValidationResult();
         validationResult.add(Error.of("invalid.number.format",
                 "Проверьте корректность ввода данных!"));
         model.addAttribute("errors", validationResult.getErrors());
-        return JspFilesResolver.getPath("/rows-jsp/create-row");
     }
 
     private String handleCreateRowException(Model model, DaoCrudException e) {
@@ -138,20 +139,20 @@ public class RowController {
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {
         if (errorMessage != null) {
             switch (getErrorType(errorMessage)) {
-                case "ERROR_CHECK_ROWS" -> sqlExceptionResult.add(Error.of("create.row.fail",
+                case "ERROR_CHECK_ROWS" -> sqlExceptionResult.add(Error.of("create_edit.row.fail",
                         "Ошибка! Заданное максимальное значение рядов сектора превышено. " +
                                 "Вы не можете создать новый ряд"));
-                case "ERROR_CHECK_SEATS" -> sqlExceptionResult.add(Error.of("create.row.fail",
+                case "ERROR_CHECK_SEATS" -> sqlExceptionResult.add(Error.of("create_edit.row.fail",
                         "Ошибка! Суммарное количество мест рядов сектора не может превышать заданное " +
                                 "маскимальное количество доступных мест в секторе. " +
                                 "Проверьте корректность ввода данных"));
-                case "ERROR_CHECK_ROW_NUMBER" -> sqlExceptionResult.add(Error.of("update.row.fail",
+                case "ERROR_CHECK_ROW_NUMBER" -> sqlExceptionResult.add(Error.of("create_edit.row.fail",
                         "Ошибка! Ряд с таким номером уже существует в данном секторе. " +
                                 "Проверьте корректность ввода данных"));
-                default -> sqlExceptionResult.add(Error.of("create.row.fail", errorMessage));
+                default -> sqlExceptionResult.add(Error.of("create_edit.row.fail", errorMessage));
             }
         } else {
-            sqlExceptionResult.add(Error.of("create.row.fail", "Unknown sql exception"));
+            sqlExceptionResult.add(Error.of("create_edit.row.fail", "Unknown sql exception"));
         }
     }
 

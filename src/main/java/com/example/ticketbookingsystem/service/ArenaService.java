@@ -33,7 +33,7 @@ public class ArenaService {
 
     /**
      * Finds all arenas mapped to ArenaReadDto class.
-     *
+     *c
      * @return a list of all arenas
      */
     public List<ArenaReadDto> findAll(){

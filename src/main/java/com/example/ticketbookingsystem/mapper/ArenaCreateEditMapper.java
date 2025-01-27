@@ -10,5 +10,6 @@ public interface ArenaCreateEditMapper {
     ArenaCreateEditMapper INSTANCE = Mappers.getMapper(ArenaCreateEditMapper.class);
 
     Arena toEntity(ArenaCreateEditDto arenaCreateEditDto);
+
     ArenaCreateEditDto toDto(Arena arena);
 }

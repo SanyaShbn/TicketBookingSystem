@@ -10,5 +10,6 @@ public interface SectorCreateEditMapper  {
     SectorCreateEditMapper INSTANCE = Mappers.getMapper(SectorCreateEditMapper.class);
 
     Sector toEntity(SectorCreateEditDto sectorCreateEditDto);
+
     SectorCreateEditDto toDto(Sector sector);
 }

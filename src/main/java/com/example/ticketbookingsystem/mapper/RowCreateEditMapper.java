@@ -10,5 +10,6 @@ public interface RowCreateEditMapper {
     RowCreateEditMapper INSTANCE = Mappers.getMapper(RowCreateEditMapper.class);
 
     Row toEntity(RowCreateEditDto rowCreateEditDto);
+
     RowCreateEditDto toDto(Row row);
 }

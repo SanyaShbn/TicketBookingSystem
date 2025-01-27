@@ -60,7 +60,8 @@ public class ArenaController {
             return "redirect:/admin/arenas";
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
-            return handleNumberFormatException(model);
+            handleNumberFormatException(model);
+            return JspFilesResolver.getPath("/arena-jsp/create-arena");
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating arena: {}", e.getMessage());
             return handleCreateArenaException(model, e);
@@ -94,7 +95,8 @@ public class ArenaController {
             return "redirect:/admin/arenas";
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
-            return handleNumberFormatException(model);
+            handleNumberFormatException(model);
+            return JspFilesResolver.getPath("/arena-jsp/update-arena");
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating arena: {}", e.getMessage());
             return handleUpdateArenaException(model, e);
@@ -137,12 +139,11 @@ public class ArenaController {
         return new ArenaFilter(city, capacitySortOrder, seatsNumbSortOrder, limit, offset);
     }
 
-    private String handleNumberFormatException(Model model) {
+    private void handleNumberFormatException(Model model) {
         ValidationResult validationResult = new ValidationResult();
         validationResult.add(Error.of("invalid.number.format",
                 "Проверьте корректность ввода данных!"));
         model.addAttribute("errors", validationResult.getErrors());
-        return JspFilesResolver.getPath("/arena-jsp/create-arena");
     }
 
     private String handleCreateArenaException(Model model, DaoCrudException e) {
@@ -159,23 +160,18 @@ public class ArenaController {
         return JspFilesResolver.getPath("/arena-jsp/update-arena");
     }
 
-    private String handleValidationException(Model model, ValidationException e) {
-        model.addAttribute("errors", e.getErrors());
-        return JspFilesResolver.getPath("/arena-jsp/create-arena");
-    }
-
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {
         if (errorMessage != null) {
             switch (getErrorType(errorMessage)) {
-                case "ERROR_CHECK_ARENA_NAME" -> sqlExceptionResult.add(Error.of("create.arena.fail",
+                case "ERROR_CHECK_ARENA_NAME" -> sqlExceptionResult.add(Error.of("create_edit.arena.fail",
                         "Ошибка! Имя арены должно быть уникальным. Проверьте корректность ввода данных"));
-                case "ERROR_CHECK_CAPACITY" -> sqlExceptionResult.add(Error.of("create.arena.fail",
+                case "ERROR_CHECK_CAPACITY" -> sqlExceptionResult.add(Error.of("create_edit.arena.fail",
                         "Ошибка! Общее максимально возможное количество мест в секторах для " +
                                 "заданной арены превышает ее вместимость. Проверьте корректность ввода данных"));
-                default -> sqlExceptionResult.add(Error.of("create.row.fail", errorMessage));
+                default -> sqlExceptionResult.add(Error.of("create_edit.row.fail", errorMessage));
             }
         } else {
-            sqlExceptionResult.add(Error.of("create.arena.fail", "Unknown sql exception"));
+            sqlExceptionResult.add(Error.of("create_edit.arena.fail", "Unknown sql exception"));
         }
     }
 

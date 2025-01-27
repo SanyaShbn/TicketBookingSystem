@@ -13,7 +13,7 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="update.sport.event.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/update-sport-event?<%= request.getQueryString() %>" method="post">
+    <form action="${pageContext.request.contextPath}/admin/sport_events/${sport_event.id}/update" method="post">
         <input type="hidden" name="id" value="${sport_event.id}">
         <label for="eventName"><fmt:message key="sport_event.eventName" />:</label>
         <input type="text" id="eventName" name="eventName" value="${sport_event.eventName}" required>
@@ -21,8 +21,8 @@
         <input type="datetime-local" step="60" id="eventDateTime" name="eventDateTime"
                value="${sport_event.eventDateTime}" required>
 
-        <label for="arena"><fmt:message key="sport_event.arena" />:</label>
-        <select id="arena" name="arena" class="scrollable-dropdown" required>
+        <label for="arenaId"><fmt:message key="sport_event.arena" />:</label>
+        <select id="arenaId" name="arenaId" class="scrollable-dropdown" required>
             <c:forEach var="arena" items="${arenas}">
                 <option value="${arena.id}" ${arena.id == sport_event.arena.id ? 'selected' : ''}>
                         ${arena.name}. ${arena.city}. Вместимость: ${arena.capacity} чел.
@@ -42,7 +42,7 @@
     <c:if test="${not empty requestScope.errors}">
         <div class="error">
             <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.message}</span>
+                <span>${error.defaultMessage}</span>
                 <br/>
             </c:forEach>
         </div>

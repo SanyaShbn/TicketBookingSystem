@@ -57,7 +57,8 @@ public class SectorController {
             return "redirect:/admin/sectors?arenaId=" + arenaId;
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
-            return handleNumberFormatException(model);
+            handleNumberFormatException(model);
+            return JspFilesResolver.getPath("/sectors-jsp/create-sector");
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating sector: {}", e.getMessage());
             return handleCreateSectorException(model, e);
@@ -88,7 +89,8 @@ public class SectorController {
             return "redirect:/admin/sectors?arenaId=" + arenaId;
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
-            return handleNumberFormatException(model);
+            handleNumberFormatException(model);
+            return JspFilesResolver.getPath("/sectors-jsp/update-sector");
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating sector: {}", e.getMessage());
             return handleUpdateSectorException(model, e);
@@ -96,7 +98,7 @@ public class SectorController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteArena(@RequestParam("arenaId") Long arenaId,
+    public String deleteSector(@RequestParam("arenaId") Long arenaId,
                               @PathVariable("id") Long id,
                               Model model) {
         try {
@@ -106,7 +108,7 @@ public class SectorController {
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while trying to delete sector: {}", e.getMessage());
             ValidationResult validationResult = new ValidationResult();
-            validationResult.add(Error.of("delete.row.fail",
+            validationResult.add(Error.of("delete.sector.fail",
                     "Ошибка! Данные о выбранном секторе арены нельзя удалить. На него уже добавлены билеты " +
                             "в разделе 'Предстоящие спортивные события'"));
             model.addAttribute("errors", validationResult.getErrors());
@@ -114,12 +116,11 @@ public class SectorController {
         }
     }
 
-    private String handleNumberFormatException(Model model) {
+    private void handleNumberFormatException(Model model) {
         ValidationResult validationResult = new ValidationResult();
         validationResult.add(Error.of("invalid.number.format",
                 "Проверьте корректность ввода данных!"));
         model.addAttribute("errors", validationResult.getErrors());
-        return JspFilesResolver.getPath("/sectors-jsp/create-sector");
     }
 
     private String handleCreateSectorException(Model model, DaoCrudException e) {
@@ -139,24 +140,24 @@ public class SectorController {
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {
         if (errorMessage != null) {
             switch (getErrorType(errorMessage)) {
-                case "ERROR_CHECK_SECTOR_NAME" -> sqlExceptionResult.add(Error.of("create.sector.fail",
+                case "ERROR_CHECK_SECTOR_NAME" -> sqlExceptionResult.add(Error.of("create_edit.sector.fail",
                         "Ошибка! Запись о секторе с заданным наименованием уже существует. " +
                         "Проверьте корректность ввода данных"));
-                case "ERROR_CHECK_CAPACITY" -> sqlExceptionResult.add(Error.of("create.sector.fail",
+                case "ERROR_CHECK_CAPACITY" -> sqlExceptionResult.add(Error.of("create_edit.sector.fail",
                         "Ошибка! Общее максимально возможное количество мест в секторах для " +
                         "заданной арены превышает ее вместимость. Проверьте корреткность ввода данных"));
-                case "ERROR_CHECK_ROWS" -> sqlExceptionResult.add(Error.of("create.row.fail",
+                case "ERROR_CHECK_ROWS" -> sqlExceptionResult.add(Error.of("create_edit.sector.fail",
                         "Ошибка! Заданное максимальное значение рядов сектора меньше, " +
                                 "чем количество уже созданных секторов. " +
                                 "Проверьте корректность ввода данных"));
-                case "ERROR_CHECK_SEATS" -> sqlExceptionResult.add(Error.of("create.row.fail",
+                case "ERROR_CHECK_SEATS" -> sqlExceptionResult.add(Error.of("create_edit.sector.fail",
                         "Ошибка! Заданное максимальное значение мест сектора меньше, " +
                                 "чем количество мест уже созданных рядов для сектора. " +
                                 "Проверьте корректность ввода данных"));
-                default -> sqlExceptionResult.add(Error.of("create.row.fail", errorMessage));
+                default -> sqlExceptionResult.add(Error.of("create_edit.sector.fail", errorMessage));
             }
         } else {
-            sqlExceptionResult.add(Error.of("create.row.fail", "Unknown sql exception"));
+            sqlExceptionResult.add(Error.of("create_edit.sector.fail", "Unknown sql exception"));
         }
     }
     private String getErrorType(String errorMessage) {
