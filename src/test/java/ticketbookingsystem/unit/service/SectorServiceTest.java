@@ -1,6 +1,7 @@
 package ticketbookingsystem.unit.service;
 
 import com.example.ticketbookingsystem.dto.SectorCreateEditDto;
+import com.example.ticketbookingsystem.dto.SectorFilter;
 import com.example.ticketbookingsystem.dto.SectorReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.Sector;
@@ -9,13 +10,17 @@ import com.example.ticketbookingsystem.mapper.SectorReadMapper;
 import com.example.ticketbookingsystem.repository.SectorRepository;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.service.SectorService;
+import com.example.ticketbookingsystem.utils.SortUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,6 +78,37 @@ public class SectorServiceTest {
         assertEquals(1, result.size());
         assertEquals(sectorReadDto, result.get(0));
         verify(sectorRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void testFindAllSectors() {
+        SectorFilter sectorFilter = mock(SectorFilter.class);
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(sectorFilter.nameSortOrder()).thenReturn("asc");
+        when(sectorFilter.maxRowsNumbSortOrder()).thenReturn("desc");
+        when(sectorFilter.maxSeatsNumbSortOrder()).thenReturn("asc");
+
+        Map<String, String> sortOrders = new LinkedHashMap<>();
+        sortOrders.put("sectorName", "asc");
+        sortOrders.put("maxRowsNumb", "desc");
+        sortOrders.put("maxSeatsNumb", "asc");
+
+        Sort sort = SortUtils.buildSort(sortOrders);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
+        Page<Sector> sectorPage = new PageImpl<>(List.of(sector), sortedPageable, 1);
+
+        when(sectorRepository.findAllByArenaId(eq(ENTITY_ID), eq(sortedPageable))).thenReturn(sectorPage);
+
+        Page<SectorReadDto> result = sectorService.findAll(ENTITY_ID, sectorFilter, pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals(sectorReadDto, result.getContent().get(0));
+
+        verify(sectorRepository, times(1)).findAllByArenaId(ENTITY_ID, sortedPageable);
+        verify(sectorReadMapper, times(1)).toDto(sector);
     }
 
     @Test

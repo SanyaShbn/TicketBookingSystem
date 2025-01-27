@@ -9,6 +9,8 @@ import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,10 +31,13 @@ public class SportEventController {
     private final ArenaService arenaService;
 
     @GetMapping
-    public String findAllSportEvents(Model model) {
-        List<SportEventReadDto> sportEventReadDtoList = sportEventService.findAll();
+    public String findAllSportEvents(Model model, SportEventFilter sportEventFilter, Pageable pageable) {
+        List<ArenaReadDto> arenaReadDtoList = arenaService.findAll();
+        Page<SportEventReadDto> sportEventsPage = sportEventService.findAll(sportEventFilter, pageable);
 
-        model.addAttribute("sport_events", sportEventReadDtoList);
+        model.addAttribute("filter", sportEventFilter);
+        model.addAttribute("sport_events", PageResponse.of(sportEventsPage));
+        model.addAttribute("arenas", arenaReadDtoList);
         return JspFilesResolver.getPath("/sport-events-jsp/sport_events");
     }
 

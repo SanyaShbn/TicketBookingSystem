@@ -1,11 +1,7 @@
 package com.example.ticketbookingsystem.dao;
 
 import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.utils.FilterParameters;
 import com.example.ticketbookingsystem.utils.HibernateUtil;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -13,7 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**

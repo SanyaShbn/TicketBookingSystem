@@ -1,18 +1,24 @@
 package com.example.ticketbookingsystem.service;
 
-import com.example.ticketbookingsystem.dto.RowCreateEditDto;
-import com.example.ticketbookingsystem.dto.RowReadDto;
+import com.example.ticketbookingsystem.dto.*;
 import com.example.ticketbookingsystem.entity.Row;
 import com.example.ticketbookingsystem.entity.Sector;
 import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.mapper.*;
 import com.example.ticketbookingsystem.repository.RowRepository;
+import com.example.ticketbookingsystem.utils.SortUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -32,6 +38,11 @@ public class RowService {
 
     private final SectorService sectorService;
 
+    private static final String SORT_BY_ROW_NUMBER = "rowNumber";
+
+    private static final String SORT_BY_SEATS_NUMB = "seatsNumb";
+
+
     /**
      * Finds all rows.
      *
@@ -43,23 +54,27 @@ public class RowService {
                 .collect(Collectors.toList());
     }
 
-//    /**
-//     * Finds all rows matching the given filter.
-//     *
-//     * @param rowFilter the filter to apply
-//     * @param sectorId the ID of the sector which rows of seats is needed to get
-//     * @return a list of rows matching the filter
-//     */
-//    public List<RowReadDto> findAll(RowFilter rowFilter, Long sectorId){
-//        return rowRepository.findAll(rowFilter, sectorId).stream()
-//                .map(rowReadMapper::toDto)
-//                .collect(Collectors.toList());;
-//    }
+    /**
+     * Finds all rows matching the given filter.
+     *
+     * @param sectorId the ID of the sector which rows of seats is needed to get
+     * @param rowFilter the filter to apply
+     * @param pageable object of Pageable interface to apply pagination correctly
+     * @return a list of rows matching the filter
+     */
+    public Page<RowReadDto> findAll(Long sectorId, RowFilter rowFilter, Pageable pageable){
+        Map<String, String> sortOrders = new LinkedHashMap<>();
+        if (rowFilter.rowNumberOrder() != null && !rowFilter.rowNumberOrder().isEmpty()) {
+            sortOrders.put(SORT_BY_ROW_NUMBER, rowFilter.rowNumberOrder());
+        }
+        if (rowFilter.seatsNumbOrder() != null && !rowFilter.seatsNumbOrder().isEmpty()) {
+            sortOrders.put(SORT_BY_SEATS_NUMB, rowFilter.seatsNumbOrder());
+        }
 
-    public List<RowReadDto> findAllBySectorId(Long sectorId){
-        return rowRepository.findAllBySectorId(sectorId).stream()
-                .map(rowReadMapper::toDto)
-                .collect(Collectors.toList());
+        Sort sort = SortUtils.buildSort(sortOrders);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        return rowRepository.findAllBySectorId(sectorId, sortedPageable)
+                .map(rowReadMapper::toDto);
     }
 
     /**

@@ -1,20 +1,24 @@
 package com.example.ticketbookingsystem.service;
 
-import com.example.ticketbookingsystem.dto.SportEventCreateEditDto;
-import com.example.ticketbookingsystem.dto.SportEventFilter;
-import com.example.ticketbookingsystem.dto.SportEventReadDto;
+import com.example.ticketbookingsystem.dto.*;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.SportEvent;
 import com.example.ticketbookingsystem.mapper.SportEventCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.SportEventReadMapper;
 import com.example.ticketbookingsystem.repository.SportEventRepository;
+import com.example.ticketbookingsystem.utils.SortUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.example.ticketbookingsystem.entity.QSportEvent.sportEvent;
 
 /**
  * Service class for managing sporting events.
@@ -32,6 +36,8 @@ public class SportEventService {
 
     private final ArenaService arenaService;
 
+    private static final String SORT_BY_EVENT_DATE_TIME = "eventDateTime";
+
     /**
      * Finds all sporting events.
      *
@@ -43,17 +49,36 @@ public class SportEventService {
                 .collect(Collectors.toList());
     }
 
-//    /**
-//     * Finds all sporting events matching the given filter.
-//     *
-//     * @param sportEventFilter the filter to apply
-//     * @return a list of sporting events matching the filter
-//     */
-//    public List<SportEventReadDto> findAll(SportEventFilter sportEventFilter){
-//        return sportEventRepository.findAll(sportEventFilter).stream()
-//                .map(sportEventReadMapper::toDto)
-//                .collect(Collectors.toList());
-//    }
+    /**
+     * Finds all sporting events matching the given filter.
+     *
+     * @param sportEventFilter the filter to apply
+     * @param pageable object of Pageable interface to apply pagination correctly
+     * @return a list of sporting events matching the filter
+     */
+    public Page<SportEventReadDto> findAll(SportEventFilter sportEventFilter, Pageable pageable){
+        var predicate = QPredicates.builder()
+                .add(sportEventFilter.startDate(), sportEvent.eventDateTime::after)
+                .add(sportEventFilter.endDate(), sportEvent.eventDateTime::before)
+                .add(sportEventFilter.arenaId(), sportEvent.arena.id::eq)
+                .build();
+
+        Map<String, String> sortOrders = new LinkedHashMap<>();
+        if (sportEventFilter.sortOrder() != null && !sportEventFilter.sortOrder().isEmpty()) {
+            sortOrders.put(SORT_BY_EVENT_DATE_TIME, sportEventFilter.sortOrder());
+        }
+
+        Sort sort = SortUtils.buildSort(sortOrders);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
+        List<SportEvent> sportEvents = sportEventRepository.findAllWithArena(predicate, sortedPageable);
+
+        return new PageImpl<>(
+                sportEvents.stream().map(sportEventReadMapper::toDto).collect(Collectors.toList()),
+                sortedPageable,
+                sportEvents.size()
+        );
+    }
 
     /**
      * Finds a sporting event by its ID.

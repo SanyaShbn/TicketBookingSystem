@@ -1,15 +1,15 @@
 package com.example.ticketbookingsystem.repository;
 
 import com.example.ticketbookingsystem.entity.Sector;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-
 public interface SectorRepository extends JpaRepository<Sector, Long> {
 
-    List<Sector> findAllByArenaId(Long arenaId);
+    Page<Sector> findAllByArenaId(Long arenaId, Pageable sortedPageable);
 
     @Modifying
     @Query("UPDATE Arena a SET a.generalSeatsNumb = a.generalSeatsNumb + :seatsNumb WHERE a.id = :arenaId")

@@ -1,7 +1,6 @@
 package com.example.ticketbookingsystem.controller;
 
-import com.example.ticketbookingsystem.dto.RowCreateEditDto;
-import com.example.ticketbookingsystem.dto.RowReadDto;
+import com.example.ticketbookingsystem.dto.*;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.RowService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
@@ -9,11 +8,12 @@ import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -26,9 +26,12 @@ public class RowController {
 
     @GetMapping
     public String findAllRows(@RequestParam("sectorId") Long sectorId,
+                              RowFilter rowFilter,
+                              Pageable pageable,
                               Model model) {
-        List<RowReadDto> rowReadDtoList = rowService.findAllBySectorId(sectorId);
-        model.addAttribute("rows", rowReadDtoList);
+        Page<RowReadDto> rowsPage = rowService.findAll(sectorId, rowFilter, pageable);
+        model.addAttribute("filter", rowFilter);
+        model.addAttribute("rows", PageResponse.of(rowsPage));
         return JspFilesResolver.getPath("/rows-jsp/rows");
     }
 

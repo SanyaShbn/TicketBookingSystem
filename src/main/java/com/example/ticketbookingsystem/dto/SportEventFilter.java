@@ -9,7 +9,5 @@ public record SportEventFilter (
         LocalDateTime startDate,
         LocalDateTime endDate,
         Long arenaId,
-        int limit,
-        int offset,
         String sortOrder
 ){}

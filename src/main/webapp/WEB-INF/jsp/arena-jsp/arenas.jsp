@@ -27,13 +27,11 @@
                 <label for="capacitySortOrder"><fmt:message key="arena.capacitySortOrder"/></label>
                 <select id="capacitySortOrder" name="capacitySortOrder" class="scrollable-dropdown">
                     <option value="">-- <fmt:message key="sorting" /> --</option>
-                    <option value="ASC" ${requestScope.filter != null
-                    && requestScope.filter.capacitySortOrder != null
+                    <option value="ASC" ${requestScope.filter.capacitySortOrder != null
                     && requestScope.filter.capacitySortOrder.equals('ASC') ? 'selected' : ''}>
                         <fmt:message key="sorting.asc" />
                     </option>
-                    <option value="DESC" ${requestScope.filter != null
-                    && requestScope.filter.capacitySortOrder != null
+                    <option value="DESC" ${requestScope.filter.capacitySortOrder != null
                     && requestScope.filter.capacitySortOrder.equals('DESC') ? 'selected' : ''}>
                         <fmt:message key="sorting.desc" />
                     </option>
@@ -43,13 +41,11 @@
                 <label for="seatsNumbSortOrder"><fmt:message key="arena.seatsNumbSortOrder"/></label>
                 <select id="seatsNumbSortOrder" name="seatsNumbSortOrder" class="scrollable-dropdown">
                     <option value="">-- <fmt:message key="sorting" /> --</option>
-                    <option value="ASC" ${requestScope.filter != null
-                            && requestScope.filter.seatsNumbSortOrder != null
+                    <option value="ASC" ${requestScope.filter.seatsNumbSortOrder != null
                             && requestScope.filter.seatsNumbSortOrder.equals('ASC') ? 'selected' : ''}>
                         <fmt:message key="sorting.asc" />
                     </option>
-                    <option value="DESC" ${requestScope.filter != null
-                            && requestScope.filter.seatsNumbSortOrder != null
+                    <option value="DESC" ${requestScope.filter.seatsNumbSortOrder != null
                             && requestScope.filter.seatsNumbSortOrder.equals('DESC') ? 'selected' : ''}>
                         <fmt:message key="sorting.desc" />
                     </option>

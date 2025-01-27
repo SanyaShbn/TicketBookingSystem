@@ -1,6 +1,7 @@
 package ticketbookingsystem.unit.service;
 
 import com.example.ticketbookingsystem.dto.RowCreateEditDto;
+import com.example.ticketbookingsystem.dto.RowFilter;
 import com.example.ticketbookingsystem.dto.RowReadDto;
 import com.example.ticketbookingsystem.entity.Row;
 import com.example.ticketbookingsystem.entity.Sector;
@@ -9,13 +10,16 @@ import com.example.ticketbookingsystem.mapper.RowReadMapper;
 import com.example.ticketbookingsystem.repository.RowRepository;
 import com.example.ticketbookingsystem.service.RowService;
 import com.example.ticketbookingsystem.service.SectorService;
+import com.example.ticketbookingsystem.utils.SortUtils;
+import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
+import org.springframework.data.domain.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,6 +78,35 @@ public class RowServiceTest {
         assertEquals(1, result.size());
         assertEquals(rowReadDto, result.get(0));
         verify(rowRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void testFindAllRows() {
+        RowFilter rowFilter = mock(RowFilter.class);
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(rowFilter.rowNumberOrder()).thenReturn("asc");
+        when(rowFilter.seatsNumbOrder()).thenReturn("desc");
+
+        Map<String, String> sortOrders = new LinkedHashMap<>();
+        sortOrders.put("rowNumber", "asc");
+        sortOrders.put("seatsNumb", "desc");
+
+        Sort sort = SortUtils.buildSort(sortOrders);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
+        Page<Row> rowPage = new PageImpl<>(List.of(row), sortedPageable, 1);
+
+        when(rowRepository.findAllBySectorId(eq(ROW_ID), eq(sortedPageable))).thenReturn(rowPage);
+
+        Page<RowReadDto> result = rowService.findAll(ROW_ID, rowFilter, pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals(rowReadDto, result.getContent().get(0));
+
+        verify(rowRepository, times(1)).findAllBySectorId(ROW_ID, sortedPageable);
+        verify(rowReadMapper, times(1)).toDto(row);
     }
 
     @Test

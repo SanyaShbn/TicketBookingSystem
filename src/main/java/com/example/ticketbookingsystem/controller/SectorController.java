@@ -1,6 +1,8 @@
 package com.example.ticketbookingsystem.controller;
 
+import com.example.ticketbookingsystem.dto.PageResponse;
 import com.example.ticketbookingsystem.dto.SectorCreateEditDto;
+import com.example.ticketbookingsystem.dto.SectorFilter;
 import com.example.ticketbookingsystem.dto.SectorReadDto;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.SectorService;
@@ -9,6 +11,8 @@ import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,9 +31,13 @@ public class SectorController {
     private final SectorService sectorService;
 
     @GetMapping
-    public String findAllSectors(@RequestParam("arenaId") Long arenaId, Model model) {
-        List<SectorReadDto> sectorReadDtoList = sectorService.findAllByArenaId(arenaId);
-        model.addAttribute("sectors", sectorReadDtoList);
+    public String findAllSectors(@RequestParam("arenaId") Long arenaId,
+                                 SectorFilter sectorFilter,
+                                 Pageable pageable,
+                                 Model model) {
+        Page<SectorReadDto> sectorsPage = sectorService.findAll(arenaId, sectorFilter, pageable);
+        model.addAttribute("filter", sectorFilter);
+        model.addAttribute("sectors", PageResponse.of(sectorsPage));
         return JspFilesResolver.getPath("/sectors-jsp/sectors");
     }
 

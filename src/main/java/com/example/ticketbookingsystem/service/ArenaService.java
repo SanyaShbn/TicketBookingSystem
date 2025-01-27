@@ -10,6 +10,7 @@ import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.mapper.ArenaCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.ArenaReadMapper;
 import com.example.ticketbookingsystem.repository.ArenaRepository;
+import com.example.ticketbookingsystem.utils.SortUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -65,33 +68,18 @@ public class ArenaService {
                 .add(arenaFilter.city(), arena.city::containsIgnoreCase)
                 .build();
 
-        Sort sort = buildSort(arenaFilter);
+        Map<String, String> sortOrders = new LinkedHashMap<>();
+        if (arenaFilter.capacitySortOrder() != null && !arenaFilter.capacitySortOrder().isEmpty()) {
+            sortOrders.put(SORT_BY_CAPACITY, arenaFilter.capacitySortOrder());
+        }
+        if (arenaFilter.seatsNumbSortOrder() != null && !arenaFilter.seatsNumbSortOrder().isEmpty()) {
+            sortOrders.put(SORT_BY_GENERAL_SEATS_NUMB, arenaFilter.seatsNumbSortOrder());
+        }
+
+        Sort sort = SortUtils.buildSort(sortOrders);
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
         return arenaRepository.findAll(predicate, sortedPageable)
                 .map(arenaReadMapper::toDto);
-    }
-
-    private Sort buildSort(ArenaFilter arenaFilter) {
-        Sort sort = Sort.unsorted();
-
-        if (arenaFilter.capacitySortOrder() != null && !arenaFilter.capacitySortOrder().isEmpty()) {
-            sort = addSortOrder(sort, SORT_BY_CAPACITY, arenaFilter.capacitySortOrder());
-        }
-
-        if (arenaFilter.seatsNumbSortOrder() != null && !arenaFilter.seatsNumbSortOrder().isEmpty()) {
-            sort = addSortOrder(sort, SORT_BY_GENERAL_SEATS_NUMB, arenaFilter.seatsNumbSortOrder());
-        }
-
-        return sort;
-    }
-
-    private Sort addSortOrder(Sort currentSort, String field, String sortOrder) {
-        Sort.Order order = createSortOrder(field, sortOrder);
-        return currentSort.and(Sort.by(order));
-    }
-
-    private Sort.Order createSortOrder(String field, String sortOrder) {
-        return "ASC".equalsIgnoreCase(sortOrder) ? Sort.Order.asc(field) : Sort.Order.desc(field);
     }
 
     /**
