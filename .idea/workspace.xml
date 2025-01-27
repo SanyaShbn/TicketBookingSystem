@@ -9,34 +9,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Connected QueryDSL">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/SportEventCreateEditDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/SportEventCreateEditMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/SportEventReadMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SportEventRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SportEventControllerIT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SportEventControllerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SportEventServiceTest.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Implemented Spring into SportEvent module (for now, no filtration/sorting/pagination) + wrote tests, did some refactoring,">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/PageResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/filter_repository/FilterArenaRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebMvcConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/RowController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/RowController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SectorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SectorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/SportEventDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/SportEventReadDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/ArenaCreateEditMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/ArenaCreateEditMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/RowCreateEditMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/RowCreateEditMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/SectorCreateEditMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/SectorCreateEditMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/SportEventMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/ArenaDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/ArenaDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/ArenaFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/ArenaFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/ArenaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/ArenaRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sport_event_servlets/DeleteSportEventServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/sport_event_servlets/DeleteSportEventServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/ticket_servlets/CreateTicketServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/ticket_servlets/CreateTicketServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/ticket_servlets/DeleteTicketServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/ticket_servlets/DeleteTicketServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/ticket_servlets/UpdateTicketServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/ticket_servlets/UpdateTicketServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/ticket_servlets/ViewTicketsServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/ticket_servlets/ViewTicketsServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sport-events-jsp/create-sport-event.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sport-events-jsp/create-sport-event.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sport-events-jsp/sport_events.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sport-events-jsp/sport_events.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sport-events-jsp/update-sport-event.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/sport-events-jsp/update-sport-event.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/messages_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/messages_en.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/arenas.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/arena-jsp/arenas.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/toggle-filter-form-script.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/toggle-filter-form-script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/ArenaDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/ArenaDaoTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/PurchasedTicketsDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/PurchasedTicketsDaoTest.java" afterDir="false" />
@@ -138,7 +129,7 @@
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\sectors-jsp" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.SportEventControllerIT.testUpdateSportEvent">
+  <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.1">
     <configuration name="RowControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
@@ -303,8 +294,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.SportEventControllerIT.testUpdateSportEvent" />
         <item itemvalue="JUnit.SportEventControllerIT" />
+        <item itemvalue="JUnit.SportEventControllerIT.testUpdateSportEvent" />
         <item itemvalue="JUnit.SportEventControllerTest" />
         <item itemvalue="JUnit.SportEventServiceTest" />
         <item itemvalue="JUnit.RowControllerIT" />
@@ -449,7 +440,13 @@
       <workItem from="1737896015184" duration="5352000" />
       <workItem from="1737919362144" duration="9433000" />
       <workItem from="1737928846543" duration="14000" />
-      <workItem from="1737957838136" duration="7824000" />
+      <workItem from="1737957838136" duration="7989000" />
+      <workItem from="1737966694805" duration="10000" />
+      <workItem from="1737971166989" duration="740000" />
+      <workItem from="1737973496343" duration="6191000" />
+      <workItem from="1737979718417" duration="12000" />
+      <workItem from="1737990352975" duration="698000" />
+      <workItem from="1737998858933" duration="7135000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -771,7 +768,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737928825431</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Implemented Spring into SportEvent module (for now, no filtration/sorting/pagination) + wrote tests, did some refactoring,">
+      <option name="closed" value="true" />
+      <created>1737966668760</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1737966668760</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -814,7 +819,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Tried to deploy (not fully successful yet)" />
     <MESSAGE value="Deployed with Docker (please, check README file in order to get info about admin credentials and check admin functionality when running the app)" />
     <MESSAGE value="Did some refactoring" />
     <MESSAGE value="Connected Hibernate. Started implementing Hibernate for User entity" />
@@ -839,7 +843,8 @@
     <MESSAGE value="Wrote integration tests for ArenaController and ServiceController functionality" />
     <MESSAGE value="Implemented Spring into Row module(no filtration/sorting/pagination functionality yet) + wrote tests and did some refactoring." />
     <MESSAGE value="Connected QueryDSL" />
-    <option name="LAST_COMMIT_MESSAGE" value="Connected QueryDSL" />
+    <MESSAGE value="Implemented Spring into SportEvent module (for now, no filtration/sorting/pagination) + wrote tests, did some refactoring," />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented Spring into SportEvent module (for now, no filtration/sorting/pagination) + wrote tests, did some refactoring," />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

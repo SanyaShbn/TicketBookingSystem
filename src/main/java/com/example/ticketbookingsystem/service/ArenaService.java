@@ -3,6 +3,7 @@ package com.example.ticketbookingsystem.service;
 import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.dto.ArenaFilter;
 import com.example.ticketbookingsystem.dto.ArenaReadDto;
+import com.example.ticketbookingsystem.dto.QPredicates;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.exception.ValidationException;
@@ -11,11 +12,17 @@ import com.example.ticketbookingsystem.mapper.ArenaReadMapper;
 import com.example.ticketbookingsystem.repository.ArenaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.example.ticketbookingsystem.entity.QArena.arena;
 
 /**
  * Service class for managing arenas.
@@ -30,6 +37,10 @@ public class ArenaService {
     private final ArenaCreateEditMapper arenaCreateEditMapper;
 
     private final ArenaReadMapper arenaReadMapper;
+
+    private static final String SORT_BY_CAPACITY = "capacity";
+
+    private static final String SORT_BY_GENERAL_SEATS_NUMB = "generalSeatsNumb";
 
     /**
      * Finds all arenas mapped to ArenaReadDto class.
@@ -46,13 +57,42 @@ public class ArenaService {
      * Finds all arenas matching the given filter and mapped to ArenaReadDto class.
      *
      * @param arenaFilter the filter to apply
-     * @return a list of arenas matching the filter
+     * @param pageable object of Pageable interface to apply pagination correctly
+     * @return a page of arenas matching the filter
      */
-//    public List<ArenaReadDto> findAll(ArenaFilter arenaFilter){
-//        return arenaRepository.findAll(arenaFilter).stream()
-//                .map(arenaReadMapper::toDto)
-//                .collect(Collectors.toList());
-//    }
+    public Page<ArenaReadDto> findAll(ArenaFilter arenaFilter, Pageable pageable){
+        var predicate = QPredicates.builder()
+                .add(arenaFilter.city(), arena.city::containsIgnoreCase)
+                .build();
+
+        Sort sort = buildSort(arenaFilter);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        return arenaRepository.findAll(predicate, sortedPageable)
+                .map(arenaReadMapper::toDto);
+    }
+
+    private Sort buildSort(ArenaFilter arenaFilter) {
+        Sort sort = Sort.unsorted();
+
+        if (arenaFilter.capacitySortOrder() != null && !arenaFilter.capacitySortOrder().isEmpty()) {
+            sort = addSortOrder(sort, SORT_BY_CAPACITY, arenaFilter.capacitySortOrder());
+        }
+
+        if (arenaFilter.seatsNumbSortOrder() != null && !arenaFilter.seatsNumbSortOrder().isEmpty()) {
+            sort = addSortOrder(sort, SORT_BY_GENERAL_SEATS_NUMB, arenaFilter.seatsNumbSortOrder());
+        }
+
+        return sort;
+    }
+
+    private Sort addSortOrder(Sort currentSort, String field, String sortOrder) {
+        Sort.Order order = createSortOrder(field, sortOrder);
+        return currentSort.and(Sort.by(order));
+    }
+
+    private Sort.Order createSortOrder(String field, String sortOrder) {
+        return "ASC".equalsIgnoreCase(sortOrder) ? Sort.Order.asc(field) : Sort.Order.desc(field);
+    }
 
     /**
      * Finds an arena by its ID.
@@ -103,18 +143,6 @@ public class ArenaService {
     public void deleteArena(Long id) {
         arenaRepository.deleteById(id);
         log.info("Arena with id {} deleted successfully.", id);
-    }
-
-    /**
-     * Finds all unique cities of the arenas.
-     *
-     * @return a list of cities
-     */
-    public List<String> findAllArenasCities() {
-        return arenaRepository.findAll().stream()
-                .map(Arena::getCity)
-                .distinct()
-                .collect(Collectors.toList());
     }
 
 }

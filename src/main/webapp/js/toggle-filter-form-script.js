@@ -1,3 +1,18 @@
+document.addEventListener('DOMContentLoaded', (event) => {
+    var form = document.querySelector('.filter-bar form');
+    var displayPage = document.getElementById('displayPage');
+    var hiddenPage = document.getElementById('page');
+
+    displayPage.addEventListener('input', (event) => {
+        if (displayPage.value < 1) displayPage.value = 1;
+        hiddenPage.value = displayPage.value - 1;
+    });
+
+    form.addEventListener('submit', (event) => {
+        hiddenPage.value = displayPage.value - 1;
+    });
+});
+
 function toggleFilterForm() {
     var form = document.querySelector('.filter-bar form');
     var button = document.querySelector('.filter-bar button');

@@ -3,14 +3,16 @@ package com.example.ticketbookingsystem.controller;
 import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.dto.ArenaFilter;
 import com.example.ticketbookingsystem.dto.ArenaReadDto;
+import com.example.ticketbookingsystem.dto.PageResponse;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,12 +31,10 @@ public class ArenaController {
     private final ArenaService arenaService;
 
     @GetMapping
-    public String findAllArenas(@RequestParam(value = "city", required = false) String city,
-                               @RequestParam(value = "capacitySortOrder", required = false) String capacitySortOrder,
-                               @RequestParam(value = "seatsNumbSortOrder", required = false) String seatsNumbSortOrder,
-                               @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-                               Model model) {
-        setRequestAttributes(city, capacitySortOrder, seatsNumbSortOrder, page, model);
+    public String findAllArenas(Model model, ArenaFilter arenaFilter, Pageable pageable) {
+        Page<ArenaReadDto> arenasPage = arenaService.findAll(arenaFilter, pageable);
+        model.addAttribute("filter", arenaFilter);
+        model.addAttribute("arenas", PageResponse.of(arenasPage));
         return JspFilesResolver.getPath("/arena-jsp/arenas");
     }
 
@@ -120,23 +119,20 @@ public class ArenaController {
         }
     }
 
-    private void setRequestAttributes(String city, String capacitySortOrder, String seatsNumbSortOrder, int page, Model model) {
-        ArenaFilter arenaFilter = buildArenaFilter(city, capacitySortOrder, seatsNumbSortOrder, page);
-//        List<ArenaReadDto> arenaList = arenaService.findAll(arenaFilter);
-        List<ArenaReadDto> arenaList = arenaService.findAll();
-        List<String> cities = arenaService.findAllArenasCities();
+//    private void setRequestAttributes(String city, String capacitySortOrder, String seatsNumbSortOrder,
+//                                      Pageable pageable, Model model) {
+//        ArenaFilter arenaFilter = buildArenaFilter(city, capacitySortOrder, seatsNumbSortOrder);
+//        Page<ArenaReadDto> arenasPage = arenaService.findAll(arenaFilter, pageable);
+////        List<ArenaReadDto> arenaList = arenaService.findAll();
+//        List<String> cities = arenaService.findAllArenasCities();
+//
+//        model.addAttribute("arenas", PageResponse.of(arenasPage));
+//        model.addAttribute("cities", cities);
+//        model.addAttribute("limit", 8);
+//    }
 
-        model.addAttribute("arenas", arenaList);
-        model.addAttribute("cities", cities);
-        model.addAttribute("limit", 8);
-        model.addAttribute("page", page);
-    }
-
-    private ArenaFilter buildArenaFilter(String city, String capacitySortOrder, String seatsNumbSortOrder, int page) {
-        int limit = 8;
-        int offset = (page - 1) * limit;
-
-        return new ArenaFilter(city, capacitySortOrder, seatsNumbSortOrder, limit, offset);
+    private ArenaFilter buildArenaFilter(String city, String capacitySortOrder, String seatsNumbSortOrder) {
+        return new ArenaFilter(city, capacitySortOrder, seatsNumbSortOrder);
     }
 
     private void handleNumberFormatException(Model model) {
