@@ -31,6 +31,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SectorService {
 
+    private static final String SORT_BY_SECTOR_NAME = "sectorName";
+
+    private static final String SORT_BY_MAX_ROWS_NUMB = "maxRowsNumb";
+
+    private static final String SORT_BY_MAX_SEATS_NUMB = "maxSeatsNumb";
+
     private final SectorRepository sectorRepository;
 
     private final SectorReadMapper sectorReadMapper;
@@ -38,12 +44,6 @@ public class SectorService {
     private final SectorCreateEditMapper sectorCreateEditMapper;
 
     private final ArenaService arenaService;
-
-    private static final String SORT_BY_SECTOR_NAME = "sectorName";
-
-    private static final String SORT_BY_MAX_ROWS_NUMB = "maxRowsNumb";
-
-    private static final String SORT_BY_MAX_SEATS_NUMB = "maxSeatsNumb";
 
     /**
      * Finds all sectors.

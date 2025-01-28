@@ -35,15 +35,15 @@ import static com.example.ticketbookingsystem.entity.QArena.arena;
 @Slf4j
 public class ArenaService {
 
+    private static final String SORT_BY_CAPACITY = "capacity";
+
+    private static final String SORT_BY_GENERAL_SEATS_NUMB = "generalSeatsNumb";
+
     private final ArenaRepository arenaRepository;
 
     private final ArenaCreateEditMapper arenaCreateEditMapper;
 
     private final ArenaReadMapper arenaReadMapper;
-
-    private static final String SORT_BY_CAPACITY = "capacity";
-
-    private static final String SORT_BY_GENERAL_SEATS_NUMB = "generalSeatsNumb";
 
     /**
      * Finds all arenas mapped to ArenaReadDto class.

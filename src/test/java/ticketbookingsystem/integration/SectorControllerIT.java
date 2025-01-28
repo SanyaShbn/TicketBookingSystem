@@ -33,8 +33,6 @@ public class SectorControllerIT {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    private MockMvc mockMvc;
-
     @Autowired
     private SectorRepository sectorRepository;
 
@@ -42,6 +40,8 @@ public class SectorControllerIT {
     private ArenaRepository arenaRepository;
 
     private Arena savedArena;
+
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {

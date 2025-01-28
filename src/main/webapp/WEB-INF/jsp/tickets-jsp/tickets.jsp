@@ -22,15 +22,24 @@
                 <label for="priceSortOrder"><fmt:message key="ticket.price"/></label>
                 <select id="priceSortOrder" name="priceSortOrder" class="scrollable-dropdown">
                     <option value="">-- <fmt:message key="sorting"/> --</option>
-                    <option value="ASC" ${param.priceSortOrder != null
-                            && param.priceSortOrder == 'ASC' ? 'selected' : ''}>
+                    <option value="ASC" ${requestScope.filter.priceSortOrder != null
+                            && requestScope.filter.priceSortOrder == 'ASC' ? 'selected' : ''}>
                         <fmt:message key="sorting.asc"/>
                     </option>
-                    <option value="DESC" ${param.priceSortOrder != null
-                            && param.priceSortOrder == 'DESC' ? 'selected' : ''}>
+                    <option value="DESC" ${requestScope.filter.priceSortOrder != null
+                            && requestScope.filter.priceSortOrder == 'DESC' ? 'selected' : ''}>
                         <fmt:message key="sorting.desc"/>
                     </option>
                 </select>
+            </div>
+            <div>
+                <label for="displayPage"><fmt:message key="page.current"/>:
+                    <input id="displayPage" type="number" value="${requestScope.tickets.metadata.page + 1}">
+                    <input id="page" type="hidden" name="page" value="${requestScope.tickets.metadata.page}">
+                </label>
+                <label for="size"><fmt:message key="page.content.size"/>:
+                    <input id="size" type="number" name="size" value="${requestScope.tickets.metadata.size}">
+                </label>
             </div>
             <input type="hidden" name="eventId" value="${param.eventId}">
             <button type="submit"><fmt:message key="apply.filters"/></button>
@@ -40,13 +49,13 @@
     <button onclick="location.href='${pageContext.request.contextPath}/admin/sport_events'">
         <fmt:message key="button.back"/>
     </button>
-    <button onclick="location.href='${pageContext.request.contextPath}/admin/create-ticket?<%= request.getQueryString() %>'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/tickets/create?<%= request.getQueryString() %>'">
         <fmt:message key="button.add"/>
     </button>
     <div class="arena-container">
         <c:choose>
-        <c:when test="${not empty requestScope.tickets}">
-            <c:forEach var="ticket" items="${requestScope.tickets}">
+        <c:when test="${not empty requestScope.tickets.content}">
+            <c:forEach var="ticket" items="${requestScope.tickets.content}">
                 <div class="arena-card">
 
                     <div><fmt:message key="ticket.price"/>: ${ticket.price}</div>
@@ -54,28 +63,19 @@
                     <div><fmt:message key="ticket.row"/>: ${ticket.seat.row.rowNumber}</div>
                     <div><fmt:message key="ticket.seat.numb"/>: ${ticket.seat.seatNumber}</div>
 
-                    <form action="${pageContext.request.contextPath}/admin/update-ticket" method="get" style="display:inline;">
+                    <form action="${pageContext.request.contextPath}/admin/tickets/${ticket.id}/update" method="get" style="display:inline;">
                         <input type="hidden" name="id" value="${ticket.id}"/>
                         <input type="hidden" name="eventId" value="${ticket.sportEvent.id}"/>
+                        <input type="hidden" name="seatId" value="${ticket.seat.id}"/>
                         <button type="submit"><fmt:message key="button.update"/></button>
                     </form>
-                    <form action="${pageContext.request.contextPath}/admin/delete-ticket?<%= request.getQueryString() %>"
+                    <form action="${pageContext.request.contextPath}/admin/tickets/${ticket.id}/delete?<%= request.getQueryString() %>"
                           method="post" style="display:inline;">
                         <input type="hidden" name="id" value="${ticket.id}"/>
                         <button type="submit"><fmt:message key="button.delete"/></button>
                     </form>
                 </div>
             </c:forEach>
-            <div class="pagination" style="padding-top: 80px">
-                <c:if test="${requestScope.page > 1}">
-                    <a href="${pageContext.request.contextPath}/admin/tickets?eventId=${param.eventId}&page=${param.page - 1}"
-                       class="pagination-arrow">&laquo; <fmt:message key="page.previous"/></a>
-                </c:if>
-                <c:if test="${requestScope.tickets.size() eq requestScope.limit}">
-                    <a href="${pageContext.request.contextPath}/admin/tickets?eventId=${param.eventId}&page=${param.page != null
-          ? param.page + 1 : 2}" class="pagination-arrow"><fmt:message key="page.next"/> &raquo;</a>
-                </c:if>
-            </div>
         </c:when>
             <c:otherwise>
                 <div><fmt:message key="tickets.not_found"/></div>

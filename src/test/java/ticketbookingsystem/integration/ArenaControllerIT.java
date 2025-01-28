@@ -31,10 +31,10 @@ public class ArenaControllerIT {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    private MockMvc mockMvc;
-
     @Autowired
     private ArenaRepository arenaRepository;
+
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {

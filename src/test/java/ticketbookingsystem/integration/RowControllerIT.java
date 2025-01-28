@@ -35,8 +35,6 @@ public class RowControllerIT {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    private MockMvc mockMvc;
-
     @Autowired
     private RowRepository rowRepository;
 
@@ -45,6 +43,8 @@ public class RowControllerIT {
 
     @Autowired
     private ArenaRepository arenaRepository;
+
+    private MockMvc mockMvc;
 
     private Arena savedArena;
 

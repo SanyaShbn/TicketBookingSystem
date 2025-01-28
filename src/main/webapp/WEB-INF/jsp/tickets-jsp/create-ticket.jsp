@@ -12,12 +12,14 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="create.ticket.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/create-ticket?<%= request.getQueryString() %>" method="post">
+    <form action="${pageContext.request.contextPath}/admin/tickets/create" method="post">
+        <input type="hidden" name="eventId" value="${eventId}">
+
         <label for="price"><fmt:message key="ticket.price" />:</label>
         <input type="text" id="price" name="price" required>
 
-        <label for="seat"><fmt:message key="ticket.seat.numb" />:</label>
-        <select id="seat" name="seat" class="scrollable-dropdown" required>
+        <label for="seatId"><fmt:message key="ticket.seat.numb" />:</label>
+        <select id="seatId" name="seatId" class="scrollable-dropdown" required>
             <c:forEach var="seat" items="${seats}">
                 <option value="${seat.id}">
                         Сектор ${seat.row.sector.sectorName}. Ряд ${seat.row.rowNumber}.

@@ -119,22 +119,6 @@ public class ArenaController {
         }
     }
 
-//    private void setRequestAttributes(String city, String capacitySortOrder, String seatsNumbSortOrder,
-//                                      Pageable pageable, Model model) {
-//        ArenaFilter arenaFilter = buildArenaFilter(city, capacitySortOrder, seatsNumbSortOrder);
-//        Page<ArenaReadDto> arenasPage = arenaService.findAll(arenaFilter, pageable);
-////        List<ArenaReadDto> arenaList = arenaService.findAll();
-//        List<String> cities = arenaService.findAllArenasCities();
-//
-//        model.addAttribute("arenas", PageResponse.of(arenasPage));
-//        model.addAttribute("cities", cities);
-//        model.addAttribute("limit", 8);
-//    }
-
-    private ArenaFilter buildArenaFilter(String city, String capacitySortOrder, String seatsNumbSortOrder) {
-        return new ArenaFilter(city, capacitySortOrder, seatsNumbSortOrder);
-    }
-
     private void handleNumberFormatException(Model model) {
         ValidationResult validationResult = new ValidationResult();
         validationResult.add(Error.of("invalid.number.format",

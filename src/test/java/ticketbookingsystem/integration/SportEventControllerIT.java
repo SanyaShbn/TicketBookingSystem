@@ -32,13 +32,13 @@ public class SportEventControllerIT {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    private MockMvc mockMvc;
-
     @Autowired
     private SportEventRepository sportEventRepository;
 
     @Autowired
     private ArenaRepository arenaRepository;
+
+    private MockMvc mockMvc;
 
     private Arena savedArena;
 

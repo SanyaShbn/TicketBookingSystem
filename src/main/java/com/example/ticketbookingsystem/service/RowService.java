@@ -30,6 +30,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RowService {
 
+    private static final String SORT_BY_ROW_NUMBER = "rowNumber";
+
+    private static final String SORT_BY_SEATS_NUMB = "seatsNumb";
+
     private final RowRepository rowRepository;
 
     private final RowReadMapper rowReadMapper;
@@ -37,11 +41,6 @@ public class RowService {
     private final RowCreateEditMapper rowCreateEditMapper;
 
     private final SectorService sectorService;
-
-    private static final String SORT_BY_ROW_NUMBER = "rowNumber";
-
-    private static final String SORT_BY_SEATS_NUMB = "seatsNumb";
-
 
     /**
      * Finds all rows.

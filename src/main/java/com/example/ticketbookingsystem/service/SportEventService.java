@@ -28,6 +28,8 @@ import static com.example.ticketbookingsystem.entity.QSportEvent.sportEvent;
 @Slf4j
 public class SportEventService {
 
+    private static final String SORT_BY_EVENT_DATE_TIME = "eventDateTime";
+
     private final SportEventRepository sportEventRepository;
 
     private final SportEventReadMapper sportEventReadMapper;
@@ -35,8 +37,6 @@ public class SportEventService {
     private final SportEventCreateEditMapper sportEventCreateEditMapper;
 
     private final ArenaService arenaService;
-
-    private static final String SORT_BY_EVENT_DATE_TIME = "eventDateTime";
 
     /**
      * Finds all sporting events.

@@ -13,13 +13,15 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="update.ticket.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/update-ticket?<%= request.getQueryString() %>" method="post">
+    <form action="${pageContext.request.contextPath}/admin/tickets/${ticket.id}/update" method="post">
         <input type="hidden" name="id" value="${ticket.id}">
+        <input type="hidden" name="eventId" value="${eventId}">
+
         <label for="price"><fmt:message key="ticket.price" />:</label>
         <input type="text" id="price" name="price" value="${ticket.price}" required>
 
-        <label for="seat"><fmt:message key="ticket.seat.numb" />:</label>
-        <select id="seat" name="seat" class="scrollable-dropdown" required>
+        <label for="seatId"><fmt:message key="ticket.seat.numb" />:</label>
+        <select id="seatId" name="seatId" class="scrollable-dropdown" required>
             <c:forEach var="seat" items="${seats}">
                 <option value="${seat.id}" ${seat.id == ticket.seat.id ? 'selected' : ''}>
                     Сектор ${seat.row.sector.sectorName}. Ряд ${seat.row.rowNumber}.
