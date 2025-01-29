@@ -1,50 +1,18 @@
 package com.example.ticketbookingsystem.mapper;
 
 import com.example.ticketbookingsystem.dto.UserDto;
-import com.example.ticketbookingsystem.entity.Role;
 import com.example.ticketbookingsystem.entity.User;
-import org.mindrot.jbcrypt.BCrypt;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-/**
- * Mapper class for converting between {@link User} entity and {@link UserDto} DTO.
- */
-public class UserMapper implements Mapper<User, UserDto> {
+@Mapper(componentModel = "spring", uses = {PasswordMapper.class, RoleMapper.class})
+public interface UserMapper {
 
-    private static final UserMapper INSTANCE = new UserMapper();
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    private UserMapper(){}
-    public static UserMapper getInstance(){
-        return INSTANCE;
-    }
+    @Mapping(target = "password", qualifiedByName = "toHash")
+    User toEntity(UserDto userDto);
 
-    /**
-     * Converts an {@link UserDto} to an {@link User} entity.
-     *
-     * @param userDto the DTO to convert
-     * @return the converted {@link User} entity
-     */
-    @Override
-    public User toEntity(UserDto userDto) {
-        String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
-        return User.builder()
-                .email(userDto.getEmail())
-                .password(hashedPassword)
-                .role(Role.valueOf(userDto.getRole()))
-                .build();
-    }
-
-    /**
-     * Converts an {@link User} entity to an {@link UserDto}.
-     *
-     * @param user the entity to convert
-     * @return the converted {@link UserDto}
-     */
-    @Override
-    public UserDto toDto(User user) {
-        return UserDto.builder()
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .role(user.getRole().name())
-                .build();
-    }
+    UserDto toDto(User user);
 }

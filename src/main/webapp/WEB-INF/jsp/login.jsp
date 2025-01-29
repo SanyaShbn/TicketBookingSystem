@@ -14,9 +14,12 @@
 
     <h2><fmt:message key="login.page"/></h2>
     <form action="${pageContext.request.contextPath}/login" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <div class="form-group">
-            <label for="email"><fmt:message key="email"/>:</label>
-            <input type="email" name="email" id="email" value="${param.email}" required>
+            <label for="username"><fmt:message key="email"/>:</label>
+            <input type="email" name="username" id="username" value='' required>
         </div>
         <div class="form-group">
             <label for="password"><fmt:message key="password"/>:</label>
