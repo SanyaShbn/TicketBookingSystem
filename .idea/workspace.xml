@@ -9,42 +9,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Implemented filtration/sorting/pagination using QueryDSL and JPA for Sector/Row/SportEvent entities, added some unit-tests for services">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/SeatReadDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/TicketCreateEditDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/TicketReadDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/SeatReadMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/TicketCreateEditMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/TicketReadMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SeatRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/TicketRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/TicketControllerIT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/TicketControllerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/TicketServiceTest.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Implemented Spring into admin Ticket module (crud-operations for admin with tickets and seats), wrote tests, + again some refactoring">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/SecurityConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/SecurityWebApplicationInitializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebAppInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebAppInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebMvcConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SeatDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SeatDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/TicketDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/TicketDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/TicketFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/TicketFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/TicketMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/RowService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/RowService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SeatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SeatService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/tickets_purchases_servlets/UserCartServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/tickets_purchases_servlets/UserCartServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/tickets_purchases_servlets/ViewTicketsForPurchaseServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/tickets_purchases_servlets/ViewTicketsForPurchaseServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-jsp/create-ticket.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-jsp/create-ticket.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-jsp/tickets.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-jsp/tickets.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-jsp/update-ticket.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-jsp/update-ticket.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SeatDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SeatDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/TicketDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/TicketDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/ArenaControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/ArenaControllerIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/RowControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/RowControllerIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SectorControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SectorControllerIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SportEventControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SportEventControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/authorization_servlets/LoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/authorization_servlets/LoginServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/authorization_servlets/LogoutServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/authorization_servlets/LogoutServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/authorization_servlets/RegistrationServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/servlet/authorization_servlets/RegistrationServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/spring/SpringRunner.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/login.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,11 +110,11 @@
       <recent name="D:\TicketBookingSystem\src\test\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp" />
+      <recent name="D:\TicketBookingSystem\src\main\resources\templates" />
       <recent name="D:\TicketBookingSystem\src\main\webapp\resources" />
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF" />
       <recent name="D:\TicketBookingSystem" />
-      <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\authorization-jsp" />
-      <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\sectors-jsp" />
     </key>
   </component>
   <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.1">
@@ -462,7 +441,11 @@
       <workItem from="1738068150032" duration="5036000" />
       <workItem from="1738075099277" duration="3982000" />
       <workItem from="1738079443782" duration="4767000" />
-      <workItem from="1738092130373" duration="2720000" />
+      <workItem from="1738092130373" duration="3002000" />
+      <workItem from="1738097279523" duration="4938000" />
+      <workItem from="1738148110894" duration="5919000" />
+      <workItem from="1738154063255" duration="21000" />
+      <workItem from="1738160742433" duration="4824000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -808,7 +791,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738016637258</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Implemented Spring into admin Ticket module (crud-operations for admin with tickets and seats), wrote tests, + again some refactoring">
+      <option name="closed" value="true" />
+      <created>1738095103554</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1738095103554</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -851,7 +842,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Connected Hibernate. Started implementing Hibernate for User entity" />
     <MESSAGE value="Implemented Hibernate for User and Arena entities" />
     <MESSAGE value="Written tests for UserDao and ArenaDao" />
     <MESSAGE value="Added HikariCP connection pool + did some refactoring" />
@@ -876,7 +866,8 @@
     <MESSAGE value="Implemented Spring into SportEvent module (for now, no filtration/sorting/pagination) + wrote tests, did some refactoring," />
     <MESSAGE value="Implemented filtration/sorting/pagination using QueryDSL and JPA for Arena entities" />
     <MESSAGE value="Implemented filtration/sorting/pagination using QueryDSL and JPA for Sector/Row/SportEvent entities, added some unit-tests for services" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented filtration/sorting/pagination using QueryDSL and JPA for Sector/Row/SportEvent entities, added some unit-tests for services" />
+    <MESSAGE value="Implemented Spring into admin Ticket module (crud-operations for admin with tickets and seats), wrote tests, + again some refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented Spring into admin Ticket module (crud-operations for admin with tickets and seats), wrote tests, + again some refactoring" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

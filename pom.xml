@@ -19,6 +19,7 @@
         <spring.version>6.2.2</spring.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
         <querydsl.version>5.0.0</querydsl.version>
+        <spring.security.version>6.4.2</spring.security.version>
     </properties>
 
     <dependencies>
@@ -136,6 +137,16 @@
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
