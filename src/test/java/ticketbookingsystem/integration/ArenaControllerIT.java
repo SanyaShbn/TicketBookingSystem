@@ -2,10 +2,9 @@ package ticketbookingsystem.integration;
 
 import ticketbookingsystem.test_config.TestJpaConfig;
 import com.example.ticketbookingsystem.config.WebMvcConfig;
-import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.repository.ArenaRepository;
-import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,7 @@ public class ArenaControllerIT {
     public void testFindAllArenas() throws Exception {
         mockMvc.perform(get("/admin/arenas"))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/arena-jsp/arenas")))
+                .andExpect(view().name("/arena-jsp/arenas"))
                 .andExpect(model().attributeExists("arenas"))
                 .andExpect(model().attributeExists("cities"))
                 .andExpect(model().attribute("limit", 8));

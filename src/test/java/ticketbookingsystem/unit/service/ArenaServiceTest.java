@@ -1,11 +1,11 @@
 package ticketbookingsystem.unit.service;
 
-import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
-import com.example.ticketbookingsystem.dto.ArenaFilter;
-import com.example.ticketbookingsystem.dto.ArenaReadDto;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaCreateEditDto;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaFilter;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
-import com.example.ticketbookingsystem.mapper.ArenaCreateEditMapper;
-import com.example.ticketbookingsystem.mapper.ArenaReadMapper;
+import com.example.ticketbookingsystem.mapper.arena_mapper.ArenaCreateEditMapper;
+import com.example.ticketbookingsystem.mapper.arena_mapper.ArenaReadMapper;
 import com.example.ticketbookingsystem.repository.ArenaRepository;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.querydsl.core.types.Predicate;

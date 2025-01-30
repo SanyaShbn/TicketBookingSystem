@@ -1,9 +1,11 @@
 package com.example.ticketbookingsystem.controller;
 
 import com.example.ticketbookingsystem.dto.*;
+import com.example.ticketbookingsystem.dto.row_dto.RowCreateEditDto;
+import com.example.ticketbookingsystem.dto.row_dto.RowFilter;
+import com.example.ticketbookingsystem.dto.row_dto.RowReadDto;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.RowService;
-import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +34,7 @@ public class RowController {
         Page<RowReadDto> rowsPage = rowService.findAll(sectorId, rowFilter, pageable);
         model.addAttribute("filter", rowFilter);
         model.addAttribute("rows", PageResponse.of(rowsPage));
-        return JspFilesResolver.getPath("/rows-jsp/rows");
+        return "rows-jsp/rows";
     }
 
     @GetMapping("/create")
@@ -41,7 +43,7 @@ public class RowController {
                                     Model model) {
         model.addAttribute("arenaId", arenaId);
         model.addAttribute("sectorId", sectorId);
-        return JspFilesResolver.getPath("/rows-jsp/create-row");
+        return "rows-jsp/create-row";
     }
 
     @PostMapping("/create")
@@ -56,7 +58,7 @@ public class RowController {
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
             handleNumberFormatException(model);
-            return JspFilesResolver.getPath("/rows-jsp/create-row");
+            return "rows-jsp/create-row";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating sector: {}", e.getMessage());
             return handleCreateRowException(model, e);
@@ -73,7 +75,7 @@ public class RowController {
             model.addAttribute("row", row.get());
             model.addAttribute("arenaId", arenaId);
             model.addAttribute("sectorId", sectorId);
-            return JspFilesResolver.getPath("/rows-jsp/update-row");
+            return "rows-jsp/update-row";
         }
         return "redirect:/admin/rows?arenaId=" + arenaId + "&sectorId=" + sectorId;
     }
@@ -91,7 +93,7 @@ public class RowController {
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
             handleNumberFormatException(model);
-            return JspFilesResolver.getPath("/rows-jsp/update-row");
+            return "rows-jsp/update-row";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating row: {}", e.getMessage());
             return handleUpdateRowException(model, e);
@@ -114,7 +116,7 @@ public class RowController {
                     "Ошибка! Данные о выбранном ряде арены нельзя удалить. На него уже добавлены билеты " +
                             "в разделе 'Предстоящие спортивные события'"));
             model.addAttribute("errors", validationResult.getErrors());
-            return JspFilesResolver.getPath("/error-jsp/error-page");
+            return "error-jsp/error-page";
         }
     }
 
@@ -129,14 +131,14 @@ public class RowController {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return JspFilesResolver.getPath("/rows-jsp/create-row");
+        return "rows-jsp/create-row";
     }
 
     private String handleUpdateRowException(Model model, DaoCrudException e) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return JspFilesResolver.getPath("/rows-jsp/update-row");
+        return "rows-jsp/update-row";
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {

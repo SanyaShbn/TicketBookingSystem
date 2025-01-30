@@ -14,6 +14,9 @@
 <div class="form-container">
     <h1><fmt:message key="update.sport.event.title" /></h1>
     <form action="${pageContext.request.contextPath}/admin/sport_events/${sport_event.id}/update" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <input type="hidden" name="id" value="${sport_event.id}">
         <label for="eventName"><fmt:message key="sport_event.eventName" />:</label>
         <input type="text" id="eventName" name="eventName" value="${sport_event.eventName}" required>

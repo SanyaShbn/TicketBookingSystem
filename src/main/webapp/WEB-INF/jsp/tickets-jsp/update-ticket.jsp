@@ -14,6 +14,9 @@
 <div class="form-container">
     <h1><fmt:message key="update.ticket.title" /></h1>
     <form action="${pageContext.request.contextPath}/admin/tickets/${ticket.id}/update" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <input type="hidden" name="id" value="${ticket.id}">
         <input type="hidden" name="eventId" value="${eventId}">
 

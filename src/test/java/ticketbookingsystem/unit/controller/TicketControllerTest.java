@@ -1,12 +1,11 @@
 package ticketbookingsystem.unit.controller;
 
 import com.example.ticketbookingsystem.controller.TicketController;
-import com.example.ticketbookingsystem.dto.TicketCreateEditDto;
-import com.example.ticketbookingsystem.dto.TicketReadDto;
+import com.example.ticketbookingsystem.dto.ticket_dto.TicketCreateEditDto;
+import com.example.ticketbookingsystem.dto.ticket_dto.TicketReadDto;
 import com.example.ticketbookingsystem.entity.TicketStatus;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.TicketService;
-import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -57,7 +56,7 @@ public class TicketControllerTest {
         mockMvc.perform(get("/admin/tickets")
                         .param("eventId", EVENT_ID.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/tickets-jsp/tickets")))
+                .andExpect(view().name("/tickets-jsp/tickets"))
                 .andExpect(model().attributeExists("tickets"))
                 .andExpect(model().attributeExists("filter"));
     }
@@ -107,7 +106,7 @@ public class TicketControllerTest {
         mockMvc.perform(post("/admin/tickets/{id}/delete", TICKET_ID)
                         .param("eventId", EVENT_ID.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/error-jsp/error-page")))
+                .andExpect(view().name("/error-jsp/error-page"))
                 .andExpect(model().attributeExists("errors"));
     }
 

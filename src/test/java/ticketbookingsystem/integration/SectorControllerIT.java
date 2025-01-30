@@ -2,7 +2,7 @@ package ticketbookingsystem.integration;
 
 import ticketbookingsystem.test_config.TestJpaConfig;
 import com.example.ticketbookingsystem.config.WebMvcConfig;
-import com.example.ticketbookingsystem.dto.SectorCreateEditDto;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorCreateEditDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.Sector;
 import com.example.ticketbookingsystem.repository.ArenaRepository;

@@ -1,6 +1,6 @@
 //package com.example.ticketbookingsystem.dao;
 //
-//import com.example.ticketbookingsystem.dto.SportEventFilter;
+//import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventFilter;
 //import com.example.ticketbookingsystem.entity.SportEvent;
 //import com.example.ticketbookingsystem.exception.DaoCrudException;
 //import com.example.ticketbookingsystem.utils.FiltrationSqlQueryParameters;

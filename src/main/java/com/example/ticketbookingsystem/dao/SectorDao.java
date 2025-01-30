@@ -1,6 +1,6 @@
 //package com.example.ticketbookingsystem.dao;
 //
-//import com.example.ticketbookingsystem.dto.SectorFilter;
+//import com.example.ticketbookingsystem.dto.sector_dto.SectorFilter;
 //import com.example.ticketbookingsystem.entity.Sector;
 //import com.example.ticketbookingsystem.exception.DaoCrudException;
 //import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;

@@ -1,6 +1,6 @@
 //package com.example.ticketbookingsystem.servlet.tickets_purchases_servlets;
 //
-//import com.example.ticketbookingsystem.dto.SportEventFilter;
+//import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventFilter;
 //import com.example.ticketbookingsystem.entity.Arena;
 //import com.example.ticketbookingsystem.entity.SportEvent;
 //import com.example.ticketbookingsystem.service.ArenaService;

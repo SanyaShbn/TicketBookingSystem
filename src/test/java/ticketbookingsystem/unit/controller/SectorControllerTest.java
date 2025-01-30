@@ -1,10 +1,9 @@
 package ticketbookingsystem.unit.controller;
 
 import com.example.ticketbookingsystem.controller.SectorController;
-import com.example.ticketbookingsystem.dto.SectorCreateEditDto;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorCreateEditDto;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.SectorService;
-import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -45,7 +44,7 @@ public class SectorControllerTest {
         mockMvc.perform(get("/admin/sectors")
                         .param("arenaId", ARENA_ID.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/sectors-jsp/sectors")))
+                .andExpect(view().name("/sectors-jsp/sectors"))
                 .andExpect(model().attributeExists("sectors"));
     }
 
@@ -54,7 +53,7 @@ public class SectorControllerTest {
         mockMvc.perform(get("/admin/sectors/create")
                         .param("arenaId", ARENA_ID.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/sectors-jsp/create-sector")))
+                .andExpect(view().name("/sectors-jsp/create-sector"))
                 .andExpect(model().attributeExists("arenaId"));
     }
 
@@ -81,7 +80,7 @@ public class SectorControllerTest {
                         .param("arenaId", ARENA_ID.toString())
                         .flashAttr("sectorCreateEditDto", sectorCreateEditDto))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/sectors-jsp/create-sector")))
+                .andExpect(view().name("/sectors-jsp/create-sector"))
                 .andExpect(model().attributeExists("errors"));
     }
 
@@ -108,7 +107,7 @@ public class SectorControllerTest {
                         .param("arenaId", ARENA_ID.toString())
                         .flashAttr("sectorCreateEditDto", sectorCreateEditDto))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/sectors-jsp/update-sector")))
+                .andExpect(view().name("/sectors-jsp/update-sector"))
                 .andExpect(model().attributeExists("errors"));
     }
 
@@ -129,7 +128,7 @@ public class SectorControllerTest {
         mockMvc.perform(post("/admin/sectors/{id}/delete", SECTOR_ID)
                         .param("arenaId", ARENA_ID.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/error-jsp/error-page")))
+                .andExpect(view().name("/error-jsp/error-page"))
                 .andExpect(model().attributeExists("errors"));
     }
 

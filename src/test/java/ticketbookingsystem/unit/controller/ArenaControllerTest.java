@@ -1,10 +1,9 @@
 package ticketbookingsystem.unit.controller;
 
 import com.example.ticketbookingsystem.controller.ArenaController;
-import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.ArenaService;
-import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -43,7 +42,7 @@ public class ArenaControllerTest {
     public void testFindAllArenas() throws Exception {
         mockMvc.perform(get("/admin/arenas"))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/arena-jsp/arenas")))
+                .andExpect(view().name("/arena-jsp/arenas"))
                 .andExpect(model().attributeExists("arenas"))
                 .andExpect(model().attributeExists("cities"))
                 .andExpect(model().attribute("limit", 8));
@@ -70,7 +69,7 @@ public class ArenaControllerTest {
         mockMvc.perform(post("/admin/arenas/create")
                         .flashAttr("arenaCreateEditDto", arenaCreateEditDto))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/arena-jsp/create-arena")))
+                .andExpect(view().name("/arena-jsp/create-arena"))
                 .andExpect(model().attributeExists("errors"));
     }
 
@@ -96,7 +95,7 @@ public class ArenaControllerTest {
         mockMvc.perform(post("/admin/arenas/{id}/update", ARENA_ID)
                         .flashAttr("arenaCreateEditDto", arenaCreateEditDto))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/arena-jsp/update-arena")))
+                .andExpect(view().name("/arena-jsp/update-arena"))
                 .andExpect(model().attributeExists("errors"));
     }
 
@@ -115,7 +114,7 @@ public class ArenaControllerTest {
 
         mockMvc.perform(post("/admin/arenas/{id}/delete", ARENA_ID))
                 .andExpect(status().isOk())
-                .andExpect(view().name(JspFilesResolver.getPath("/error-jsp/error-page")))
+                .andExpect(view().name("/error-jsp/error-page"))
                 .andExpect(model().attributeExists("errors"));
     }
 

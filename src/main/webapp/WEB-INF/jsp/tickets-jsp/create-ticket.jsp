@@ -13,6 +13,9 @@
 <div class="form-container">
     <h1><fmt:message key="create.ticket.title" /></h1>
     <form action="${pageContext.request.contextPath}/admin/tickets/create" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <input type="hidden" name="eventId" value="${eventId}">
 
         <label for="price"><fmt:message key="ticket.price" />:</label>

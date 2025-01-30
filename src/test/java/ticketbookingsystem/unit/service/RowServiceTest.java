@@ -1,17 +1,16 @@
 package ticketbookingsystem.unit.service;
 
-import com.example.ticketbookingsystem.dto.RowCreateEditDto;
-import com.example.ticketbookingsystem.dto.RowFilter;
-import com.example.ticketbookingsystem.dto.RowReadDto;
+import com.example.ticketbookingsystem.dto.row_dto.RowCreateEditDto;
+import com.example.ticketbookingsystem.dto.row_dto.RowFilter;
+import com.example.ticketbookingsystem.dto.row_dto.RowReadDto;
 import com.example.ticketbookingsystem.entity.Row;
 import com.example.ticketbookingsystem.entity.Sector;
-import com.example.ticketbookingsystem.mapper.RowCreateEditMapper;
-import com.example.ticketbookingsystem.mapper.RowReadMapper;
+import com.example.ticketbookingsystem.mapper.row_mapper.RowCreateEditMapper;
+import com.example.ticketbookingsystem.mapper.row_mapper.RowReadMapper;
 import com.example.ticketbookingsystem.repository.RowRepository;
 import com.example.ticketbookingsystem.service.RowService;
 import com.example.ticketbookingsystem.service.SectorService;
 import com.example.ticketbookingsystem.utils.SortUtils;
-import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

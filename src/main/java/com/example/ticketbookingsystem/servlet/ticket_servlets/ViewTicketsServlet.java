@@ -1,6 +1,6 @@
 //package com.example.ticketbookingsystem.servlet.ticket_servlets;
 //
-//import com.example.ticketbookingsystem.dto.TicketFilter;
+//import com.example.ticketbookingsystem.dto.ticket_dto.TicketFilter;
 //import com.example.ticketbookingsystem.entity.Ticket;
 //import com.example.ticketbookingsystem.service.TicketService;
 //import com.example.ticketbookingsystem.utils.JspFilesResolver;

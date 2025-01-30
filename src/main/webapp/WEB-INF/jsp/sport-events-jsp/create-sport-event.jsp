@@ -13,6 +13,9 @@
 <div class="form-container">
     <h1><fmt:message key="create.sport.event.title" /></h1>
     <form action="${pageContext.request.contextPath}/admin/sport_events/create" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <label for="eventName"><fmt:message key="sport_event.eventName" />:</label>
         <input type="text" id="eventName" name="eventName" required>
         <label for="eventDateTime"><fmt:message key="sport_event.eventDateTime" />:</label>

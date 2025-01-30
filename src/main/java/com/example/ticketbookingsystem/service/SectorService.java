@@ -1,11 +1,13 @@
 package com.example.ticketbookingsystem.service;
 
-import com.example.ticketbookingsystem.dto.*;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorCreateEditDto;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorFilter;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.Sector;
 import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
-import com.example.ticketbookingsystem.mapper.SectorCreateEditMapper;
-import com.example.ticketbookingsystem.mapper.SectorReadMapper;
+import com.example.ticketbookingsystem.mapper.sector_mapper.SectorCreateEditMapper;
+import com.example.ticketbookingsystem.mapper.sector_mapper.SectorReadMapper;
 import com.example.ticketbookingsystem.repository.SectorRepository;
 import com.example.ticketbookingsystem.utils.SortUtils;
 import lombok.RequiredArgsConstructor;

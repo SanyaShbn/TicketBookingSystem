@@ -1,13 +1,13 @@
 package ticketbookingsystem.unit.service;
 
 import com.example.ticketbookingsystem.dto.QPredicates;
-import com.example.ticketbookingsystem.dto.SportEventCreateEditDto;
-import com.example.ticketbookingsystem.dto.SportEventFilter;
-import com.example.ticketbookingsystem.dto.SportEventReadDto;
+import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventCreateEditDto;
+import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventFilter;
+import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.SportEvent;
-import com.example.ticketbookingsystem.mapper.SportEventCreateEditMapper;
-import com.example.ticketbookingsystem.mapper.SportEventReadMapper;
+import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventCreateEditMapper;
+import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventReadMapper;
 import com.example.ticketbookingsystem.repository.SportEventRepository;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.service.SportEventService;
@@ -21,7 +21,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

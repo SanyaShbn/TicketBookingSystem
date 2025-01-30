@@ -14,6 +14,9 @@
 <div class="form-container">
     <h1><fmt:message key="update.sector.title" /></h1>
     <form action="${pageContext.request.contextPath}/admin/sectors/${sector.id}/update" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <input type="hidden" name="arenaId" value="${arenaId}">
 
         <input type="hidden" name="id" value="${sector.id}">

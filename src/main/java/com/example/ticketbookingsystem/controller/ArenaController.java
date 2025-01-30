@@ -1,12 +1,11 @@
 package com.example.ticketbookingsystem.controller;
 
-import com.example.ticketbookingsystem.dto.ArenaCreateEditDto;
-import com.example.ticketbookingsystem.dto.ArenaFilter;
-import com.example.ticketbookingsystem.dto.ArenaReadDto;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaCreateEditDto;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaFilter;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaReadDto;
 import com.example.ticketbookingsystem.dto.PageResponse;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.ArenaService;
-import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +34,12 @@ public class ArenaController {
         Page<ArenaReadDto> arenasPage = arenaService.findAll(arenaFilter, pageable);
         model.addAttribute("filter", arenaFilter);
         model.addAttribute("arenas", PageResponse.of(arenasPage));
-        return JspFilesResolver.getPath("/arena-jsp/arenas");
+        return "arena-jsp/arenas";
     }
 
     @GetMapping("/create")
     public String showCreateArenaForm() {
-        return JspFilesResolver.getPath("/arena-jsp/create-arena");
+        return "arena-jsp/create-arena";
     }
 
     @PostMapping("/create")
@@ -60,7 +59,7 @@ public class ArenaController {
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
             handleNumberFormatException(model);
-            return JspFilesResolver.getPath("/arena-jsp/create-arena");
+            return "arena-jsp/create-arena";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating arena: {}", e.getMessage());
             return handleCreateArenaException(model, e);
@@ -72,7 +71,7 @@ public class ArenaController {
         Optional<ArenaReadDto> arena = arenaService.findById(id);
         if (arena.isPresent()) {
             model.addAttribute("arena", arena.get());
-            return JspFilesResolver.getPath("/arena-jsp/update-arena");
+            return "arena-jsp/update-arena";
         }
         return "redirect:/admin/arenas";
     }
@@ -95,7 +94,7 @@ public class ArenaController {
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
             handleNumberFormatException(model);
-            return JspFilesResolver.getPath("/arena-jsp/update-arena");
+            return "arena-jsp/update-arena";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating arena: {}", e.getMessage());
             return handleUpdateArenaException(model, e);
@@ -115,7 +114,7 @@ public class ArenaController {
                     "Ошибка! Данные о выбранной арене нельзя удалить. Для нее уже запланированы события " +
                             "в разделе 'Предстоящие спортивные события'"));
             model.addAttribute("errors", validationResult.getErrors());
-            return JspFilesResolver.getPath("/error-jsp/error-page");
+            return "error-jsp/error-page";
         }
     }
 
@@ -130,14 +129,14 @@ public class ArenaController {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return JspFilesResolver.getPath("/arena-jsp/create-arena");
+        return "arena-jsp/create-arena";
     }
 
     private String handleUpdateArenaException(Model model, DaoCrudException e) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return JspFilesResolver.getPath("/arena-jsp/update-arena");
+        return "arena-jsp/update-arena";
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {

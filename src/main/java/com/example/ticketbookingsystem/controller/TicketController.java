@@ -1,10 +1,13 @@
 package com.example.ticketbookingsystem.controller;
 
 import com.example.ticketbookingsystem.dto.*;
+import com.example.ticketbookingsystem.dto.seat_dto.SeatReadDto;
+import com.example.ticketbookingsystem.dto.ticket_dto.TicketCreateEditDto;
+import com.example.ticketbookingsystem.dto.ticket_dto.TicketFilter;
+import com.example.ticketbookingsystem.dto.ticket_dto.TicketReadDto;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.SeatService;
 import com.example.ticketbookingsystem.service.TicketService;
-import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +41,7 @@ public class TicketController {
         Page<TicketReadDto> ticketReadDtoList = ticketService.findAll(eventId, ticketFilter, pageable);
         model.addAttribute("tickets", PageResponse.of(ticketReadDtoList));
         model.addAttribute("filter", ticketFilter);
-        return JspFilesResolver.getPath("/tickets-jsp/tickets");
+        return "tickets-jsp/tickets";
     }
 
     @GetMapping("/create")
@@ -47,7 +50,7 @@ public class TicketController {
         List<SeatReadDto> seatReadDtoList = seatService.findByEventIdWithNoTickets(eventId);
         model.addAttribute("eventId", eventId);
         model.addAttribute("seats", seatReadDtoList);
-        return JspFilesResolver.getPath("/tickets-jsp/create-ticket");
+        return "tickets-jsp/create-ticket";
     }
 
     @PostMapping("/create")
@@ -71,7 +74,7 @@ public class TicketController {
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
             handleNumberFormatException(model);
-            return JspFilesResolver.getPath("/tickets-jsp/create-ticket");
+            return "tickets-jsp/create-ticket";
         }
     }
 
@@ -87,7 +90,7 @@ public class TicketController {
             model.addAttribute("eventId", eventId);
             model.addAttribute("seatId", seatId);
             model.addAttribute("seats", seatReadDtoList);
-            return JspFilesResolver.getPath("/tickets-jsp/update-ticket");
+            return "tickets-jsp/update-ticket";
         }
         return "redirect:/admin/tickets?eventId=" + eventId;
     }
@@ -105,7 +108,7 @@ public class TicketController {
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
             handleNumberFormatException(model);
-            return JspFilesResolver.getPath("/tickets-jsp/update-ticket");
+            return "tickets-jsp/update-ticket";
         }
     }
 
@@ -122,7 +125,7 @@ public class TicketController {
             ValidationResult validationResult = new ValidationResult();
             validationResult.add(Error.of("delete.sector.fail", "Ошибка удаления записи о билете!"));
             model.addAttribute("errors", validationResult.getErrors());
-            return JspFilesResolver.getPath("/error-jsp/error-page");
+            return "error-jsp/error-page";
         }
     }
 

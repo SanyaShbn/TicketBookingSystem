@@ -1,6 +1,6 @@
 //package com.example.ticketbookingsystem.dao;
 //
-//import com.example.ticketbookingsystem.dto.TicketFilter;
+//import com.example.ticketbookingsystem.dto.ticket_dto.TicketFilter;
 //import com.example.ticketbookingsystem.entity.Ticket;
 //import com.example.ticketbookingsystem.entity.TicketStatus;
 //import com.example.ticketbookingsystem.exception.DaoCrudException;

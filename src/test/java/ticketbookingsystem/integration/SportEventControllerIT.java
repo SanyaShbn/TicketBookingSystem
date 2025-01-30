@@ -1,7 +1,7 @@
 package ticketbookingsystem.integration;
 
 import com.example.ticketbookingsystem.config.WebMvcConfig;
-import com.example.ticketbookingsystem.dto.*;
+import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventCreateEditDto;
 import com.example.ticketbookingsystem.entity.*;
 import com.example.ticketbookingsystem.repository.*;
 import org.junit.jupiter.api.BeforeEach;

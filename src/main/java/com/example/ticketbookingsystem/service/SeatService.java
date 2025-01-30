@@ -1,8 +1,7 @@
 package com.example.ticketbookingsystem.service;
 
-import com.example.ticketbookingsystem.dto.SeatReadDto;
-import com.example.ticketbookingsystem.entity.Seat;
-import com.example.ticketbookingsystem.mapper.SeatReadMapper;
+import com.example.ticketbookingsystem.dto.seat_dto.SeatReadDto;
+import com.example.ticketbookingsystem.mapper.seat_mapper.SeatReadMapper;
 import com.example.ticketbookingsystem.repository.SeatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 //package com.example.ticketbookingsystem.servlet.sectors_servlets;
 //
-//import com.example.ticketbookingsystem.dto.SectorFilter;
+//import com.example.ticketbookingsystem.dto.sector_dto.SectorFilter;
 //import com.example.ticketbookingsystem.entity.Sector;
 //import com.example.ticketbookingsystem.service.SectorService;
 //import com.example.ticketbookingsystem.utils.JspFilesResolver;

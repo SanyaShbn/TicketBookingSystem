@@ -1,12 +1,11 @@
 package com.example.ticketbookingsystem.controller;
 
 import com.example.ticketbookingsystem.dto.PageResponse;
-import com.example.ticketbookingsystem.dto.SectorCreateEditDto;
-import com.example.ticketbookingsystem.dto.SectorFilter;
-import com.example.ticketbookingsystem.dto.SectorReadDto;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorCreateEditDto;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorFilter;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorReadDto;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.SectorService;
-import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -38,13 +36,13 @@ public class SectorController {
         Page<SectorReadDto> sectorsPage = sectorService.findAll(arenaId, sectorFilter, pageable);
         model.addAttribute("filter", sectorFilter);
         model.addAttribute("sectors", PageResponse.of(sectorsPage));
-        return JspFilesResolver.getPath("/sectors-jsp/sectors");
+        return "sectors-jsp/sectors";
     }
 
     @GetMapping("/create")
     public String showCreateSectorForm(@RequestParam("arenaId") Long arenaId, Model model) {
         model.addAttribute("arenaId", arenaId);
-        return JspFilesResolver.getPath("/sectors-jsp/create-sector");
+        return "sectors-jsp/create-sector";
     }
 
     @PostMapping("/create")
@@ -66,7 +64,7 @@ public class SectorController {
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
             handleNumberFormatException(model);
-            return JspFilesResolver.getPath("/sectors-jsp/create-sector");
+            return "/sectors-jsp/create-sector";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating sector: {}", e.getMessage());
             return handleCreateSectorException(model, e);
@@ -81,7 +79,7 @@ public class SectorController {
         if (sector.isPresent()) {
             model.addAttribute("sector", sector.get());
             model.addAttribute("arenaId", arenaId);
-            return JspFilesResolver.getPath("/sectors-jsp/update-sector");
+            return "sectors-jsp/update-sector";
         }
         return "redirect:/admin/sectors?arenaId=" + arenaId;
     }
@@ -98,7 +96,7 @@ public class SectorController {
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
             handleNumberFormatException(model);
-            return JspFilesResolver.getPath("/sectors-jsp/update-sector");
+            return "sectors-jsp/update-sector";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating sector: {}", e.getMessage());
             return handleUpdateSectorException(model, e);
@@ -120,7 +118,7 @@ public class SectorController {
                     "Ошибка! Данные о выбранном секторе арены нельзя удалить. На него уже добавлены билеты " +
                             "в разделе 'Предстоящие спортивные события'"));
             model.addAttribute("errors", validationResult.getErrors());
-            return JspFilesResolver.getPath("/error-jsp/error-page");
+            return "error-jsp/error-page";
         }
     }
 
@@ -135,14 +133,14 @@ public class SectorController {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return JspFilesResolver.getPath("/sectors-jsp/create-sector");
+        return "sectors-jsp/create-sector";
     }
 
     private String handleUpdateSectorException(Model model, DaoCrudException e) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return JspFilesResolver.getPath("/sectors-jsp/update-sector");
+        return "sectors-jsp/update-sector";
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {

@@ -71,6 +71,7 @@
                     </form>
                     <form action="${pageContext.request.contextPath}/admin/tickets/${ticket.id}/delete?<%= request.getQueryString() %>"
                           method="post" style="display:inline;">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                         <input type="hidden" name="id" value="${ticket.id}"/>
                         <button type="submit"><fmt:message key="button.delete"/></button>
                     </form>

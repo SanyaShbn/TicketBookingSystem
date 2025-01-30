@@ -1,6 +1,6 @@
 //package com.example.ticketbookingsystem.servlet.row_servlets;
 //
-//import com.example.ticketbookingsystem.dto.RowFilter;
+//import com.example.ticketbookingsystem.dto.row_dto.RowFilter;
 //import com.example.ticketbookingsystem.entity.Row;
 //import com.example.ticketbookingsystem.service.RowService;
 //import com.example.ticketbookingsystem.utils.JspFilesResolver;

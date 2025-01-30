@@ -86,6 +86,7 @@
                             <button type="submit"><fmt:message key="button.update"/></button>
                         </form>
                         <form action="${pageContext.request.contextPath}/admin/arenas/${arena.id}/delete" method="post" style="display:inline;">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <input type="hidden" name="id" value="${arena.id}"/>
                             <button type="submit"><fmt:message key="button.delete"/></button>
                         </form>

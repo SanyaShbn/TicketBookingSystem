@@ -14,6 +14,9 @@
 <div class="form-container">
     <h1><fmt:message key="create.sector.title" /></h1>
     <form action="${pageContext.request.contextPath}/admin/sectors/create" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <input type="hidden" name="arenaId" value="${arenaId}">
 
         <label for="sectorName"><fmt:message key="sector.sectorName" />:</label>

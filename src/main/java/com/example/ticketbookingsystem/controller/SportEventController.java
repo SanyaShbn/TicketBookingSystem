@@ -1,10 +1,13 @@
 package com.example.ticketbookingsystem.controller;
 
 import com.example.ticketbookingsystem.dto.*;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaReadDto;
+import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventCreateEditDto;
+import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventFilter;
+import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventReadDto;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.service.SportEventService;
-import com.example.ticketbookingsystem.utils.JspFilesResolver;
 import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
@@ -38,14 +41,14 @@ public class SportEventController {
         model.addAttribute("filter", sportEventFilter);
         model.addAttribute("sport_events", PageResponse.of(sportEventsPage));
         model.addAttribute("arenas", arenaReadDtoList);
-        return JspFilesResolver.getPath("/sport-events-jsp/sport_events");
+        return "sport-events-jsp/sport_events";
     }
 
     @GetMapping("/create")
     public String showCreateSportEventForm(Model model) {
         List<ArenaReadDto> arenaReadDtoList = arenaService.findAll();
         model.addAttribute("arenas", arenaReadDtoList);
-        return JspFilesResolver.getPath("/sport-events-jsp/create-sport-event");
+        return "sport-events-jsp/create-sport-event";
     }
 
     @PostMapping("/create")
@@ -66,7 +69,7 @@ public class SportEventController {
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
             handleNumberFormatException(model);
-            return JspFilesResolver.getPath("/sport-events-jsp/create-sport-event");
+            return "sport-events-jsp/create-sport-event";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating sporting event: {}", e.getMessage());
             return handleCreateSportEventException(model, e);
@@ -80,7 +83,7 @@ public class SportEventController {
             List<ArenaReadDto> arenaReadDtoList = arenaService.findAll();
             model.addAttribute("arenas", arenaReadDtoList);
             model.addAttribute("sport_event", sportEventReadDto.get());
-            return JspFilesResolver.getPath("/sport-events-jsp/update-sport-event");
+            return "sport-events-jsp/update-sport-event";
         }
         return "redirect:/admin/sport_events";
     }
@@ -104,7 +107,7 @@ public class SportEventController {
         } catch (NumberFormatException e) {
             log.error("Number format exception occurred: {}", e.getMessage());
             handleNumberFormatException(model);
-            return JspFilesResolver.getPath("/sport-events-jsp/update-sport-event");
+            return "sport-events-jsp/update-sport-event";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating sporting event: {}", e.getMessage());
             return handleUpdateSportEventException(model, e);
@@ -124,7 +127,7 @@ public class SportEventController {
                     "Выбранное событие нельзя удалить, на него уже доступна продажа билетов. " +
                             "Если хотите выполнить удаление, необходимо удалить всю информацию о продаваемых билетах"));
             model.addAttribute("errors", validationResult.getErrors());
-            return JspFilesResolver.getPath("/error-jsp/error-page");
+            return "error-jsp/error-page";
         }
     }
 
@@ -139,14 +142,14 @@ public class SportEventController {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return JspFilesResolver.getPath("/sport-events-jsp/create-sport-event");
+        return "sport-events-jsp/create-sport-event";
     }
 
     private String handleUpdateSportEventException(Model model, DaoCrudException e) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
         model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return JspFilesResolver.getPath("/sport-events-jsp/update-sport-event");
+        return "sport-events-jsp/update-sport-event";
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {

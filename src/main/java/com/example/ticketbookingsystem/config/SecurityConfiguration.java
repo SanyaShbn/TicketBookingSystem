@@ -44,11 +44,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/WEB-INF/jsp/**", "/changeLanguage").permitAll()
                         .requestMatchers("/registration").permitAll()
-                        .requestMatchers("/admin/**").hasRole(ADMIN.getAuthority())
+                        .requestMatchers("/admin/**").hasAuthority(ADMIN.getAuthority())
                         .requestMatchers("/view_available_events",
                                          "/view_available_tickets",
                                          "/user_cart",
-                                         "/purchase").hasRole(USER.getAuthority())
+                                         "/purchase").hasAuthority(USER.getAuthority())
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/login")
