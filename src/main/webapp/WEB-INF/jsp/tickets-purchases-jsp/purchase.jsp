@@ -12,7 +12,7 @@
 <body>
 <%@ include file="../localization/language-switcher.jsp" %>
 <h1><fmt:message key="purchase.commitment"/></h1>
-<form action="<c:url value='/purchase' />" method="post">
+<form action="${pageContext.request.contextPath}/purchase" method="post">
 
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 

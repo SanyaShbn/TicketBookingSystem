@@ -1,21 +1,32 @@
 package com.example.ticketbookingsystem.service;
 
-import com.example.ticketbookingsystem.dao.PurchasedTicketsDao;
 import com.example.ticketbookingsystem.dto.PurchasedTicketDto;
-import com.example.ticketbookingsystem.exception.ValidationException;
+import com.example.ticketbookingsystem.entity.PurchasedTicket;
+import com.example.ticketbookingsystem.entity.Ticket;
+import com.example.ticketbookingsystem.entity.TicketStatus;
+import com.example.ticketbookingsystem.repository.PurchasedTicketRepository;
+import com.example.ticketbookingsystem.repository.TicketRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing purchased tickets.
  */
+@Service
+@RequiredArgsConstructor
+@Slf4j
 public class PurchasedTicketsService {
-    private static final PurchasedTicketsService INSTANCE = new PurchasedTicketsService();
-    private final PurchasedTicketsDao purchasedTicketsDao = PurchasedTicketsDao.getInstance();
-    private PurchasedTicketsService(){}
-    public static PurchasedTicketsService getInstance(){
-        return INSTANCE;
-    }
+
+    private final PurchasedTicketRepository purchasedTicketRepository;
+
+    private final TicketRepository ticketRepository;
 
     /**
      * Creates new purchased tickets record
@@ -23,8 +34,28 @@ public class PurchasedTicketsService {
      * @param ticketIds - provided IDs of tickets to update as 'SOLD' after purchase committed
      * @param userId - the ID of the user who purchases the tickets
      */
+    @Transactional
     public void savePurchasedTickets(List<Long> ticketIds, Long userId) {
-        purchasedTicketsDao.save(ticketIds, userId);
+        List<PurchasedTicket> purchasedTickets = ticketIds.stream()
+                .map(ticketId -> {
+                    Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
+                    if (ticket != null) {
+                        ticket.setStatus(TicketStatus.SOLD);
+                        ticketRepository.save(ticket);
+
+                        return PurchasedTicket.builder()
+                                .userId(userId)
+                                .purchaseDate(LocalDateTime.now())
+                                .ticket(ticket)
+                                .build();
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        purchasedTicketRepository.saveAll(purchasedTickets);
+        log.info("Ticket purchase successfully committed by user with user ID: {}", userId);
     }
 
     /**
@@ -34,6 +65,24 @@ public class PurchasedTicketsService {
      * @return list of all tickets purchased by a specific user
      */
     public List<PurchasedTicketDto> findAllByUserId(Long userId) {
-        return purchasedTicketsDao.findAllByUserId(userId);
+        List<PurchasedTicket> purchasedTickets = purchasedTicketRepository.findAllByUserId(userId);
+        return purchasedTickets.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private PurchasedTicketDto convertToDto(PurchasedTicket purchasedTicket) {
+        Ticket ticket = purchasedTicket.getTicket();
+        return PurchasedTicketDto.builder()
+                .ticketId(ticket.getId())
+                .eventName(ticket.getSportEvent().getEventName())
+                .eventDateTime(ticket.getSportEvent().getEventDateTime())
+                .arenaName(ticket.getSeat().getRow().getSector().getArena().getName())
+                .arenaCity(ticket.getSeat().getRow().getSector().getArena().getCity())
+                .sectorName(ticket.getSeat().getRow().getSector().getSectorName())
+                .rowNumber(ticket.getSeat().getRow().getRowNumber())
+                .seatNumber(ticket.getSeat().getSeatNumber())
+                .price(ticket.getPrice())
+                .build();
     }
 }

@@ -99,10 +99,10 @@
     </div>
     <div class="cart">
         <h2><fmt:message key="user.cart"/> (<fmt:message key="tickets.in.user.cart"/>:<span id="cartCount">0</span>)</h2>
+
+        <input type="hidden" id="csrfToken" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <form id="cartForm" action="${pageContext.request.contextPath}/purchase" method="get">
-
-            <input type="hidden" id="csrfToken" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
             <ul id="cartItems">
                 <li id="emptyCartMessage"><fmt:message key="user.cart.empty"/></li>
             </ul>

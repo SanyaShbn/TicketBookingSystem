@@ -119,7 +119,9 @@ public class UserCartService {
 
         if (ticketOpt.isPresent()) {
             Ticket ticket = ticketOpt.get();
-            ticket.setStatus(TicketStatus.AVAILABLE);
+            if(ticket.getStatus() == TicketStatus.RESERVED) {
+                ticket.setStatus(TicketStatus.AVAILABLE);
+            }
             ticketsToUpdate.add(ticket);
             return true;
         }

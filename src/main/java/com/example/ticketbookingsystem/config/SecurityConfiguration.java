@@ -49,7 +49,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/view_available_events",
                                          "/view_available_tickets",
                                          "/user_cart",
-                                         "/purchase").hasAuthority(USER.getAuthority())
+                                         "/purchase",
+                                         "/purchasedTickets").hasAuthority(USER.getAuthority())
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/login")
