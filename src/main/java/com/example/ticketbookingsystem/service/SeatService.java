@@ -46,6 +46,12 @@ public class SeatService {
                 .collect(Collectors.toList());
     }
 
+    public List<SeatReadDto> findByEventId(Long eventId){
+        return seatRepository.findByEventId(eventId).stream()
+                .map(seatReadMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
     /**
      * Finds seats to add seat tickets by a specific event ID including the updating one.
      *

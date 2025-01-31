@@ -38,6 +38,11 @@ public class UserService {
                 .map(userMapper::toDto);
     }
 
+    public Optional<UserDto> findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(userMapper::toDto);
+    }
+
     public void registerNewUserAccount(UserDto userDto) throws UserAlreadyExistException {
         if (emailExists(userDto.getEmail())) {
             throw new UserAlreadyExistException("There is an account with that email address: "

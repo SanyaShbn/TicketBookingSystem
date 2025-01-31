@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     function clearLocalStorage() {
+        const csrfToken = document.getElementById('csrfToken').value;
         localStorage.setItem('cartItems', JSON.stringify([]));
         localStorage.setItem('totalPrice', '0.00');
         fetch('/user_cart', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': csrfToken
             },
             body: new URLSearchParams({
                 action: 'clear'

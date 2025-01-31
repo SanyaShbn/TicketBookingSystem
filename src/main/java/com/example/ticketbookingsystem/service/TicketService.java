@@ -84,6 +84,12 @@ public class TicketService {
                 .map(ticketReadMapper::toDto);
     }
 
+    public List<TicketReadDto> findByEventId(Long eventId){
+        return ticketRepository.findAllBySportEventId(eventId).stream()
+                .map(ticketReadMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
     /**
      * Finds a ticket by its ID.
      *
