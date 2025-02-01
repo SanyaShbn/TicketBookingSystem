@@ -54,7 +54,7 @@ public class SportEventControllerTest {
     public void testFindAllSportEvents() throws Exception {
         mockMvc.perform(get("/admin/sport_events"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/sport-events-jsp/sport_events"))
+                .andExpect(view().name("sport-events-jsp/sport_events"))
                 .andExpect(model().attributeExists("sport_events"));
     }
 
@@ -64,7 +64,7 @@ public class SportEventControllerTest {
 
         mockMvc.perform(get("/admin/sport_events/create"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/sport-events-jsp/create-sport-event"))
+                .andExpect(view().name("sport-events-jsp/create-sport-event"))
                 .andExpect(model().attributeExists("arenas"));
     }
 
@@ -91,7 +91,7 @@ public class SportEventControllerTest {
                         .param("arenaId", ARENA_ID.toString())
                         .flashAttr("sportEventCreateEditDto", sportEventCreateEditDto))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/sport-events-jsp/create-sport-event"))
+                .andExpect(view().name("sport-events-jsp/create-sport-event"))
                 .andExpect(model().attributeExists("errors"));
     }
 
@@ -102,7 +102,7 @@ public class SportEventControllerTest {
 
         mockMvc.perform(get("/admin/sport_events/{id}/update", SPORT_EVENT_ID))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/sport-events-jsp/update-sport-event"))
+                .andExpect(view().name("sport-events-jsp/update-sport-event"))
                 .andExpect(model().attributeExists("sport_event"))
                 .andExpect(model().attributeExists("arenas"));
     }
@@ -130,7 +130,7 @@ public class SportEventControllerTest {
                         .param("arenaId", ARENA_ID.toString())
                         .flashAttr("sportEventCreateEditDto", sportEventCreateEditDto))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/sport-events-jsp/update-sport-event"))
+                .andExpect(view().name("sport-events-jsp/update-sport-event"))
                 .andExpect(model().attributeExists("errors"));
     }
 
@@ -149,7 +149,7 @@ public class SportEventControllerTest {
 
         mockMvc.perform(post("/admin/sport_events/{id}/delete", SPORT_EVENT_ID))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/error-jsp/error-page"))
+                .andExpect(view().name("error-jsp/error-page"))
                 .andExpect(model().attributeExists("errors"));
     }
 

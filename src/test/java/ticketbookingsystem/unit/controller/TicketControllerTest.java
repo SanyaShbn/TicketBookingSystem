@@ -56,7 +56,7 @@ public class TicketControllerTest {
         mockMvc.perform(get("/admin/tickets")
                         .param("eventId", EVENT_ID.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/tickets-jsp/tickets"))
+                .andExpect(view().name("tickets-jsp/tickets"))
                 .andExpect(model().attributeExists("tickets"))
                 .andExpect(model().attributeExists("filter"));
     }
@@ -106,7 +106,7 @@ public class TicketControllerTest {
         mockMvc.perform(post("/admin/tickets/{id}/delete", TICKET_ID)
                         .param("eventId", EVENT_ID.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/error-jsp/error-page"))
+                .andExpect(view().name("error-jsp/error-page"))
                 .andExpect(model().attributeExists("errors"));
     }
 

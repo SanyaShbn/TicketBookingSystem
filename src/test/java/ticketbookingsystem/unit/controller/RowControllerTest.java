@@ -45,7 +45,7 @@ public class RowControllerTest {
         mockMvc.perform(get("/admin/rows")
                         .param("sectorId", SECTOR_ID.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/rows-jsp/rows"))
+                .andExpect(view().name("rows-jsp/rows"))
                 .andExpect(model().attributeExists("rows"));
     }
 
@@ -55,7 +55,7 @@ public class RowControllerTest {
                         .param("arenaId", ARENA_ID.toString())
                         .param("sectorId", SECTOR_ID.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/rows-jsp/create-row"))
+                .andExpect(view().name("rows-jsp/create-row"))
                 .andExpect(model().attributeExists("arenaId"))
                 .andExpect(model().attributeExists("sectorId"));
     }
@@ -85,7 +85,7 @@ public class RowControllerTest {
                         .param("sectorId", SECTOR_ID.toString())
                         .flashAttr("rowCreateEditDto", rowCreateEditDto))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/rows-jsp/create-row"))
+                .andExpect(view().name("rows-jsp/create-row"))
                 .andExpect(model().attributeExists("errors"));
     }
 
@@ -114,7 +114,7 @@ public class RowControllerTest {
                         .param("sectorId", SECTOR_ID.toString())
                         .flashAttr("rowCreateEditDto", rowCreateEditDto))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/rows-jsp/update-row"))
+                .andExpect(view().name("rows-jsp/update-row"))
                 .andExpect(model().attributeExists("errors"));
     }
 
@@ -137,7 +137,7 @@ public class RowControllerTest {
                         .param("arenaId", ARENA_ID.toString())
                         .param("sectorId", SECTOR_ID.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/error-jsp/error-page"))
+                .andExpect(view().name("error-jsp/error-page"))
                 .andExpect(model().attributeExists("errors"));
     }
 

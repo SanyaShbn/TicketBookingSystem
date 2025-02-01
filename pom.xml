@@ -14,7 +14,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>16</maven.compiler.target>
         <maven.compiler.source>16</maven.compiler.source>
-        <junit.version>5.9.2</junit.version>
         <mockito.version>5.15.2</mockito.version>
         <spring.version>6.2.2</spring.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
@@ -23,23 +22,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -70,11 +52,6 @@
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>6.6.4.Final</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -121,6 +98,11 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
             <version>3.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.6.4.Final</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
