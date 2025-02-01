@@ -1,13 +1,13 @@
 package ticketbookingsystem.integration;
 
 import com.example.ticketbookingsystem.config.WebMvcConfig;
-import com.example.ticketbookingsystem.dto.ticket_dto.TicketCreateEditDto;
 import com.example.ticketbookingsystem.entity.*;
 import com.example.ticketbookingsystem.repository.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -16,28 +16,33 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ticketbookingsystem.test_config.TestJpaConfig;
-import ticketbookingsystem.utils.TestUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ticketbookingsystem.utils.TestUtils.*;
 
 @SpringJUnitConfig
 @ContextConfiguration(classes = {TestJpaConfig.class, WebMvcConfig.class})
 @ActiveProfiles("test")
 @WebAppConfiguration
-public class TicketControllerIT {
+public class TicketsPurchaseControllerIT {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private PurchasedTicketRepository purchasedTicketsRepository;
 
     @Autowired
     private SeatRepository seatRepository;
@@ -54,11 +59,11 @@ public class TicketControllerIT {
     @Autowired
     private RowRepository rowRepository;
 
-    private SportEvent savedSportEvent;
+    private MockMvc mockMvc;
 
     private Seat savedSeat;
 
-    private MockMvc mockMvc;
+    private SportEvent savedSportEvent;
 
     @BeforeEach
     void setUp() {
@@ -82,6 +87,8 @@ public class TicketControllerIT {
 
     @AfterEach
     void tearDown() {
+        purchasedTicketsRepository.deleteAll();
+        userRepository.deleteAll();
         ticketRepository.deleteAll();
         seatRepository.deleteAll();
         rowRepository.deleteAll();
@@ -91,61 +98,56 @@ public class TicketControllerIT {
     }
 
     @Test
-    public void testCreateTicket() throws Exception {
-        TicketCreateEditDto ticketCreateEditDto = buildTicketCreateEditDto();
-
-        mockMvc.perform(post("/admin/tickets/create")
-                        .param("eventId", savedSportEvent.getId().toString())
-                        .param("seatId", "1")
-                        .flashAttr("ticketCreateEditDto", ticketCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/tickets?eventId=" + savedSportEvent.getId()));
-
-        assertEquals(1, ticketRepository.findAll().size());
+    public void testShowPurchasePage() throws Exception {
+        mockMvc.perform(get("/purchase"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tickets-purchases-jsp/purchase"));
     }
 
     @Test
-    public void testUpdateTicket() throws Exception {
-        Ticket ticket = buildTicket();
-        Ticket savedTicket = ticketRepository.save(ticket);
-
-        TicketCreateEditDto ticketCreateEditDto = TicketCreateEditDto.builder()
-                .price(BigDecimal.valueOf(20))
-                .status(TicketStatus.SOLD)
+    @WithMockUser(username = "testUser@gmail.com")
+    public void testCommitPurchaseWithInsufficientFunds() throws Exception {
+        User user = User.builder()
+                .email("test@example.com")
+                .password("password")
                 .build();
+        userRepository.save(user);
 
-        mockMvc.perform(post("/admin/tickets/{id}/update", savedTicket.getId())
-                        .param("eventId", savedSportEvent.getId().toString())
-                        .param("seatId", "1")
-                        .flashAttr("ticketCreateEditDto", ticketCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/tickets?eventId=" + savedSportEvent.getId()));
-
-        Ticket updatedTicket = ticketRepository.findById(savedTicket.getId()).orElse(null);
-        assertEquals(TicketStatus.SOLD, updatedTicket.getStatus());
+        mockMvc.perform(post("/purchase")
+                        .with(csrf())
+                        .sessionAttr("user", user))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tickets-purchases-jsp/purchase"))
+                .andExpect(model().attributeExists("errors"));
     }
 
     @Test
-    public void testDeleteTicket() throws Exception {
-        Ticket ticket = buildTicket();
-        ticket.setSportEvent(savedSportEvent);
-        Ticket savedTicket = ticketRepository.save(ticket);
+    @WithMockUser(username = "testUser@gmail.com")
+    public void testGetPurchasedTickets() throws Exception {
+        User user = User.builder()
+                .email("test@example.com")
+                .password("password")
+                .build();
+        userRepository.save(user);
 
-        mockMvc.perform(post("/admin/tickets/{id}/delete", savedTicket.getId())
-                        .param("eventId", savedSportEvent.getId().toString()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/tickets?eventId=" + savedSportEvent.getId()));
-
-        assertTrue(ticketRepository.findById(savedTicket.getId()).isEmpty());
-    }
-
-    private Ticket buildTicket(){
-        return Ticket.builder()
-                .status(TicketStatus.AVAILABLE)
-                .sportEvent(savedSportEvent)
+        Ticket ticket = Ticket.builder()
                 .price(BigDecimal.valueOf(10))
+                .status(TicketStatus.AVAILABLE)
                 .seat(savedSeat)
+                .sportEvent(savedSportEvent)
                 .build();
-    }
+        ticketRepository.save(ticket);
 
+        PurchasedTicket purchasedTicket = PurchasedTicket.builder()
+                .purchaseDate(LocalDateTime.now())
+                .ticket(ticket)
+                .userId(user.getId())
+                .build();
+        purchasedTicketsRepository.save(purchasedTicket);
+
+        mockMvc.perform(get("/purchasedTickets")
+                        .sessionAttr("user", user))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tickets-purchases-jsp/purchased-tickets"));
+    }
 }

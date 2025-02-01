@@ -4,6 +4,7 @@ import com.example.ticketbookingsystem.config.WebMvcConfig;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventCreateEditDto;
 import com.example.ticketbookingsystem.entity.*;
 import com.example.ticketbookingsystem.repository.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,6 @@ public class SportEventControllerIT {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        sportEventRepository.deleteAll();
-        arenaRepository.deleteAll();
 
         Arena arena = Arena.builder()
                 .name("Test")
@@ -54,6 +53,12 @@ public class SportEventControllerIT {
                 .capacity(1)
                 .build();
         savedArena = arenaRepository.save(arena);
+    }
+
+    @AfterEach
+    void tearDown() {
+        sportEventRepository.deleteAll();
+        arenaRepository.deleteAll();
     }
 
     @Test

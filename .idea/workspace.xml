@@ -9,32 +9,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Started implementing Spring for Ticket Purchase module (for now, viewing tickets for purchase and managing user cart is ready, but purchase itself is not yet)">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketsPurchaseController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/PurchasedTicketRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/utils/AuthenticationUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/PurchasedTicketsServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/UserCartServiceTest.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Fully implemented Spring for Ticket Purchase module, added unit tests for relevant services">
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/TicketsPurchaseControllerIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/UserCartControllerIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/UserControllerIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/test_config/TestMvcConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/TicketsPurchaseControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/UserCartControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/UserControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/UserServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserCartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserCartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/AbstractHibernateDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/AbstractHibernateDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/PurchasedTicketsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/PurchasedTicketsDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserCartDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserCartDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/Mapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/ArenaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/ArenaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/CustomSportEventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/CustomSportEventRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/RowRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/RowRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SeatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SeatRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SectorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SectorRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SportEventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SportEventRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/TicketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/TicketRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/UserCartRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/UserCartRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/PurchasedTicketsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/PurchasedTicketsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserCartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserCartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/purchase.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/purchase.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-tickets.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-tickets.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/ArenaDaoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/PurchasedTicketsDaoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/RowDaoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SeatDaoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SectorDaoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/SportEventDaoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/TicketDaoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/UserCartDaoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/dao/UserDaoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/ArenaControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/ArenaControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/RowControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/RowControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SectorControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SectorControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SportEventControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SportEventControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/TicketControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/TicketControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/utils/TestUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/utils/TestUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,79 +130,81 @@
       <recent name="D:\TicketBookingSystem" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.UserCartControllerTest">
-    <configuration name="HikariCPTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.UserCartControllerIT.testHandleUserCartRequest_ClearCart">
+    <configuration name="TicketsPurchaseControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.connection_pool.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.connection_pool" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.connection_pool.HikariCPTest" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.TicketsPurchaseControllerIT" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PurchasedTicketsServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserCartControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.PurchasedTicketsServiceTest" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.UserCartControllerIT" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PurchasedTicketsServiceTest.testFindAllByUserId" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserCartControllerIT.testHandleUserCartRequest_AddTicket" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.PurchasedTicketsServiceTest" />
-      <option name="METHOD_NAME" value="testFindAllByUserId" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.UserCartControllerIT" />
+      <option name="METHOD_NAME" value="testHandleUserCartRequest_AddTicket" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserCartControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserCartControllerIT.testHandleUserCartRequest_ClearCart" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.UserCartControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.UserCartControllerIT" />
+      <option name="METHOD_NAME" value="testHandleUserCartRequest_ClearCart" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserCartServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserCartControllerIT.testHandleUserCartRequest_RemoveTicket" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.UserCartServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.UserCartControllerIT" />
+      <option name="METHOD_NAME" value="testHandleUserCartRequest_RemoveTicket" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -294,11 +297,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.UserCartControllerTest" />
-        <item itemvalue="JUnit.PurchasedTicketsServiceTest" />
-        <item itemvalue="JUnit.PurchasedTicketsServiceTest.testFindAllByUserId" />
-        <item itemvalue="JUnit.UserCartServiceTest" />
-        <item itemvalue="JUnit.HikariCPTest" />
+        <item itemvalue="JUnit.UserCartControllerIT.testHandleUserCartRequest_ClearCart" />
+        <item itemvalue="JUnit.UserCartControllerIT.testHandleUserCartRequest_AddTicket" />
+        <item itemvalue="JUnit.UserCartControllerIT" />
+        <item itemvalue="JUnit.UserCartControllerIT.testHandleUserCartRequest_RemoveTicket" />
+        <item itemvalue="JUnit.TicketsPurchaseControllerIT" />
       </list>
     </recent_temporary>
   </component>
@@ -466,6 +469,9 @@
       <workItem from="1738333451675" duration="703000" />
       <workItem from="1738338214926" duration="2510000" />
       <workItem from="1738347900462" duration="9120000" />
+      <workItem from="1738395562986" duration="4365000" />
+      <workItem from="1738399973000" duration="18000" />
+      <workItem from="1738408599060" duration="5665000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />

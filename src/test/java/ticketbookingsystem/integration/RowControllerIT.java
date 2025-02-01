@@ -1,5 +1,6 @@
 package ticketbookingsystem.integration;
 
+import org.junit.jupiter.api.AfterEach;
 import ticketbookingsystem.test_config.TestJpaConfig;
 import com.example.ticketbookingsystem.config.WebMvcConfig;
 import com.example.ticketbookingsystem.dto.row_dto.RowCreateEditDto;
@@ -53,9 +54,6 @@ public class RowControllerIT {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        rowRepository.deleteAll();
-        sectorRepository.deleteAll();
-        arenaRepository.deleteAll();
 
         Arena arena = Arena.builder()
                 .name("Test Arena")
@@ -71,6 +69,13 @@ public class RowControllerIT {
                 .arena(savedArena)
                 .build();
         savedSector = sectorRepository.save(sector);
+    }
+
+    @AfterEach
+    void tearDown() {
+        rowRepository.deleteAll();
+        sectorRepository.deleteAll();
+        arenaRepository.deleteAll();
     }
 
     @Test

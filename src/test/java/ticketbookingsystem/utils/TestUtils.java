@@ -1,5 +1,6 @@
 package ticketbookingsystem.utils;
 
+import com.example.ticketbookingsystem.dto.ticket_dto.TicketCreateEditDto;
 import com.example.ticketbookingsystem.entity.*;
 
 import java.math.BigDecimal;
@@ -7,59 +8,50 @@ import java.time.LocalDateTime;
 
 public class TestUtils {
 
-    public static Arena createTestArena() {
+    public static TicketCreateEditDto buildTicketCreateEditDto(){
+        return TicketCreateEditDto.builder()
+                .status(TicketStatus.AVAILABLE)
+                .price(BigDecimal.valueOf(10))
+                .build();
+    }
+
+    public static Arena buildArena(){
         return Arena.builder()
                 .name("Test Arena")
                 .city("Test City")
-                .capacity(5000)
-                .generalSeatsNumb(1000)
+                .capacity(1)
                 .build();
     }
 
-    public static Arena createTestArena(String name, String city, int capacity, int generalSeatsNumb) {
-        return Arena.builder()
-                .name(name)
-                .city(city)
-                .capacity(capacity)
-                .generalSeatsNumb(generalSeatsNumb)
+    public static SportEvent buildSportEvent(Arena savedArena){
+        return SportEvent.builder()
+                .eventName("Test Event")
+                .eventDateTime(LocalDateTime.now())
+                .arena(savedArena)
                 .build();
     }
 
-    public static Sector createTestSector(Arena arena) {
+    public static Sector buildSector(Arena arena){
         return Sector.builder()
                 .sectorName("Test Sector")
+                .maxRowsNumb(10)
+                .maxSeatsNumb(100)
                 .arena(arena)
                 .build();
     }
 
-    public static Row createTestRow(Sector sector) {
+    public static Row buildRow(Sector sector) {
         return Row.builder()
                 .rowNumber(1)
+                .seatsNumb(5)
                 .sector(sector)
                 .build();
     }
 
-    public static Seat createTestSeat(Row row) {
+    public static Seat buildSeat(Row row){
         return Seat.builder()
-                .row(row)
                 .seatNumber(1)
-                .build();
-    }
-
-    public static SportEvent createTestSportEvent(String eventName, LocalDateTime eventDateTime, Arena arena) {
-        return SportEvent.builder()
-                .eventName(eventName)
-                .eventDateTime(eventDateTime)
-                .arena(arena)
-                .build();
-    }
-
-    public static Ticket createTestTicket(SportEvent sportEvent, Seat seat) {
-        return Ticket.builder()
-                .price(BigDecimal.valueOf(30))
-                .status(TicketStatus.AVAILABLE)
-                .sportEvent(sportEvent)
-                .seat(seat)
+                .row(row)
                 .build();
     }
 

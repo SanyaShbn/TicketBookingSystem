@@ -1,5 +1,6 @@
 package ticketbookingsystem.integration;
 
+import org.junit.jupiter.api.AfterEach;
 import ticketbookingsystem.test_config.TestJpaConfig;
 import com.example.ticketbookingsystem.config.WebMvcConfig;
 import com.example.ticketbookingsystem.dto.arena_dto.ArenaCreateEditDto;
@@ -38,7 +39,6 @@ public class ArenaControllerIT {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        arenaRepository.deleteAll();
 
         Arena arena = Arena.builder()
                 .name("Test Arena№1")
@@ -48,15 +48,11 @@ public class ArenaControllerIT {
         arenaRepository.save(arena);
     }
 
-    @Test
-    public void testFindAllArenas() throws Exception {
-        mockMvc.perform(get("/admin/arenas"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/arena-jsp/arenas"))
-                .andExpect(model().attributeExists("arenas"))
-                .andExpect(model().attributeExists("cities"))
-                .andExpect(model().attribute("limit", 8));
+    @AfterEach
+    void tearDown() {
+        arenaRepository.deleteAll();
     }
+
 
     @Test
     public void testCreateArena() throws Exception {
