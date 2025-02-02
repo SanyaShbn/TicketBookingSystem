@@ -64,7 +64,6 @@
                     <div><fmt:message key="ticket.seat.numb"/>: ${ticket.seat.seatNumber}</div>
 
                     <form action="${pageContext.request.contextPath}/admin/tickets/${ticket.id}/update" method="get" style="display:inline;">
-                        <input type="hidden" name="id" value="${ticket.id}"/>
                         <input type="hidden" name="eventId" value="${ticket.sportEvent.id}"/>
                         <input type="hidden" name="seatId" value="${ticket.seat.id}"/>
                         <button type="submit"><fmt:message key="button.update"/></button>
@@ -72,7 +71,6 @@
                     <form action="${pageContext.request.contextPath}/admin/tickets/${ticket.id}/delete?<%= request.getQueryString() %>"
                           method="post" style="display:inline;">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                        <input type="hidden" name="id" value="${ticket.id}"/>
                         <button type="submit"><fmt:message key="button.delete"/></button>
                     </form>
                 </div>

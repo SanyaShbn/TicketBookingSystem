@@ -5,6 +5,7 @@ import com.example.ticketbookingsystem.dto.arena_dto.ArenaFilter;
 import com.example.ticketbookingsystem.dto.arena_dto.ArenaReadDto;
 import com.example.ticketbookingsystem.dto.QPredicates;
 import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.exception.ValidationException;
 import com.example.ticketbookingsystem.mapper.arena_mapper.ArenaCreateEditMapper;
@@ -13,6 +14,7 @@ import com.example.ticketbookingsystem.repository.ArenaRepository;
 import com.example.ticketbookingsystem.utils.SortUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -105,9 +107,14 @@ public class ArenaService {
      * @throws ValidationException if the arena is not valid
      */
     public void createArena(ArenaCreateEditDto arenaCreateEditDto) {
-        Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
-        arenaRepository.save(arena);
-        log.info("Arena created successfully with dto: {}", arenaCreateEditDto);
+        try {
+            Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
+            arenaRepository.save(arena);
+            log.info("Arena created successfully with dto: {}", arenaCreateEditDto);
+        } catch (DataAccessException e){
+            log.error("Failed to create arena with dto: {}", arenaCreateEditDto);
+            throw new DaoCrudException(e);
+        }
     }
 
     /**
@@ -117,10 +124,15 @@ public class ArenaService {
      * @throws ValidationException if the updated arena is not valid
      */
     public void updateArena(Long id, ArenaCreateEditDto arenaCreateEditDto) {
-        Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
-        arena.setId(id);
-        arenaRepository.save(arena);
-        log.info("Arena with id {} updated successfully with dto: {}", id, arenaCreateEditDto);
+        try {
+            Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
+            arena.setId(id);
+            arenaRepository.save(arena);
+            log.info("Arena with id {} updated successfully with dto: {}", id, arenaCreateEditDto);
+        } catch (DataAccessException e){
+            log.error("Failed to update arena {} with dto: {}", id, arenaCreateEditDto);
+            throw new DaoCrudException(e);
+        }
     }
 
     /**
@@ -129,8 +141,13 @@ public class ArenaService {
      * @param id the ID of the arena to delete
      */
     public void deleteArena(Long id) {
-        arenaRepository.deleteById(id);
-        log.info("Arena with id {} deleted successfully.", id);
+        try {
+            arenaRepository.deleteById(id);
+            log.info("Arena with id {} deleted successfully.", id);
+        } catch (DataAccessException e){
+            log.error("Failed to delete arena with id {}", id);
+            throw new DaoCrudException(e);
+        }
     }
 
 }

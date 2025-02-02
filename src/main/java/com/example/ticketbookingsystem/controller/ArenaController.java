@@ -15,10 +15,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -38,7 +40,11 @@ public class ArenaController {
     }
 
     @GetMapping("/create")
-    public String showCreateArenaForm() {
+    public String showCreateArenaForm(@ModelAttribute("arena") ArenaCreateEditDto arena,
+                                      Model model) {
+        if (!model.containsAttribute("arena")) {
+            model.addAttribute("arena", ArenaCreateEditDto.builder().build());
+        }
         return "arena-jsp/create-arena";
     }
 
@@ -56,13 +62,9 @@ public class ArenaController {
             log.info("Creating new arena with details: {}", arenaCreateEditDto);
             arenaService.createArena(arenaCreateEditDto);
             return "redirect:/admin/arenas";
-        } catch (NumberFormatException e) {
-            log.error("Number format exception occurred: {}", e.getMessage());
-            handleNumberFormatException(model);
-            return "arena-jsp/create-arena";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating arena: {}", e.getMessage());
-            return handleCreateArenaException(model, e);
+            return handleCreateArenaException(model, arenaCreateEditDto, e);
         }
     }
 
@@ -84,20 +86,15 @@ public class ArenaController {
                               Model model) {
         try {
             if(bindingResult.hasErrors()){
-                redirectAttributes.addFlashAttribute("arena", arenaCreateEditDto);
                 redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
                 return "redirect:/admin/arenas/" + id + "/update";
             }
             log.info("Updating arena {} with details: {}", id, arenaCreateEditDto);
             arenaService.updateArena(id, arenaCreateEditDto);
             return "redirect:/admin/arenas";
-        } catch (NumberFormatException e) {
-            log.error("Number format exception occurred: {}", e.getMessage());
-            handleNumberFormatException(model);
-            return "arena-jsp/update-arena";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating arena: {}", e.getMessage());
-            return handleUpdateArenaException(model, e);
+            return handleUpdateArenaException(id, model, e, redirectAttributes);
         }
     }
 
@@ -118,28 +115,28 @@ public class ArenaController {
         }
     }
 
-    private void handleNumberFormatException(Model model) {
-        ValidationResult validationResult = new ValidationResult();
-        validationResult.add(Error.of("invalid.number.format",
-                "Проверьте корректность ввода данных!"));
-        model.addAttribute("errors", validationResult.getErrors());
-    }
-
-    private String handleCreateArenaException(Model model, DaoCrudException e) {
+    private String handleCreateArenaException(Model model,
+                                              ArenaCreateEditDto arenaCreateEditDto,
+                                              DaoCrudException e) {
         ValidationResult sqlExceptionResult = new ValidationResult();
-        specifySQLException(e.getMessage(), sqlExceptionResult);
+        specifyDataAccessException(e.getMessage(), sqlExceptionResult);
         model.addAttribute("errors", sqlExceptionResult.getErrors());
+        model.addAttribute("arena", arenaCreateEditDto);
         return "arena-jsp/create-arena";
     }
 
-    private String handleUpdateArenaException(Model model, DaoCrudException e) {
+    private String handleUpdateArenaException(Long id,
+                                              Model model,
+                                              DaoCrudException e,
+                                              RedirectAttributes redirectAttributes) {
         ValidationResult sqlExceptionResult = new ValidationResult();
-        specifySQLException(e.getMessage(), sqlExceptionResult);
+        specifyDataAccessException(e.getMessage(), sqlExceptionResult);
         model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return "arena-jsp/update-arena";
+        redirectAttributes.addFlashAttribute("errors", sqlExceptionResult.getErrors());
+        return "redirect:/admin/arenas/" + id + "/update";
     }
 
-    private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {
+    private void specifyDataAccessException(String errorMessage, ValidationResult sqlExceptionResult) {
         if (errorMessage != null) {
             switch (getErrorType(errorMessage)) {
                 case "ERROR_CHECK_ARENA_NAME" -> sqlExceptionResult.add(Error.of("create_edit.arena.fail",

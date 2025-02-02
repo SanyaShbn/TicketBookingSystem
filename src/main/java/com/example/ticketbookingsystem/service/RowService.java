@@ -5,6 +5,7 @@ import com.example.ticketbookingsystem.dto.row_dto.RowFilter;
 import com.example.ticketbookingsystem.dto.row_dto.RowReadDto;
 import com.example.ticketbookingsystem.entity.Row;
 import com.example.ticketbookingsystem.entity.Sector;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.mapper.row_mapper.RowCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.row_mapper.RowReadMapper;
@@ -12,6 +13,7 @@ import com.example.ticketbookingsystem.repository.RowRepository;
 import com.example.ticketbookingsystem.utils.SortUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -97,13 +99,18 @@ public class RowService {
      */
     @Transactional
     public void createRow(RowCreateEditDto rowCreateEditDto, Long sectorId) {
-        Row row = rowCreateEditMapper.toEntity(rowCreateEditDto);
-        Sector sector = sectorService.findSectorById(sectorId);
-        row.setSector(sector);
+        try {
+            Row row = rowCreateEditMapper.toEntity(rowCreateEditDto);
+            Sector sector = sectorService.findSectorById(sectorId);
+            row.setSector(sector);
 
-        rowRepository.save(row);
-        rowRepository.updateSectorAfterRowSave(sectorId, row.getSeatsNumb());
-        log.info("Row created successfully with dto: {}", rowCreateEditDto);
+            rowRepository.save(row);
+            rowRepository.updateSectorAfterRowSave(sectorId, row.getSeatsNumb());
+            log.info("Row created successfully with dto: {}", rowCreateEditDto);
+        } catch (DataAccessException e){
+            log.error("Failed to create row with dto: {}", rowCreateEditDto);
+            throw new DaoCrudException(e);
+        }
     }
 
     /**
@@ -114,20 +121,25 @@ public class RowService {
      */
     @Transactional
     public void updateRow(Long id, RowCreateEditDto rowCreateEditDto, Long sectorId) {
-        Optional<Row> rowBeforeUpdate = rowRepository.findById(id);
-        if (rowBeforeUpdate.isEmpty()) {
-            log.error("Failed to find row with provided id: {}", id);
-            throw new DaoResourceNotFoundException("Row not found");
-        }
+        try {
+            Optional<Row> rowBeforeUpdate = rowRepository.findById(id);
+            if (rowBeforeUpdate.isEmpty()) {
+                log.error("Failed to find row with provided id: {}", id);
+                throw new DaoResourceNotFoundException("Row not found");
+            }
 
-        Row row = rowCreateEditMapper.toEntity(rowCreateEditDto);
-        Sector sector = sectorService.findSectorById(sectorId);
-        row.setId(id);
-        row.setSector(sector);
-        rowRepository.updateSectorBeforeRowUpdate(sectorId,
-                rowBeforeUpdate.get().getSeatsNumb(), row.getSeatsNumb());
-        rowRepository.save(row);
-        log.info("Row with id {} updated successfully with dto: {}", id, rowCreateEditDto);
+            Row row = rowCreateEditMapper.toEntity(rowCreateEditDto);
+            Sector sector = sectorService.findSectorById(sectorId);
+            row.setId(id);
+            row.setSector(sector);
+            rowRepository.updateSectorBeforeRowUpdate(sectorId,
+                    rowBeforeUpdate.get().getSeatsNumb(), row.getSeatsNumb());
+            rowRepository.save(row);
+            log.info("Row with id {} updated successfully with dto: {}", id, rowCreateEditDto);
+        } catch (DataAccessException e){
+            log.error("Failed to update row {} with dto: {}", id, rowCreateEditDto);
+            throw new DaoCrudException(e);
+        }
     }
 
     /**
@@ -137,15 +149,20 @@ public class RowService {
      */
     @Transactional
     public void deleteRow(Long id) {
-        Optional<Row> row = rowRepository.findById(id);
-        if (row.isPresent()) {
-            rowRepository.updateSectorAfterRowDelete(row.get().getSector().getId(),
-                    row.get().getSeatsNumb());
-            rowRepository.delete(row.get());
-            log.info("Row with id {} deleted successfully.", id);
-        } else {
-            log.error("Failed to find row with provided id: {}", id);
-            throw new DaoResourceNotFoundException("Row not found");
+        try {
+            Optional<Row> row = rowRepository.findById(id);
+            if (row.isPresent()) {
+                rowRepository.updateSectorAfterRowDelete(row.get().getSector().getId(),
+                        row.get().getSeatsNumb());
+                rowRepository.delete(row.get());
+                log.info("Row with id {} deleted successfully.", id);
+            } else {
+                log.error("Failed to find row with provided id: {}", id);
+                throw new DaoResourceNotFoundException("Row not found");
+            }
+        } catch (DataAccessException e){
+            log.error("Failed to delete row with id {}", id);
+            throw new DaoCrudException(e);
         }
     }
 }

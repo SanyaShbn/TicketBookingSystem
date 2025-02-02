@@ -75,7 +75,6 @@
                     <div><fmt:message key="row.rowNumber"/>: ${row.rowNumber}</div>
                     <div><fmt:message key="row.seatsNumb"/>: ${row.seatsNumb}</div>
                     <form action="${pageContext.request.contextPath}/admin/rows/${row.id}/update" method="get" style="display:inline;">
-                        <input type="hidden" name="id" value="${row.id}"/>
                         <input type="hidden" name="sectorId" value="${row.sector.id}"/>
                         <input type="hidden" name="arenaId" value="${param.arenaId}"/>
                         <button type="submit"><fmt:message key="button.update"/></button>

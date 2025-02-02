@@ -5,6 +5,7 @@ import com.example.ticketbookingsystem.dto.sector_dto.SectorFilter;
 import com.example.ticketbookingsystem.dto.sector_dto.SectorReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.Sector;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.mapper.sector_mapper.SectorCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.sector_mapper.SectorReadMapper;
@@ -12,6 +13,7 @@ import com.example.ticketbookingsystem.repository.SectorRepository;
 import com.example.ticketbookingsystem.utils.SortUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -107,12 +109,17 @@ public class SectorService {
      */
     @Transactional
     public void createSector(SectorCreateEditDto sectorCreateEditDto, Long arenaId) {
-        Sector sector = sectorCreateEditMapper.toEntity(sectorCreateEditDto);
-        Arena arena = arenaService.findArenaById(arenaId);
-        sector.setArena(arena);
-        sectorRepository.save(sector);
-        sectorRepository.updateArenaAfterSectorSave(arenaId, sector.getMaxSeatsNumb());
-        log.info("Sector created successfully with dto: {}", sectorCreateEditDto);
+        try {
+            Sector sector = sectorCreateEditMapper.toEntity(sectorCreateEditDto);
+            Arena arena = arenaService.findArenaById(arenaId);
+            sector.setArena(arena);
+            sectorRepository.save(sector);
+            sectorRepository.updateArenaAfterSectorSave(arenaId, sector.getMaxSeatsNumb());
+            log.info("Sector created successfully with dto: {}", sectorCreateEditDto);
+        } catch (DataAccessException e){
+            log.error("Failed to create sector with dto: {}", sectorCreateEditDto);
+            throw new DaoCrudException(e);
+        }
     }
 
     /**
@@ -123,20 +130,25 @@ public class SectorService {
      */
     @Transactional
     public void updateSector(Long id, SectorCreateEditDto sectorCreateEditDto, Long arenaId) {
-        Optional<Sector> sectorBeforeUpdate = sectorRepository.findById(id);
-        if (sectorBeforeUpdate.isEmpty()) {
-            log.error("Failed to find sector with provided id: {}", id);
-            throw new DaoResourceNotFoundException("Sector not found");
-        }
+        try {
+            Optional<Sector> sectorBeforeUpdate = sectorRepository.findById(id);
+            if (sectorBeforeUpdate.isEmpty()) {
+                log.error("Failed to find sector with provided id: {}", id);
+                throw new DaoResourceNotFoundException("Sector not found");
+            }
 
-        Sector sector = sectorCreateEditMapper.toEntity(sectorCreateEditDto);
-        Arena arena = arenaService.findArenaById(arenaId);
-        sector.setId(id);
-        sector.setArena(arena);
-        sectorRepository.updateArenaBeforeSectorUpdate(arenaId,
-                sectorBeforeUpdate.get().getMaxSeatsNumb(), sector.getMaxSeatsNumb());
-        sectorRepository.save(sector);
-        log.info("Sector with id {} updated successfully with dto: {}", id, sectorCreateEditDto);
+            Sector sector = sectorCreateEditMapper.toEntity(sectorCreateEditDto);
+            Arena arena = arenaService.findArenaById(arenaId);
+            sector.setId(id);
+            sector.setArena(arena);
+            sectorRepository.updateArenaBeforeSectorUpdate(arenaId,
+                    sectorBeforeUpdate.get().getMaxSeatsNumb(), sector.getMaxSeatsNumb());
+            sectorRepository.save(sector);
+            log.info("Sector with id {} updated successfully with dto: {}", id, sectorCreateEditDto);
+        } catch (DataAccessException e){
+            log.error("Failed to update sector {} with dto: {}", id, sectorCreateEditDto);
+            throw new DaoCrudException(e);
+        }
     }
 
     /**
@@ -146,15 +158,20 @@ public class SectorService {
      */
     @Transactional
     public void deleteSector(Long id) {
-        Optional<Sector> sector = sectorRepository.findById(id);
-        if (sector.isPresent()) {
-            sectorRepository.updateArenaAfterSectorDelete(sector.get().getArena().getId(),
-                    sector.get().getMaxSeatsNumb());
-            sectorRepository.delete(sector.get());
-            log.info("Sector with id {} deleted successfully.", id);
-        } else {
-            log.error("Failed to find sector with provided id: {}", id);
-            throw new DaoResourceNotFoundException("Sector not found");
+        try {
+            Optional<Sector> sector = sectorRepository.findById(id);
+            if (sector.isPresent()) {
+                sectorRepository.updateArenaAfterSectorDelete(sector.get().getArena().getId(),
+                        sector.get().getMaxSeatsNumb());
+                sectorRepository.delete(sector.get());
+                log.info("Sector with id {} deleted successfully.", id);
+            } else {
+                log.error("Failed to find sector with provided id: {}", id);
+                throw new DaoResourceNotFoundException("Sector not found");
+            }
+        } catch (DataAccessException e){
+            log.error("Failed to delete sector with id {}", id);
+            throw new DaoCrudException(e);
         }
     }
 }

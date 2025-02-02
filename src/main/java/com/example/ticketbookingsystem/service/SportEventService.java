@@ -6,12 +6,14 @@ import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventFilter;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.SportEvent;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventReadMapper;
 import com.example.ticketbookingsystem.repository.SportEventRepository;
 import com.example.ticketbookingsystem.utils.SortUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -100,11 +102,16 @@ public class SportEventService {
      * @param sportEventCreateEditDto the DTO of the sporting event to create
      */
     public void createSportEvent(SportEventCreateEditDto sportEventCreateEditDto, Long arenaId) {
-        SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
-        Arena arena = arenaService.findArenaById(arenaId);
-        sportEvent.setArena(arena);
-        sportEventRepository.save(sportEvent);
-        log.info("SportEvent created successfully with dto: {}", sportEventCreateEditDto);
+        try {
+            SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
+            Arena arena = arenaService.findArenaById(arenaId);
+            sportEvent.setArena(arena);
+            sportEventRepository.save(sportEvent);
+            log.info("SportEvent created successfully with dto: {}", sportEventCreateEditDto);
+        } catch (DataAccessException e){
+            log.error("Failed to create SportEvent with dto: {}", sportEventCreateEditDto);
+            throw new DaoCrudException(e);
+        }
     }
 
     /**
@@ -114,12 +121,17 @@ public class SportEventService {
      * @param sportEventCreateEditDto the DTO of the updated sporting event
      */
     public void updateSportEvent(Long id, SportEventCreateEditDto sportEventCreateEditDto, Long arenaId) {
-        SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
-        Arena arena = arenaService.findArenaById(arenaId);
-        sportEvent.setId(id);
-        sportEvent.setArena(arena);
-        sportEventRepository.save(sportEvent);
-        log.info("SportEvent with id {} updated successfully with dto: {}", id, sportEventCreateEditDto);
+        try {
+            SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
+            Arena arena = arenaService.findArenaById(arenaId);
+            sportEvent.setId(id);
+            sportEvent.setArena(arena);
+            sportEventRepository.save(sportEvent);
+            log.info("SportEvent with id {} updated successfully with dto: {}", id, sportEventCreateEditDto);
+        } catch (DataAccessException e){
+            log.error("Failed to update SportEvent {} with dto: {}", id, sportEventCreateEditDto);
+            throw new DaoCrudException(e);
+        }
     }
 
     /**
@@ -128,8 +140,13 @@ public class SportEventService {
      * @param id the ID of the event to delete
      */
     public void deleteSportEvent(Long id) {
-        sportEventRepository.deleteById(id);
-        log.info("SportEvent with id {} deleted successfully.", id);
+        try {
+            sportEventRepository.deleteById(id);
+            log.info("SportEvent with id {} deleted successfully.", id);
+        } catch (DataAccessException e){
+            log.error("Failed to delete SportEvent with id {}", id);
+            throw new DaoCrudException(e);
+        }
     }
 
 }

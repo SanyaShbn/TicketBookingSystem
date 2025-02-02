@@ -106,13 +106,11 @@
           <div><fmt:message key="sport_event.arena"/>: ${sport_event.arena.name}</div>
           <div><fmt:message key="sport_event.city"/>: ${sport_event.arena.city}</div>
           <form action="${pageContext.request.contextPath}/admin/sport_events/${sport_event.id}/update" method="get" style="display:inline;">
-            <input type="hidden" name="id" value="${sport_event.id}"/>
             <button type="submit"><fmt:message key="button.update"/></button>
           </form>
           <form action="${pageContext.request.contextPath}/admin/sport_events/${sport_event.id}/delete?<%= request.getQueryString() %>"
                 method="post" style="display:inline;">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-            <input type="hidden" name="id" value="${sport_event.id}"/>
             <button type="submit"><fmt:message key="button.delete"/></button>
           </form>
         </div>

@@ -9,6 +9,7 @@ import com.example.ticketbookingsystem.entity.Seat;
 import com.example.ticketbookingsystem.entity.SportEvent;
 import com.example.ticketbookingsystem.entity.Ticket;
 import com.example.ticketbookingsystem.entity.TicketStatus;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.mapper.seat_mapper.SeatReadMapper;
 import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventReadMapper;
 import com.example.ticketbookingsystem.mapper.ticket_mapper.TicketCreateEditMapper;
@@ -17,6 +18,7 @@ import com.example.ticketbookingsystem.repository.TicketRepository;
 import com.example.ticketbookingsystem.utils.SortUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -109,16 +111,21 @@ public class TicketService {
      * @param seatId the ID of the seat to save ticket for
      */
     public void createTicket(TicketCreateEditDto ticketCreateEditDto, Long eventId, Long seatId) {
-        Ticket ticket = ticketCreateEditMapper.toEntity(ticketCreateEditDto);
-        SportEvent sportEvent = getSportEventById(eventId);
-        Seat seat = getSeatById(seatId);
+        try {
+            Ticket ticket = ticketCreateEditMapper.toEntity(ticketCreateEditDto);
+            SportEvent sportEvent = getSportEventById(eventId);
+            Seat seat = getSeatById(seatId);
 
-        ticket.setStatus(TicketStatus.AVAILABLE);
-        ticket.setSportEvent(sportEvent);
-        ticket.setSeat(seat);
+            ticket.setStatus(TicketStatus.AVAILABLE);
+            ticket.setSportEvent(sportEvent);
+            ticket.setSeat(seat);
 
-        ticketRepository.save(ticket);
-        log.info("Ticket created successfully with dto: {}", ticketCreateEditDto);
+            ticketRepository.save(ticket);
+            log.info("Ticket created successfully with dto: {}", ticketCreateEditDto);
+        } catch (DataAccessException e){
+            log.error("Failed to create Ticket with dto: {}", ticketCreateEditDto);
+            throw new DaoCrudException(e);
+        }
     }
 
     /**
@@ -130,16 +137,21 @@ public class TicketService {
      * @param seatId the ID of the seat to save ticket for
      */
     public void updateTicket(Long id, TicketCreateEditDto ticketCreateEditDto, Long eventId, Long seatId) {
-        Ticket ticket = ticketCreateEditMapper.toEntity(ticketCreateEditDto);
-        SportEvent sportEvent = getSportEventById(eventId);
-        Seat seat = getSeatById(seatId);
+        try {
+            Ticket ticket = ticketCreateEditMapper.toEntity(ticketCreateEditDto);
+            SportEvent sportEvent = getSportEventById(eventId);
+            Seat seat = getSeatById(seatId);
 
-        ticket.setId(id);
-        ticket.setSportEvent(sportEvent);
-        ticket.setSeat(seat);
+            ticket.setId(id);
+            ticket.setSportEvent(sportEvent);
+            ticket.setSeat(seat);
 
-        ticketRepository.save(ticket);
-        log.info("Ticket updated successfully with dto: {}", ticketCreateEditDto);
+            ticketRepository.save(ticket);
+            log.info("Ticket updated successfully with dto: {}", ticketCreateEditDto);
+        } catch (DataAccessException e){
+            log.error("Failed to update Ticket {} with dto: {}", id, ticketCreateEditDto);
+            throw new DaoCrudException(e);
+        }
     }
 
     /**
@@ -159,8 +171,13 @@ public class TicketService {
      * @param id the ID of the ticket to delete
      */
     public void deleteTicket(Long id) {
-        ticketRepository.deleteById(id);
-        log.info("Ticket with id {} deleted successfully.", id);
+        try {
+            ticketRepository.deleteById(id);
+            log.info("Ticket with id {} deleted successfully.", id);
+        } catch (DataAccessException e){
+            log.error("Failed to delete Ticket with id {}", id);
+            throw new DaoCrudException(e);
+        }
     }
 
     private SportEvent getSportEventById(Long eventId) {

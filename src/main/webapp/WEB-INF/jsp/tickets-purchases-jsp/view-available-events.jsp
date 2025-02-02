@@ -30,8 +30,6 @@
         <button type="button" onclick="toggleFilterForm()"><fmt:message key="setup.filter.button" /></button>
         <form action="${pageContext.request.contextPath}/view_available_events" method="get">
 
-            <input type="hidden" id="csrfToken" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
             <div class="form-item">
                 <label for="startDate"><fmt:message key="sport.event.startDate"/></label>
                 <input type="datetime-local" step="60" id="startDate" name="startDate" value="${requestScope.filter.startDate()}">

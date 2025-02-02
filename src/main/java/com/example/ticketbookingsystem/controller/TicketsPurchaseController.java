@@ -48,7 +48,7 @@ public class TicketsPurchaseController {
         if (sufficientFunds) {
             try {
                 purchasedTicketsService.savePurchasedTickets(ticketIds, user.getId());
-                return "redirect:/purchasedTickets?userId=" + user.getId();
+                return "redirect:/purchasedTickets";
             } catch (DaoCrudException e) {
                 handlePurchaseError(model, "Ошибка! Покупка выбранных билетов уже была осуществлена");
                 return "tickets-purchases-jsp/purchase";

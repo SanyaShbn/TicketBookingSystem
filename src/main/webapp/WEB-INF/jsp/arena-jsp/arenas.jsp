@@ -52,7 +52,7 @@
                 </select>
             </div>
             <div>
-                <label for="displayPage"><fmt:message key="page.current"/>:
+                <label for="page"><fmt:message key="page.current"/>:
                     <input id="displayPage" type="number" value="${requestScope.arenas.metadata.page + 1}">
                     <input id="page" type="hidden" name="page" value="${requestScope.arenas.metadata.page}">
                 </label>
