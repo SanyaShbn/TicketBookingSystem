@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,34 +41,33 @@ public class SectorController {
     }
 
     @GetMapping("/create")
-    public String showCreateSectorForm(@RequestParam("arenaId") Long arenaId, Model model) {
+    public String showCreateSectorForm(@RequestParam("arenaId") Long arenaId,
+                                       @ModelAttribute("sector") SectorCreateEditDto sectorCreateEditDto,
+                                       Model model) {
         model.addAttribute("arenaId", arenaId);
+        if (!model.containsAttribute("sector")) {
+            model.addAttribute("sector", SectorCreateEditDto.builder().build());
+        }
         return "sectors-jsp/create-sector";
     }
 
     @PostMapping("/create")
     public String createSector(@RequestParam("arenaId") Long arenaId,
-                               @ModelAttribute SectorCreateEditDto sectorCreateEditDto,
+                               @ModelAttribute @Validated SectorCreateEditDto sectorCreateEditDto,
                                BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes,
-                               Model model) {
+                               RedirectAttributes redirectAttributes) {
         try {
             if(bindingResult.hasErrors()){
                 redirectAttributes.addFlashAttribute("sector", sectorCreateEditDto);
                 redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-                redirectAttributes.addAttribute("arenaId", arenaId);
-                return "redirect:/admin/sectors/create";
+                return "redirect:/admin/sectors/create?arenaId=" + arenaId;
             }
             log.info("Creating new sector with details: {}", sectorCreateEditDto);
             sectorService.createSector(sectorCreateEditDto, arenaId);
             return "redirect:/admin/sectors?arenaId=" + arenaId;
-        } catch (NumberFormatException e) {
-            log.error("Number format exception occurred: {}", e.getMessage());
-            handleNumberFormatException(model);
-            return "/sectors-jsp/create-sector";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating sector: {}", e.getMessage());
-            return handleCreateSectorException(model, e);
+            return handleCreateSectorException(arenaId, sectorCreateEditDto, redirectAttributes, e);
         }
     }
 
@@ -87,19 +87,20 @@ public class SectorController {
     @PostMapping("/{id}/update")
     public String updateSector(@RequestParam("arenaId") Long arenaId,
                                @PathVariable("id") Long id,
-                               @ModelAttribute SectorCreateEditDto sectorCreateEditDto,
-                               Model model) {
+                               @ModelAttribute @Validated SectorCreateEditDto sectorCreateEditDto,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) {
         try {
+            if(bindingResult.hasErrors()){
+                redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+                return "redirect:/admin/sectors/" + id + "/update?arenaId=" + arenaId;
+            }
             log.info("Updating sector {} with details: {}", id, sectorCreateEditDto);
             sectorService.updateSector(id, sectorCreateEditDto, arenaId);
             return "redirect:/admin/sectors?arenaId=" + arenaId;
-        } catch (NumberFormatException e) {
-            log.error("Number format exception occurred: {}", e.getMessage());
-            handleNumberFormatException(model);
-            return "sectors-jsp/update-sector";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating sector: {}", e.getMessage());
-            return handleUpdateSectorException(model, e);
+            return handleUpdateSectorException(id, arenaId, e, redirectAttributes);
         }
     }
 
@@ -122,25 +123,25 @@ public class SectorController {
         }
     }
 
-    private void handleNumberFormatException(Model model) {
-        ValidationResult validationResult = new ValidationResult();
-        validationResult.add(Error.of("invalid.number.format",
-                "Проверьте корректность ввода данных!"));
-        model.addAttribute("errors", validationResult.getErrors());
-    }
-
-    private String handleCreateSectorException(Model model, DaoCrudException e) {
+    private String handleCreateSectorException(Long arenaId,
+                                               SectorCreateEditDto sectorCreateEditDto,
+                                               RedirectAttributes redirectAttributes,
+                                               DaoCrudException e) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
-        model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return "sectors-jsp/create-sector";
+        redirectAttributes.addFlashAttribute("sector", sectorCreateEditDto);
+        redirectAttributes.addFlashAttribute("errors", sqlExceptionResult.getErrors());
+        return "redirect:/admin/sectors/create?arenaId=" + arenaId;
     }
 
-    private String handleUpdateSectorException(Model model, DaoCrudException e) {
+    private String handleUpdateSectorException(Long id,
+                                               Long arenaId,
+                                               DaoCrudException e,
+                                               RedirectAttributes redirectAttributes) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
-        model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return "sectors-jsp/update-sector";
+        redirectAttributes.addFlashAttribute("errors", sqlExceptionResult.getErrors());
+        return "redirect:/admin/sectors/" + id + "/update?arenaId=" + arenaId;
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {

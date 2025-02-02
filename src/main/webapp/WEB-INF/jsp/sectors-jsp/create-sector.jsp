@@ -20,11 +20,11 @@
         <input type="hidden" name="arenaId" value="${arenaId}">
 
         <label for="sectorName"><fmt:message key="sector.sectorName" />:</label>
-        <input type="text" id="sectorName" name="sectorName" required>
+        <input type="text" id="sectorName" name="sectorName" value="${sector.sectorName}" required>
         <label for="maxRowsNumb"><fmt:message key="sector.maxRowsNumb" />:</label>
-        <input type="text" id="maxRowsNumb" name="maxRowsNumb" required>
+        <input type="text" id="maxRowsNumb" name="maxRowsNumb" value="${sector.maxRowsNumb}" required>
         <label for="maxSeatsNumb"><fmt:message key="sector.maxSeatsNumb" />:</label>
-        <input type="text" id="maxSeatsNumb" name="maxSeatsNumb" required>
+        <input type="text" id="maxSeatsNumb" name="maxSeatsNumb" value="${sector.maxSeatsNumb}" required>
         <div class="button-group">
             <button type="button"
                     onclick="location.href='${pageContext.request.contextPath}/admin/sectors?<%= request.getQueryString() %>';">

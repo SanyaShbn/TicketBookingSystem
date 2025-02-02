@@ -2,6 +2,7 @@ package com.example.ticketbookingsystem.controller;
 
 import com.example.ticketbookingsystem.dto.*;
 import com.example.ticketbookingsystem.dto.seat_dto.SeatReadDto;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorCreateEditDto;
 import com.example.ticketbookingsystem.dto.ticket_dto.TicketCreateEditDto;
 import com.example.ticketbookingsystem.dto.ticket_dto.TicketFilter;
 import com.example.ticketbookingsystem.dto.ticket_dto.TicketReadDto;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -46,17 +48,21 @@ public class TicketController {
 
     @GetMapping("/create")
     public String showCreateTicketForm(@RequestParam("eventId") Long eventId,
+                                       @ModelAttribute("ticket") TicketCreateEditDto ticketCreateEditDto,
                                        Model model) {
         List<SeatReadDto> seatReadDtoList = seatService.findByEventIdWithNoTickets(eventId);
         model.addAttribute("eventId", eventId);
         model.addAttribute("seats", seatReadDtoList);
+        if (!model.containsAttribute("sector")) {
+            model.addAttribute("sector", SectorCreateEditDto.builder().build());
+        }
         return "tickets-jsp/create-ticket";
     }
 
     @PostMapping("/create")
     public String createTicket(@RequestParam("eventId") Long eventId,
                                @RequestParam("seatId") Long seatId,
-                               @ModelAttribute TicketCreateEditDto ticketCreateEditDto,
+                               @ModelAttribute @Validated TicketCreateEditDto ticketCreateEditDto,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes,
                                Model model) {
@@ -64,9 +70,7 @@ public class TicketController {
             if(bindingResult.hasErrors()){
                 redirectAttributes.addFlashAttribute("ticket", ticketCreateEditDto);
                 redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-                redirectAttributes.addAttribute("eventId", eventId);
-                redirectAttributes.addAttribute("seatId", seatId);
-                return "redirect:/admin/tickets/create";
+                return "redirect:/admin/tickets/create?eventId=" + eventId + "&seatId=" + seatId;
             }
             log.info("Creating new ticket with details: {}", ticketCreateEditDto);
             ticketService.createTicket(ticketCreateEditDto, eventId, seatId);
@@ -99,9 +103,15 @@ public class TicketController {
     public String updateTicket(@RequestParam("eventId") Long eventId,
                                @RequestParam("seatId") Long seatId,
                                @PathVariable("id") Long id,
-                               @ModelAttribute TicketCreateEditDto ticketCreateEditDto,
+                               @ModelAttribute @Validated TicketCreateEditDto ticketCreateEditDto,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes,
                                Model model) {
         try {
+            if(bindingResult.hasErrors()){
+                redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+                return "redirect:/admin/tickets/" + id + "/update?eventId=" + eventId + "&seatId=" + seatId;
+            }
             log.info("Updating ticket {} with details: {}", id, ticketCreateEditDto);
             ticketService.updateTicket(id, ticketCreateEditDto, eventId, seatId);
             return "redirect:/admin/tickets?eventId=" + eventId;

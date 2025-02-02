@@ -17,9 +17,10 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
         <label for="eventName"><fmt:message key="sport_event.eventName" />:</label>
-        <input type="text" id="eventName" name="eventName" required>
+        <input type="text" id="eventName" name="eventName" value="${sport_event.eventName}" required>
         <label for="eventDateTime"><fmt:message key="sport_event.eventDateTime" />:</label>
-        <input type="datetime-local" step="60" id="eventDateTime" name="eventDateTime" required>
+        <input type="datetime-local" step="60" id="eventDateTime" name="eventDateTime"
+               value="${sport_event.eventDateTime}" required>
 
         <label for="arenaId"><fmt:message key="sport_event.arena" />:</label>
         <select id="arenaId" name="arenaId" class="scrollable-dropdown" required>

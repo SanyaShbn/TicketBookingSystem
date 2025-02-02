@@ -21,9 +21,9 @@
         <input type="hidden" name="sectorId" value="${sectorId}">
 
         <label for="rowNumber"><fmt:message key="row.rowNumber" />:</label>
-        <input type="text" id="rowNumber" name="rowNumber" required>
+        <input type="text" id="rowNumber" name="rowNumber" value="${row.rowNumber}" required>
         <label for="seatsNumb"><fmt:message key="row.seatsNumb" />:</label>
-        <input type="text" id="seatsNumb" name="seatsNumb" required>
+        <input type="text" id="seatsNumb" name="seatsNumb" value="${row.seatsNumb}" required>
         <div class="button-group">
             <button type="button"
                     onclick="location.href='${pageContext.request.contextPath}/admin/rows?<%= request.getQueryString() %>';">

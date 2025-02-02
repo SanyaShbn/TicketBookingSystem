@@ -135,6 +135,7 @@ public class RowService {
             rowRepository.updateSectorBeforeRowUpdate(sectorId,
                     rowBeforeUpdate.get().getSeatsNumb(), row.getSeatsNumb());
             rowRepository.save(row);
+            rowRepository.flush();
             log.info("Row with id {} updated successfully with dto: {}", id, rowCreateEditDto);
         } catch (DataAccessException e){
             log.error("Failed to update row {} with dto: {}", id, rowCreateEditDto);
@@ -155,6 +156,7 @@ public class RowService {
                 rowRepository.updateSectorAfterRowDelete(row.get().getSector().getId(),
                         row.get().getSeatsNumb());
                 rowRepository.delete(row.get());
+                rowRepository.flush();
                 log.info("Row with id {} deleted successfully.", id);
             } else {
                 log.error("Failed to find row with provided id: {}", id);

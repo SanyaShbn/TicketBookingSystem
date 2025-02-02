@@ -1,7 +1,7 @@
 package com.example.ticketbookingsystem.dto.arena_dto;
 
-import com.example.ticketbookingsystem.validator.CapacityCheck;
-import com.example.ticketbookingsystem.validator.LocalizedNotBlank;
+import com.example.ticketbookingsystem.validator.custom_annotations.CapacityCheck;
+import com.example.ticketbookingsystem.validator.custom_annotations.LocalizedNotBlank;
 import lombok.Builder;
 import lombok.Value;
 

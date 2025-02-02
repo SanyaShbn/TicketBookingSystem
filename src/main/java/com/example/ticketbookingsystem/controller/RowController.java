@@ -14,7 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -40,28 +43,34 @@ public class RowController {
     @GetMapping("/create")
     public String showCreateRowForm(@RequestParam("arenaId") Long arenaId,
                                     @RequestParam("sectorId") Long sectorId,
+                                    @ModelAttribute("row") RowCreateEditDto rowCreateEditDto,
                                     Model model) {
         model.addAttribute("arenaId", arenaId);
         model.addAttribute("sectorId", sectorId);
+        if (!model.containsAttribute("row")) {
+            model.addAttribute("row", RowCreateEditDto.builder().build());
+        }
         return "rows-jsp/create-row";
     }
 
     @PostMapping("/create")
     public String createRow(@RequestParam("arenaId") Long arenaId,
                             @RequestParam("sectorId") Long sectorId,
-                            @ModelAttribute RowCreateEditDto rowCreateEditDto,
-                            Model model) {
+                            @ModelAttribute @Validated RowCreateEditDto rowCreateEditDto,
+                            BindingResult bindingResult,
+                            RedirectAttributes redirectAttributes) {
         try {
+            if(bindingResult.hasErrors()){
+                redirectAttributes.addFlashAttribute("row", rowCreateEditDto);
+                redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+                return "redirect:/admin/rows/create?arenaId=" + arenaId + "&sectorId=" + sectorId;
+            }
             log.info("Creating new row with details: {}", rowCreateEditDto);
             rowService.createRow(rowCreateEditDto, sectorId);
             return "redirect:/admin/rows?arenaId=" + arenaId + "&sectorId=" + sectorId;
-        } catch (NumberFormatException e) {
-            log.error("Number format exception occurred: {}", e.getMessage());
-            handleNumberFormatException(model);
-            return "rows-jsp/create-row";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating sector: {}", e.getMessage());
-            return handleCreateRowException(model, e);
+            return handleCreateRowException(arenaId, sectorId, rowCreateEditDto, redirectAttributes, e);
         }
     }
 
@@ -84,19 +93,20 @@ public class RowController {
     public String updateRow(@RequestParam("arenaId") Long arenaId,
                             @RequestParam("sectorId") Long sectorId,
                             @PathVariable("id") Long id,
-                            @ModelAttribute RowCreateEditDto rowCreateEditDto,
-                            Model model) {
+                            @ModelAttribute @Validated RowCreateEditDto rowCreateEditDto,
+                            BindingResult bindingResult,
+                            RedirectAttributes redirectAttributes) {
         try {
+            if(bindingResult.hasErrors()){
+                redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+                return "redirect:/admin/rows/" + id + "/update?arenaId=" + arenaId + "&sectorId=" + sectorId;
+            }
             log.info("Updating row {} with details: {}", id, rowCreateEditDto);
             rowService.updateRow(id, rowCreateEditDto, sectorId);
             return "redirect:/admin/rows?arenaId=" + arenaId + "&sectorId=" + sectorId;
-        } catch (NumberFormatException e) {
-            log.error("Number format exception occurred: {}", e.getMessage());
-            handleNumberFormatException(model);
-            return "rows-jsp/update-row";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating row: {}", e.getMessage());
-            return handleUpdateRowException(model, e);
+            return handleUpdateRowException(id, arenaId, sectorId, e, redirectAttributes);
         }
     }
 
@@ -120,25 +130,27 @@ public class RowController {
         }
     }
 
-    private void handleNumberFormatException(Model model) {
-        ValidationResult validationResult = new ValidationResult();
-        validationResult.add(Error.of("invalid.number.format",
-                "Проверьте корректность ввода данных!"));
-        model.addAttribute("errors", validationResult.getErrors());
-    }
-
-    private String handleCreateRowException(Model model, DaoCrudException e) {
+    private String handleCreateRowException(Long arenaId,
+                                            Long sectorId,
+                                            RowCreateEditDto rowCreateEditDto,
+                                            RedirectAttributes redirectAttributes,
+                                            DaoCrudException e) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
-        model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return "rows-jsp/create-row";
+        redirectAttributes.addFlashAttribute("row", rowCreateEditDto);
+        redirectAttributes.addFlashAttribute("errors", sqlExceptionResult.getErrors());
+        return "redirect:/admin/rows/create?arenaId=" + arenaId + "&sectorId=" + sectorId;
     }
 
-    private String handleUpdateRowException(Model model, DaoCrudException e) {
+    private String handleUpdateRowException(Long id,
+                                            Long arenaId,
+                                            Long sectorId,
+                                            DaoCrudException e,
+                                            RedirectAttributes redirectAttributes) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
-        model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return "rows-jsp/update-row";
+        redirectAttributes.addFlashAttribute("errors", sqlExceptionResult.getErrors());
+        return "redirect:/admin/rows/" + id + "/update?arenaId=" + arenaId + "&sectorId=" + sectorId;
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {

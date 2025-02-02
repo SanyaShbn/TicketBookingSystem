@@ -1,7 +1,8 @@
 package com.example.ticketbookingsystem.dto;
 
-import com.example.ticketbookingsystem.validator.PasswordMatches;
-import com.example.ticketbookingsystem.validator.ValidEmail;
+import com.example.ticketbookingsystem.validator.custom_annotations.LocalizedNotBlank;
+import com.example.ticketbookingsystem.validator.custom_annotations.PasswordMatches;
+import com.example.ticketbookingsystem.validator.custom_annotations.ValidEmail;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -17,14 +18,13 @@ public class UserDto {
     Long id;
 
     @ValidEmail
-    @NotNull
-    @NotEmpty
+    @LocalizedNotBlank
     String email;
 
-    @NotNull
-    @NotEmpty
+    @LocalizedNotBlank
     String password;
 
+    @LocalizedNotBlank
     String confirmPassword;
 
     String role;

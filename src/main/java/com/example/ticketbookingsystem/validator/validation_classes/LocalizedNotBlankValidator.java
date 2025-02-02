@@ -1,5 +1,6 @@
-package com.example.ticketbookingsystem.validator;
+package com.example.ticketbookingsystem.validator.validation_classes;
 
+import com.example.ticketbookingsystem.validator.custom_annotations.LocalizedNotBlank;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;

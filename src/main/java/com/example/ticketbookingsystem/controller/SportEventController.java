@@ -1,6 +1,7 @@
 package com.example.ticketbookingsystem.controller;
 
 import com.example.ticketbookingsystem.dto.*;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.dto.arena_dto.ArenaReadDto;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventCreateEditDto;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventFilter;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -45,15 +47,19 @@ public class SportEventController {
     }
 
     @GetMapping("/create")
-    public String showCreateSportEventForm(Model model) {
+    public String showCreateSportEventForm(@ModelAttribute("sport_event") SportEventCreateEditDto sportEventCreateEditDto,
+                                           Model model) {
         List<ArenaReadDto> arenaReadDtoList = arenaService.findAll();
         model.addAttribute("arenas", arenaReadDtoList);
+        if (!model.containsAttribute("sport_event")) {
+            model.addAttribute("sport_event", ArenaCreateEditDto.builder().build());
+        }
         return "sport-events-jsp/create-sport-event";
     }
 
     @PostMapping("/create")
     public String createSportEvent(@RequestParam("arenaId") Long arenaId,
-                                   @ModelAttribute SportEventCreateEditDto sportEventCreateEditDto,
+                                   @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto,
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes,
                                    Model model) {
@@ -72,7 +78,7 @@ public class SportEventController {
             return "sport-events-jsp/create-sport-event";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while creating sporting event: {}", e.getMessage());
-            return handleCreateSportEventException(model, e);
+            return handleCreateSportEventException(sportEventCreateEditDto, redirectAttributes, e);
         }
     }
 
@@ -91,13 +97,12 @@ public class SportEventController {
     @PostMapping("/{id}/update")
     public String updateSportEvent(@RequestParam("arenaId") Long arenaId,
                                    @PathVariable("id") Long id,
-                                   @ModelAttribute SportEventCreateEditDto sportEventCreateEditDto,
+                                   @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto,
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes,
                                    Model model) {
         try {
             if(bindingResult.hasErrors()){
-                redirectAttributes.addFlashAttribute("sport_event", sportEventCreateEditDto);
                 redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
                 return "redirect:/admin/sport_events/" + id + "/update";
             }
@@ -110,7 +115,7 @@ public class SportEventController {
             return "sport-events-jsp/update-sport-event";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating sporting event: {}", e.getMessage());
-            return handleUpdateSportEventException(model, e);
+            return handleUpdateSportEventException(id, e, redirectAttributes);
         }
     }
 
@@ -138,18 +143,23 @@ public class SportEventController {
         model.addAttribute("errors", validationResult.getErrors());
     }
 
-    private String handleCreateSportEventException(Model model, DaoCrudException e) {
+    private String handleCreateSportEventException(SportEventCreateEditDto sportEventCreateEditDto,
+                                                   RedirectAttributes redirectAttributes,
+                                                   DaoCrudException e) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
-        model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return "sport-events-jsp/create-sport-event";
+        redirectAttributes.addFlashAttribute("sport_event", sportEventCreateEditDto);
+        redirectAttributes.addFlashAttribute("errors", sqlExceptionResult.getErrors());
+        return "redirect:/admin/sport_events/create";
     }
 
-    private String handleUpdateSportEventException(Model model, DaoCrudException e) {
+    private String handleUpdateSportEventException(Long id,
+                                                   DaoCrudException e,
+                                                   RedirectAttributes redirectAttributes) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifySQLException(e.getMessage(), sqlExceptionResult);
-        model.addAttribute("errors", sqlExceptionResult.getErrors());
-        return "sport-events-jsp/update-sport-event";
+        redirectAttributes.addFlashAttribute("errors", sqlExceptionResult.getErrors());
+        return "redirect:/admin/sport_events/" + id + "/update";
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {

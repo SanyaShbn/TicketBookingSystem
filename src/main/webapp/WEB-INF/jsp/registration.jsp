@@ -18,15 +18,15 @@
 
         <div class="form-group">
             <label for="email"><fmt:message key="email"/>:</label>
-            <input type="email" name="email" id="email" required>
+            <input type="email" name="email" id="email" value="${user.email}" required>
         </div>
         <div class="form-group">
             <label for="password"><fmt:message key="password"/>:</label>
-            <input type="password" name="password" id="password" required>
+            <input type="password" name="password" id="password" value="${user.password}" required>
         </div>
         <div class="form-group">
             <label for="confirmPassword"><fmt:message key="confirm-password"/>:</label>
-            <input type="password" name="confirmPassword" id="confirmPassword" required>
+            <input type="password" name="confirmPassword" id="confirmPassword" value="${user.confirmPassword}" required>
         </div>
         <input type="submit" value="<fmt:message key='register'/>">
         <a href="${pageContext.request.contextPath}/login">
@@ -34,12 +34,10 @@
         </a>
     </form>
 
-    <c:if test="${not empty requestScope.errors}">
+    <c:if test="${not empty error}">
         <div class="error">
-            <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.defaultMessage}</span>
-                <br/>
-            </c:forEach>
+            <span>${error}</span>
+            <br/>
         </div>
     </c:if>
 

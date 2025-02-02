@@ -144,6 +144,7 @@ public class SectorService {
             sectorRepository.updateArenaBeforeSectorUpdate(arenaId,
                     sectorBeforeUpdate.get().getMaxSeatsNumb(), sector.getMaxSeatsNumb());
             sectorRepository.save(sector);
+            sectorRepository.flush();
             log.info("Sector with id {} updated successfully with dto: {}", id, sectorCreateEditDto);
         } catch (DataAccessException e){
             log.error("Failed to update sector {} with dto: {}", id, sectorCreateEditDto);
@@ -164,6 +165,7 @@ public class SectorService {
                 sectorRepository.updateArenaAfterSectorDelete(sector.get().getArena().getId(),
                         sector.get().getMaxSeatsNumb());
                 sectorRepository.delete(sector.get());
+                sectorRepository.flush();
                 log.info("Sector with id {} deleted successfully.", id);
             } else {
                 log.error("Failed to find sector with provided id: {}", id);

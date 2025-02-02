@@ -19,7 +19,7 @@
         <input type="hidden" name="eventId" value="${eventId}">
 
         <label for="price"><fmt:message key="ticket.price" />:</label>
-        <input type="text" id="price" name="price" required>
+        <input type="text" id="price" name="price" value="${ticket.price}" required>
 
         <label for="seatId"><fmt:message key="ticket.seat.numb" />:</label>
         <select id="seatId" name="seatId" class="scrollable-dropdown" required>

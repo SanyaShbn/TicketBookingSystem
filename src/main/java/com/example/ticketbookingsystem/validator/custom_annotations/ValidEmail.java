@@ -1,5 +1,6 @@
-package com.example.ticketbookingsystem.validator;
+package com.example.ticketbookingsystem.validator.custom_annotations;
 
+import com.example.ticketbookingsystem.validator.validation_classes.EmailValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -15,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = EmailValidator.class)
 @Documented
 public @interface ValidEmail {
-    String message() default "Invalid email";
+    String message() default "{email.validation.fail}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

@@ -1,5 +1,6 @@
-package com.example.ticketbookingsystem.validator;
+package com.example.ticketbookingsystem.validator.custom_annotations;
 
+import com.example.ticketbookingsystem.validator.validation_classes.PasswordMatchesValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -15,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = PasswordMatchesValidator.class)
 @Documented
 public @interface PasswordMatches {
-    String message() default "Passwords don't match";
+    String message() default "{password.match.fail}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

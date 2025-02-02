@@ -82,8 +82,7 @@ public class ArenaController {
     public String updateArena(@PathVariable("id") Long id,
                               @ModelAttribute @Validated ArenaCreateEditDto arenaCreateEditDto,
                               BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes,
-                              Model model) {
+                              RedirectAttributes redirectAttributes) {
         try {
             if(bindingResult.hasErrors()){
                 redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
@@ -94,7 +93,7 @@ public class ArenaController {
             return "redirect:/admin/arenas";
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while updating arena: {}", e.getMessage());
-            return handleUpdateArenaException(id, model, e, redirectAttributes);
+            return handleUpdateArenaException(id, e, redirectAttributes);
         }
     }
 
@@ -126,12 +125,10 @@ public class ArenaController {
     }
 
     private String handleUpdateArenaException(Long id,
-                                              Model model,
                                               DaoCrudException e,
                                               RedirectAttributes redirectAttributes) {
         ValidationResult sqlExceptionResult = new ValidationResult();
         specifyDataAccessException(e.getMessage(), sqlExceptionResult);
-        model.addAttribute("errors", sqlExceptionResult.getErrors());
         redirectAttributes.addFlashAttribute("errors", sqlExceptionResult.getErrors());
         return "redirect:/admin/arenas/" + id + "/update";
     }
