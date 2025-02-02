@@ -7,6 +7,10 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 
+/**
+ * SportEventCreateEditDto - Data Transfer Object representing information about a sport event
+ * when creating or updating sport event.
+ */
 @Value
 @Builder
 public class SportEventCreateEditDto {

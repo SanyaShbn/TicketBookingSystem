@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repository for managing PurchasedTicket entities.
+ */
 @Repository
 public interface PurchasedTicketRepository extends JpaRepository<PurchasedTicket, Long> {
 

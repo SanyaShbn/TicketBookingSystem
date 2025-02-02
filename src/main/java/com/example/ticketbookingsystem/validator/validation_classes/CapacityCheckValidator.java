@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
+/**
+ * Validator class for checking the capacity constraints of an arena.
+ */
 @Component
 @RequiredArgsConstructor
 public class CapacityCheckValidator implements ConstraintValidator<CapacityCheck, Integer> {

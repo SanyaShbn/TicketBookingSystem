@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repository for managing Seat entities.
+ */
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Long> {
 

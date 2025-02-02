@@ -6,6 +6,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapper interface for converting between User entities and UserDto.
+ */
 @Mapper(componentModel = "spring", uses = {PasswordMapper.class, RoleMapper.class})
 public interface UserMapper {
 

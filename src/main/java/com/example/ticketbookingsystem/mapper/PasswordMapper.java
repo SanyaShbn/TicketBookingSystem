@@ -4,6 +4,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mindrot.jbcrypt.BCrypt;
 
+/**
+ * Mapper class for password hashing in the Ticket Booking System application.
+ */
 @Mapper(componentModel = "spring")
 public class PasswordMapper {
 

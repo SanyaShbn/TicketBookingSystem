@@ -4,6 +4,9 @@ import com.example.ticketbookingsystem.validator.custom_annotations.ValidSectorN
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+/**
+ * Validator class for managing sector name validity.
+ */
 public class SectorNameValidator implements ConstraintValidator<ValidSectorName, String> {
 
     @Override

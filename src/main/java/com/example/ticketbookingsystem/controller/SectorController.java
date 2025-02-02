@@ -21,6 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
+/**
+ * Controller class for managing sectors in the Ticket Booking System application.
+ */
 @Controller
 @RequestMapping("/admin/sectors")
 @RequiredArgsConstructor
@@ -29,6 +32,15 @@ public class SectorController {
 
     private final SectorService sectorService;
 
+    /**
+     * Handles GET requests to retrieve and display all sectors.
+     *
+     * @param arenaId The ID of the arena to which the sectors belong.
+     * @param sectorFilter The filter criteria for sectors.
+     * @param pageable The pagination information.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping
     public String findAllSectors(@RequestParam("arenaId") Long arenaId,
                                  SectorFilter sectorFilter,
@@ -40,6 +52,14 @@ public class SectorController {
         return "sectors-jsp/sectors";
     }
 
+    /**
+     * Handles GET requests to show the form for creating a new sector.
+     *
+     * @param arenaId The ID of the arena to which the sector belongs.
+     * @param sectorCreateEditDto The sector data transfer object.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/create")
     public String showCreateSectorForm(@RequestParam("arenaId") Long arenaId,
                                        @ModelAttribute("sector") SectorCreateEditDto sectorCreateEditDto,
@@ -51,6 +71,15 @@ public class SectorController {
         return "sectors-jsp/create-sector";
     }
 
+    /**
+     * Handles POST requests to create a new sector.
+     *
+     * @param arenaId The ID of the arena to which the sector belongs.
+     * @param sectorCreateEditDto The sector data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param redirectAttributes The redirect attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/create")
     public String createSector(@RequestParam("arenaId") Long arenaId,
                                @ModelAttribute @Validated SectorCreateEditDto sectorCreateEditDto,
@@ -71,6 +100,14 @@ public class SectorController {
         }
     }
 
+    /**
+     * Handles GET requests to show the form for updating an existing sector.
+     *
+     * @param arenaId The ID of the arena to which the sector belongs.
+     * @param id The ID of the sector to be updated.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/{id}/update")
     public String showUpdateSectorForm(@RequestParam("arenaId") Long arenaId,
                                        @PathVariable Long id,
@@ -84,6 +121,16 @@ public class SectorController {
         return "redirect:/admin/sectors?arenaId=" + arenaId;
     }
 
+    /**
+     * Handles POST requests to update an existing sector.
+     *
+     * @param arenaId The ID of the arena to which the sector belongs.
+     * @param id The ID of the sector to be updated.
+     * @param sectorCreateEditDto The sector data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param redirectAttributes The redirect attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/{id}/update")
     public String updateSector(@RequestParam("arenaId") Long arenaId,
                                @PathVariable("id") Long id,
@@ -104,6 +151,14 @@ public class SectorController {
         }
     }
 
+    /**
+     * Handles POST requests to delete an existing sector.
+     *
+     * @param arenaId The ID of the arena to which the sector belongs.
+     * @param id The ID of the sector to be deleted.
+     * @param model The model to hold attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/{id}/delete")
     public String deleteSector(@RequestParam("arenaId") Long arenaId,
                               @PathVariable("id") Long id,

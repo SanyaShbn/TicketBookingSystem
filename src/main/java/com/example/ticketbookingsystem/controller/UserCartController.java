@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Controller class for managing user cart in the Ticket Booking System application.
+ */
 @Controller
 @RequestMapping("/user_cart")
 @RequiredArgsConstructor
@@ -26,11 +29,24 @@ public class UserCartController {
 
     private final AuthenticationUtil authenticationUtil;
 
+    /**
+     * Handles GET requests to show the user cart page.
+     *
+     * @return The name of the view to be rendered.
+     */
     @GetMapping
     public String getUserCartPage() {
         return "tickets-purchases-jsp/view-available-tickets";
     }
 
+    /**
+     * Handles POST requests to manage user cart actions such as add, remove, or clear.
+     *
+     * @param request The HTTP request containing parameters.
+     * @param response The HTTP response.
+     * @throws IOException If an input or output exception occurred.
+     * @throws DaoCrudException If a CRUD exception occurred.
+     */
     @PostMapping
     @ResponseBody
     public void handleUserCartRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, DaoCrudException {

@@ -6,6 +6,9 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.time.LocalDateTime;
 
+/**
+ * Validator class for managing sport event date time validation.
+ */
 public class EventDateTimeValidator implements ConstraintValidator<ValidEventDateTime, LocalDateTime> {
     @Override
     public void initialize(ValidEventDateTime constraintAnnotation) {

@@ -25,6 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller class for managing sport events in the Ticket Booking System application.
+ */
 @Controller
 @RequestMapping("/admin/sport_events")
 @RequiredArgsConstructor
@@ -35,6 +38,14 @@ public class SportEventController {
 
     private final ArenaService arenaService;
 
+    /**
+     * Handles GET requests to retrieve and display all sport events.
+     *
+     * @param model The model to hold attributes.
+     * @param sportEventFilter The filter criteria for sport events.
+     * @param pageable The pagination information.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping
     public String findAllSportEvents(Model model, SportEventFilter sportEventFilter, Pageable pageable) {
         List<ArenaReadDto> arenaReadDtoList = arenaService.findAll();
@@ -46,6 +57,13 @@ public class SportEventController {
         return "sport-events-jsp/sport_events";
     }
 
+    /**
+     * Handles GET requests to show the form for creating a new sport event.
+     *
+     * @param sportEventCreateEditDto The sport event data transfer object.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/create")
     public String showCreateSportEventForm(@ModelAttribute("sport_event") SportEventCreateEditDto sportEventCreateEditDto,
                                            Model model) {
@@ -57,6 +75,16 @@ public class SportEventController {
         return "sport-events-jsp/create-sport-event";
     }
 
+    /**
+     * Handles POST requests to create a new sport event.
+     *
+     * @param arenaId The ID of the arena to which the sport event belongs.
+     * @param sportEventCreateEditDto The sport event data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param redirectAttributes The redirect attributes.
+     * @param model The model to hold attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/create")
     public String createSportEvent(@RequestParam("arenaId") Long arenaId,
                                    @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto,
@@ -82,6 +110,13 @@ public class SportEventController {
         }
     }
 
+    /**
+     * Handles GET requests to show the form for updating an existing sport event.
+     *
+     * @param id The ID of the sport event to be updated.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/{id}/update")
     public String showUpdateSportEventForm(@PathVariable Long id, Model model) {
         Optional<SportEventReadDto> sportEventReadDto = sportEventService.findById(id);
@@ -94,6 +129,17 @@ public class SportEventController {
         return "redirect:/admin/sport_events";
     }
 
+    /**
+     * Handles POST requests to update an existing sport event.
+     *
+     * @param arenaId The ID of the arena to which the sport event belongs.
+     * @param id The ID of the sport event to be updated.
+     * @param sportEventCreateEditDto The sport event data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param redirectAttributes The redirect attributes.
+     * @param model The model to hold attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/{id}/update")
     public String updateSportEvent(@RequestParam("arenaId") Long arenaId,
                                    @PathVariable("id") Long id,
@@ -119,6 +165,13 @@ public class SportEventController {
         }
     }
 
+    /**
+     * Handles POST requests to delete an existing sport event.
+     *
+     * @param id The ID of the sport event to be deleted.
+     * @param model The model to hold attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/{id}/delete")
     public String deleteSportEvent(@PathVariable("id") Long id, Model model) {
         try {

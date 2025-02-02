@@ -7,6 +7,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
 
+/**
+ * SectorCreateEditDto - Data Transfer Object representing information about a sector
+ * when creating or updating sector.
+ */
 @Value
 @Builder
 public class SectorCreateEditDto {

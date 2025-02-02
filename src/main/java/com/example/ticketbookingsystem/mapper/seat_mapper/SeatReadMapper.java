@@ -5,6 +5,9 @@ import com.example.ticketbookingsystem.entity.Seat;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapper interface for converting between Seat entities and SeatReadDto.
+ */
 @Mapper(componentModel = "spring")
 public interface SeatReadMapper {
     SeatReadMapper INSTANCE = Mappers.getMapper(SeatReadMapper.class);

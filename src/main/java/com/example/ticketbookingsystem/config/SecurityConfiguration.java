@@ -21,6 +21,11 @@ import java.io.IOException;
 import static com.example.ticketbookingsystem.entity.Role.ADMIN;
 import static com.example.ticketbookingsystem.entity.Role.USER;
 
+/**
+ * Security configuration class for the Ticket Booking System application.
+ * It manages the security settings, including authentication, authorization,
+ * and password encoding.
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -28,16 +33,34 @@ public class SecurityConfiguration {
 
     private final CustomUserDetailsService customUserDetailsService;
 
+    /**
+     * Configures the global authentication manager.
+     *
+     * @param auth The authentication manager builder.
+     * @throws Exception If an error occurs during configuration.
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * Configures the password encoder bean.
+     *
+     * @return A BCryptPasswordEncoder instance.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures the security filter chain.
+     *
+     * @param http The HttpSecurity object to be configured.
+     * @return The SecurityFilterChain instance.
+     * @throws Exception If an error occurs during configuration.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -63,11 +86,20 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+    /**
+     * Configures the authentication success handler bean.
+     *
+     * @return An instance of MyAuthenticationSuccessHandler.
+     */
     @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
         return new MyAuthenticationSuccessHandler();
     }
 
+    /**
+     * Custom authentication success handler that redirects users
+     * based on their roles after successful authentication.
+     */
     public static class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request,

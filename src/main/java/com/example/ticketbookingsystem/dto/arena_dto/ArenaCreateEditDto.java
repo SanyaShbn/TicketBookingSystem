@@ -6,7 +6,8 @@ import lombok.Builder;
 import lombok.Value;
 
 /**
- * ArenaCreateEditDto - Data Transfer Object representing information about an arena when creating or updating arena.
+ * ArenaCreateEditDto - Data Transfer Object representing information about an arena
+ * when creating or updating arena.
  */
 @Value
 @Builder

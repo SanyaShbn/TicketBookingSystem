@@ -17,12 +17,22 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Configuration class for JPA setup in the Ticket Booking System application.
+ * It manages the setup of Entity Manager Factory, Data Source, and Transaction Management.
+ */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.example.ticketbookingsystem.repository")
 @ComponentScan(basePackages = "com.example.ticketbookingsystem")
 public class JpaConfig {
 
+    /**
+     * Configures the EntityManagerFactory bean.
+     *
+     * @param dataSource The data source to be used by the Entity Manager.
+     * @return A LocalContainerEntityManagerFactoryBean instance.
+     */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -35,6 +45,11 @@ public class JpaConfig {
         return em;
     }
 
+    /**
+     * Configures the DataSource bean.
+     *
+     * @return A HikariDataSource instance.
+     */
     @Bean
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
@@ -46,6 +61,12 @@ public class JpaConfig {
         return new HikariDataSource(config);
     }
 
+    /**
+     * Configures the PlatformTransactionManager bean.
+     *
+     * @param emf The EntityManagerFactory to be used by the Transaction Manager.
+     * @return A JpaTransactionManager instance.
+     */
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -54,6 +75,11 @@ public class JpaConfig {
         return transactionManager;
     }
 
+    /**
+     * Defines additional JPA properties.
+     *
+     * @return A Properties instance containing additional JPA properties.
+     */
     Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");

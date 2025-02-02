@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ * Controller class for viewing available tickets for purchase in the Ticket Booking System application.
+ */
 @Controller
 @RequiredArgsConstructor
 public class ViewTicketsForPurchaseController {
@@ -20,6 +23,13 @@ public class ViewTicketsForPurchaseController {
 
     private final SeatService seatService;
 
+    /**
+     * Handles GET requests to find tickets and seats for a given event and display them.
+     *
+     * @param eventId The ID of the event.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/view_available_tickets")
     public String findTicketsForPurchase(@RequestParam("id") Long eventId, Model model) {
         List<SeatReadDto> seats = seatService.findByEventId(eventId);

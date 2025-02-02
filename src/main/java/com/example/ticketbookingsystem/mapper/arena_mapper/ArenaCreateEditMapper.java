@@ -5,6 +5,9 @@ import com.example.ticketbookingsystem.entity.Arena;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapper interface for converting between Arena entities and ArenaCreateEditDto.
+ */
 @Mapper(componentModel = "spring")
 public interface ArenaCreateEditMapper {
     ArenaCreateEditMapper INSTANCE = Mappers.getMapper(ArenaCreateEditMapper.class);

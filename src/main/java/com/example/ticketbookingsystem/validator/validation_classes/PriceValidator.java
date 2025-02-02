@@ -6,6 +6,9 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.math.BigDecimal;
 
+/**
+ * Validator class for managing ticket price validity.
+ */
 public class PriceValidator implements ConstraintValidator<ValidPrice, BigDecimal> {
     @Override
     public void initialize(ValidPrice constraintAnnotation) {

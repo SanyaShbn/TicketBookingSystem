@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
 
+/**
+ * RowCreateEditDto - Data Transfer Object representing information about a row when creating or updating row.
+ */
 @Value
 @Builder
 public class RowCreateEditDto {

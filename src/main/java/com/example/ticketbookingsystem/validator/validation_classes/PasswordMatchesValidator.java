@@ -5,6 +5,9 @@ import com.example.ticketbookingsystem.validator.custom_annotations.PasswordMatc
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+/**
+ * Validator class for managing password matches validation during user registration.
+ */
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, Object> {
 
     @Override

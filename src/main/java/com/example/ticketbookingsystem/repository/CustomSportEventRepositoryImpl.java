@@ -12,11 +12,21 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
+/**
+ * Implementation of CustomSportEventRepository.
+ */
 public class CustomSportEventRepositoryImpl implements CustomSportEventRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Finds all SportEvents with associated arenas based on a predicate and pageable information.
+     *
+     * @param predicate The predicate for filtering.
+     * @param pageable The pagination information.
+     * @return A list of SportEvents.
+     */
     @Override
     public List<SportEvent> findAllWithArena(Predicate predicate, Pageable pageable) {
         JPAQuery<SportEvent> query = new JPAQuery<>(entityManager);

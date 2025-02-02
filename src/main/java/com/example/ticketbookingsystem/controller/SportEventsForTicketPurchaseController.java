@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
+/**
+ * Controller class for managing sport events available for ticket purchase in the Ticket Booking System application.
+ */
 @Controller
 @RequiredArgsConstructor
 public class SportEventsForTicketPurchaseController {
@@ -23,6 +26,14 @@ public class SportEventsForTicketPurchaseController {
 
     private final ArenaService arenaService;
 
+    /**
+     * Handles GET requests to retrieve and display all sport events available for ticket purchase.
+     *
+     * @param model The model to hold attributes.
+     * @param sportEventFilter The filter criteria for sport events.
+     * @param pageable The pagination information.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/view_available_events")
     public String findAllSportEventsForTicketPurchase(Model model, SportEventFilter sportEventFilter, Pageable pageable) {
         List<ArenaReadDto> arenaReadDtoList = arenaService.findAll();

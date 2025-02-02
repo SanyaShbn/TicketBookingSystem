@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Custom repository interface for SportEvent entities.
+ */
 @Repository
 public interface CustomSportEventRepository {
     List<SportEvent> findAllWithArena(Predicate predicate, Pageable pageable);

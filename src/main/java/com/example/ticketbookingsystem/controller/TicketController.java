@@ -25,6 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller class for managing tickets in the Ticket Booking System application.
+ */
 @Controller
 @RequestMapping("/admin/tickets")
 @RequiredArgsConstructor
@@ -35,6 +38,15 @@ public class TicketController {
 
     private final SeatService seatService;
 
+    /**
+     * Handles GET requests to retrieve and display all tickets for a specific event.
+     *
+     * @param eventId The ID of the event.
+     * @param ticketFilter The filter criteria for tickets.
+     * @param pageable The pagination information.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping
     public String findAllTickets(@RequestParam("eventId") Long eventId,
                                  TicketFilter ticketFilter,
@@ -46,6 +58,14 @@ public class TicketController {
         return "tickets-jsp/tickets";
     }
 
+    /**
+     * Handles GET requests to show the form for creating a new ticket.
+     *
+     * @param eventId The ID of the event.
+     * @param ticketCreateEditDto The ticket data transfer object.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/create")
     public String showCreateTicketForm(@RequestParam("eventId") Long eventId,
                                        @ModelAttribute("ticket") TicketCreateEditDto ticketCreateEditDto,
@@ -59,6 +79,17 @@ public class TicketController {
         return "tickets-jsp/create-ticket";
     }
 
+    /**
+     * Handles POST requests to create a new ticket.
+     *
+     * @param eventId The ID of the event.
+     * @param seatId The ID of the seat.
+     * @param ticketCreateEditDto The ticket data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param redirectAttributes The redirect attributes.
+     * @param model The model to hold attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/create")
     public String createTicket(@RequestParam("eventId") Long eventId,
                                @RequestParam("seatId") Long seatId,
@@ -82,6 +113,15 @@ public class TicketController {
         }
     }
 
+    /**
+     * Handles GET requests to show the form for updating an existing ticket.
+     *
+     * @param eventId The ID of the event.
+     * @param seatId The ID of the seat.
+     * @param id The ID of the ticket to be updated.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/{id}/update")
     public String showUpdateTicketForm(@RequestParam("eventId") Long eventId,
                                        @RequestParam("seatId") Long seatId,
@@ -99,6 +139,18 @@ public class TicketController {
         return "redirect:/admin/tickets?eventId=" + eventId;
     }
 
+    /**
+     * Handles POST requests to update an existing ticket.
+     *
+     * @param eventId The ID of the event.
+     * @param seatId The ID of the seat.
+     * @param id The ID of the ticket to be updated.
+     * @param ticketCreateEditDto The ticket data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param redirectAttributes The redirect attributes.
+     * @param model The model to hold attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/{id}/update")
     public String updateTicket(@RequestParam("eventId") Long eventId,
                                @RequestParam("seatId") Long seatId,
@@ -122,6 +174,14 @@ public class TicketController {
         }
     }
 
+    /**
+     * Handles POST requests to delete an existing ticket.
+     *
+     * @param eventId The ID of the sport event which the ticket belongs to.
+     * @param id The ID of the ticket to be deleted.
+     * @param model The model to hold attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/{id}/delete")
     public String deleteTicket(@RequestParam("eventId") Long eventId,
                                @PathVariable("id") Long id,

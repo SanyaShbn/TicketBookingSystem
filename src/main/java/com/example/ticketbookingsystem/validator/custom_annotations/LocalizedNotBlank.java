@@ -7,6 +7,9 @@ import jakarta.validation.Payload;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Custom annotation for localized not blank validation.
+ */
 @Constraint(validatedBy = LocalizedNotBlankValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LocalizedNotBlank {

@@ -21,6 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
+/**
+ * Controller class for managing rows in the Ticket Booking System application.
+ */
 @Controller
 @RequestMapping("/admin/rows")
 @RequiredArgsConstructor
@@ -29,6 +32,15 @@ public class RowController {
 
     private final RowService rowService;
 
+    /**
+     * Handles GET requests to retrieve and display all rows.
+     *
+     * @param sectorId The ID of the sector to which the rows belong.
+     * @param rowFilter The filter criteria for rows.
+     * @param pageable The pagination information.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping
     public String findAllRows(@RequestParam("sectorId") Long sectorId,
                               RowFilter rowFilter,
@@ -40,6 +52,15 @@ public class RowController {
         return "rows-jsp/rows";
     }
 
+    /**
+     * Handles GET requests to show the form for creating a new row.
+     *
+     * @param arenaId The ID of the arena to which the row belongs.
+     * @param sectorId The ID of the sector to which the row belongs.
+     * @param rowCreateEditDto The row data transfer object.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/create")
     public String showCreateRowForm(@RequestParam("arenaId") Long arenaId,
                                     @RequestParam("sectorId") Long sectorId,
@@ -53,6 +74,16 @@ public class RowController {
         return "rows-jsp/create-row";
     }
 
+    /**
+     * Handles POST requests to create a new row.
+     *
+     * @param arenaId The ID of the arena to which the row belongs.
+     * @param sectorId The ID of the sector to which the row belongs.
+     * @param rowCreateEditDto The row data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param redirectAttributes The redirect attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/create")
     public String createRow(@RequestParam("arenaId") Long arenaId,
                             @RequestParam("sectorId") Long sectorId,
@@ -74,6 +105,15 @@ public class RowController {
         }
     }
 
+    /**
+     * Handles GET requests to show the form for updating an existing row.
+     *
+     * @param arenaId The ID of the arena to which the row belongs.
+     * @param sectorId The ID of the sector to which the row belongs.
+     * @param id The ID of the row to be updated.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/{id}/update")
     public String showUpdateRowForm(@RequestParam("arenaId") Long arenaId,
                                     @RequestParam("sectorId") Long sectorId,
@@ -89,6 +129,17 @@ public class RowController {
         return "redirect:/admin/rows?arenaId=" + arenaId + "&sectorId=" + sectorId;
     }
 
+    /**
+     * Handles POST requests to update an existing row.
+     *
+     * @param arenaId The ID of the arena to which the row belongs.
+     * @param sectorId The ID of the sector to which the row belongs.
+     * @param id The ID of the row to be updated.
+     * @param rowCreateEditDto The row data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param redirectAttributes The redirect attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/{id}/update")
     public String updateRow(@RequestParam("arenaId") Long arenaId,
                             @RequestParam("sectorId") Long sectorId,
@@ -110,6 +161,15 @@ public class RowController {
         }
     }
 
+    /**
+     * Handles POST requests to delete an existing row.
+     *
+     * @param arenaId The ID of the arena to which the row belongs.
+     * @param sectorId The ID of the sector to which the row belongs.
+     * @param id The ID of the row to be deleted.
+     * @param model The model to hold attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/{id}/delete")
     public String deleteRow(@RequestParam("arenaId") Long arenaId,
                             @RequestParam("sectorId") Long sectorId,

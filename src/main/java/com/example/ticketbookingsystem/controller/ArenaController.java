@@ -23,6 +23,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller class for managing arenas in the Ticket Booking System application.
+ */
 @Controller
 @RequestMapping("/admin/arenas")
 @RequiredArgsConstructor
@@ -31,6 +34,14 @@ public class ArenaController {
 
     private final ArenaService arenaService;
 
+    /**
+     * Handles GET requests to retrieve and display all arenas.
+     *
+     * @param model The model to hold attributes.
+     * @param arenaFilter The filter criteria for arenas.
+     * @param pageable The pagination information.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping
     public String findAllArenas(Model model, ArenaFilter arenaFilter, Pageable pageable) {
         Page<ArenaReadDto> arenasPage = arenaService.findAll(arenaFilter, pageable);
@@ -39,6 +50,13 @@ public class ArenaController {
         return "arena-jsp/arenas";
     }
 
+    /**
+     * Handles GET requests to show the form for creating a new arena.
+     *
+     * @param arena The arena data transfer object.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/create")
     public String showCreateArenaForm(@ModelAttribute("arena") ArenaCreateEditDto arena,
                                       Model model) {
@@ -48,6 +66,15 @@ public class ArenaController {
         return "arena-jsp/create-arena";
     }
 
+    /**
+     * Handles POST requests to create a new arena.
+     *
+     * @param arenaCreateEditDto The arena data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param redirectAttributes The redirect attributes.
+     * @param model The model to hold attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/create")
     public String createArena(@ModelAttribute @Validated ArenaCreateEditDto arenaCreateEditDto,
                               BindingResult bindingResult,
@@ -68,6 +95,13 @@ public class ArenaController {
         }
     }
 
+    /**
+     * Handles GET requests to show the form for updating an existing arena.
+     *
+     * @param id The ID of the arena to be updated.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/{id}/update")
     public String showUpdateArenaForm(@PathVariable Long id, Model model) {
         Optional<ArenaReadDto> arena = arenaService.findById(id);
@@ -78,6 +112,15 @@ public class ArenaController {
         return "redirect:/admin/arenas";
     }
 
+    /**
+     * Handles POST requests to update an existing arena.
+     *
+     * @param id The ID of the arena to be updated.
+     * @param arenaCreateEditDto The arena data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param redirectAttributes The redirect attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/{id}/update")
     public String updateArena(@PathVariable("id") Long id,
                               @ModelAttribute @Validated ArenaCreateEditDto arenaCreateEditDto,
@@ -97,6 +140,13 @@ public class ArenaController {
         }
     }
 
+    /**
+     * Handles POST requests to delete an existing arena.
+     *
+     * @param id The ID of the arena to be deleted.
+     * @param model The model to hold attributes.
+     * @return The redirect URL.
+     */
     @PostMapping("/{id}/delete")
     public String deleteArena(@PathVariable("id") Long id, Model model) {
         try {

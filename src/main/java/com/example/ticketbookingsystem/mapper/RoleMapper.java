@@ -3,6 +3,10 @@ package com.example.ticketbookingsystem.mapper;
 import com.example.ticketbookingsystem.entity.Role;
 import org.mapstruct.Mapper;
 
+/**
+ * Mapper class for converting between Role entities and their string representations
+ * in the Ticket Booking System application.
+ */
 @Mapper(componentModel = "spring")
 public class RoleMapper {
 

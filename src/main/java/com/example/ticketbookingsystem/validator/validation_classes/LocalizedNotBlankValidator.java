@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
+/**
+ * Validator class for managing for localized not blank validation.
+ */
 @Component
 @RequiredArgsConstructor
 public class LocalizedNotBlankValidator implements ConstraintValidator<LocalizedNotBlank, String> {

@@ -6,9 +6,18 @@ import org.springframework.data.domain.Sort;
 
 import java.util.Map;
 
+/**
+ * Utility class for building Sort objects for queries.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SortUtils {
 
+    /**
+     * Builds a Sort object from a map of field names and sort orders.
+     *
+     * @param sortOrders A map of field names and sort orders.
+     * @return The Sort object.
+     */
     public static Sort buildSort(Map<String, String> sortOrders) {
         Sort sort = Sort.unsorted();
 

@@ -4,6 +4,9 @@ import com.example.ticketbookingsystem.entity.Arena;
 import lombok.Builder;
 import lombok.Value;
 
+/**
+ * SectorReadDto - Data Transfer Object representing information about a sector when reading.
+ */
 @Value
 @Builder
 public class SectorReadDto {

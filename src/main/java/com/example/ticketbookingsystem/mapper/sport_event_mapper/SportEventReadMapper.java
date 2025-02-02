@@ -5,6 +5,9 @@ import com.example.ticketbookingsystem.entity.SportEvent;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapper interface for converting between SportEvent entities and SportEventReadDto.
+ */
 @Mapper(componentModel = "spring")
 public interface SportEventReadMapper {
 

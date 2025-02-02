@@ -38,11 +38,23 @@ public class UserService {
                 .map(userMapper::toDto);
     }
 
+    /**
+     * Finds a user by their email.
+     *
+     * @param email The email of the user.
+     * @return An {@link Optional} containing the found user DTO, or empty if not found.
+     */
     public Optional<UserDto> findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(userMapper::toDto);
     }
 
+    /**
+     * Registers a new user account.
+     *
+     * @param userDto The user data transfer object.
+     * @throws UserAlreadyExistException If a user with the same email already exists.
+     */
     public void registerNewUserAccount(UserDto userDto) throws UserAlreadyExistException {
         if (emailExists(userDto.getEmail())) {
             throw new UserAlreadyExistException("There is an account with that email address: "

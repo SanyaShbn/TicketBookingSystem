@@ -15,15 +15,30 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.util.List;
 
+/**
+ * Web MVC configuration class for the Ticket Booking System application.
+ * It manages the setup of locale resolution, view resolution, resource handling,
+ * and argument resolvers.
+ */
 @Configuration
 @EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    /**
+     * Configures the LocaleResolver bean.
+     *
+     * @return A SessionLocaleResolver instance.
+     */
     @Bean
     public LocaleResolver localeResolver() {
         return new SessionLocaleResolver();
     }
 
+    /**
+     * Configures the LocaleChangeInterceptor bean.
+     *
+     * @return A LocaleChangeInterceptor instance.
+     */
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
@@ -31,6 +46,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return lci;
     }
 
+    /**
+     * Configures the ResourceBundleMessageSource bean.
+     *
+     * @return A ResourceBundleMessageSource instance.
+     */
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
@@ -39,11 +59,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return messageSource;
     }
 
+    /**
+     * Configures the HandlerMappingIntrospector bean.
+     *
+     * @return A HandlerMappingIntrospector instance.
+     */
     @Bean
     public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
         return new HandlerMappingIntrospector();
     }
 
+    /**
+     * Configures the InternalResourceViewResolver bean.
+     *
+     * @return An InternalResourceViewResolver instance.
+     */
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -52,17 +82,32 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return resolver;
     }
 
+    /**
+     * Adds resource handlers for serving static resources.
+     *
+     * @param registry The resource handler registry.
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("/js/");
     }
 
+    /**
+     * Adds interceptors for pre-processing and post-processing of web requests.
+     *
+     * @param registry The interceptor registry.
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
+    /**
+     * Adds argument resolvers for handling specific types of method arguments.
+     *
+     * @param resolvers The list of argument resolvers.
+     */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         PageableHandlerMethodArgumentResolver pageableResolver = new PageableHandlerMethodArgumentResolver();

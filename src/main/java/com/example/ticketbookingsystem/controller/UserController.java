@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller class for managing user authentication and registration in the Ticket Booking System application.
+ */
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -21,6 +24,13 @@ public class UserController {
 
     private final UserService userService;
 
+    /**
+     * Handles GET requests to show the login page.
+     *
+     * @param error An optional error message.
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/login")
     public String loginPage(@RequestParam(value = "error", required = false) String error,
                             Model model){
@@ -30,6 +40,13 @@ public class UserController {
         return "login";
     }
 
+    /**
+     * Handles GET requests to show the registration form.
+     *
+     * @param model The model to hold attributes.
+     * @param userDto The user data transfer object.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/registration")
     public String showRegistrationForm(Model model,
                                        @ModelAttribute("user") UserDto userDto) {
@@ -39,6 +56,14 @@ public class UserController {
         return "registration";
     }
 
+    /**
+     * Handles POST requests to register a new user account.
+     *
+     * @param userDto The user data transfer object.
+     * @param bindingResult The binding result for validation.
+     * @param model The model to hold attributes.
+     * @return The redirect URL or the name of the view to be rendered.
+     */
     @PostMapping("/registration")
     public String registerUserAccount(@ModelAttribute("user") @Validated UserDto userDto,
                                       BindingResult bindingResult,

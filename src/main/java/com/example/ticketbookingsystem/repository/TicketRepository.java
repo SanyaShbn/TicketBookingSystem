@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository for managing Ticket entities.
+ */
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 

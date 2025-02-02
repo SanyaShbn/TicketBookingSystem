@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller class for managing ticket purchases in the Ticket Booking System application.
+ */
 @Controller
 @RequiredArgsConstructor
 public class TicketsPurchaseController {
@@ -27,11 +30,22 @@ public class TicketsPurchaseController {
 
     private final AuthenticationUtil authenticationUtil;
 
+    /**
+     * Handles GET requests to show the purchase page.
+     *
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/purchase")
     public String showPurchasePage() {
         return "tickets-purchases-jsp/purchase";
     }
 
+    /**
+     * Handles POST requests to commit a ticket purchase.
+     *
+     * @param model The model to hold attributes.
+     * @return The redirect URL or the name of the view to be rendered.
+     */
     @PostMapping("/purchase")
     public String commitPurchase(Model model) {
         Optional<UserDto> optionalUserDto = getAuthenticatedUserWithCheck(model);
@@ -59,6 +73,12 @@ public class TicketsPurchaseController {
         }
     }
 
+    /**
+     * Handles GET requests to retrieve and display all purchased tickets for the authenticated user.
+     *
+     * @param model The model to hold attributes.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/purchasedTickets")
     public String getPurchasedTickets(Model model) {
         Optional<UserDto> user = getAuthenticatedUserWithCheck(model);

@@ -6,6 +6,9 @@ import com.example.ticketbookingsystem.entity.Row;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapper interface for converting between Row entities and RowReadDto.
+ */
 @Mapper(componentModel = "spring")
 public interface RowReadMapper {
     RowReadMapper INSTANCE = Mappers.getMapper(RowReadMapper.class);

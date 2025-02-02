@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repository for managing User Cart entities.
+ */
 @Repository
 public interface UserCartRepository extends JpaRepository<UserCart, Long> {
 

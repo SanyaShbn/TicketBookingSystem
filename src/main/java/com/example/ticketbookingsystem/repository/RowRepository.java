@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repository for managing Row entities.
+ */
 @Repository
 public interface RowRepository extends JpaRepository<Row, Long> {
 
