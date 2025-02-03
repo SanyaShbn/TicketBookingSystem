@@ -19,11 +19,11 @@ public class SectorCreateEditDto {
     @ValidSectorName
     String sectorName;
 
-    @NotNull(message = "{error.not.null}")
-    @Min(value = 1, message = "{error.max.rows}")
+    @NotNull
+    @Min(value = 1)
     Integer maxRowsNumb;
 
-    @NotNull(message = "{error.not.null}")
-    @Min(value = 1, message = "{error.max.seats}")
+    @NotNull
+    @Min(value = 1)
     Integer maxSeatsNumb;
 }

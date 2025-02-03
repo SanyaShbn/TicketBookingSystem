@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidEventDateTime {
-    String message() default "{event.date.time.validation.error}";
+    String message() default "event.date.time.validation.error";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

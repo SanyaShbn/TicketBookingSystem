@@ -25,6 +25,8 @@
 <div>
     <h1><fmt:message key="sport_events.list"/></h1>
 
+    <input type="hidden" id="csrfToken" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
     <!-- Filter Bar -->
     <div class="filter-bar">
         <button type="button" onclick="toggleFilterForm()"><fmt:message key="setup.filter.button" /></button>

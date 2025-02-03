@@ -10,6 +10,7 @@ import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Locale;
 import java.util.Optional;
+
+import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
  * Controller class for managing sectors in the Ticket Booking System application.
@@ -31,6 +35,8 @@ import java.util.Optional;
 public class SectorController {
 
     private final SectorService sectorService;
+
+    private final MessageSource messageSource;
 
     /**
      * Handles GET requests to retrieve and display all sectors.
@@ -170,9 +176,11 @@ public class SectorController {
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while trying to delete sector: {}", e.getMessage());
             ValidationResult validationResult = new ValidationResult();
-            validationResult.add(Error.of("delete.sector.fail",
-                    "Ошибка! Данные о выбранном секторе арены нельзя удалить. На него уже добавлены билеты " +
-                            "в разделе 'Предстоящие спортивные события'"));
+
+            Locale locale = getLocale();
+            String errorMessage = messageSource.getMessage("delete.sector.fail", null, locale);
+
+            validationResult.add(Error.of("delete.sector.fail", errorMessage));
             model.addAttribute("errors", validationResult.getErrors());
             return "error-jsp/error-page";
         }
@@ -200,28 +208,34 @@ public class SectorController {
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {
+        Locale locale = getLocale();
+
         if (errorMessage != null) {
             switch (getErrorType(errorMessage)) {
-                case "ERROR_CHECK_SECTOR_NAME" -> sqlExceptionResult.add(Error.of("create_edit.sector.fail",
-                        "Ошибка! Запись о секторе с заданным наименованием уже существует. " +
-                        "Проверьте корректность ввода данных"));
-                case "ERROR_CHECK_CAPACITY" -> sqlExceptionResult.add(Error.of("create_edit.sector.fail",
-                        "Ошибка! Общее максимально возможное количество мест в секторах для " +
-                        "заданной арены превышает ее вместимость. Проверьте корреткность ввода данных"));
-                case "ERROR_CHECK_ROWS" -> sqlExceptionResult.add(Error.of("create_edit.sector.fail",
-                        "Ошибка! Заданное максимальное значение рядов сектора меньше, " +
-                                "чем количество уже созданных секторов. " +
-                                "Проверьте корректность ввода данных"));
-                case "ERROR_CHECK_SEATS" -> sqlExceptionResult.add(Error.of("create_edit.sector.fail",
-                        "Ошибка! Заданное максимальное значение мест сектора меньше, " +
-                                "чем количество мест уже созданных рядов для сектора. " +
-                                "Проверьте корректность ввода данных"));
+                case "ERROR_CHECK_SECTOR_NAME" -> {
+                    String message = messageSource.getMessage("create_edit.sector.fail.name", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.sector.fail", message));
+                }
+                case "ERROR_CHECK_CAPACITY" -> {
+                    String message = messageSource.getMessage("create_edit.sector.fail.capacity", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.sector.fail", message));
+                }
+                case "ERROR_CHECK_ROWS" -> {
+                    String message = messageSource.getMessage("create_edit.sector.fail.rows", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.sector.fail", message));
+                }
+                case "ERROR_CHECK_SEATS" -> {
+                    String message = messageSource.getMessage("create_edit.sector.fail.seats", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.sector.fail", message));
+                }
                 default -> sqlExceptionResult.add(Error.of("create_edit.sector.fail", errorMessage));
             }
         } else {
-            sqlExceptionResult.add(Error.of("create_edit.sector.fail", "Unknown sql exception"));
+            String message = messageSource.getMessage("create_edit.fail.unknown", null, locale);
+            sqlExceptionResult.add(Error.of("create_edit.sector.fail", message));
         }
     }
+
     private String getErrorType(String errorMessage) {
         if (errorMessage.contains("ERROR_CHECK_SECTOR_NAME")) {
             return "ERROR_CHECK_SECTOR_NAME";

@@ -6,7 +6,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -46,7 +45,6 @@ public class LocaleFilter implements Filter {
         Locale locale = getLocaleFromSessionOrCookie(httpRequest, session);
         if (locale != null) {
             session.setAttribute("locale", locale);
-            LocaleContextHolder.setLocale(locale);
         }
 
         chain.doFilter(request, response);

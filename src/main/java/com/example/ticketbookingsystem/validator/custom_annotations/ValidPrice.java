@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidPrice {
-    String message() default "{price.validation.fail}";
+    String message() default "price.validation.fail";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

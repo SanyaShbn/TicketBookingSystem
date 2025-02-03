@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidSectorName {
-    String message() default "{invalid.sector.name}";
+    String message() default "invalid.sector.name";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

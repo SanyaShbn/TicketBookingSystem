@@ -13,6 +13,7 @@ import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+
+import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
  * Controller class for managing sport events in the Ticket Booking System application.
@@ -37,6 +41,8 @@ public class SportEventController {
     private final SportEventService sportEventService;
 
     private final ArenaService arenaService;
+
+    private final MessageSource messageSource;
 
     /**
      * Handles GET requests to retrieve and display all sport events.
@@ -181,9 +187,12 @@ public class SportEventController {
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while trying to delete sporting event: {}", e.getMessage());
             ValidationResult validationResult = new ValidationResult();
-            validationResult.add(Error.of("delete.sport.event.fail",
-                    "Выбранное событие нельзя удалить, на него уже доступна продажа билетов. " +
-                            "Если хотите выполнить удаление, необходимо удалить всю информацию о продаваемых билетах"));
+
+            Locale locale = getLocale();
+            String errorMessage = messageSource.getMessage("delete.sport.event.fail", null, locale);
+
+            validationResult.add(Error.of("delete.sport.event.fail", errorMessage));
+
             model.addAttribute("errors", validationResult.getErrors());
             return "error-jsp/error-page";
         }
@@ -191,8 +200,10 @@ public class SportEventController {
 
     private void handleNumberFormatException(Model model) {
         ValidationResult validationResult = new ValidationResult();
-        validationResult.add(Error.of("invalid.number.format",
-                "Проверьте корректность ввода данных!"));
+        Locale locale = getLocale();
+        String errorMessage = messageSource.getMessage("invalid.number.format", null, locale);
+
+        validationResult.add(Error.of("invalid.number.format", errorMessage));
         model.addAttribute("errors", validationResult.getErrors());
     }
 
@@ -216,19 +227,23 @@ public class SportEventController {
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {
+        Locale locale = getLocale();
+
         if (errorMessage != null) {
             switch (getErrorType(errorMessage)) {
-                case "EVENT_TIME_EXCEPTION" -> sqlExceptionResult.add(Error.of("create_edit.sport.event.fail",
-                        "Создаваемое событие не может пересекаться по времени с уже запланированными событиями" +
-                        " для выбранной арены (минимальный интервал для одной даты - 3 часа). " +
-                        "Проверьте корректность ввода данных!"));
-                case "EVENT_REFERENCE_EXCEPTION" -> sqlExceptionResult.add(Error.of("create_edit.sport.event.fail",
-                        "Выбранное событие нельзя редактировать, на него уже доступна продажа билетов. " +
-                        "Если хотите выполнить редактирование, необходимо удалить всю информацию о продаваемых билетах"));
-                default -> sqlExceptionResult.add(Error.of("create.row.fail", errorMessage));
+                case "EVENT_TIME_EXCEPTION" -> {
+                    String message = messageSource.getMessage("create_edit.sport.event.fail.time", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.sport.event.fail", message));
+                }
+                case "EVENT_REFERENCE_EXCEPTION" -> {
+                    String message = messageSource.getMessage("create_edit.sport.event.fail.reference", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.sport.event.fail", message));
+                }
+                default -> sqlExceptionResult.add(Error.of("create_edit.row.fail", errorMessage));
             }
         } else {
-            sqlExceptionResult.add(Error.of("create_edit.sport.event.fail", "Unknown sql exception"));
+            String message = messageSource.getMessage("create_edit.fail.unknown", null, locale);
+            sqlExceptionResult.add(Error.of("create_edit.sport.event.fail", message));
         }
     }
 

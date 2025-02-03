@@ -19,7 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = PasswordMatchesValidator.class)
 @Documented
 public @interface PasswordMatches {
-    String message() default "{password.match.fail}";
+    String message() default "password.match.fail";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

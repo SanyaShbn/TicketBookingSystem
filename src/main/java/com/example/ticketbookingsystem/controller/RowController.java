@@ -10,6 +10,7 @@ import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Locale;
 import java.util.Optional;
+
+import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
  * Controller class for managing rows in the Ticket Booking System application.
@@ -31,6 +35,8 @@ import java.util.Optional;
 public class RowController {
 
     private final RowService rowService;
+
+    private final MessageSource messageSource;
 
     /**
      * Handles GET requests to retrieve and display all rows.
@@ -182,9 +188,12 @@ public class RowController {
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while trying to delete row: {}", e.getMessage());
             ValidationResult validationResult = new ValidationResult();
-            validationResult.add(Error.of("delete.row.fail",
-                    "Ошибка! Данные о выбранном ряде арены нельзя удалить. На него уже добавлены билеты " +
-                            "в разделе 'Предстоящие спортивные события'"));
+
+            Locale locale = getLocale();
+            String errorMessage = messageSource.getMessage("delete.row.fail", null, locale);
+
+            validationResult.add(Error.of("delete.row.fail", errorMessage));
+
             model.addAttribute("errors", validationResult.getErrors());
             return "error-jsp/error-page";
         }
@@ -214,22 +223,27 @@ public class RowController {
     }
 
     private void specifySQLException(String errorMessage, ValidationResult sqlExceptionResult) {
+        Locale locale = getLocale();
+
         if (errorMessage != null) {
             switch (getErrorType(errorMessage)) {
-                case "ERROR_CHECK_ROWS" -> sqlExceptionResult.add(Error.of("create_edit.row.fail",
-                        "Ошибка! Заданное максимальное значение рядов сектора превышено. " +
-                                "Вы не можете создать новый ряд"));
-                case "ERROR_CHECK_SEATS" -> sqlExceptionResult.add(Error.of("create_edit.row.fail",
-                        "Ошибка! Суммарное количество мест рядов сектора не может превышать заданное " +
-                                "маскимальное количество доступных мест в секторе. " +
-                                "Проверьте корректность ввода данных"));
-                case "ERROR_CHECK_ROW_NUMBER" -> sqlExceptionResult.add(Error.of("create_edit.row.fail",
-                        "Ошибка! Ряд с таким номером уже существует в данном секторе. " +
-                                "Проверьте корректность ввода данных"));
+                case "ERROR_CHECK_ROWS" -> {
+                    String message = messageSource.getMessage("create_edit.row.fail.rows", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.row.fail", message));
+                }
+                case "ERROR_CHECK_SEATS" -> {
+                    String message = messageSource.getMessage("create_edit.row.fail.seats", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.row.fail", message));
+                }
+                case "ERROR_CHECK_ROW_NUMBER" -> {
+                    String message = messageSource.getMessage("create_edit.row.fail.row_number", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.row.fail", message));
+                }
                 default -> sqlExceptionResult.add(Error.of("create_edit.row.fail", errorMessage));
             }
         } else {
-            sqlExceptionResult.add(Error.of("create_edit.row.fail", "Unknown sql exception"));
+            String message = messageSource.getMessage("create_edit.fail.unknown", null, locale);
+            sqlExceptionResult.add(Error.of("create_edit.row.fail", message));
         }
     }
 

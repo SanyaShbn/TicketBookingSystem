@@ -143,6 +143,7 @@ public class TicketService {
             Seat seat = getSeatById(seatId);
 
             ticket.setId(id);
+            ticket.setStatus(TicketStatus.AVAILABLE);
             ticket.setSportEvent(sportEvent);
             ticket.setSeat(seat);
 

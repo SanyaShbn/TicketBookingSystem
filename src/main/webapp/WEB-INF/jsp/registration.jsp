@@ -34,6 +34,14 @@
         </a>
     </form>
 
+    <c:if test="${not empty requestScope.errors}">
+        <div class="error">
+            <c:forEach var="error" items="${requestScope.errors}">
+                <span>${error.defaultMessage}</span>
+                <br/>
+            </c:forEach>
+        </div>
+    </c:if>
     <c:if test="${not empty error}">
         <div class="error">
             <span>${error}</span>

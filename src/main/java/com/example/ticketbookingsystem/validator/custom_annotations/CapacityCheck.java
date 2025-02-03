@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 @Constraint(validatedBy = CapacityCheckValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CapacityCheck {
-    String message() default "{arena.capacity.error}";
+    String message() default "arena.capacity.error";
 
     int min() default 0;
 

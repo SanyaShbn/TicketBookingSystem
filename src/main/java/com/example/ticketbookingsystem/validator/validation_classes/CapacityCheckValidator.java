@@ -10,10 +10,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
+import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
+
 /**
  * Validator class for checking the capacity constraints of an arena.
  */
-@Component
 @RequiredArgsConstructor
 public class CapacityCheckValidator implements ConstraintValidator<CapacityCheck, Integer> {
 
@@ -31,7 +32,7 @@ public class CapacityCheckValidator implements ConstraintValidator<CapacityCheck
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
         if (value == null || value < min || value > max) {
             context.disableDefaultConstraintViolation();
-            Locale locale = LocaleContextHolder.getLocale();
+            Locale locale = getLocale();
             String errorMessage = messageSource.getMessage("arena.capacity.error", new Object[]{min, max}, locale);
             context.buildConstraintViolationWithTemplate(errorMessage).addConstraintViolation();
             return false;

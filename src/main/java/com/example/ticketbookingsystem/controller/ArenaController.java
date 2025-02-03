@@ -10,18 +10,21 @@ import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+
+import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
  * Controller class for managing arenas in the Ticket Booking System application.
@@ -33,6 +36,8 @@ import java.util.Optional;
 public class ArenaController {
 
     private final ArenaService arenaService;
+
+    private final MessageSource messageSource;
 
     /**
      * Handles GET requests to retrieve and display all arenas.
@@ -156,9 +161,11 @@ public class ArenaController {
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while trying to delete arena: {}", e.getMessage());
             ValidationResult validationResult = new ValidationResult();
-            validationResult.add(Error.of("delete.arena.fail",
-                    "Ошибка! Данные о выбранной арене нельзя удалить. Для нее уже запланированы события " +
-                            "в разделе 'Предстоящие спортивные события'"));
+
+            Locale locale = getLocale();
+            String errorMessage = messageSource.getMessage("delete.arena.fail", null, locale);
+
+            validationResult.add(Error.of("delete.arena.fail", errorMessage));
             model.addAttribute("errors", validationResult.getErrors());
             return "error-jsp/error-page";
         }
@@ -184,17 +191,22 @@ public class ArenaController {
     }
 
     private void specifyDataAccessException(String errorMessage, ValidationResult sqlExceptionResult) {
+        Locale locale = getLocale();
         if (errorMessage != null) {
             switch (getErrorType(errorMessage)) {
-                case "ERROR_CHECK_ARENA_NAME" -> sqlExceptionResult.add(Error.of("create_edit.arena.fail",
-                        "Ошибка! Имя арены должно быть уникальным. Проверьте корректность ввода данных"));
-                case "ERROR_CHECK_CAPACITY" -> sqlExceptionResult.add(Error.of("create_edit.arena.fail",
-                        "Ошибка! Общее максимально возможное количество мест в секторах для " +
-                                "заданной арены превышает ее вместимость. Проверьте корректность ввода данных"));
+                case "ERROR_CHECK_ARENA_NAME" -> {
+                    String message = messageSource.getMessage("create_edit.arena.fail.name", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.arena.fail", message));
+                }
+                case "ERROR_CHECK_CAPACITY" -> {
+                    String message = messageSource.getMessage("create_edit.arena.fail.capacity", null, locale);
+                    sqlExceptionResult.add(Error.of("create_edit.arena.fail", message));
+                }
                 default -> sqlExceptionResult.add(Error.of("create_edit.row.fail", errorMessage));
             }
         } else {
-            sqlExceptionResult.add(Error.of("create_edit.arena.fail", "Unknown sql exception"));
+            String message = messageSource.getMessage("create_edit.fail.unknown", null, locale);
+            sqlExceptionResult.add(Error.of("create_edit.arena.fail", message));
         }
     }
 

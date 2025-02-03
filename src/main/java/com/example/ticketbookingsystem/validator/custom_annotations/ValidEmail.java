@@ -19,7 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = EmailValidator.class)
 @Documented
 public @interface ValidEmail {
-    String message() default "{email.validation.fail}";
+    String message() default "email.validation.fail";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

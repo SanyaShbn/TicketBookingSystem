@@ -13,6 +13,7 @@ import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+
+import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
  * Controller class for managing tickets in the Ticket Booking System application.
@@ -37,6 +41,8 @@ public class TicketController {
     private final TicketService ticketService;
 
     private final SeatService seatService;
+
+    private final MessageSource messageSource;
 
     /**
      * Handles GET requests to retrieve and display all tickets for a specific event.
@@ -193,7 +199,11 @@ public class TicketController {
         } catch (DaoCrudException e) {
             log.error("CRUD exception occurred while trying to delete ticket: {}", e.getMessage());
             ValidationResult validationResult = new ValidationResult();
-            validationResult.add(Error.of("delete.sector.fail", "Ошибка удаления записи о билете!"));
+
+            Locale locale = getLocale();
+            String errorMessage = messageSource.getMessage("delete.ticket.fail", null, locale);
+
+            validationResult.add(Error.of("delete.ticket.fail", errorMessage));
             model.addAttribute("errors", validationResult.getErrors());
             return "error-jsp/error-page";
         }
@@ -201,8 +211,11 @@ public class TicketController {
 
     private void handleNumberFormatException(Model model) {
         ValidationResult validationResult = new ValidationResult();
-        validationResult.add(Error.of("invalid.number.format",
-                "Проверьте корректность ввода данных!"));
+
+        Locale locale = getLocale();
+        String errorMessage = messageSource.getMessage("invalid.number.format", null, locale);
+
+        validationResult.add(Error.of("invalid.number.format", errorMessage));
         model.addAttribute("errors", validationResult.getErrors());
     }
 

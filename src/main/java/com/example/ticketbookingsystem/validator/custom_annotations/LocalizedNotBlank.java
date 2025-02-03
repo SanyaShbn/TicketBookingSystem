@@ -13,7 +13,7 @@ import java.lang.annotation.RetentionPolicy;
 @Constraint(validatedBy = LocalizedNotBlankValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LocalizedNotBlank {
-    String message() default "{error.not.blank}";
+    String message() default "error.not.blank";
 
     Class<?>[] groups() default { };
 

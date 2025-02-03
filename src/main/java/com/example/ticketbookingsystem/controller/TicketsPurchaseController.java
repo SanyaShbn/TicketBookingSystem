@@ -9,13 +9,17 @@ import com.example.ticketbookingsystem.utils.AuthenticationUtil;
 import com.example.ticketbookingsystem.validator.Error;
 import com.example.ticketbookingsystem.validator.ValidationResult;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+
+import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
  * Controller class for managing ticket purchases in the Ticket Booking System application.
@@ -29,6 +33,8 @@ public class TicketsPurchaseController {
     private final PurchasedTicketsService purchasedTicketsService;
 
     private final AuthenticationUtil authenticationUtil;
+
+    private final MessageSource messageSource;
 
     /**
      * Handles GET requests to show the purchase page.
@@ -64,11 +70,11 @@ public class TicketsPurchaseController {
                 purchasedTicketsService.savePurchasedTickets(ticketIds, user.getId());
                 return "redirect:/purchasedTickets";
             } catch (DaoCrudException e) {
-                handlePurchaseError(model, "Ошибка! Покупка выбранных билетов уже была осуществлена");
+                handlePurchaseError(model, "purchase.error.duplicate");
                 return "tickets-purchases-jsp/purchase";
             }
         } else {
-            handlePurchaseError(model, "Ошибка! Недостаточно средств на выбранной карте");
+            handlePurchaseError(model, "purchase.error.insufficientFunds");
             return "tickets-purchases-jsp/purchase";
         }
     }
@@ -91,9 +97,9 @@ public class TicketsPurchaseController {
             model.addAttribute("purchasedTickets", purchasedTickets);
         } catch (DaoCrudException e) {
             ValidationResult validationResult = new ValidationResult();
-            validationResult.add(Error.of("get.purchasedTickets.error",
-                    "Ошибка! Не удалось получить информацию о приобретенных вами билетах. " +
-                            "Обратитесь к администратору сайта"));
+            Locale locale = getLocale();
+            String errorMessage = messageSource.getMessage("get.purchasedTickets.error", null, locale);
+            validationResult.add(Error.of("get.purchasedTickets.error", errorMessage));
             model.addAttribute("errors", validationResult.getErrors());
             return "tickets-purchases-jsp/purchased-tickets";
         }
@@ -105,9 +111,11 @@ public class TicketsPurchaseController {
         return Math.random() > 0.2; // Вероятность симуляции недостатка средств на карте и ошибки транзакции (20%)
     }
 
-    private void handlePurchaseError(Model model, String errorMessage) {
+    private void handlePurchaseError(Model model, String errorMessageKey) {
         ValidationResult validationResult = new ValidationResult();
-        validationResult.add(Error.of("purchase.error", errorMessage));
+        Locale locale = getLocale();
+        String errorMessage = messageSource.getMessage(errorMessageKey, null, locale);
+        validationResult.add(Error.of(errorMessageKey, errorMessage));
         model.addAttribute("errors", validationResult.getErrors());
     }
 
