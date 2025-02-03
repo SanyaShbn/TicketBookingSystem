@@ -9,15 +9,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Moved some of the Hibernate db connection properties values into env vars">
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Refactored architecture (moved transactions management into service layer, tested services)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/AbstractHibernateDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/AbstractHibernateDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/DaoCrud.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/PurchasedTicketsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/PurchasedTicketsDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/RowDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/RowDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SectorDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/SectorDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserCartDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserCartDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dao/UserDao.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +34,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="develop" />
+        <entry key="$PROJECT_DIR$" value="servlets-hibernate-task" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -108,82 +101,77 @@
     </key>
   </component>
   <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.1">
-    <configuration name="TicketDaoTest.testDelete" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ArenaControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.TicketDaoTest" />
-      <option name="METHOD_NAME" value="testDelete" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TicketDaoTest.testFindAllByEventId" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ArenaServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.TicketDaoTest" />
-      <option name="METHOD_NAME" value="testFindAllByEventId" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.ArenaServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TicketDaoTest.testFindById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SectorControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.TicketDaoTest" />
-      <option name="METHOD_NAME" value="testFindById" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.SectorControllerIT" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TicketDaoTest.testSave" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SportEventControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="PATTERN" value="ticketbookingsystem.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.TicketDaoTest" />
-      <option name="METHOD_NAME" value="testSave" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.SportEventControllerIT" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TicketDaoTest.testUpdate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.dao.*" />
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.dao" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.dao.TicketDaoTest" />
-      <option name="METHOD_NAME" value="testUpdate" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.UserControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -276,11 +264,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.TicketDaoTest.testUpdate" />
-        <item itemvalue="JUnit.TicketDaoTest.testSave" />
-        <item itemvalue="JUnit.TicketDaoTest.testFindById" />
-        <item itemvalue="JUnit.TicketDaoTest.testFindAllByEventId" />
-        <item itemvalue="JUnit.TicketDaoTest.testDelete" />
+        <item itemvalue="JUnit.SectorControllerIT" />
+        <item itemvalue="JUnit.ArenaControllerTest" />
+        <item itemvalue="JUnit.ArenaServiceTest" />
+        <item itemvalue="JUnit.SportEventControllerIT" />
+        <item itemvalue="JUnit.UserControllerTest" />
       </list>
     </recent_temporary>
   </component>
@@ -403,6 +391,7 @@
       <workItem from="1737302969485" duration="5641000" />
       <workItem from="1737310087917" duration="12107000" />
       <workItem from="1737354943527" duration="3106000" />
+      <workItem from="1737479545337" duration="1057000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -695,7 +684,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started implementing filtration/sorting/pagination (feature №4)" />
     <MESSAGE value="Continuing working on feature №4 (added filter-bar for sport events, arenas and tickets)" />
     <MESSAGE value="Working on features 5 and 6 (added visualization of available tickets and user's cart)" />
     <MESSAGE value="Almost finished features 5 and 6 (further details depend on implementing users authorization, so they are not completely finished)" />
@@ -720,9 +708,15 @@
     <MESSAGE value="Finished implementing language internationalization" />
     <MESSAGE value="Added mappers, java doc (+ some refactoring in my jsp pages)" />
     <MESSAGE value="Moved some of the Hibernate db connection properties values into env vars" />
-    <option name="LAST_COMMIT_MESSAGE" value="Moved some of the Hibernate db connection properties values into env vars" />
+    <MESSAGE value="Refactored architecture (moved transactions management into service layer, tested services)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored architecture (moved transactions management into service layer, tested services)" />
   </component>
   <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.util.Locale" memberName="languageTag" />
+      </pinned-members>
+    </pin-to-top-manager>
     <watches-manager>
       <configuration name="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory">
         <watch expression="lang" />
