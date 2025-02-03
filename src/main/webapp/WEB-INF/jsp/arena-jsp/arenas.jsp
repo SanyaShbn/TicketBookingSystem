@@ -20,27 +20,19 @@
         <form action="${pageContext.request.contextPath}/admin/arenas" method="get">
             <div class="form-item">
                 <label for="city"><fmt:message key="arena.city" />:</label>
-                <select id="city" name="city" class="scrollable-dropdown">
-                    <option value="">-- <fmt:message key="choose.city" /> --</option>
-                    <c:forEach var="city" items="${cities}">
-                        <option value="${city}" ${param.city != null && param.city == city
-                        ? 'selected' : ''}>
-                                ${city}
-                        </option>
-                    </c:forEach>
-                </select>
+                <input type="text" id="city" name="city" value="${requestScope.filter.city()}">
             </div>
 
             <div class="form-item">
                 <label for="capacitySortOrder"><fmt:message key="arena.capacitySortOrder"/></label>
                 <select id="capacitySortOrder" name="capacitySortOrder" class="scrollable-dropdown">
                     <option value="">-- <fmt:message key="sorting" /> --</option>
-                    <option value="ASC" ${param.capacitySortOrder != null
-                    && param.capacitySortOrder == 'ASC' ? 'selected' : ''}>
+                    <option value="ASC" ${requestScope.filter.capacitySortOrder != null
+                    && requestScope.filter.capacitySortOrder.equals('ASC') ? 'selected' : ''}>
                         <fmt:message key="sorting.asc" />
                     </option>
-                    <option value="DESC" ${param.capacitySortOrder != null
-                    && param.capacitySortOrder == 'DESC' ? 'selected' : ''}>
+                    <option value="DESC" ${requestScope.filter.capacitySortOrder != null
+                    && requestScope.filter.capacitySortOrder.equals('DESC') ? 'selected' : ''}>
                         <fmt:message key="sorting.desc" />
                     </option>
                 </select>
@@ -49,15 +41,24 @@
                 <label for="seatsNumbSortOrder"><fmt:message key="arena.seatsNumbSortOrder"/></label>
                 <select id="seatsNumbSortOrder" name="seatsNumbSortOrder" class="scrollable-dropdown">
                     <option value="">-- <fmt:message key="sorting" /> --</option>
-                    <option value="ASC" ${param.seatsNumbSortOrder != null
-                            && param.seatsNumbSortOrder == 'ASC' ? 'selected' : ''}>
+                    <option value="ASC" ${requestScope.filter.seatsNumbSortOrder != null
+                            && requestScope.filter.seatsNumbSortOrder.equals('ASC') ? 'selected' : ''}>
                         <fmt:message key="sorting.asc" />
                     </option>
-                    <option value="DESC" ${param.seatsNumbSortOrder != null
-                            && param.seatsNumbSortOrder == 'DESC' ? 'selected' : ''}>
+                    <option value="DESC" ${requestScope.filter.seatsNumbSortOrder != null
+                            && requestScope.filter.seatsNumbSortOrder.equals('DESC') ? 'selected' : ''}>
                         <fmt:message key="sorting.desc" />
                     </option>
                 </select>
+            </div>
+            <div>
+                <label for="page"><fmt:message key="page.current"/>:
+                    <input id="displayPage" type="number" value="${requestScope.arenas.metadata.page + 1}">
+                    <input id="page" type="hidden" name="page" value="${requestScope.arenas.metadata.page}">
+                </label>
+                <label for="size"><fmt:message key="page.content.size"/>:
+                    <input id="size" type="number" name="size" value="${requestScope.arenas.metadata.size}">
+                </label>
             </div>
 
             <button type="submit"><fmt:message key="apply.filters"/></button>
@@ -67,13 +68,13 @@
     <button onclick="location.href='${pageContext.request.contextPath}/admin'">
         <fmt:message key="button.back"/>
     </button>
-    <button onclick="location.href='${pageContext.request.contextPath}/admin/create-arena'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/arenas/create'">
         <fmt:message key="button.create"/>
     </button>
     <div class="arena-container">
         <c:choose>
-        <c:when test="${not empty requestScope.arenas}">
-            <c:forEach var="arena" items="${requestScope.arenas}">
+        <c:when test="${not empty requestScope.arenas.content}">
+            <c:forEach var="arena" items="${requestScope.arenas.content}">
                 <div class="arena-card">
                     <a href="${pageContext.request.contextPath}/admin/sectors?arenaId=${arena.id}">
                         <fmt:message key="arena.name"/>: ${arena.name}
@@ -81,26 +82,16 @@
                     <div><fmt:message key="arena.city"/>: ${arena.city}</div>
                     <div><fmt:message key="arena.capacity"/>: ${arena.capacity}</div>
                     <div><fmt:message key="arena.generalSeatsNumb"/>: ${arena.generalSeatsNumb}</div>
-                        <form action="${pageContext.request.contextPath}/admin/update-arena" method="get" style="display:inline;">
-                            <input type="hidden" name="id" value="${arena.id}"/>
+                        <form action="${pageContext.request.contextPath}/admin/arenas/${arena.id}/update" method="get" style="display:inline;">
                             <button type="submit"><fmt:message key="button.update"/></button>
                         </form>
-                        <form action="${pageContext.request.contextPath}/admin/delete-arena" method="post" style="display:inline;">
+                        <form action="${pageContext.request.contextPath}/admin/arenas/${arena.id}/delete" method="post" style="display:inline;">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <input type="hidden" name="id" value="${arena.id}"/>
                             <button type="submit"><fmt:message key="button.delete"/></button>
                         </form>
                 </div>
             </c:forEach>
-            <div class="pagination" style="padding-top: 145px">
-                <c:if test="${requestScope.page > 1}">
-                    <a href="${pageContext.request.contextPath}/admin/arenas?page=${param.page - 1}"
-                       class="pagination-arrow">&laquo; <fmt:message key="page.previous"/></a>
-                </c:if>
-                <c:if test="${requestScope.arenas.size() eq requestScope.limit}">
-                    <a href="${pageContext.request.contextPath}/admin/arenas?page=${param.page != null
-          ? param.page + 1 : 2}" class="pagination-arrow"><fmt:message key="page.next"/> &raquo;</a>
-                </c:if>
-            </div>
         </c:when>
         <c:otherwise>
             <div><fmt:message key="arenas.not_found"/></div>

@@ -13,7 +13,13 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="update.row.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/update-row?<%= request.getQueryString() %>" method="post">
+    <form action="${pageContext.request.contextPath}/admin/rows/${row.id}/update" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+        <input type="hidden" name="arenaId" value="${arenaId}">
+        <input type="hidden" name="sectorId" value="${sectorId}">
+
         <input type="hidden" name="id" value="${row.id}">
         <label for="rowNumber"><fmt:message key="row.rowNumber" />:</label>
         <input type="text" id="rowNumber" name="rowNumber" value="${row.rowNumber}" required>
@@ -31,7 +37,7 @@
     <c:if test="${not empty requestScope.errors}">
         <div class="error">
             <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.message}</span>
+                <span>${error.defaultMessage}</span>
                 <br/>
             </c:forEach>
         </div>

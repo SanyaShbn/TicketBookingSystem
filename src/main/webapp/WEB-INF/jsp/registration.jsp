@@ -12,18 +12,21 @@
 <%@ include file="localization/language-switcher.jsp" %>
 <div class="registration-container">
     <h2><fmt:message key="registration.title"/></h2>
-    <form action="/registration" method="post">
+    <form action="${pageContext.request.contextPath}/registration" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <div class="form-group">
             <label for="email"><fmt:message key="email"/>:</label>
-            <input type="email" name="email" id="email" required>
+            <input type="email" name="email" id="email" value="${user.email}" required>
         </div>
         <div class="form-group">
             <label for="password"><fmt:message key="password"/>:</label>
-            <input type="password" name="password" id="password" required>
+            <input type="password" name="password" id="password" value="${user.password}" required>
         </div>
         <div class="form-group">
-            <label for="confirm-password"><fmt:message key="confirm-password"/>:</label>
-            <input type="password" name="confirm-password" id="confirm-password" required>
+            <label for="confirmPassword"><fmt:message key="confirm-password"/>:</label>
+            <input type="password" name="confirmPassword" id="confirmPassword" value="${user.confirmPassword}" required>
         </div>
         <input type="submit" value="<fmt:message key='register'/>">
         <a href="${pageContext.request.contextPath}/login">
@@ -34,9 +37,15 @@
     <c:if test="${not empty requestScope.errors}">
         <div class="error">
             <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.message}</span>
+                <span>${error.defaultMessage}</span>
                 <br/>
             </c:forEach>
+        </div>
+    </c:if>
+    <c:if test="${not empty error}">
+        <div class="error">
+            <span>${error}</span>
+            <br/>
         </div>
     </c:if>
 

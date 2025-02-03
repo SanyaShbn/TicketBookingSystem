@@ -1,39 +1,37 @@
 package com.example.ticketbookingsystem.service;
 
-import com.example.ticketbookingsystem.dao.SeatDao;
-import com.example.ticketbookingsystem.entity.Seat;
+import com.example.ticketbookingsystem.dto.seat_dto.SeatReadDto;
+import com.example.ticketbookingsystem.mapper.seat_mapper.SeatReadMapper;
+import com.example.ticketbookingsystem.repository.SeatRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing arena's seats.
  */
+@Service
+@RequiredArgsConstructor
+@Slf4j
 public class SeatService {
-    private static final SeatService INSTANCE = new SeatService();
-    private final SeatDao seatDao = SeatDao.getInstance();
-    private SeatService(){}
 
-    public static SeatService getInstance(){
-        return INSTANCE;
-    }
+    private final SeatRepository seatRepository;
+
+    private final SeatReadMapper seatReadMapper;
 
     /**
      * Finds all seats.
      *
      * @return a list of all seats
      */
-    public List<Seat> findAll(){
-        return seatDao.findAll();
-    }
-
-    /**
-     * Finds all seats by a specific event ID.
-     *
-     * @param eventId the ID of the event
-     * @return a list of seats for a specific event
-     */
-    public List<Seat> findAllByEventId(Long eventId){
-        return seatDao.findAllByEventId(eventId);
+    public List<SeatReadDto> findAll(){
+        return seatRepository.findAll().stream()
+                .map(seatReadMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -42,8 +40,16 @@ public class SeatService {
      * @param eventId the ID of the event
      * @return a list of seats which are not yet available for ticket purchasing
      */
-    public List<Seat> findByEventIdWithNoTickets(Long eventId){
-        return seatDao.findByEventIdWithNoTickets(eventId);
+    public List<SeatReadDto> findByEventIdWithNoTickets(Long eventId){
+        return seatRepository.findByEventIdWithNoTickets(eventId).stream()
+                .map(seatReadMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<SeatReadDto> findByEventId(Long eventId){
+        return seatRepository.findByEventId(eventId).stream()
+                .map(seatReadMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -52,8 +58,10 @@ public class SeatService {
      * @param eventId the ID of the event
      * @return a list of seats which are not yet available for ticket purchasing and the updating one
      */
-    public List<Seat> findAllByEventIdWhenUpdate(Long eventId, Long seatId){
-        return seatDao.findAllByEventIdWhenUpdate(eventId, seatId);
+    public List<SeatReadDto> findAllByEventIdWhenUpdate(Long eventId, Long seatId){
+        return seatRepository.findAllByEventIdWhenUpdate(eventId, seatId).stream()
+                .map(seatReadMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -62,8 +70,9 @@ public class SeatService {
      * @param id the ID of the seat
      * @return an {@link Optional} containing the found seat, or empty if not found
      */
-    public Optional<Seat> findById(Long id){
-        return seatDao.findById(id);
+    public Optional<SeatReadDto> findById(Long id){
+        return seatRepository.findById(id)
+                .map(seatReadMapper::toDto);
     }
 
 }

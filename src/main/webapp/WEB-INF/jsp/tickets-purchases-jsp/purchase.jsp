@@ -12,7 +12,10 @@
 <body>
 <%@ include file="../localization/language-switcher.jsp" %>
 <h1><fmt:message key="purchase.commitment"/></h1>
-<form action="<c:url value='/purchase' />" method="post">
+<form action="${pageContext.request.contextPath}/purchase" method="post">
+
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
     <div class="form-item">
         <label for="cardNumber"><fmt:message key="card.numb"/>:</label>
         <input type="text" id="cardNumber" name="cardNumber" maxlength="16" placeholder="1234 5678 9012 3456" required>
@@ -30,7 +33,7 @@
 <c:if test="${not empty requestScope.errors}">
     <div class="error">
         <c:forEach var="error" items="${requestScope.errors}">
-            <span>${error.message}</span>
+            <span>${error.defaultMessage}</span>
             <br/>
         </c:forEach>
     </div>

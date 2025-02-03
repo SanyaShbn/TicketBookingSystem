@@ -2,45 +2,22 @@ package com.example.ticketbookingsystem.mapper;
 
 import com.example.ticketbookingsystem.dto.UserCartDto;
 import com.example.ticketbookingsystem.entity.UserCart;
-import com.example.ticketbookingsystem.entity.UserCartId;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 /**
- * Mapper class for converting between {@link UserCart} entity and {@link UserCartDto} DTO.
+ * Mapper interface for converting between UserCart entities and UserCartDto.
  */
-public class UserCartMapper implements Mapper<UserCart, UserCartDto> {
+@Mapper(componentModel = "spring")
+public interface UserCartMapper {
 
-    private static final UserCartMapper INSTANCE = new UserCartMapper();
+    UserCartMapper INSTANCE = Mappers.getMapper(UserCartMapper.class);
 
-    private UserCartMapper(){}
-    public static UserCartMapper getInstance(){
-        return INSTANCE;
-    }
+    @Mapping(target = "id", expression = "java(new UserCartId(userCartDto.getUserId(), userCartDto.getTicketId()))")
+    UserCart toEntity(UserCartDto userCartDto);
 
-    /**
-     * Converts an {@link UserCart} to an {@link UserCartDto} entity.
-     *
-     * @param userCartDto the DTO to convert
-     * @return the converted {@link UserCart} entity
-     */
-    @Override
-    public UserCart toEntity(UserCartDto userCartDto) {
-        UserCartId userCartId = new UserCartId(userCartDto.getUserId(), userCartDto.getTicketId());
-        return UserCart.builder()
-                .id(userCartId)
-                .build();
-    }
-
-    /**
-     * Converts an {@link UserCartDto} entity to an {@link UserCart}.
-     *
-     * @param userCart the entity to convert
-     * @return the converted {@link UserCartDto}
-     */
-    @Override
-    public UserCartDto toDto(UserCart userCart) {
-        return UserCartDto.builder()
-                .userId(userCart.getId().getUserId())
-                .ticketId(userCart.getId().getTicketId())
-                .build();
-    }
+    @Mapping(target = "userId", source = "id.userId")
+    @Mapping(target = "ticketId", source = "id.ticketId")
+    UserCartDto toDto(UserCart userCart);
 }

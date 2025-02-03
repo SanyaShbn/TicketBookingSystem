@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkoutButton = document.getElementById('checkoutButton');
     const clearCartButton = document.getElementById('clearCartButton');
     let totalPrice = parseFloat(localStorage.getItem('totalPrice')) || 0;
+    const csrfToken = document.getElementById('csrfToken').value;
 
     function updateTotalPrice() {
         let totalPrice = 0;
@@ -88,7 +89,8 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch('/user_cart', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRF-TOKEN': csrfToken
                 },
                 body: new URLSearchParams({
                     ticketId: matchingTicketId,
@@ -129,7 +131,8 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch('/user_cart', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRF-TOKEN': csrfToken
                 },
                 body: new URLSearchParams({
                     ticketId: matchingTicketId,
@@ -181,10 +184,11 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch('/user_cart', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': csrfToken
             },
             body: new URLSearchParams({
-                action: 'clear'
+                action: 'clear',
             })
         }).then(response => response.json())
             .then(data => {

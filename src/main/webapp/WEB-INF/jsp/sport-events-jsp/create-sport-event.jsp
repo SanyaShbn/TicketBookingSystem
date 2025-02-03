@@ -12,14 +12,18 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="create.sport.event.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/create-sport-event" method="post">
-        <label for="eventName"><fmt:message key="sport_event.eventName" />:</label>
-        <input type="text" id="eventName" name="eventName" required>
-        <label for="eventDateTime"><fmt:message key="sport_event.eventDateTime" />:</label>
-        <input type="datetime-local" step="60" id="eventDateTime" name="eventDateTime" required>
+    <form action="${pageContext.request.contextPath}/admin/sport_events/create" method="post">
 
-        <label for="arena"><fmt:message key="sport_event.arena" />:</label>
-        <select id="arena" name="arena" class="scrollable-dropdown" required>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+        <label for="eventName"><fmt:message key="sport_event.eventName" />:</label>
+        <input type="text" id="eventName" name="eventName" value="${sport_event.eventName}" required>
+        <label for="eventDateTime"><fmt:message key="sport_event.eventDateTime" />:</label>
+        <input type="datetime-local" step="60" id="eventDateTime" name="eventDateTime"
+               value="${sport_event.eventDateTime}" required>
+
+        <label for="arenaId"><fmt:message key="sport_event.arena" />:</label>
+        <select id="arenaId" name="arenaId" class="scrollable-dropdown" required>
             <c:forEach var="arena" items="${arenas}">
                 <option value="${arena.id}">
                         ${arena.name}. ${arena.city}. Вместимость: ${arena.capacity} чел.
@@ -38,7 +42,7 @@
     <c:if test="${not empty requestScope.errors}">
         <div class="error">
             <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.message}</span>
+                <span>${error.defaultMessage}</span>
                 <br/>
             </c:forEach>
         </div>

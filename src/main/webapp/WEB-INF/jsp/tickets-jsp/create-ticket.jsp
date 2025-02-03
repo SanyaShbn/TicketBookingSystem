@@ -12,12 +12,17 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="create.ticket.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/create-ticket?<%= request.getQueryString() %>" method="post">
-        <label for="price"><fmt:message key="ticket.price" />:</label>
-        <input type="text" id="price" name="price" required>
+    <form action="${pageContext.request.contextPath}/admin/tickets/create" method="post">
 
-        <label for="seat"><fmt:message key="ticket.seat.numb" />:</label>
-        <select id="seat" name="seat" class="scrollable-dropdown" required>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+        <input type="hidden" name="eventId" value="${eventId}">
+
+        <label for="price"><fmt:message key="ticket.price" />:</label>
+        <input type="text" id="price" name="price" value="${ticket.price}" required>
+
+        <label for="seatId"><fmt:message key="ticket.seat.numb" />:</label>
+        <select id="seatId" name="seatId" class="scrollable-dropdown" required>
             <c:forEach var="seat" items="${seats}">
                 <option value="${seat.id}">
                         Сектор ${seat.row.sector.sectorName}. Ряд ${seat.row.rowNumber}.
@@ -37,7 +42,7 @@
     <c:if test="${not empty requestScope.errors}">
         <div class="error">
             <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.message}</span>
+                <span>${error.defaultMessage}</span>
                 <br/>
             </c:forEach>
         </div>

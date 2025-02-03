@@ -13,11 +13,17 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="create.row.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/create-row?<%= request.getQueryString() %>" method="post">
+    <form action="${pageContext.request.contextPath}/admin/rows/create" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+        <input type="hidden" name="arenaId" value="${arenaId}">
+        <input type="hidden" name="sectorId" value="${sectorId}">
+
         <label for="rowNumber"><fmt:message key="row.rowNumber" />:</label>
-        <input type="text" id="rowNumber" name="rowNumber" required>
+        <input type="text" id="rowNumber" name="rowNumber" value="${row.rowNumber}" required>
         <label for="seatsNumb"><fmt:message key="row.seatsNumb" />:</label>
-        <input type="text" id="seatsNumb" name="seatsNumb" required>
+        <input type="text" id="seatsNumb" name="seatsNumb" value="${row.seatsNumb}" required>
         <div class="button-group">
             <button type="button"
                     onclick="location.href='${pageContext.request.contextPath}/admin/rows?<%= request.getQueryString() %>';">
@@ -30,7 +36,7 @@
     <c:if test="${not empty requestScope.errors}">
         <div class="error">
             <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.message}</span>
+                <span>${error.defaultMessage}</span>
                 <br/>
             </c:forEach>
         </div>

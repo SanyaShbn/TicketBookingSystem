@@ -13,13 +13,16 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="create.arena.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/create-arena" method="post">
+    <form action="${pageContext.request.contextPath}/admin/arenas/create" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <label for="name"><fmt:message key="arena.name" />:</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="name" value="${arena.name}" required>
         <label for="city"><fmt:message key="arena.city" />:</label>
-        <input type="text" id="city" name="city" required>
+        <input type="text" id="city" name="city" value="${arena.city}" required>
         <label for="capacity"><fmt:message key="arena.capacity" />:</label>
-        <input type="text" id="capacity" name="capacity" required>
+        <input type="text" id="capacity" name="capacity" value="${arena.capacity}" required>
         <div class="button-group">
             <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/arenas';">
                 <fmt:message key="button.back" />
@@ -31,7 +34,7 @@
     <c:if test="${not empty requestScope.errors}">
         <div class="error">
             <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.message}</span>
+                <span>${error.defaultMessage}</span>
                 <br/>
             </c:forEach>
         </div>

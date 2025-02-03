@@ -3,34 +3,34 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.HashSet" %>
 <%@ page import="java.util.Set" %>
-<%@ page import="com.example.ticketbookingsystem.entity.Seat" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.ticketbookingsystem.entity.Row" %>
-<%@ page import="com.example.ticketbookingsystem.entity.Ticket" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.ticketbookingsystem.entity.TicketStatus" %>
+<%@ page import="com.example.ticketbookingsystem.dto.seat_dto.SeatReadDto" %>
+<%@ page import="com.example.ticketbookingsystem.dto.ticket_dto.TicketReadDto" %>
 <%@ include file="../localization/localization.jsp" %>
 
 <%
     Set<String> sectors = new HashSet<>();
     Set<Row> rows = new HashSet<>();
     List<Long> ticketSeatsIds = new ArrayList<>();
-    List<Seat> seats = (List<Seat>) request.getAttribute("seats");
-    List<Ticket> tickets = (List<Ticket>) request.getAttribute("tickets");
+    List<SeatReadDto> seats = (List<SeatReadDto>) request.getAttribute("seats");
+    List<TicketReadDto> tickets = (List<TicketReadDto>) request.getAttribute("tickets");
 
-    for (Ticket ticket : tickets) {
+    for (TicketReadDto ticket : tickets) {
         if(ticket.getStatus() != TicketStatus.SOLD) {
             ticketSeatsIds.add(ticket.getSeat().getId());
         }
     }
 
-    for (Seat seat : seats) {
+    for (SeatReadDto seat : seats) {
         sectors.add(seat.getRow().getSector().getSectorName());
         rows.add(seat.getRow());
     }
     List<Row> sortedRows = rows.stream()
             .sorted((r1, r2) -> Integer.compare(r1.getRowNumber(), r2.getRowNumber())).toList();
-    List<Seat> sortedSeats = seats.stream()
+    List<SeatReadDto> sortedSeats = seats.stream()
             .sorted((r1, r2) -> Integer.compare(r1.getSeatNumber(), r2.getSeatNumber())).toList();
 
     request.setAttribute("sectors", sectors);
@@ -99,6 +99,9 @@
     </div>
     <div class="cart">
         <h2><fmt:message key="user.cart"/> (<fmt:message key="tickets.in.user.cart"/>:<span id="cartCount">0</span>)</h2>
+
+        <input type="hidden" id="csrfToken" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <form id="cartForm" action="${pageContext.request.contextPath}/purchase" method="get">
             <ul id="cartItems">
                 <li id="emptyCartMessage"><fmt:message key="user.cart.empty"/></li>
@@ -116,7 +119,7 @@
     <c:if test="${not empty requestScope.errors}">
         <div class="error">
             <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.message}</span>
+                <span>${error.defaultMessage}</span>
                 <br/>
             </c:forEach>
         </div>

@@ -13,13 +13,18 @@
 <%@ include file="../localization/language-switcher.jsp" %>
 <div class="form-container">
     <h1><fmt:message key="create.sector.title" /></h1>
-    <form action="${pageContext.request.contextPath}/admin/create-sector?<%= request.getQueryString() %>" method="post">
+    <form action="${pageContext.request.contextPath}/admin/sectors/create" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+        <input type="hidden" name="arenaId" value="${arenaId}">
+
         <label for="sectorName"><fmt:message key="sector.sectorName" />:</label>
-        <input type="text" id="sectorName" name="sectorName" required>
+        <input type="text" id="sectorName" name="sectorName" value="${sector.sectorName}" required>
         <label for="maxRowsNumb"><fmt:message key="sector.maxRowsNumb" />:</label>
-        <input type="text" id="maxRowsNumb" name="maxRowsNumb" required>
+        <input type="text" id="maxRowsNumb" name="maxRowsNumb" value="${sector.maxRowsNumb}" required>
         <label for="maxSeatsNumb"><fmt:message key="sector.maxSeatsNumb" />:</label>
-        <input type="text" id="maxSeatsNumb" name="maxSeatsNumb" required>
+        <input type="text" id="maxSeatsNumb" name="maxSeatsNumb" value="${sector.maxSeatsNumb}" required>
         <div class="button-group">
             <button type="button"
                     onclick="location.href='${pageContext.request.contextPath}/admin/sectors?<%= request.getQueryString() %>';">
@@ -32,7 +37,7 @@
     <c:if test="${not empty requestScope.errors}">
         <div class="error">
             <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.message}</span>
+                <span>${error.defaultMessage}</span>
                 <br/>
             </c:forEach>
         </div>

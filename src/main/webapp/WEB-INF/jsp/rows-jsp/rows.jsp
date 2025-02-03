@@ -22,12 +22,12 @@
                 <label for="rowNumberOrder"><fmt:message key="row.rowNumber"/></label>
                 <select id="rowNumberOrder" name="rowNumberOrder" class="scrollable-dropdown">
                     <option value="">-- <fmt:message key="sorting" /> --</option>
-                    <option value="ASC" ${param.rowNumberOrder != null
-                            && param.rowNumberOrder == 'ASC' ? 'selected' : ''}>
+                    <option value="ASC" ${requestScope.filter.rowNumberOrder != null
+                            && requestScope.filter.rowNumberOrder == 'ASC' ? 'selected' : ''}>
                         <fmt:message key="sorting.asc" />
                     </option>
-                    <option value="DESC" ${param.nameSortOrder != null
-                            && param.rowNumberOrder == 'DESC' ? 'selected' : ''}>
+                    <option value="DESC" ${requestScope.filter.rowNumberOrder != null
+                            && requestScope.filter.rowNumberOrder == 'DESC' ? 'selected' : ''}>
                         <fmt:message key="sorting.desc" />
                     </option>
                 </select>
@@ -36,15 +36,24 @@
                 <label for="seatsNumbOrder"><fmt:message key="row.seatsNumb"/></label>
                 <select id="seatsNumbOrder" name="seatsNumbOrder" class="scrollable-dropdown">
                     <option value="">-- <fmt:message key="sorting" /> --</option>
-                    <option value="ASC" ${param.seatsNumbOrder != null
-                            && param.seatsNumbOrder == 'ASC' ? 'selected' : ''}>
+                    <option value="ASC" ${requestScope.filter.seatsNumbOrder != null
+                            && requestScope.filter.seatsNumbOrder == 'ASC' ? 'selected' : ''}>
                         <fmt:message key="sorting.asc" />
                     </option>
-                    <option value="DESC" ${param.seatsNumbOrder != null
-                            && param.seatsNumbOrder == 'DESC' ? 'selected' : ''}>
+                    <option value="DESC" ${requestScope.filter.seatsNumbOrder != null
+                            && requestScope.filter.seatsNumbOrder == 'DESC' ? 'selected' : ''}>
                         <fmt:message key="sorting.desc" />
                     </option>
                 </select>
+            </div>
+            <div>
+                <label for="displayPage"><fmt:message key="page.current"/>:
+                    <input id="displayPage" type="number" value="${requestScope.rows.metadata.page + 1}">
+                    <input id="page" type="hidden" name="page" value="${requestScope.rows.metadata.page}">
+                </label>
+                <label for="size"><fmt:message key="page.content.size"/>:
+                    <input id="size" type="number" name="size" value="${requestScope.rows.metadata.size}">
+                </label>
             </div>
             <input type="hidden" name="sectorId" value="${param.sectorId}">
             <input type="hidden" name="arenaId" value="${param.arenaId}">
@@ -55,39 +64,29 @@
     <button onclick="location.href='${pageContext.request.contextPath}/admin/sectors?arenaId=<%= request.getParameter("arenaId") %>'">
         <fmt:message key="button.back"/>
     </button>
-    <button onclick="location.href='${pageContext.request.contextPath}/admin/create-row?<%= request.getQueryString() %>'">
+    <button onclick="location.href='${pageContext.request.contextPath}/admin/rows/create?<%= request.getQueryString() %>'">
         <fmt:message key="button.add"/>
     </button>
     <div class="arena-container">
         <c:choose>
-        <c:when test="${not empty requestScope.rows}">
-            <c:forEach var="row" items="${requestScope.rows}">
+        <c:when test="${not empty requestScope.rows.content}">
+            <c:forEach var="row" items="${requestScope.rows.content}">
                 <div class="arena-card">
                     <div><fmt:message key="row.rowNumber"/>: ${row.rowNumber}</div>
                     <div><fmt:message key="row.seatsNumb"/>: ${row.seatsNumb}</div>
-                    <form action="${pageContext.request.contextPath}/admin/update-row" method="get" style="display:inline;">
-                        <input type="hidden" name="id" value="${row.id}"/>
+                    <form action="${pageContext.request.contextPath}/admin/rows/${row.id}/update" method="get" style="display:inline;">
                         <input type="hidden" name="sectorId" value="${row.sector.id}"/>
-                        <input type="hidden" name="arenaId" value="${row.sector.arena.id}"/>
+                        <input type="hidden" name="arenaId" value="${param.arenaId}"/>
                         <button type="submit"><fmt:message key="button.update"/></button>
                     </form>
-                    <form action="${pageContext.request.contextPath}/admin/delete-row?<%= request.getQueryString() %>"
+                    <form action="${pageContext.request.contextPath}/admin/rows/${row.id}/delete?<%= request.getQueryString() %>"
                           method="post" style="display:inline;">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                         <input type="hidden" name="id" value="${row.id}"/>
                         <button type="submit"><fmt:message key="button.delete"/></button>
                     </form>
                 </div>
             </c:forEach>
-            <div class="pagination" style="padding-top: 45px">
-                <c:if test="${requestScope.page > 1}">
-                    <a href="${pageContext.request.contextPath}/admin/rows?arenaId=${param.arenaId}&sectorId=${param.sectorId}&page=${param.page - 1}"
-                       class="pagination-arrow">&laquo; <fmt:message key="page.previous"/></a>
-                </c:if>
-                <c:if test="${requestScope.rows.size() eq requestScope.limit}">
-                    <a href="${pageContext.request.contextPath}/admin/rows?arenaId=${param.arenaId}&sectorId=${param.sectorId}&page=${param.page != null
-          ? param.page + 1 : 2}" class="pagination-arrow"><fmt:message key="page.next"/> &raquo;</a>
-                </c:if>
-            </div>
         </c:when>
             <c:otherwise>
                 <div><fmt:message key="rows.not_found"/></div>
