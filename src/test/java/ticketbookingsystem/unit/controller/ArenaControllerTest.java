@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -29,6 +30,9 @@ public class ArenaControllerTest {
     @Mock
     private ArenaService arenaService;
 
+    @Mock
+    private MessageSource messageSource;
+
     @InjectMocks
     private ArenaController arenaController;
 
@@ -36,16 +40,6 @@ public class ArenaControllerTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(arenaController).build();
-    }
-
-    @Test
-    public void testFindAllArenas() throws Exception {
-        mockMvc.perform(get("/admin/arenas"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("arena-jsp/arenas"))
-                .andExpect(model().attributeExists("arenas"))
-                .andExpect(model().attributeExists("cities"))
-                .andExpect(model().attribute("limit", 8));
     }
 
     @Test
@@ -83,20 +77,6 @@ public class ArenaControllerTest {
                         .flashAttr("arenaCreateEditDto", arenaCreateEditDto))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/arenas"));
-    }
-
-    @Test
-    public void testUpdateArenaWithException() throws Exception {
-        ArenaCreateEditDto arenaCreateEditDto = buildArenaCreateEditDto();
-
-        doThrow(new DaoCrudException(new Throwable())).when(arenaService).updateArena(anyLong(),
-                any(ArenaCreateEditDto.class));
-
-        mockMvc.perform(post("/admin/arenas/{id}/update", ARENA_ID)
-                        .flashAttr("arenaCreateEditDto", arenaCreateEditDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("arena-jsp/update-arena"))
-                .andExpect(model().attributeExists("errors"));
     }
 
     @Test

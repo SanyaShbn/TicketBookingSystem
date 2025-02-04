@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -32,6 +33,9 @@ public class TicketsPurchaseControllerTest {
 
     @Mock
     private UserCartService userCartService;
+
+    @Mock
+    private MessageSource messageSource;
 
     @Mock
     private PurchasedTicketsService purchasedTicketsService;
@@ -65,7 +69,7 @@ public class TicketsPurchaseControllerTest {
 
         mockMvc.perform(post("/purchase"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/purchasedTickets?userId=" + userDto.getId()));
+                .andExpect(redirectedUrl("/purchasedTickets"));
     }
 
     @Test

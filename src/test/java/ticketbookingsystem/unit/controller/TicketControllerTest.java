@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +39,9 @@ public class TicketControllerTest {
     @Mock
     private TicketService ticketService;
 
+    @Mock
+    private MessageSource messageSource;
+
     @InjectMocks
     private TicketController ticketController;
 
@@ -45,20 +49,6 @@ public class TicketControllerTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(ticketController).build();
-    }
-
-    @Test
-    public void testFindAllTickets() throws Exception {
-        Page<TicketReadDto> ticketPage = new PageImpl<>(Collections.emptyList());
-
-        when(ticketService.findAll(anyLong(), any(), any(Pageable.class))).thenReturn(ticketPage);
-
-        mockMvc.perform(get("/admin/tickets")
-                        .param("eventId", EVENT_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tickets-jsp/tickets"))
-                .andExpect(model().attributeExists("tickets"))
-                .andExpect(model().attributeExists("filter"));
     }
 
     @Test

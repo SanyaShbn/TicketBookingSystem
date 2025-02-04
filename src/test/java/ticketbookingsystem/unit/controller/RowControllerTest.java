@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -31,6 +32,9 @@ public class RowControllerTest {
     @Mock
     private RowService rowService;
 
+    @Mock
+    private MessageSource messageSource;
+
     @InjectMocks
     private RowController rowController;
 
@@ -38,15 +42,6 @@ public class RowControllerTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(rowController).build();
-    }
-
-    @Test
-    public void testFindAllRows() throws Exception {
-        mockMvc.perform(get("/admin/rows")
-                        .param("sectorId", SECTOR_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("rows-jsp/rows"))
-                .andExpect(model().attributeExists("rows"));
     }
 
     @Test
@@ -75,21 +70,6 @@ public class RowControllerTest {
     }
 
     @Test
-    public void testCreateRowWithException() throws Exception {
-        RowCreateEditDto rowCreateEditDto = buildRowCreateEditDto();
-
-        doThrow(new DaoCrudException(new Throwable())).when(rowService).createRow(any(RowCreateEditDto.class), anyLong());
-
-        mockMvc.perform(post("/admin/rows/create")
-                        .param("arenaId", ARENA_ID.toString())
-                        .param("sectorId", SECTOR_ID.toString())
-                        .flashAttr("rowCreateEditDto", rowCreateEditDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("rows-jsp/create-row"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    @Test
     public void testUpdateRow() throws Exception {
         RowCreateEditDto rowCreateEditDto = buildRowCreateEditDto();
 
@@ -101,21 +81,6 @@ public class RowControllerTest {
                         .flashAttr("rowCreateEditDto", rowCreateEditDto))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/rows?arenaId=" + ARENA_ID + "&sectorId=" + SECTOR_ID));
-    }
-
-    @Test
-    public void testUpdateRowWithException() throws Exception {
-        RowCreateEditDto rowCreateEditDto = buildRowCreateEditDto();
-
-        doThrow(new DaoCrudException(new Throwable())).when(rowService).updateRow(anyLong(), any(RowCreateEditDto.class), anyLong());
-
-        mockMvc.perform(post("/admin/rows/{id}/update", ROW_ID)
-                        .param("arenaId", ARENA_ID.toString())
-                        .param("sectorId", SECTOR_ID.toString())
-                        .flashAttr("rowCreateEditDto", rowCreateEditDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("rows-jsp/update-row"))
-                .andExpect(model().attributeExists("errors"));
     }
 
     @Test

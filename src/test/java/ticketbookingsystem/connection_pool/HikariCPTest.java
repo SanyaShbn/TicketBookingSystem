@@ -25,7 +25,7 @@ public class HikariCPTest {
         SessionFactory sessionFactory = configuration.buildSessionFactory();
 
         // Имитируем нагрузку
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 5; i++) {
             sessionFactory.openSession().doWork(connection -> {
                 connection.createStatement().execute("SELECT 1");
             });

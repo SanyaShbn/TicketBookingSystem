@@ -3,9 +3,11 @@ package com.example.ticketbookingsystem.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -25,7 +27,20 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.example.ticketbookingsystem.repository")
 @ComponentScan(basePackages = "com.example.ticketbookingsystem")
+@PropertySource("classpath:application.properties")
 public class JpaConfig {
+
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
+
+    @Value("${spring.datasource.username}")
+    private String dbUsername;
+
+    @Value("${spring.datasource.password}")
+    private String dbPassword;
+
+    @Value("${spring.datasource.driver-class-name}")
+    private String dbDriverClassName;
 
     /**
      * Configures the EntityManagerFactory bean.
@@ -53,10 +68,10 @@ public class JpaConfig {
     @Bean
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
-        config.setDriverClassName("org.postgresql.Driver");
-        config.setJdbcUrl(System.getenv("DB_URL"));
-        config.setUsername(System.getenv("DB_USERNAME"));
-        config.setPassword(System.getenv("DB_PASSWORD"));
+        config.setDriverClassName(dbDriverClassName);
+        config.setJdbcUrl(dbUrl);
+        config.setUsername(dbUsername);
+        config.setPassword(dbPassword);
 
         return new HikariDataSource(config);
     }

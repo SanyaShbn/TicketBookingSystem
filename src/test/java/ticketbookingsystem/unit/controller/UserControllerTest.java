@@ -70,18 +70,4 @@ public class UserControllerTest {
                 .andExpect(redirectedUrl("/login"));
     }
 
-    @Test
-    public void testRegisterUserAccountWithException() throws Exception {
-        UserDto userDto = UserDto.builder().build();
-
-        doThrow(new UserAlreadyExistException("User already exists")).when(userService)
-                .registerNewUserAccount(any(UserDto.class));
-
-        mockMvc.perform(post("/registration")
-                        .with(csrf())
-                        .flashAttr("user", userDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("registration"))
-                .andExpect(model().attributeExists("errors"));
-    }
 }

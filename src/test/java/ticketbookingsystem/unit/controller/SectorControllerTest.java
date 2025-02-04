@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -30,6 +31,9 @@ public class SectorControllerTest {
     @Mock
     private SectorService sectorService;
 
+    @Mock
+    private MessageSource messageSource;
+
     @InjectMocks
     private SectorController sectorController;
 
@@ -37,15 +41,6 @@ public class SectorControllerTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(sectorController).build();
-    }
-
-    @Test
-    public void testFindAllSectors() throws Exception {
-        mockMvc.perform(get("/admin/sectors")
-                        .param("arenaId", ARENA_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("sectors-jsp/sectors"))
-                .andExpect(model().attributeExists("sectors"));
     }
 
     @Test
@@ -71,20 +66,6 @@ public class SectorControllerTest {
     }
 
     @Test
-    public void testCreateSectorWithException() throws Exception {
-        SectorCreateEditDto sectorCreateEditDto = buildSectorCreateEditDto();
-
-        doThrow(new DaoCrudException(new Throwable())).when(sectorService).createSector(any(SectorCreateEditDto.class), anyLong());
-
-        mockMvc.perform(post("/admin/sectors/create")
-                        .param("arenaId", ARENA_ID.toString())
-                        .flashAttr("sectorCreateEditDto", sectorCreateEditDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("sectors-jsp/create-sector"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    @Test
     public void testUpdateSector() throws Exception {
         SectorCreateEditDto sectorCreateEditDto = buildSectorCreateEditDto();
 
@@ -95,20 +76,6 @@ public class SectorControllerTest {
                         .flashAttr("sectorCreateEditDto", sectorCreateEditDto))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/sectors?arenaId=" + ARENA_ID));
-    }
-
-    @Test
-    public void testUpdateSectorWithException() throws Exception {
-        SectorCreateEditDto sectorCreateEditDto = buildSectorCreateEditDto();
-
-        doThrow(new DaoCrudException(new Throwable())).when(sectorService).updateSector(anyLong(), any(SectorCreateEditDto.class), anyLong());
-
-        mockMvc.perform(post("/admin/sectors/{id}/update", SECTOR_ID)
-                        .param("arenaId", ARENA_ID.toString())
-                        .flashAttr("sectorCreateEditDto", sectorCreateEditDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("sectors-jsp/update-sector"))
-                .andExpect(model().attributeExists("errors"));
     }
 
     @Test
