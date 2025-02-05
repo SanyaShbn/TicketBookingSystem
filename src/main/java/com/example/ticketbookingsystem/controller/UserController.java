@@ -46,7 +46,7 @@ public class UserController {
             String errorMessage = messageSource.getMessage("login.fail", null, locale);
             model.addAttribute("error", errorMessage);
         }
-        return "login";
+        return "/login";
     }
 
     /**

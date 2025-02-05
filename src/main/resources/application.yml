@@ -1,0 +1,27 @@
+logging:
+  level:
+    root: INFO
+  file:
+    name: com.example.ticketbookingsystem
+    path: /
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp
+      suffix: .jsp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ticket-booking-system
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        hbm2ddl:
+          auto: validate
+    open-in-view: false
+  messages:
+    basename: messages

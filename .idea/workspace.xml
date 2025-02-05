@@ -9,39 +9,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Adding Java Doc">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/utils/LocaleUtils.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Added docx project description and API documentation reports">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/ApplicationRunner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/initdb/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/initdb/init.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/ApplicationConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/ApplicationConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/JpaConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/JpaConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/SecurityWebApplicationInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/SecurityWebApplicationInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebAppInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebAppInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/WebMvcConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/RowController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/RowController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SectorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SectorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketsPurchaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketsPurchaseController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/row_dto/RowCreateEditDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/row_dto/RowCreateEditDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/sector_dto/SectorCreateEditDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/sector_dto/SectorCreateEditDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/filter/LocaleFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/filter/LocaleFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/CapacityCheck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/CapacityCheck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/LocalizedNotBlank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/LocalizedNotBlank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/PasswordMatches.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/PasswordMatches.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/ValidEmail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/ValidEmail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/ValidEventDateTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/ValidEventDateTime.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/ValidPrice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/ValidPrice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/ValidSectorName.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/custom_annotations/ValidSectorName.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/CapacityCheckValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/CapacityCheckValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/EmailValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/EmailValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/EventDateTimeValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/EventDateTimeValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/LocalizedNotBlankValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/LocalizedNotBlankValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/PasswordMatchesValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/PasswordMatchesValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/PriceValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/PriceValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/SectorNameValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/validator/validation_classes/SectorNameValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/messages_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/messages_en.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/messages_ru.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/registration.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/registration.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-events.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/tickets-purchases-jsp/view-available-events.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/log4j.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/ArenaControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/ArenaControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/RowControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/RowControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SectorControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SectorControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SportEventControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SportEventControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/TicketControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/TicketControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/TicketsPurchaseControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/TicketsPurchaseControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/UserControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/UserControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/ArenaControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/ArenaControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/RowControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/RowControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SectorControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SectorControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SportEventControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SportEventControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/TicketControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/TicketControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/TicketsPurchaseControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/TicketsPurchaseControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/UserCartControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/UserCartControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/ArenaServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/ArenaServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/PurchasedTicketsServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/PurchasedTicketsServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/RowServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/RowServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SectorServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SectorServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SportEventServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SportEventServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/TicketServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/TicketServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/UserCartServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/UserCartServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/UserServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,9 +65,8 @@
         <option value="Dockerfile" />
         <option value="Jsp File" />
         <option value="JavaScript File" />
-        <option value="CSS File" />
-        <option value="package-info" />
         <option value="Interface" />
+        <option value="CSS File" />
         <option value="Class" />
       </list>
     </option>
@@ -66,7 +74,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master-test-merge" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -82,7 +90,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -93,51 +101,97 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;spring-develop&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/TicketBookingSystem/src/test/resources&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;351bf8e09af63d93514f86cfb76b543e&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "spring-boot-develop",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/TicketBookingSystem/src/test/resources",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
+    "spring.configuration.checksum": "351bf8e09af63d93514f86cfb76b543e",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.example.ticketbookingsystem.repository" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\TicketBookingSystem\src\test\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp" />
       <recent name="D:\TicketBookingSystem\src\main\resources\templates" />
-      <recent name="D:\TicketBookingSystem\src\main\webapp\resources" />
-      <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF" />
       <recent name="D:\TicketBookingSystem" />
+      <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\authorization-jsp" />
+      <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\sectors-jsp" />
+      <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\arena-jsp" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 11.0.1">
-    <configuration name="SportEventControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Spring Boot.ApplicationRunner">
+    <configuration name="ArenaControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.ArenaControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RowControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.RowControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SectorControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.SectorControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SportEventControllerTest.testCreateSportEventWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
@@ -147,43 +201,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
       <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.SportEventControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TicketControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.TicketControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TicketControllerTest.testFindAllTickets" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.TicketControllerTest" />
-      <option name="METHOD_NAME" value="testFindAllTickets" />
+      <option name="METHOD_NAME" value="testCreateSportEventWithException" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TicketsPurchaseControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SportEventControllerTest.testUpdateSportEventWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
@@ -192,23 +216,16 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.TicketsPurchaseControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.SportEventControllerTest" />
+      <option name="METHOD_NAME" value="testUpdateSportEventWithException" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserCartServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ApplicationRunner" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.UserCartServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.ticketbookingsystem.ApplicationRunner" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -301,11 +318,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.UserCartServiceTest" />
-        <item itemvalue="JUnit.TicketsPurchaseControllerTest" />
-        <item itemvalue="JUnit.TicketControllerTest.testFindAllTickets" />
-        <item itemvalue="JUnit.TicketControllerTest" />
-        <item itemvalue="JUnit.SportEventControllerTest" />
+        <item itemvalue="JUnit.RowControllerTest" />
+        <item itemvalue="JUnit.ArenaControllerTest" />
+        <item itemvalue="JUnit.SectorControllerTest" />
+        <item itemvalue="JUnit.SportEventControllerTest.testCreateSportEventWithException" />
+        <item itemvalue="JUnit.SportEventControllerTest.testUpdateSportEventWithException" />
       </list>
     </recent_temporary>
   </component>
@@ -428,62 +445,35 @@
       <workItem from="1737302969485" duration="5641000" />
       <workItem from="1737310087917" duration="12107000" />
       <workItem from="1737354943527" duration="3106000" />
-      <workItem from="1737554545717" duration="217000" />
-      <workItem from="1737574021578" duration="3270000" />
-      <workItem from="1737609500469" duration="8120000" />
-      <workItem from="1737617686756" duration="23000" />
-      <workItem from="1737621145429" duration="2842000" />
-      <workItem from="1737641100124" duration="6062000" />
-      <workItem from="1737647603579" duration="329000" />
-      <workItem from="1737659115700" duration="4383000" />
-      <workItem from="1737704004322" duration="5220000" />
-      <workItem from="1737715751785" duration="14541000" />
-      <workItem from="1737745499374" duration="8360000" />
-      <workItem from="1737754296405" duration="17000" />
-      <workItem from="1737804710355" duration="8590000" />
-      <workItem from="1737842154615" duration="4146000" />
-      <workItem from="1737846322416" duration="16000" />
-      <workItem from="1737879247219" duration="13047000" />
-      <workItem from="1737896015184" duration="5352000" />
-      <workItem from="1737919362144" duration="9433000" />
-      <workItem from="1737928846543" duration="14000" />
-      <workItem from="1737957838136" duration="7989000" />
-      <workItem from="1737966694805" duration="10000" />
-      <workItem from="1737971166989" duration="740000" />
-      <workItem from="1737973496343" duration="6191000" />
-      <workItem from="1737979718417" duration="12000" />
-      <workItem from="1737990352975" duration="698000" />
-      <workItem from="1737998858933" duration="17738000" />
-      <workItem from="1738068150032" duration="5036000" />
-      <workItem from="1738075099277" duration="3982000" />
-      <workItem from="1738079443782" duration="4767000" />
-      <workItem from="1738092130373" duration="3002000" />
-      <workItem from="1738097279523" duration="4938000" />
-      <workItem from="1738148110894" duration="5919000" />
-      <workItem from="1738154063255" duration="21000" />
-      <workItem from="1738160742433" duration="8895000" />
-      <workItem from="1738179507979" duration="7702000" />
-      <workItem from="1738263874987" duration="10002000" />
-      <workItem from="1738299993116" duration="776000" />
-      <workItem from="1738308957565" duration="4142000" />
-      <workItem from="1738315752392" duration="4157000" />
-      <workItem from="1738326627291" duration="670000" />
-      <workItem from="1738327320030" duration="293000" />
-      <workItem from="1738327740114" duration="5007000" />
-      <workItem from="1738333451675" duration="703000" />
-      <workItem from="1738338214926" duration="2510000" />
-      <workItem from="1738347900462" duration="9120000" />
-      <workItem from="1738395562986" duration="4365000" />
-      <workItem from="1738399973000" duration="18000" />
-      <workItem from="1738408599060" duration="7958000" />
-      <workItem from="1738443975620" duration="2225000" />
-      <workItem from="1738493497735" duration="9638000" />
-      <workItem from="1738508564895" duration="2066000" />
-      <workItem from="1738512827975" duration="3374000" />
-      <workItem from="1738519316163" duration="11916000" />
-      <workItem from="1738560769110" duration="4809000" />
-      <workItem from="1738568108855" duration="4799000" />
-      <workItem from="1738578717532" duration="6097000" />
+      <workItem from="1737479545337" duration="1057000" />
+      <workItem from="1738666360601" duration="1322000" />
+      <workItem from="1738751758840" duration="8622000" />
+      <workItem from="1738760600703" duration="2547000" />
+      <workItem from="1738766821227" duration="7327000" />
+    </task>
+    <task id="LOCAL-00001" summary="Initial commit">
+      <option name="closed" value="true" />
+      <created>1732687568753</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1732687568753</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Refactoring (implemented dto into Arena module)">
+      <option name="closed" value="true" />
+      <created>1732970375984</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732970375984</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Continuing working on feature№2 (for now, CRUD operations with sector's rows) + implementing necessary validation">
+      <option name="closed" value="true" />
+      <created>1733229117488</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1733229117488</updated>
     </task>
     <task id="LOCAL-00004" summary="Started working on feature№3 (for now, CRUD operations with sport_events)">
       <option name="closed" value="true" />
@@ -709,175 +699,7 @@
       <option name="project" value="LOCAL" />
       <updated>1737324627079</updated>
     </task>
-    <task id="LOCAL-00032" summary="Started implementing Spring in Arena module (+ necessary config classes, dependencies)">
-      <option name="closed" value="true" />
-      <created>1737627077302</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1737627077302</updated>
-    </task>
-    <task id="LOCAL-00033" summary="Fixed existing configs. Now, application is starting, at least">
-      <option name="closed" value="true" />
-      <created>1737663453885</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1737663453885</updated>
-    </task>
-    <task id="LOCAL-00034" summary="Fixed Spring MVC config classes">
-      <option name="closed" value="true" />
-      <created>1737717529565</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1737717529565</updated>
-    </task>
-    <task id="LOCAL-00035" summary="Implemented MapStruct, fully implemented Spring into Arena module (except validation and filters/sorting/pagination), wrote tests">
-      <option name="closed" value="true" />
-      <created>1737731314086</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1737731314086</updated>
-    </task>
-    <task id="LOCAL-00036" summary="Implemented Spring into Sector module (basic CRUD operations, for now - now tests, no filtration/sorting/pagination)">
-      <option name="closed" value="true" />
-      <created>1737813354087</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1737813354087</updated>
-    </task>
-    <task id="LOCAL-00037" summary="Fixed controller and service unit-tests for Arena and Sector entities (+ refactored dto for Row entity)">
-      <option name="closed" value="true" />
-      <created>1737883642066</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1737883642066</updated>
-    </task>
-    <task id="LOCAL-00038" summary="Wrote integration tests for ArenaController and ServiceController functionality">
-      <option name="closed" value="true" />
-      <created>1737889171672</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1737889171672</updated>
-    </task>
-    <task id="LOCAL-00039" summary="Implemented Spring into Row module(no filtration/sorting/pagination functionality yet) + wrote tests and did some refactoring.">
-      <option name="closed" value="true" />
-      <created>1737901331663</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1737901331664</updated>
-    </task>
-    <task id="LOCAL-00040" summary="Connected QueryDSL">
-      <option name="closed" value="true" />
-      <created>1737928825431</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1737928825431</updated>
-    </task>
-    <task id="LOCAL-00041" summary="Implemented Spring into SportEvent module (for now, no filtration/sorting/pagination) + wrote tests, did some refactoring,">
-      <option name="closed" value="true" />
-      <created>1737966668760</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1737966668760</updated>
-    </task>
-    <task id="LOCAL-00042" summary="Implemented filtration/sorting/pagination using QueryDSL and JPA for Arena entities">
-      <option name="closed" value="true" />
-      <created>1738006453885</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1738006453885</updated>
-    </task>
-    <task id="LOCAL-00043" summary="Implemented filtration/sorting/pagination using QueryDSL and JPA for Sector/Row/SportEvent entities, added some unit-tests for services">
-      <option name="closed" value="true" />
-      <created>1738016637258</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1738016637258</updated>
-    </task>
-    <task id="LOCAL-00044" summary="Implemented Spring into admin Ticket module (crud-operations for admin with tickets and seats), wrote tests, + again some refactoring">
-      <option name="closed" value="true" />
-      <created>1738095103554</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1738095103554</updated>
-    </task>
-    <task id="LOCAL-00045" summary="Started implementing Spring Security (added dependencies, wrote config)">
-      <option name="closed" value="true" />
-      <created>1738165731676</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1738165731676</updated>
-    </task>
-    <task id="LOCAL-00046" summary="Implemented authorization/registration of users via Spring Security">
-      <option name="closed" value="true" />
-      <created>1738187211431</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1738187211431</updated>
-    </task>
-    <task id="LOCAL-00047" summary="Managed project packages, refactored view resolving, fixed tests after refactoring">
-      <option name="closed" value="true" />
-      <created>1738267943490</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1738267943490</updated>
-    </task>
-    <task id="LOCAL-00048" summary="Started implementing Spring for Ticket Purchase module (for now, viewing tickets for purchase and managing user cart is ready, but purchase itself is not yet)">
-      <option name="closed" value="true" />
-      <created>1738350243963</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1738350243963</updated>
-    </task>
-    <task id="LOCAL-00049" summary="Added unit and integration tests for UserController, UserService, TicketPurchaseController, refactored some previous tests">
-      <option name="closed" value="true" />
-      <created>1738414464195</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1738414464195</updated>
-    </task>
-    <task id="LOCAL-00050" summary="Fully implemented validation for Arena entity, continuing managing validation for other entities">
-      <option name="closed" value="true" />
-      <created>1738503717625</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1738503717625</updated>
-    </task>
-    <task id="LOCAL-00051" summary="Fully implemented validation for remaining entities (but don't have error messages localization yet)">
-      <option name="closed" value="true" />
-      <created>1738527338426</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1738527338427</updated>
-    </task>
-    <task id="LOCAL-00052" summary="Adding Java Doc">
-      <option name="closed" value="true" />
-      <created>1738531255008</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1738531255008</updated>
-    </task>
-    <option name="localTasksCounter" value="53" />
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -920,32 +742,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Continuing working on feature №4 (added filter-bar for sport events, arenas and tickets)" />
+    <MESSAGE value="Working on features 5 and 6 (added visualization of available tickets and user's cart)" />
+    <MESSAGE value="Almost finished features 5 and 6 (further details depend on implementing users authorization, so they are not completely finished)" />
+    <MESSAGE value="Started implementing authorization (feature №7)" />
+    <MESSAGE value="Implemented authorization (for now, without user ticket purchasing functionality)" />
+    <MESSAGE value="Started ticket purchase functionality (with implemented authorization)" />
+    <MESSAGE value="Managed concurrency when adding tickets into user's cart before committing purchase" />
+    <MESSAGE value="Implemented committing purchase functionality + viewing purchased tickets" />
+    <MESSAGE value="Tried to deploy (not fully successful yet)" />
+    <MESSAGE value="Deployed with Docker (please, check README file in order to get info about admin credentials and check admin functionality when running the app)" />
+    <MESSAGE value="Did some refactoring" />
+    <MESSAGE value="Connected Hibernate. Started implementing Hibernate for User entity" />
+    <MESSAGE value="Implemented Hibernate for User and Arena entities" />
+    <MESSAGE value="Written tests for UserDao and ArenaDao" />
+    <MESSAGE value="Added HikariCP connection pool + did some refactoring" />
+    <MESSAGE value="Implemented Hibernate for SectorDao, added tests for SectorDao class + again some refactoring and java doc" />
+    <MESSAGE value="Implemented Hibernate for SportEventDao" />
+    <MESSAGE value="Started implementing Hibernate for remaining dao classes (for now, have some bugs and no unit-tests)" />
+    <MESSAGE value="Continuing implementing Hibernate for remaining dao classes (fixed bugs, still no tests)" />
+    <MESSAGE value="Started implementing language internationalization" />
     <MESSAGE value="Continuing implementing language internationalization (refactored all the .jsp files)" />
     <MESSAGE value="Finished implementing language internationalization" />
     <MESSAGE value="Added mappers, java doc (+ some refactoring in my jsp pages)" />
     <MESSAGE value="Moved some of the Hibernate db connection properties values into env vars" />
-    <MESSAGE value="Started implementing Spring in Arena module (+ necessary config classes, dependencies)" />
-    <MESSAGE value="Fixed existing configs. Now, application is starting, at least" />
-    <MESSAGE value="Fixed Spring MVC config classes" />
-    <MESSAGE value="Implemented MapStruct, fully implemented Spring into Arena module (except validation and filters/sorting/pagination), wrote tests" />
-    <MESSAGE value="Implemented Spring into Sector module (basic CRUD operations, for now - now tests, no filtration/sorting/pagination)" />
-    <MESSAGE value="Fixed controller and service unit-tests for Arena and Sector entities (+ refactored dto for Row entity)" />
-    <MESSAGE value="Wrote integration tests for ArenaController and ServiceController functionality" />
-    <MESSAGE value="Implemented Spring into Row module(no filtration/sorting/pagination functionality yet) + wrote tests and did some refactoring." />
-    <MESSAGE value="Connected QueryDSL" />
-    <MESSAGE value="Implemented Spring into SportEvent module (for now, no filtration/sorting/pagination) + wrote tests, did some refactoring," />
-    <MESSAGE value="Implemented filtration/sorting/pagination using QueryDSL and JPA for Arena entities" />
-    <MESSAGE value="Implemented filtration/sorting/pagination using QueryDSL and JPA for Sector/Row/SportEvent entities, added some unit-tests for services" />
-    <MESSAGE value="Implemented Spring into admin Ticket module (crud-operations for admin with tickets and seats), wrote tests, + again some refactoring" />
-    <MESSAGE value="Started implementing Spring Security (added dependencies, wrote config)" />
-    <MESSAGE value="Implemented authorization/registration of users via Spring Security" />
-    <MESSAGE value="Managed project packages, refactored view resolving, fixed tests after refactoring" />
-    <MESSAGE value="Started implementing Spring for Ticket Purchase module (for now, viewing tickets for purchase and managing user cart is ready, but purchase itself is not yet)" />
-    <MESSAGE value="Added unit and integration tests for UserController, UserService, TicketPurchaseController, refactored some previous tests" />
-    <MESSAGE value="Fully implemented validation for Arena entity, continuing managing validation for other entities" />
-    <MESSAGE value="Fully implemented validation for remaining entities (but don't have error messages localization yet)" />
-    <MESSAGE value="Adding Java Doc" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding Java Doc" />
+    <MESSAGE value="Refactored architecture (moved transactions management into service layer, tested services)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored architecture (moved transactions management into service layer, tested services)" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
@@ -959,5 +781,9 @@
         <watch expression="lang" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

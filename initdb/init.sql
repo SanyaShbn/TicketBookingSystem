@@ -240,11 +240,11 @@ alter table seat
 
 create table sport_event
 (
-    id              integer generated always as identity
+    id              bigint generated always as identity
         primary key,
     event_name      varchar(50),
     event_date_time timestamp,
-    arena_id        integer
+    arena_id        bigint
         references arena
 );
 

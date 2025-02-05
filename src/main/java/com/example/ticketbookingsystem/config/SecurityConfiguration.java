@@ -1,13 +1,10 @@
 package com.example.ticketbookingsystem.config;
 
-import com.example.ticketbookingsystem.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
@@ -30,19 +27,6 @@ import static com.example.ticketbookingsystem.entity.Role.USER;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-
-    private final CustomUserDetailsService customUserDetailsService;
-
-    /**
-     * Configures the global authentication manager.
-     *
-     * @param auth The authentication manager builder.
-     * @throws Exception If an error occurs during configuration.
-     */
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
-    }
 
     /**
      * Configures the password encoder bean.
