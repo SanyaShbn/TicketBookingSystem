@@ -11,9 +11,9 @@ spring:
       prefix: /WEB-INF/jsp
       suffix: .jsp
   datasource:
-    url: jdbc:postgresql://localhost:5432/ticket-booking-system
-    username: postgres
-    password: 12345
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
@@ -23,5 +23,3 @@ spring:
         hbm2ddl:
           auto: validate
     open-in-view: false
-  messages:
-    basename: messages

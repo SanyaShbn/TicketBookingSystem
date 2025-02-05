@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -29,8 +28,8 @@ import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 /**
  * Controller class for managing arenas in the Ticket Booking System application.
  */
-@Controller
-@RequestMapping("/admin/arenas")
+@RestController
+@RequestMapping("/api/admin/arenas")
 @RequiredArgsConstructor
 @Slf4j
 public class ArenaController {
@@ -39,20 +38,26 @@ public class ArenaController {
 
     private final MessageSource messageSource;
 
-    /**
-     * Handles GET requests to retrieve and display all arenas.
-     *
-     * @param model The model to hold attributes.
-     * @param arenaFilter The filter criteria for arenas.
-     * @param pageable The pagination information.
-     * @return The name of the view to be rendered.
-     */
+//    /**
+//     * Handles GET requests to retrieve and display all arenas.
+//     *
+//     * @param model The model to hold attributes.
+//     * @param arenaFilter The filter criteria for arenas.
+//     * @param pageable The pagination information.
+//     * @return The name of the view to be rendered.
+//     */
+//    @GetMapping
+//    public String findAllArenas(Model model, ArenaFilter arenaFilter, Pageable pageable) {
+//        Page<ArenaReadDto> arenasPage = arenaService.findAll(arenaFilter, pageable);
+//        model.addAttribute("filter", arenaFilter);
+//        model.addAttribute("arenas", PageResponse.of(arenasPage));
+//        return "arena-jsp/arenas";
+//    }
+
     @GetMapping
-    public String findAllArenas(Model model, ArenaFilter arenaFilter, Pageable pageable) {
-        Page<ArenaReadDto> arenasPage = arenaService.findAll(arenaFilter, pageable);
-        model.addAttribute("filter", arenaFilter);
-        model.addAttribute("arenas", PageResponse.of(arenasPage));
-        return "arena-jsp/arenas";
+    public PageResponse<ArenaReadDto> findAll(ArenaFilter arenaFilter, Pageable pageable){
+        Page<ArenaReadDto> page = arenaService.findAll(arenaFilter, pageable);
+        return PageResponse.of(page);
     }
 
     /**
