@@ -98,15 +98,16 @@ public class RowService {
      * @param rowCreateEditDto the DTO of the row to create
      */
     @Transactional
-    public void createRow(RowCreateEditDto rowCreateEditDto, Long sectorId) {
+    public RowReadDto createRow(RowCreateEditDto rowCreateEditDto, Long sectorId) {
         try {
             Row row = rowCreateEditMapper.toEntity(rowCreateEditDto);
             Sector sector = sectorService.findSectorById(sectorId);
             row.setSector(sector);
 
-            rowRepository.save(row);
+            Row savedRow = rowRepository.save(row);
             rowRepository.updateSectorAfterRowSave(sectorId, row.getSeatsNumb());
             log.info("Row created successfully with dto: {}", rowCreateEditDto);
+            return rowReadMapper.toDto(savedRow);
         } catch (DataAccessException e){
             log.error("Failed to create row with dto: {}", rowCreateEditDto);
             throw new DaoCrudException(e);
@@ -120,7 +121,7 @@ public class RowService {
      * @param rowCreateEditDto the DTO of the updated row
      */
     @Transactional
-    public void updateRow(Long id, RowCreateEditDto rowCreateEditDto, Long sectorId) {
+    public RowReadDto updateRow(Long id, RowCreateEditDto rowCreateEditDto, Long sectorId) {
         try {
             Optional<Row> rowBeforeUpdate = rowRepository.findById(id);
             if (rowBeforeUpdate.isEmpty()) {
@@ -134,9 +135,10 @@ public class RowService {
             row.setSector(sector);
             rowRepository.updateSectorBeforeRowUpdate(sectorId,
                     rowBeforeUpdate.get().getSeatsNumb(), row.getSeatsNumb());
-            rowRepository.save(row);
+            Row updatedRow = rowRepository.save(row);
             rowRepository.flush();
             log.info("Row with id {} updated successfully with dto: {}", id, rowCreateEditDto);
+            return rowReadMapper.toDto(updatedRow);
         } catch (DataAccessException e){
             log.error("Failed to update row {} with dto: {}", id, rowCreateEditDto);
             throw new DaoCrudException(e);

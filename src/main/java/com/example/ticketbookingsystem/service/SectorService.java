@@ -108,14 +108,15 @@ public class SectorService {
      * @param sectorCreateEditDto the DTO of the sector to create
      */
     @Transactional
-    public void createSector(SectorCreateEditDto sectorCreateEditDto, Long arenaId) {
+    public SectorReadDto createSector(SectorCreateEditDto sectorCreateEditDto, Long arenaId) {
         try {
             Sector sector = sectorCreateEditMapper.toEntity(sectorCreateEditDto);
             Arena arena = arenaService.findArenaById(arenaId);
             sector.setArena(arena);
-            sectorRepository.save(sector);
+            Sector updatedSector = sectorRepository.save(sector);
             sectorRepository.updateArenaAfterSectorSave(arenaId, sector.getMaxSeatsNumb());
             log.info("Sector created successfully with dto: {}", sectorCreateEditDto);
+            return sectorReadMapper.toDto(updatedSector);
         } catch (DataAccessException e){
             log.error("Failed to create sector with dto: {}", sectorCreateEditDto);
             throw new DaoCrudException(e);
@@ -129,7 +130,7 @@ public class SectorService {
      * @param sectorCreateEditDto the DTO of the updated sector
      */
     @Transactional
-    public void updateSector(Long id, SectorCreateEditDto sectorCreateEditDto, Long arenaId) {
+    public SectorReadDto updateSector(Long id, SectorCreateEditDto sectorCreateEditDto, Long arenaId) {
         try {
             Optional<Sector> sectorBeforeUpdate = sectorRepository.findById(id);
             if (sectorBeforeUpdate.isEmpty()) {
@@ -143,9 +144,10 @@ public class SectorService {
             sector.setArena(arena);
             sectorRepository.updateArenaBeforeSectorUpdate(arenaId,
                     sectorBeforeUpdate.get().getMaxSeatsNumb(), sector.getMaxSeatsNumb());
-            sectorRepository.save(sector);
+            Sector updatedSector = sectorRepository.save(sector);
             sectorRepository.flush();
             log.info("Sector with id {} updated successfully with dto: {}", id, sectorCreateEditDto);
+            return sectorReadMapper.toDto(updatedSector);
         } catch (DataAccessException e){
             log.error("Failed to update sector {} with dto: {}", id, sectorCreateEditDto);
             throw new DaoCrudException(e);

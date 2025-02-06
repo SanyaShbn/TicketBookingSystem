@@ -23,3 +23,6 @@ spring:
         hbm2ddl:
           auto: validate
     open-in-view: false
+  messages:
+    basename: messages
+    encoding: UTF-8

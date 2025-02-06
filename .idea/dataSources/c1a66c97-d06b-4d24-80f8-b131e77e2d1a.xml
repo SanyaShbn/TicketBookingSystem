@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.49">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>14710</IntrospectionStateNumber>
+      <IntrospectionStateNumber>14726</IntrospectionStateNumber>
       <ServerVersion>16.1</ServerVersion>
       <StartupTime>1738327653</StartupTime>
       <TimeZones>true ACDT
@@ -800,7 +800,7 @@ false Zulu
 14697||10|C|G
 14697||-9223372036854775808|U|G
 14697||10|U|G</Grants>
-      <IntrospectionStateNumber>14710</IntrospectionStateNumber>
+      <IntrospectionStateNumber>14726</IntrospectionStateNumber>
       <ObjectId>22622</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4248,9 +4248,9 @@ false Zulu
     <schema id="270" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>14710</IntrospectionStateNumber>
-      <IntrospectionTimestamp>2025-02-05.23:39:20.373</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2025-02-05.20:39:20</LocalIntrospectionTimestamp>
+      <IntrospectionStateNumber>14726</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2025-02-07.00:09:18.956</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2025-02-06.21:09:19</LocalIntrospectionTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>524</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -4348,7 +4348,7 @@ false Zulu
     <sequence id="280" parent="270" name="arena_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22630</ObjectId>
-      <SequenceIdentity>1(158)</SequenceIdentity>
+      <SequenceIdentity>1(160)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9558</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4372,7 +4372,7 @@ false Zulu
     <sequence id="283" parent="270" name="row_row_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22716</ObjectId>
-      <SequenceIdentity>1(223)</SequenceIdentity>
+      <SequenceIdentity>1(224)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9684</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4380,7 +4380,7 @@ false Zulu
     <sequence id="284" parent="270" name="seat_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22754</ObjectId>
-      <SequenceIdentity>1(893308)</SequenceIdentity>
+      <SequenceIdentity>1(4480324)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9963</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4388,7 +4388,7 @@ false Zulu
     <sequence id="285" parent="270" name="sector_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>22703</ObjectId>
-      <SequenceIdentity>1(161)</SequenceIdentity>
+      <SequenceIdentity>1(164)</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>9667</StateNumber>
       <OwnerName>postgres</OwnerName>

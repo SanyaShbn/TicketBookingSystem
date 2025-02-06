@@ -7,6 +7,7 @@ import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.SportEvent;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventReadMapper;
 import com.example.ticketbookingsystem.repository.SportEventRepository;
@@ -101,13 +102,14 @@ public class SportEventService {
      *
      * @param sportEventCreateEditDto the DTO of the sporting event to create
      */
-    public void createSportEvent(SportEventCreateEditDto sportEventCreateEditDto, Long arenaId) {
+    public SportEventReadDto createSportEvent(SportEventCreateEditDto sportEventCreateEditDto, Long arenaId) {
         try {
             SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
             Arena arena = arenaService.findArenaById(arenaId);
             sportEvent.setArena(arena);
-            sportEventRepository.save(sportEvent);
+            SportEvent savedSportEvent = sportEventRepository.save(sportEvent);
             log.info("SportEvent created successfully with dto: {}", sportEventCreateEditDto);
+            return sportEventReadMapper.toDto(savedSportEvent);
         } catch (DataAccessException e){
             log.error("Failed to create SportEvent with dto: {}", sportEventCreateEditDto);
             throw new DaoCrudException(e);
@@ -120,14 +122,15 @@ public class SportEventService {
      * @param id the ID of the sporting event to update
      * @param sportEventCreateEditDto the DTO of the updated sporting event
      */
-    public void updateSportEvent(Long id, SportEventCreateEditDto sportEventCreateEditDto, Long arenaId) {
+    public SportEventReadDto updateSportEvent(Long id, SportEventCreateEditDto sportEventCreateEditDto, Long arenaId) {
         try {
             SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
             Arena arena = arenaService.findArenaById(arenaId);
             sportEvent.setId(id);
             sportEvent.setArena(arena);
-            sportEventRepository.save(sportEvent);
+            SportEvent updatedSportEvent = sportEventRepository.save(sportEvent);
             log.info("SportEvent with id {} updated successfully with dto: {}", id, sportEventCreateEditDto);
+            return sportEventReadMapper.toDto(updatedSportEvent);
         } catch (DataAccessException e){
             log.error("Failed to update SportEvent {} with dto: {}", id, sportEventCreateEditDto);
             throw new DaoCrudException(e);
@@ -140,6 +143,10 @@ public class SportEventService {
      * @param id the ID of the event to delete
      */
     public void deleteSportEvent(Long id) {
+        if (!sportEventRepository.existsById(id)) {
+            log.error("Failed to find sport event with provided id: {}", id);
+            throw new DaoResourceNotFoundException("Sport Event not found with id " + id);
+        }
         try {
             sportEventRepository.deleteById(id);
             log.info("SportEvent with id {} deleted successfully.", id);
