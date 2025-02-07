@@ -31,7 +31,7 @@ public class LoginController {
 
         Authentication auth = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        String jwts = jwtService.getToken(auth.getName(), auth.getAuthorities().toString());
+        String jwts = jwtService.getToken(auth.getName(), auth.getAuthorities());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwts)

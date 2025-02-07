@@ -88,10 +88,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/login","/registration", "/v3/api-docs/*",
                                 "/swagger-ui/*").permitAll()
                         .requestMatchers(request -> request.getParameter("lang") != null).permitAll()
-                        .requestMatchers("/api/admin/**").hasAuthority(ADMIN.getAuthority())
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/user_cart",
-                                         "/api/purchase",
-                                         "/api/purchasedTickets").hasAuthority(USER.getAuthority())
+                                         "/api/purchases/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling((ex) -> ex
