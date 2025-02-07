@@ -22,7 +22,7 @@ import java.util.Optional;
 import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
- * Controller class for managing sport events in the Ticket Booking System application.
+ * REST Controller class for managing sport events in the Ticket Booking System application.
  */
 @RestController
 @RequestMapping("/api/admin/sport_events")

@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -122,6 +123,7 @@ public class SportEventService {
      * @param id the ID of the sporting event to update
      * @param sportEventCreateEditDto the DTO of the updated sporting event
      */
+    @Transactional
     public SportEventReadDto updateSportEvent(Long id, SportEventCreateEditDto sportEventCreateEditDto, Long arenaId) {
         try {
             SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);

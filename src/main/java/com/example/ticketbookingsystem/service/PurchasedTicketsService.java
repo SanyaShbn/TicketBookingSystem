@@ -4,8 +4,10 @@ import com.example.ticketbookingsystem.dto.PurchasedTicketDto;
 import com.example.ticketbookingsystem.entity.PurchasedTicket;
 import com.example.ticketbookingsystem.entity.Ticket;
 import com.example.ticketbookingsystem.entity.TicketStatus;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.repository.PurchasedTicketRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
+import com.example.ticketbookingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class PurchasedTicketsService {
 
     private final TicketRepository ticketRepository;
 
+    private final UserRepository userRepository;
+
     /**
      * Creates new purchased tickets record
      *
@@ -36,6 +40,10 @@ public class PurchasedTicketsService {
      */
     @Transactional
     public void savePurchasedTickets(List<Long> ticketIds, Long userId) {
+        if (!userRepository.existsById(userId)) {
+            log.error("Now such User with provided id: {}", userId);
+            throw new DaoResourceNotFoundException("User not found with id " + userId);
+        }
         List<PurchasedTicket> purchasedTickets = ticketIds.stream()
                 .map(ticketId -> {
                     Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
@@ -65,6 +73,10 @@ public class PurchasedTicketsService {
      * @return list of all tickets purchased by a specific user
      */
     public List<PurchasedTicketDto> findAllByUserId(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            log.error("Now such User with provided id: {}", userId);
+            throw new DaoResourceNotFoundException("User not found with id " + userId);
+        }
         List<PurchasedTicket> purchasedTickets = purchasedTicketRepository.findAllByUserId(userId);
         return purchasedTickets.stream()
                 .map(this::convertToDto)
