@@ -19,10 +19,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.example.ticketbookingsystem.entity.Role.ADMIN;
 import static com.example.ticketbookingsystem.entity.Role.USER;
+
 
 /**
  * Security configuration class for the Ticket Booking System application.
@@ -33,6 +35,8 @@ import static com.example.ticketbookingsystem.entity.Role.USER;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
+
+    private static final String CORS_ALLOWED_ORIGIN = "http://localhost:3000";
 
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -60,7 +64,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("*"));
+        config.setAllowedOrigins(Collections.singletonList(CORS_ALLOWED_ORIGIN));
         config.setAllowedMethods(List.of("*"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(false);
@@ -85,12 +89,12 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login","/registration", "/v3/api-docs/*",
-                                "/swagger-ui/*").permitAll()
+                        .requestMatchers("/login","/registration", "/refresh",
+                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(request -> request.getParameter("lang") != null).permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/**").hasRole(ADMIN.getAuthority())
                         .requestMatchers("/api/user_cart",
-                                         "/api/purchases/**").hasRole("USER")
+                                         "/api/purchases/**").hasRole(USER.getAuthority())
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling((ex) -> ex
