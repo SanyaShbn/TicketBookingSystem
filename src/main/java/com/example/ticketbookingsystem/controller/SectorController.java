@@ -23,7 +23,7 @@ import java.util.Optional;
 import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
- * Controller class for managing sectors in the Ticket Booking System application.
+ * REST Controller class for managing sectors in the Ticket Booking System application.
  */
 @RestController
 @RequestMapping("/api/admin/sectors")
@@ -95,8 +95,8 @@ public class SectorController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<SectorReadDto> updateSector(@RequestParam("arenaId") Long arenaId,
-                               @PathVariable("id") Long id,
-                               @RequestBody @Validated SectorCreateEditDto sectorCreateEditDto) {
+                                                      @PathVariable("id") Long id,
+                                                      @RequestBody @Validated SectorCreateEditDto sectorCreateEditDto) {
         try {
             log.info("Updating sector {} with details: {}", id, sectorCreateEditDto);
             SectorReadDto updatedSector = sectorService.updateSector(id, sectorCreateEditDto, arenaId);
