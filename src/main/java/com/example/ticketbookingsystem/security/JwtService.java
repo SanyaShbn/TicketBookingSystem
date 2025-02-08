@@ -20,6 +20,9 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Service for handling JWT operations.
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtService {
@@ -36,6 +39,13 @@ public class JwtService {
 
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Generates an access token for the given username and roles.
+     *
+     * @param username the username of the user.
+     * @param roles the roles of the user.
+     * @return the generated access token.
+     */
     public String getToken(String username, Collection<? extends GrantedAuthority> roles) {
         return Jwts.builder()
                 .setSubject(username)
@@ -47,6 +57,12 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * Generates a refresh token for the given username.
+     *
+     * @param username the username of the user.
+     * @return the generated refresh token.
+     */
     public String generateRefreshToken(String username) {
         String refreshToken = UUID.randomUUID().toString();
         RefreshToken token = new RefreshToken();
@@ -57,6 +73,12 @@ public class JwtService {
         return refreshToken;
     }
 
+    /**
+     * Retrieves the authentication information from the given request.
+     *
+     * @param request the HTTP request.
+     * @return the authentication information.
+     */
     public Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token != null) {
@@ -79,18 +101,37 @@ public class JwtService {
         return null;
     }
 
+    /**
+     * Validates the given refresh token (whether it exists at all and not expired if exists).
+     *
+     * @param refreshToken the refresh token to validate.
+     * @return true if the refresh token is valid, false otherwise.
+     */
     public boolean validateRefreshToken(String refreshToken) {
         Optional<RefreshToken> tokenOpt = refreshTokenRepository.findByToken(refreshToken);
         return tokenOpt.isPresent() && tokenOpt.get().getExpiryDate().isAfter(Instant.now());
     }
 
+    /**
+     * Retrieves the refresh token information from the repository.
+     *
+     * @param refreshToken the refresh token.
+     * @return the refresh token information.
+     */
     public RefreshToken getRefreshToken(String refreshToken) {
         return refreshTokenRepository.findByToken(refreshToken)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid refresh token"));
     }
 
-    public Collection<? extends GrantedAuthority> getRolesForUser(String username) {
+    /**
+     * Retrieves the roles for the given username.
+     *
+     * @param username the username of the user.
+     * @return the list of granted authorities (roles) for the user.
+     */
+    public List<GrantedAuthority> getRolesForUser(String username) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return userDetails.getAuthorities();
+        return new ArrayList<>(userDetails.getAuthorities());
     }
+
 }

@@ -44,6 +44,12 @@ public class SecurityConfiguration {
 
     private final AuthEntryPoint exceptionHandler;
 
+    /**
+     * Configures the global authentication manager.
+     *
+     * @param auth the authentication manager builder.
+     * @throws Exception if an error occurs during configuration.
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception  {
@@ -51,6 +57,12 @@ public class SecurityConfiguration {
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 
+    /**
+     * Configures the authentication manager.
+     *
+     * @param userDetailsService the user details service.
+     * @return the authentication manager.
+     */
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsServiceImpl userDetailsService) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -60,6 +72,11 @@ public class SecurityConfiguration {
         return new ProviderManager(authenticationProvider);
     }
 
+    /**
+     * Configures CORS settings for supposed origin server, where client's part may be hosted.
+     *
+     * @return the CORS configuration source.
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -90,7 +107,8 @@ public class SecurityConfiguration {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login","/registration", "/refresh",
-                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/actuator/**").permitAll()
                         .requestMatchers(request -> request.getParameter("lang") != null).permitAll()
                         .requestMatchers("/api/admin/**").hasRole(ADMIN.getAuthority())
                         .requestMatchers("/api/user_cart",

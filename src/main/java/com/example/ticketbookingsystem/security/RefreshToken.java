@@ -7,6 +7,9 @@ import jakarta.persistence.Id;
 import lombok.Data;
 import java.time.Instant;
 
+/**
+ * Entity representing a refresh token.
+ */
 @Entity
 @Data
 public class RefreshToken {

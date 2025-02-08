@@ -21,14 +21,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * REST Controller for managing login and token refresh operations.
+ */
 @RestController
 @RequiredArgsConstructor
 public class LoginController {
+
+    private static final String REFRESH_TOKEN_KEY = "refreshToken";
+
+    private static final String ACCESS_TOKEN_KEY = "accessToken";
+
+    private static final String REFRESH_TOKEN_HEADER = "Refresh-Token";
+
+    private static final String EXPOSE_HEADERS = "Authorization, Refresh-Token";
 
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
 
+    /**
+     * Authenticates the user and returns JWT tokens.
+     *
+     * @param credentials the account credentials of the user.
+     * @return a ResponseEntity containing the access and refresh tokens.
+     */
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public ResponseEntity<Map<String, String>>  getToken(@RequestBody AccountCredentials credentials) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -45,12 +62,18 @@ public class LoginController {
         return getMapResponseEntity(accessToken, refreshToken);
     }
 
+    /**
+     * Refreshes the JWT tokens using the provided refresh token.
+     *
+     * @param body a map containing the refresh token.
+     * @return a ResponseEntity containing the new access and refresh tokens.
+     */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
     public ResponseEntity<Map<String, String>> refresh(@RequestBody Map<String, String> body) {
-        String refreshToken = body.get("refreshToken");
+        String refreshToken = body.get(REFRESH_TOKEN_KEY);
         if (jwtService.validateRefreshToken(refreshToken)) {
             RefreshToken token = jwtService.getRefreshToken(refreshToken);
-            List<GrantedAuthority> roles = (List<GrantedAuthority>) jwtService.getRolesForUser(token.getUsername());
+            List<GrantedAuthority> roles = jwtService.getRolesForUser(token.getUsername());
             String newAccessToken = jwtService.getToken(token.getUsername(), roles);
             String newRefreshToken = jwtService.generateRefreshToken(token.getUsername());
 
@@ -60,16 +83,23 @@ public class LoginController {
         }
     }
 
+    /**
+     * Creates a ResponseEntity with the provided access and refresh tokens.
+     *
+     * @param newAccessToken the new access token.
+     * @param newRefreshToken the new refresh token.
+     * @return a ResponseEntity containing the tokens.
+     */
     @NotNull
     private ResponseEntity<Map<String, String>> getMapResponseEntity(String newAccessToken, String newRefreshToken) {
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("accessToken", newAccessToken);
-        tokens.put("refreshToken", newRefreshToken);
+        tokens.put(ACCESS_TOKEN_KEY, newAccessToken);
+        tokens.put(REFRESH_TOKEN_KEY, newRefreshToken);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + newAccessToken)
-                .header("Refresh-Token", newRefreshToken)
-                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization, Refresh-Token")
+                .header(REFRESH_TOKEN_HEADER, newRefreshToken)
+                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, EXPOSE_HEADERS)
                 .body(tokens);
     }
 }

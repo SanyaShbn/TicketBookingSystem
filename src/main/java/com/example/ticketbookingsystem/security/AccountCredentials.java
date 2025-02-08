@@ -6,6 +6,9 @@ import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents the account credentials of a user.
+ */
 @Getter
 @Setter
 public class AccountCredentials {
