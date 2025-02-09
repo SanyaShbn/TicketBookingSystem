@@ -37,6 +37,7 @@ public class UserServiceTest {
     private UserService userService;
 
     private User user;
+
     private UserDto userDto;
 
     @BeforeEach

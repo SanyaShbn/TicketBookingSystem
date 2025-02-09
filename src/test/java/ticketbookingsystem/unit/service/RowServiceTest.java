@@ -5,6 +5,8 @@ import com.example.ticketbookingsystem.dto.row_dto.RowFilter;
 import com.example.ticketbookingsystem.dto.row_dto.RowReadDto;
 import com.example.ticketbookingsystem.entity.Row;
 import com.example.ticketbookingsystem.entity.Sector;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.mapper.row_mapper.RowCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.row_mapper.RowReadMapper;
 import com.example.ticketbookingsystem.repository.RowRepository;
@@ -13,7 +15,10 @@ import com.example.ticketbookingsystem.service.SectorService;
 import com.example.ticketbookingsystem.utils.SortUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 
 import java.util.LinkedHashMap;
@@ -25,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class RowServiceTest {
 
     private static final Long ROW_ID = 1L;
@@ -55,21 +61,17 @@ public class RowServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         row = new Row();
         row.setId(ROW_ID);
         sector = new Sector();
         sector.setId(SECTOR_ID);
         rowCreateEditDto = RowCreateEditDto.builder().build();
         rowReadDto = RowReadDto.builder().build();
-
-        when(rowCreateEditMapper.toEntity(any(RowCreateEditDto.class))).thenReturn(row);
-        when(rowReadMapper.toDto(any(Row.class))).thenReturn(rowReadDto);
-        when(sectorService.findSectorById(any(Long.class))).thenReturn(sector);
     }
 
     @Test
     public void testFindAll() {
+        when(rowReadMapper.toDto(any(Row.class))).thenReturn(rowReadDto);
         when(rowRepository.findAll()).thenReturn(List.of(row));
 
         var result = rowService.findAll();
@@ -81,6 +83,8 @@ public class RowServiceTest {
 
     @Test
     public void testFindAllRows() {
+        when(rowReadMapper.toDto(any(Row.class))).thenReturn(rowReadDto);
+
         RowFilter rowFilter = mock(RowFilter.class);
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -110,6 +114,7 @@ public class RowServiceTest {
 
     @Test
     public void testFindById() {
+        when(rowReadMapper.toDto(any(Row.class))).thenReturn(rowReadDto);
         when(rowRepository.findById(ROW_ID)).thenReturn(Optional.of(row));
 
         var result = rowService.findById(ROW_ID);
@@ -121,6 +126,7 @@ public class RowServiceTest {
 
     @Test
     void createRow() {
+        when(rowCreateEditMapper.toEntity(any(RowCreateEditDto.class))).thenReturn(row);
         rowService.createRow(rowCreateEditDto, sector.getId());
 
         verify(rowRepository, times(1)).save(row);
@@ -130,6 +136,7 @@ public class RowServiceTest {
 
     @Test
     void updateRow() {
+        when(rowCreateEditMapper.toEntity(any(RowCreateEditDto.class))).thenReturn(row);
         when(rowRepository.findById(any(Long.class))).thenReturn(Optional.of(row));
 
         rowService.updateRow(ROW_ID, rowCreateEditDto, sector.getId());
@@ -154,6 +161,33 @@ public class RowServiceTest {
         verify(rowRepository, times(1)).delete(rowWithID);
         verify(rowRepository, times(1)).updateSectorAfterRowDelete(sectorWithID.getId(),
                 rowWithID.getSeatsNumb());
+    }
+
+    @Test
+    void testDeleteRowNotFound() {
+        when(rowRepository.findById(ROW_ID)).thenReturn(Optional.empty());
+
+        assertThrows(DaoResourceNotFoundException.class, () -> rowService.deleteRow(ROW_ID));
+    }
+
+    @Test
+    void testCreateRowDataAccessException() {
+        when(rowCreateEditMapper.toEntity(any(RowCreateEditDto.class))).thenReturn(row);
+        when(rowRepository.save(any(Row.class))).thenThrow(new DataAccessException("...") {});
+
+        assertThrows(DaoCrudException.class,
+                () -> rowService.createRow(rowCreateEditDto, row.getId()));
+    }
+
+    @Test
+    void testUpdateRowDataAccessException() {
+        when(rowRepository.findById(ROW_ID)).thenReturn(Optional.of(row));
+
+        when(rowCreateEditMapper.toEntity(any(RowCreateEditDto.class))).thenReturn(row);
+        when(rowRepository.save(any(Row.class))).thenThrow(new DataAccessException("...") {});
+
+        assertThrows(DaoCrudException.class,
+                () -> rowService.updateRow(ROW_ID, rowCreateEditDto, row.getId()));
     }
 
 }

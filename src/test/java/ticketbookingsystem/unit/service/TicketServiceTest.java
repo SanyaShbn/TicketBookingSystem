@@ -8,6 +8,8 @@ import com.example.ticketbookingsystem.dto.ticket_dto.TicketReadDto;
 import com.example.ticketbookingsystem.entity.Seat;
 import com.example.ticketbookingsystem.entity.SportEvent;
 import com.example.ticketbookingsystem.entity.Ticket;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.mapper.seat_mapper.SeatReadMapper;
 import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventReadMapper;
 import com.example.ticketbookingsystem.mapper.ticket_mapper.TicketCreateEditMapper;
@@ -19,7 +21,10 @@ import com.example.ticketbookingsystem.service.TicketService;
 import com.example.ticketbookingsystem.utils.SortUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 
 import java.util.LinkedHashMap;
@@ -31,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class TicketServiceTest {
 
     private static final Long ENTITY_ID = 1L;
@@ -67,24 +73,15 @@ public class TicketServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         ticket = new Ticket();
         ticket.setId(ENTITY_ID);
         ticketCreateEditDto = TicketCreateEditDto.builder().build();
         ticketReadDto = TicketReadDto.builder().build();
-        SportEventReadDto sportEventReadDto = SportEventReadDto.builder().build();
-        SeatReadDto seatReadDto = SeatReadDto.builder().build();
-
-        when(ticketCreateEditMapper.toEntity(any(TicketCreateEditDto.class))).thenReturn(ticket);
-        when(ticketReadMapper.toDto(any(Ticket.class))).thenReturn(ticketReadDto);
-        when(sportEventService.findById(any(Long.class))).thenReturn(Optional.of(sportEventReadDto));
-        when(seatService.findById(any(Long.class))).thenReturn(Optional.of(seatReadDto));
-        when(sportEventReadMapper.toEntity(any(SportEventReadDto.class))).thenReturn(new SportEvent());
-        when(seatReadMapper.toEntity(any(SeatReadDto.class))).thenReturn(new Seat());
     }
 
     @Test
     public void testFindAll() {
+        when(ticketReadMapper.toDto(any(Ticket.class))).thenReturn(ticketReadDto);
         when(ticketRepository.findAll()).thenReturn(List.of(ticket));
 
         var result = ticketService.findAll();
@@ -96,6 +93,7 @@ public class TicketServiceTest {
 
     @Test
     public void testFindAllTickets() {
+        when(ticketReadMapper.toDto(any(Ticket.class))).thenReturn(ticketReadDto);
         TicketFilter ticketFilter = mock(TicketFilter.class);
         Pageable pageable = PageRequest.of(0, 10);
         when(ticketFilter.priceSortOrder()).thenReturn("asc");
@@ -119,6 +117,7 @@ public class TicketServiceTest {
 
     @Test
     public void testFindById() {
+        when(ticketReadMapper.toDto(any(Ticket.class))).thenReturn(ticketReadDto);
         when(ticketRepository.findById(ENTITY_ID)).thenReturn(Optional.of(ticket));
 
         var result = ticketService.findById(ENTITY_ID);
@@ -130,6 +129,14 @@ public class TicketServiceTest {
 
     @Test
     void createTicket() {
+        SportEventReadDto sportEventReadDto = SportEventReadDto.builder().build();
+        SeatReadDto seatReadDto = SeatReadDto.builder().build();
+        when(sportEventService.findById(any(Long.class))).thenReturn(Optional.of(sportEventReadDto));
+        when(seatService.findById(any(Long.class))).thenReturn(Optional.of(seatReadDto));
+        when(sportEventReadMapper.toEntity(any(SportEventReadDto.class))).thenReturn(new SportEvent());
+        when(seatReadMapper.toEntity(any(SeatReadDto.class))).thenReturn(new Seat());
+        when(ticketCreateEditMapper.toEntity(any(TicketCreateEditDto.class))).thenReturn(ticket);
+
         ticketService.createTicket(ticketCreateEditDto, ENTITY_ID, ENTITY_ID);
 
         verify(ticketRepository, times(1)).save(ticket);
@@ -137,6 +144,14 @@ public class TicketServiceTest {
 
     @Test
     void updateTicket() {
+        SportEventReadDto sportEventReadDto = SportEventReadDto.builder().build();
+        SeatReadDto seatReadDto = SeatReadDto.builder().build();
+        when(sportEventService.findById(any(Long.class))).thenReturn(Optional.of(sportEventReadDto));
+        when(seatService.findById(any(Long.class))).thenReturn(Optional.of(seatReadDto));
+        when(sportEventReadMapper.toEntity(any(SportEventReadDto.class))).thenReturn(new SportEvent());
+        when(seatReadMapper.toEntity(any(SeatReadDto.class))).thenReturn(new Seat());
+        when(ticketCreateEditMapper.toEntity(any(TicketCreateEditDto.class))).thenReturn(ticket);
+
         ticketService.updateTicket(ENTITY_ID, ticketCreateEditDto, ENTITY_ID, ENTITY_ID);
 
         verify(ticketRepository, times(1)).save(ticket);
@@ -144,6 +159,8 @@ public class TicketServiceTest {
 
     @Test
     void deleteTicket() {
+        when(ticketRepository.existsById(ENTITY_ID)).thenReturn(true);
+
         ticketService.deleteTicket(ENTITY_ID);
 
         verify(ticketRepository, times(1)).deleteById(ENTITY_ID);
@@ -151,11 +168,44 @@ public class TicketServiceTest {
 
     @Test
     void testGetTicketStatus() {
-        when(ticketRepository.findStatusById(ENTITY_ID)).thenReturn(Optional.of("ACTIVE"));
+        when(ticketRepository.findStatusById(ENTITY_ID)).thenReturn(Optional.of("AVAILABLE"));
 
         String status = ticketService.getTicketStatus(ENTITY_ID);
 
-        assertEquals("ACTIVE", status);
+        assertEquals("AVAILABLE", status);
         verify(ticketRepository, times(1)).findStatusById(ENTITY_ID);
+    }
+
+    @Test
+    void testDeleteTicketNotFound() {
+        when(ticketRepository.existsById(ENTITY_ID)).thenReturn(false);
+
+        assertThrows(DaoResourceNotFoundException.class, () -> ticketService.deleteTicket(ENTITY_ID));
+    }
+
+    @Test
+    void testCreateTicketDataAccessException() {
+        SportEventReadDto sportEventReadDto = SportEventReadDto.builder().build();
+        SeatReadDto seatReadDto = SeatReadDto.builder().build();
+        when(sportEventService.findById(any(Long.class))).thenReturn(Optional.of(sportEventReadDto));
+        when(seatService.findById(any(Long.class))).thenReturn(Optional.of(seatReadDto));
+        when(ticketCreateEditMapper.toEntity(any(TicketCreateEditDto.class))).thenReturn(ticket);
+        when(ticketRepository.save(any(Ticket.class))).thenThrow(new DataAccessException("...") {});
+
+        assertThrows(DaoCrudException.class,
+                () -> ticketService.createTicket(ticketCreateEditDto, ENTITY_ID, ENTITY_ID));
+    }
+
+    @Test
+    void testUpdateTicketDataAccessException() {
+        SportEventReadDto sportEventReadDto = SportEventReadDto.builder().build();
+        SeatReadDto seatReadDto = SeatReadDto.builder().build();
+        when(sportEventService.findById(any(Long.class))).thenReturn(Optional.of(sportEventReadDto));
+        when(seatService.findById(any(Long.class))).thenReturn(Optional.of(seatReadDto));
+        when(ticketCreateEditMapper.toEntity(any(TicketCreateEditDto.class))).thenReturn(ticket);
+        when(ticketRepository.save(any(Ticket.class))).thenThrow(new DataAccessException("...") {});
+
+        assertThrows(DaoCrudException.class,
+                () -> ticketService.updateTicket(ENTITY_ID, ticketCreateEditDto, ENTITY_ID, ENTITY_ID));
     }
 }
