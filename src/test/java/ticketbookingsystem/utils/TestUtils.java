@@ -1,5 +1,7 @@
 package ticketbookingsystem.utils;
 
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaCreateEditDto;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaReadDto;
 import com.example.ticketbookingsystem.dto.ticket_dto.TicketCreateEditDto;
 import com.example.ticketbookingsystem.entity.*;
 
@@ -7,6 +9,22 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class TestUtils {
+
+    public static ArenaCreateEditDto buildArenaCreateEditDto() {
+        return ArenaCreateEditDto.builder()
+                .name("Test Arena")
+                .city("Test City")
+                .capacity(1)
+                .build();
+    }
+
+    public static ArenaReadDto buildArenaReadDto() {
+        return ArenaReadDto.builder()
+                .name("Test Arena")
+                .city("Test City")
+                .capacity(5000)
+                .build();
+    }
 
     public static TicketCreateEditDto buildTicketCreateEditDto(){
         return TicketCreateEditDto.builder()

@@ -1,32 +1,34 @@
 package ticketbookingsystem.unit.controller;
 
 import com.example.ticketbookingsystem.controller.RowController;
+import com.example.ticketbookingsystem.dto.PageResponse;
 import com.example.ticketbookingsystem.dto.row_dto.RowCreateEditDto;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.dto.row_dto.RowFilter;
+import com.example.ticketbookingsystem.dto.row_dto.RowReadDto;
 import com.example.ticketbookingsystem.service.RowService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class RowControllerTest {
 
     private static final Long ROW_ID = 1L;
-    private static final Long SECTOR_ID = 1L;
-    private static final Long ARENA_ID = 1L;
-
-    MockMvc mockMvc;
 
     @Mock
     private RowService rowService;
@@ -34,117 +36,73 @@ public class RowControllerTest {
     @InjectMocks
     private RowController rowController;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(rowController).build();
+    @Test
+    public void testFindAllRows() {
+        RowReadDto row1 = RowReadDto.builder().rowNumber(1).build();
+        RowReadDto row2 = RowReadDto.builder().rowNumber(2).build();
+
+        List<RowReadDto> rows = Arrays.asList(row1, row2);
+        Page<RowReadDto> page = new PageImpl<>(rows);
+        when(rowService.findAll(any(Long.class), any(RowFilter.class), any(Pageable.class))).thenReturn(page);
+
+        PageResponse<RowReadDto> response = rowController.findAllRows(
+                ROW_ID, new RowFilter("",""), Pageable.unpaged());
+
+        assertEquals(2, response.getContent().size());
+        verify(rowService, times(1)).findAll(
+                any(Long.class), any(RowFilter.class), any(Pageable.class));
     }
 
     @Test
-    public void testFindAllRows() throws Exception {
-        mockMvc.perform(get("/admin/rows")
-                        .param("sectorId", SECTOR_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("rows-jsp/rows"))
-                .andExpect(model().attributeExists("rows"));
+    void testGetRowById() {
+        RowReadDto row = RowReadDto.builder().rowNumber(1).build();
+        when(rowService.findById(ROW_ID)).thenReturn(Optional.of(row));
+
+        ResponseEntity<RowReadDto> response = rowController.getRowById(ROW_ID);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().getRowNumber());
+        verify(rowService, times(1)).findById(ROW_ID);
     }
 
     @Test
-    public void testShowCreateRowForm() throws Exception {
-        mockMvc.perform(get("/admin/rows/create")
-                        .param("arenaId", ARENA_ID.toString())
-                        .param("sectorId", SECTOR_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("rows-jsp/create-row"))
-                .andExpect(model().attributeExists("arenaId"))
-                .andExpect(model().attributeExists("sectorId"));
+    public void testCreateRow() {
+        RowCreateEditDto createEditDto = RowCreateEditDto.builder().rowNumber(1).build();
+
+        RowReadDto readDto = RowReadDto.builder().rowNumber(1).build();
+        when(rowService.createRow(any(RowCreateEditDto.class), any(Long.class))).thenReturn(readDto);
+
+        ResponseEntity<RowReadDto> response = rowController.createRow(1L, createEditDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(1, response.getBody().getRowNumber());
+        verify(rowService, times(1)).createRow(any(RowCreateEditDto.class), any(Long.class));
     }
 
     @Test
-    public void testCreateRow() throws Exception {
-        RowCreateEditDto rowCreateEditDto = buildRowCreateEditDto();
+    public void testUpdateRow() {
+        RowCreateEditDto createEditDto = RowCreateEditDto.builder().rowNumber(1).build();
 
-        doNothing().when(rowService).createRow(any(RowCreateEditDto.class), anyLong());
+        RowReadDto readDto = RowReadDto.builder().rowNumber(1).build();
+        when(rowService.updateRow(eq(ROW_ID), any(RowCreateEditDto.class), any(Long.class))).thenReturn(readDto);
 
-        mockMvc.perform(post("/admin/rows/create")
-                        .param("arenaId", ARENA_ID.toString())
-                        .param("sectorId", SECTOR_ID.toString())
-                        .flashAttr("rowCreateEditDto", rowCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/rows?arenaId=" + ARENA_ID + "&sectorId=" + SECTOR_ID));
+        ResponseEntity<RowReadDto> response = rowController.updateRow(ROW_ID, ROW_ID, createEditDto);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().getRowNumber());
+        verify(rowService, times(1)).updateRow(
+                eq(ROW_ID), any(RowCreateEditDto.class), any(Long.class));
     }
 
     @Test
-    public void testCreateRowWithException() throws Exception {
-        RowCreateEditDto rowCreateEditDto = buildRowCreateEditDto();
+    public void testDeleteRow() {
+        doNothing().when(rowService).deleteRow(ROW_ID);
 
-        doThrow(new DaoCrudException(new Throwable())).when(rowService).createRow(any(RowCreateEditDto.class), anyLong());
+        ResponseEntity<String> response = rowController.deleteRow(ROW_ID);
 
-        mockMvc.perform(post("/admin/rows/create")
-                        .param("arenaId", ARENA_ID.toString())
-                        .param("sectorId", SECTOR_ID.toString())
-                        .flashAttr("rowCreateEditDto", rowCreateEditDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("rows-jsp/create-row"))
-                .andExpect(model().attributeExists("errors"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Row deleted successfully", response.getBody());
+        verify(rowService, times(1)).deleteRow(ROW_ID);
     }
 
-    @Test
-    public void testUpdateRow() throws Exception {
-        RowCreateEditDto rowCreateEditDto = buildRowCreateEditDto();
-
-        doNothing().when(rowService).updateRow(anyLong(), any(RowCreateEditDto.class), anyLong());
-
-        mockMvc.perform(post("/admin/rows/{id}/update", ROW_ID)
-                        .param("arenaId", ARENA_ID.toString())
-                        .param("sectorId", SECTOR_ID.toString())
-                        .flashAttr("rowCreateEditDto", rowCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/rows?arenaId=" + ARENA_ID + "&sectorId=" + SECTOR_ID));
-    }
-
-    @Test
-    public void testUpdateRowWithException() throws Exception {
-        RowCreateEditDto rowCreateEditDto = buildRowCreateEditDto();
-
-        doThrow(new DaoCrudException(new Throwable())).when(rowService).updateRow(anyLong(), any(RowCreateEditDto.class), anyLong());
-
-        mockMvc.perform(post("/admin/rows/{id}/update", ROW_ID)
-                        .param("arenaId", ARENA_ID.toString())
-                        .param("sectorId", SECTOR_ID.toString())
-                        .flashAttr("rowCreateEditDto", rowCreateEditDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("rows-jsp/update-row"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    @Test
-    public void testDeleteRow() throws Exception {
-        doNothing().when(rowService).deleteRow(anyLong());
-
-        mockMvc.perform(post("/admin/rows/{id}/delete", ROW_ID)
-                        .param("arenaId", ARENA_ID.toString())
-                        .param("sectorId", SECTOR_ID.toString()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/rows?arenaId=" + ARENA_ID + "&sectorId=" + SECTOR_ID));
-    }
-
-    @Test
-    public void testDeleteRowWithException() throws Exception {
-        doThrow(new DaoCrudException(new Throwable())).when(rowService).deleteRow(anyLong());
-
-        mockMvc.perform(post("/admin/rows/{id}/delete", ROW_ID)
-                        .param("arenaId", ARENA_ID.toString())
-                        .param("sectorId", SECTOR_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("error-jsp/error-page"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    private RowCreateEditDto buildRowCreateEditDto(){
-        return RowCreateEditDto.builder()
-                .rowNumber(1)
-                .seatsNumb(5)
-                .build();
-    }
 }

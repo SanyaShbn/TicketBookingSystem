@@ -1,39 +1,39 @@
 package ticketbookingsystem.unit.controller;
 
 import com.example.ticketbookingsystem.controller.TicketController;
+import com.example.ticketbookingsystem.dto.PageResponse;
 import com.example.ticketbookingsystem.dto.ticket_dto.TicketCreateEditDto;
+import com.example.ticketbookingsystem.dto.ticket_dto.TicketFilter;
 import com.example.ticketbookingsystem.dto.ticket_dto.TicketReadDto;
-import com.example.ticketbookingsystem.entity.TicketStatus;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.service.TicketService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ExtendWith(MockitoExtension.class)
 public class TicketControllerTest {
 
     private static final Long TICKET_ID = 1L;
-    private static final Long EVENT_ID = 1L;
-    private static final Long SEAT_ID = 1L;
 
-    MockMvc mockMvc;
+    private static final Long EVENT_ID = 1L;
+
+    private static final Long SEAT_ID = 1L;
 
     @Mock
     private TicketService ticketService;
@@ -41,79 +41,77 @@ public class TicketControllerTest {
     @InjectMocks
     private TicketController ticketController;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(ticketController).build();
+    @Test
+    public void testFindAllTickets() {
+        TicketReadDto ticket1 = TicketReadDto.builder().price(BigDecimal.valueOf(100.0)).build();
+        TicketReadDto ticket2 = TicketReadDto.builder().price(BigDecimal.valueOf(200.0)).build();
+
+        List<TicketReadDto> tickets = Arrays.asList(ticket1, ticket2);
+        Page<TicketReadDto> page = new PageImpl<>(tickets);
+        when(ticketService.findAll(any(Long.class), any(TicketFilter.class), any(Pageable.class))).thenReturn(page);
+
+        PageResponse<TicketReadDto> response = ticketController.findAllTickets(
+                TICKET_ID, new TicketFilter(""), Pageable.unpaged());
+
+        assertEquals(2, response.getContent().size());
+        verify(ticketService, times(1)).findAll(
+                any(Long.class), any(TicketFilter.class), any(Pageable.class));
     }
 
     @Test
-    public void testFindAllTickets() throws Exception {
-        Page<TicketReadDto> ticketPage = new PageImpl<>(Collections.emptyList());
+    void testGetTicketById() {
+        TicketReadDto ticket = TicketReadDto.builder().price(BigDecimal.valueOf(100.0)).build();
+        when(ticketService.findById(TICKET_ID)).thenReturn(Optional.of(ticket));
 
-        when(ticketService.findAll(anyLong(), any(), any(Pageable.class))).thenReturn(ticketPage);
+        ResponseEntity<TicketReadDto> response = ticketController.getTicketById(TICKET_ID);
 
-        mockMvc.perform(get("/admin/tickets")
-                        .param("eventId", EVENT_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tickets-jsp/tickets"))
-                .andExpect(model().attributeExists("tickets"))
-                .andExpect(model().attributeExists("filter"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(BigDecimal.valueOf(100.0), response.getBody().getPrice());
+        verify(ticketService, times(1)).findById(TICKET_ID);
     }
 
     @Test
-    public void testCreateTicket() throws Exception {
-        TicketCreateEditDto ticketCreateEditDto = buildTicketCreateEditDto();
+    public void testCreateTicket() {
+        TicketCreateEditDto createEditDto = TicketCreateEditDto.builder().price(BigDecimal.valueOf(100.0)).build();
 
-        doNothing().when(ticketService).createTicket(any(TicketCreateEditDto.class), anyLong(), anyLong());
+        TicketReadDto readDto = TicketReadDto.builder().price(BigDecimal.valueOf(100.0)).build();
+        when(ticketService.createTicket(
+                any(TicketCreateEditDto.class), any(Long.class), any(Long.class))).thenReturn(readDto);
 
-        mockMvc.perform(post("/admin/tickets/create")
-                        .param("eventId", EVENT_ID.toString())
-                        .param("seatId", SEAT_ID.toString())
-                        .flashAttr("ticketCreateEditDto", ticketCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/tickets?eventId=" + EVENT_ID));
+        ResponseEntity<TicketReadDto> response = ticketController.createTicket(EVENT_ID, SEAT_ID, createEditDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(BigDecimal.valueOf(100.0), response.getBody().getPrice());
+        verify(ticketService, times(1)).createTicket(
+                any(TicketCreateEditDto.class), any(Long.class), any(Long.class));
     }
 
     @Test
-    public void testUpdateTicket() throws Exception {
-        TicketCreateEditDto ticketCreateEditDto = buildTicketCreateEditDto();
+    public void testUpdateTicket() {
+        TicketCreateEditDto createEditDto = TicketCreateEditDto.builder().price(BigDecimal.valueOf(100.0)).build();
 
-        doNothing().when(ticketService).updateTicket(anyLong(), any(TicketCreateEditDto.class), anyLong(), anyLong());
+        TicketReadDto readDto = TicketReadDto.builder().price(BigDecimal.valueOf(100.0)).build();
+        when(ticketService.updateTicket(eq(TICKET_ID), any(
+                TicketCreateEditDto.class), any(Long.class), any(Long.class))).thenReturn(readDto);
 
-        mockMvc.perform(post("/admin/tickets/{id}/update", TICKET_ID)
-                        .param("eventId", EVENT_ID.toString())
-                        .param("seatId", SEAT_ID.toString())
-                        .flashAttr("ticketCreateEditDto", ticketCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/tickets?eventId=" + EVENT_ID));
+        ResponseEntity<TicketReadDto> response = ticketController.updateTicket(
+                EVENT_ID, SEAT_ID, TICKET_ID, createEditDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(BigDecimal.valueOf(100.0), response.getBody().getPrice());
+        verify(ticketService, times(1)).updateTicket(eq(TICKET_ID),
+                any(TicketCreateEditDto.class), any(Long.class), any(Long.class));
     }
 
     @Test
-    public void testDeleteTicket() throws Exception {
-        doNothing().when(ticketService).deleteTicket(anyLong());
+    public void testDeleteTicket() {
+        doNothing().when(ticketService).deleteTicket(TICKET_ID);
 
-        mockMvc.perform(post("/admin/tickets/{id}/delete", TICKET_ID)
-                        .param("eventId", EVENT_ID.toString()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/tickets?eventId=" + EVENT_ID));
+        ResponseEntity<String> response = ticketController.deleteTicket(TICKET_ID);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Ticket deleted successfully", response.getBody());
+        verify(ticketService, times(1)).deleteTicket(TICKET_ID);
     }
 
-    @Test
-    public void testDeleteTicketWithException() throws Exception {
-        doThrow(new DaoCrudException(new Throwable())).when(ticketService).deleteTicket(anyLong());
-
-        mockMvc.perform(post("/admin/tickets/{id}/delete", TICKET_ID)
-                        .param("eventId", EVENT_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("error-jsp/error-page"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    private TicketCreateEditDto buildTicketCreateEditDto(){
-        return TicketCreateEditDto.builder()
-                .price(BigDecimal.valueOf(100))
-                .status(TicketStatus.AVAILABLE)
-                .build();
-    }
 }

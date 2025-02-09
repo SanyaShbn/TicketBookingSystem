@@ -1,31 +1,34 @@
 package ticketbookingsystem.unit.controller;
 
 import com.example.ticketbookingsystem.controller.SectorController;
+import com.example.ticketbookingsystem.dto.PageResponse;
 import com.example.ticketbookingsystem.dto.sector_dto.SectorCreateEditDto;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorFilter;
+import com.example.ticketbookingsystem.dto.sector_dto.SectorReadDto;
 import com.example.ticketbookingsystem.service.SectorService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class SectorControllerTest {
 
     private static final Long SECTOR_ID = 1L;
-    private static final Long ARENA_ID = 1L;
-
-    MockMvc mockMvc;
 
     @Mock
     private SectorService sectorService;
@@ -33,110 +36,76 @@ public class SectorControllerTest {
     @InjectMocks
     private SectorController sectorController;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(sectorController).build();
+    @Test
+    public void testFindAllSectors(){
+        SectorReadDto sector1 = SectorReadDto.builder().sectorName("Sector1").build();
+        SectorReadDto sector2 = SectorReadDto.builder().sectorName("Sector2").build();
+
+        List<SectorReadDto> sectors = Arrays.asList(sector1, sector2);
+        Page<SectorReadDto> page = new PageImpl<>(sectors);
+        when(sectorService.findAll(any(Long.class), any(SectorFilter.class), any(Pageable.class))).thenReturn(page);
+
+        PageResponse<SectorReadDto> response = sectorController.findAllSectors(
+                SECTOR_ID,
+                new SectorFilter("", "", ""),
+                Pageable.unpaged());
+
+        assertEquals(2, response.getContent().size());
+        verify(sectorService, times(1)).findAll(
+                any(Long.class), any(SectorFilter.class), any(Pageable.class));
     }
 
     @Test
-    public void testFindAllSectors() throws Exception {
-        mockMvc.perform(get("/admin/sectors")
-                        .param("arenaId", ARENA_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("sectors-jsp/sectors"))
-                .andExpect(model().attributeExists("sectors"));
+    void testGetSectorById() {
+        SectorReadDto sector = SectorReadDto.builder().sectorName("Sector1").build();
+        when(sectorService.findById(SECTOR_ID)).thenReturn(Optional.of(sector));
+
+        ResponseEntity<SectorReadDto> response = sectorController.getSectorById(SECTOR_ID);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Sector1", response.getBody().getSectorName());
+        verify(sectorService, times(1)).findById(SECTOR_ID);
     }
 
     @Test
-    public void testShowCreateSectorForm() throws Exception {
-        mockMvc.perform(get("/admin/sectors/create")
-                        .param("arenaId", ARENA_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("sectors-jsp/create-sector"))
-                .andExpect(model().attributeExists("arenaId"));
+    public void testCreateSector() {
+        SectorCreateEditDto createEditDto = SectorCreateEditDto.builder().sectorName("New Sector").build();
+
+        SectorReadDto readDto = SectorReadDto.builder().sectorName("New Sector").build();
+        when(sectorService.createSector(any(SectorCreateEditDto.class), any(Long.class))).thenReturn(readDto);
+
+        ResponseEntity<SectorReadDto> response = sectorController.createSector(SECTOR_ID, createEditDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals("New Sector", response.getBody().getSectorName());
+        verify(sectorService, times(1)).createSector(
+                any(SectorCreateEditDto.class), any(Long.class));
     }
 
     @Test
-    public void testCreateSector() throws Exception {
-        SectorCreateEditDto sectorCreateEditDto = buildSectorCreateEditDto();
+    public void testUpdateSector() {
+        SectorCreateEditDto createEditDto = SectorCreateEditDto.builder().sectorName("Updated Sector").build();
 
-        doNothing().when(sectorService).createSector(any(SectorCreateEditDto.class), anyLong());
+        SectorReadDto readDto = SectorReadDto.builder().sectorName("Updated Sector").build();
+        when(sectorService.updateSector(eq(SECTOR_ID),
+                any(SectorCreateEditDto.class), any(Long.class))).thenReturn(readDto);
 
-        mockMvc.perform(post("/admin/sectors/create")
-                        .param("arenaId", ARENA_ID.toString())
-                        .flashAttr("sectorCreateEditDto", sectorCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/sectors?arenaId=" + ARENA_ID));
+        ResponseEntity<SectorReadDto> response = sectorController.updateSector(SECTOR_ID, SECTOR_ID, createEditDto);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Updated Sector", response.getBody().getSectorName());
+        verify(sectorService, times(1)).updateSector(eq(SECTOR_ID),
+                any(SectorCreateEditDto.class), any(Long.class));
     }
 
     @Test
-    public void testCreateSectorWithException() throws Exception {
-        SectorCreateEditDto sectorCreateEditDto = buildSectorCreateEditDto();
+    public void testDeleteSector() {
+        doNothing().when(sectorService).deleteSector(SECTOR_ID);
 
-        doThrow(new DaoCrudException(new Throwable())).when(sectorService).createSector(any(SectorCreateEditDto.class), anyLong());
+        ResponseEntity<String> response = sectorController.deleteSector(SECTOR_ID);
 
-        mockMvc.perform(post("/admin/sectors/create")
-                        .param("arenaId", ARENA_ID.toString())
-                        .flashAttr("sectorCreateEditDto", sectorCreateEditDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("sectors-jsp/create-sector"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    @Test
-    public void testUpdateSector() throws Exception {
-        SectorCreateEditDto sectorCreateEditDto = buildSectorCreateEditDto();
-
-        doNothing().when(sectorService).updateSector(anyLong(), any(SectorCreateEditDto.class), anyLong());
-
-        mockMvc.perform(post("/admin/sectors/{id}/update", SECTOR_ID)
-                        .param("arenaId", ARENA_ID.toString())
-                        .flashAttr("sectorCreateEditDto", sectorCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/sectors?arenaId=" + ARENA_ID));
-    }
-
-    @Test
-    public void testUpdateSectorWithException() throws Exception {
-        SectorCreateEditDto sectorCreateEditDto = buildSectorCreateEditDto();
-
-        doThrow(new DaoCrudException(new Throwable())).when(sectorService).updateSector(anyLong(), any(SectorCreateEditDto.class), anyLong());
-
-        mockMvc.perform(post("/admin/sectors/{id}/update", SECTOR_ID)
-                        .param("arenaId", ARENA_ID.toString())
-                        .flashAttr("sectorCreateEditDto", sectorCreateEditDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("sectors-jsp/update-sector"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    @Test
-    public void testDeleteSector() throws Exception {
-        doNothing().when(sectorService).deleteSector(anyLong());
-
-        mockMvc.perform(post("/admin/sectors/{id}/delete", SECTOR_ID)
-                        .param("arenaId", ARENA_ID.toString()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/sectors?arenaId=" + ARENA_ID));
-    }
-
-    @Test
-    public void testDeleteSectorWithException() throws Exception {
-        doThrow(new DaoCrudException(new Throwable())).when(sectorService).deleteSector(anyLong());
-
-        mockMvc.perform(post("/admin/sectors/{id}/delete", SECTOR_ID)
-                        .param("arenaId", ARENA_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("error-jsp/error-page"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    private SectorCreateEditDto buildSectorCreateEditDto(){
-        return SectorCreateEditDto.builder()
-                .sectorName("Test Sector")
-                .maxRowsNumb(10)
-                .maxSeatsNumb(100)
-                .build();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Sector deleted successfully", response.getBody());
+        verify(sectorService, times(1)).deleteSector(SECTOR_ID);
     }
 }

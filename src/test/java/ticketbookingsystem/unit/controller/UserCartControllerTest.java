@@ -1,31 +1,26 @@
 package ticketbookingsystem.unit.controller;
 
 import com.example.ticketbookingsystem.dto.UserCartDto;
-import com.example.ticketbookingsystem.dto.UserDto;
 import com.example.ticketbookingsystem.service.TicketService;
 import com.example.ticketbookingsystem.service.UserCartService;
-import com.example.ticketbookingsystem.utils.AuthenticationUtil;
 import com.example.ticketbookingsystem.controller.UserCartController;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import java.util.Optional;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class UserCartControllerTest {
 
-    private static final Long ENTITY_ID = 1L;
+    private static final Long USER_ID = 1L;
 
-    private MockMvc mockMvc;
+    private static final Long TICKET_ID = 1L;
 
     @Mock
     private UserCartService userCartService;
@@ -33,83 +28,74 @@ public class UserCartControllerTest {
     @Mock
     private TicketService ticketService;
 
-    @Mock
-    private AuthenticationUtil authenticationUtil;
-
     @InjectMocks
     private UserCartController userCartController;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(userCartController).build();
-    }
-
     @Test
-    public void testGetUserCartPage() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/user_cart"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view()
-                        .name("tickets-purchases-jsp/view-available-tickets"));
-    }
+    public void testAddItemToCart_success() {
+        when(ticketService.getTicketStatus(anyLong())).thenReturn("AVAILABLE");
+        doNothing().when(userCartService).addItemToCart(any(UserCartDto.class));
 
-    @Test
-    public void testHandleUserCartRequest_UserNotAuthenticated() throws Exception {
-        when(authenticationUtil.getAuthenticatedUser()).thenReturn(Optional.empty());
+        ResponseEntity<String> response = userCartController.handleUserCartRequest(USER_ID, TICKET_ID, "add");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/user_cart")
-                        .param("ticketId", "1")
-                        .param("action", "add")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .json("{\"success\": false, \"message\": \"User not authenticated\"}"));
-
-        verify(authenticationUtil, times(1)).getAuthenticatedUser();
-    }
-
-    @Test
-    public void testHandleUserCartRequest_AddAction_Success() throws Exception {
-        UserDto userDto = UserDto.builder().id(ENTITY_ID).build();
-        when(authenticationUtil.getAuthenticatedUser()).thenReturn(Optional.of(userDto));
-        when(ticketService.getTicketStatus(ENTITY_ID)).thenReturn("AVAILABLE");
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/user_cart")
-                        .param("ticketId", "1")
-                        .param("action", "add")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json("{\"success\": true}"));
-
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Item added to cart", response.getBody());
         verify(userCartService, times(1)).addItemToCart(any(UserCartDto.class));
     }
 
     @Test
-    public void testHandleUserCartRequest_ClearAction_Success() throws Exception {
-        UserDto userDto = UserDto.builder().id(ENTITY_ID).build();
-        when(authenticationUtil.getAuthenticatedUser()).thenReturn(Optional.of(userDto));
+    void testRemoveItemFromCart_success() {
+        when(ticketService.getTicketStatus(anyLong())).thenReturn("RESERVED");
+        doNothing().when(userCartService).removeItemFromCart(any(UserCartDto.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/user_cart")
-                        .param("action", "clear")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json("{\"success\": true}"));
+        ResponseEntity<String> response = userCartController.handleUserCartRequest(USER_ID, TICKET_ID, "remove");
 
-        verify(userCartService, times(1)).clearUserCart(userDto.getId());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Item removed from cart", response.getBody());
+        verify(userCartService, times(1)).removeItemFromCart(any(UserCartDto.class));
     }
 
     @Test
-    public void testHandleUserCartRequest_TicketNotFound() throws Exception {
-        UserDto userDto = UserDto.builder().id(ENTITY_ID).build();
-        when(authenticationUtil.getAuthenticatedUser()).thenReturn(Optional.of(userDto));
-        when(ticketService.getTicketStatus(ENTITY_ID)).thenReturn(null);
+    public void testClearCart() {
+        doNothing().when(userCartService).clearUserCart(anyLong());
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/user_cart")
-                        .param("ticketId", "1")
-                        .param("action", "add")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .json("{\"success\": false, \"message\": \"Ticket not found\"}"));
+        ResponseEntity<String> response = userCartController.handleUserCartRequest(
+                USER_ID, null, "clear");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Cart cleared", response.getBody());
+        verify(userCartService, times(1)).clearUserCart(anyLong());
+    }
+
+    @Test
+    public void testHandleUserCartRequest_ticketNotFound() {
+        ResponseEntity<String> response = userCartController.handleUserCartRequest(USER_ID, null, "add");
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Ticket ID is required for add action", response.getBody());
+        verify(userCartService, never()).addItemToCart(any(UserCartDto.class));
+    }
+
+    @Test
+    void testAddItemToCart_concurrencyError() {
+        when(ticketService.getTicketStatus(anyLong())).thenReturn("RESERVED");
+
+        ResponseEntity<String> response = userCartController.handleUserCartRequest(USER_ID, TICKET_ID, "add");
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals("Concurrency error", response.getBody());
+        verify(userCartService, never()).addItemToCart(any(UserCartDto.class));
+    }
+
+    @Test
+    void testInvalidAction() {
+        ResponseEntity<String> response = userCartController.handleUserCartRequest(
+                USER_ID, null, "invalid");
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Invalid action", response.getBody());
+        verify(userCartService, never()).clearUserCart(anyLong());
+        verify(userCartService, never()).addItemToCart(any(UserCartDto.class));
+        verify(userCartService, never()).removeItemFromCart(any(UserCartDto.class));
     }
 }
