@@ -9,31 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Refactored unit-tests for controller layer">
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/ArenaRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/BaseRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/PurchasedTicketRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/RefreshTokenRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/RowRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/SeatRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/SectorRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/SportEventRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/TicketRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/UserCartRepositoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/UserRepositoryTest.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Wrote integration tests for repositories using Testcontainers (no unit-tests for repositories)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/ArenaControllerIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/RowControllerIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SectorControllerIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/SportEventControllerIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/TicketControllerIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/TicketsPurchaseControllerIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/UserControllerIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/test_config/TestJpaConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/test_config/TestMvcConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/utils/TestUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/Row.hbm.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/hibernate.cfg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +35,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="spring-boot-develop" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -450,7 +428,8 @@
       <workItem from="1739007468087" duration="7942000" />
       <workItem from="1739080962291" duration="6174000" />
       <workItem from="1739120368274" duration="10182000" />
-      <workItem from="1739168909365" duration="8316000" />
+      <workItem from="1739168909365" duration="8904000" />
+      <workItem from="1739185890915" duration="303000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -780,7 +759,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739130569661</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Wrote integration tests for repositories using Testcontainers (no unit-tests for repositories)">
+      <option name="closed" value="true" />
+      <created>1739177357827</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1739177357827</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -823,7 +810,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Did some refactoring" />
     <MESSAGE value="Connected Hibernate. Started implementing Hibernate for User entity" />
     <MESSAGE value="Implemented Hibernate for User and Arena entities" />
     <MESSAGE value="Written tests for UserDao and ArenaDao" />
@@ -848,7 +834,8 @@
     <MESSAGE value="Fixed and tested refresh token mechanism, refactored internalization (EN/RU), tested metrics within Actuator, added JavaDoc" />
     <MESSAGE value="Refactored unit-tests for service classes" />
     <MESSAGE value="Refactored unit-tests for controller layer" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored unit-tests for controller layer" />
+    <MESSAGE value="Wrote integration tests for repositories using Testcontainers (no unit-tests for repositories)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Wrote integration tests for repositories using Testcontainers (no unit-tests for repositories)" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

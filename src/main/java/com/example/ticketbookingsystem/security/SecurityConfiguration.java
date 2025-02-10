@@ -36,6 +36,22 @@ import static com.example.ticketbookingsystem.entity.Role.USER;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
+    private static final String[] AUTH_WHITELIST = {
+            "/login",
+            "/registration",
+            "/refresh",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/actuator/**"
+    };
+
+    private static final String ADMIN_ROLE_PATH = "/api/admin/**";
+
+    private static final String USER_CART_PATH = "/api/user_cart";
+
+    private static final String PURCHASES_PATH = "/api/purchases/**";
+
     private static final String CORS_ALLOWED_ORIGIN = "http://localhost:3000";
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -106,13 +122,11 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login","/registration", "/refresh",
-                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
-                                "/actuator/**").permitAll()
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers(request -> request.getParameter("lang") != null).permitAll()
-                        .requestMatchers("/api/admin/**").hasRole(ADMIN.getAuthority())
-                        .requestMatchers("/api/user_cart",
-                                         "/api/purchases/**").hasRole(USER.getAuthority())
+                        .requestMatchers(ADMIN_ROLE_PATH).hasRole(ADMIN.getAuthority())
+                        .requestMatchers(USER_CART_PATH,
+                                PURCHASES_PATH).hasRole(USER.getAuthority())
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling((ex) -> ex
