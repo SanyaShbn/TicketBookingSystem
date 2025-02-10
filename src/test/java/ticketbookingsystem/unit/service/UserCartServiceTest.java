@@ -10,7 +10,9 @@ import com.example.ticketbookingsystem.repository.UserCartRepository;
 import com.example.ticketbookingsystem.service.UserCartService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class UserCartServiceTest {
 
     private static final Long ENTITY_ID = 1L;
@@ -45,7 +48,6 @@ public class UserCartServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         userCart = new UserCart();
         ticket = new Ticket();
         ticket.setId(ENTITY_ID);
@@ -55,8 +57,6 @@ public class UserCartServiceTest {
                 .ticketId(ENTITY_ID)
                 .build();
         userCart.setId(new UserCartId(userCartDto.getUserId(), userCartDto.getTicketId()));
-
-        when(userCartMapper.toEntity(any(UserCartDto.class))).thenReturn(userCart);
     }
 
     @Test
@@ -72,6 +72,7 @@ public class UserCartServiceTest {
 
     @Test
     public void testAddItemToCart() {
+        when(userCartMapper.toEntity(any(UserCartDto.class))).thenReturn(userCart);
         when(ticketRepository.findById(any(Long.class))).thenReturn(Optional.of(ticket));
 
         userCartService.addItemToCart(userCartDto);
@@ -82,6 +83,7 @@ public class UserCartServiceTest {
 
     @Test
     public void testRemoveItemFromCart() {
+        when(userCartMapper.toEntity(any(UserCartDto.class))).thenReturn(userCart);
         when(ticketRepository.findById(any(Long.class))).thenReturn(Optional.of(ticket));
 
         userCartService.removeItemFromCart(userCartDto);

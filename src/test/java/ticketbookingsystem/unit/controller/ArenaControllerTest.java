@@ -1,108 +1,106 @@
 package ticketbookingsystem.unit.controller;
 
 import com.example.ticketbookingsystem.controller.ArenaController;
+import com.example.ticketbookingsystem.dto.PageResponse;
 import com.example.ticketbookingsystem.dto.arena_dto.ArenaCreateEditDto;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaFilter;
+import com.example.ticketbookingsystem.dto.arena_dto.ArenaReadDto;
 import com.example.ticketbookingsystem.service.ArenaService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.context.MessageSource;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class ArenaControllerTest {
 
     private static final Long ARENA_ID = 1L;
 
-    MockMvc mockMvc;
-
     @Mock
     private ArenaService arenaService;
-
-    @Mock
-    private MessageSource messageSource;
 
     @InjectMocks
     private ArenaController arenaController;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(arenaController).build();
+    @Test
+    void testFindAll() {
+        ArenaReadDto arena1 = ArenaReadDto.builder().name("Arena1").build();
+        ArenaReadDto arena2 = ArenaReadDto.builder().name("Arena2").build();
+
+        List<ArenaReadDto> arenas = Arrays.asList(arena1, arena2);
+        Page<ArenaReadDto> page = new PageImpl<>(arenas);
+        when(arenaService.findAll(any(ArenaFilter.class), any(Pageable.class))).thenReturn(page);
+
+        PageResponse<ArenaReadDto> response = arenaController.findAll(
+                new ArenaFilter("", "",""), Pageable.unpaged());
+
+        assertEquals(2, response.getContent().size());
+        verify(arenaService, times(1)).findAll(any(ArenaFilter.class), any(Pageable.class));
     }
 
     @Test
-    public void testCreateArena() throws Exception {
-        ArenaCreateEditDto arenaCreateEditDto = buildArenaCreateEditDto();
+    void testGetArenaById() {
+        ArenaReadDto arena = ArenaReadDto.builder().name("Arena1").build();
+        when(arenaService.findById(ARENA_ID)).thenReturn(Optional.of(arena));
 
-        doNothing().when(arenaService).createArena(any(ArenaCreateEditDto.class));
+        ResponseEntity<ArenaReadDto> response = arenaController.getArenaById(ARENA_ID);
 
-        mockMvc.perform(post("/admin/arenas/create")
-                        .flashAttr("arenaCreateEditDto", arenaCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/arenas"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Arena1", response.getBody().getName());
+        verify(arenaService, times(1)).findById(ARENA_ID);
     }
 
     @Test
-    public void testCreateArenaWithException() throws Exception {
-        ArenaCreateEditDto arenaCreateEditDto = buildArenaCreateEditDto();
+    void testCreateArena() {
+        ArenaCreateEditDto createEditDto = ArenaCreateEditDto.builder().name("New Arena").build();
 
-        doThrow(new DaoCrudException(new Throwable())).when(arenaService).createArena(any(ArenaCreateEditDto.class));
+        ArenaReadDto readDto = ArenaReadDto.builder().name("New Arena").build();
+        when(arenaService.createArena(any(ArenaCreateEditDto.class))).thenReturn(readDto);
 
-        mockMvc.perform(post("/admin/arenas/create")
-                        .flashAttr("arenaCreateEditDto", arenaCreateEditDto))
-                .andExpect(status().isOk())
-                .andExpect(view().name("arena-jsp/create-arena"))
-                .andExpect(model().attributeExists("errors"));
+        ResponseEntity<ArenaReadDto> response = arenaController.createArena(createEditDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals("New Arena", response.getBody().getName());
+        verify(arenaService, times(1)).createArena(any(ArenaCreateEditDto.class));
     }
 
     @Test
-    public void testUpdateArena() throws Exception {
-        ArenaCreateEditDto arenaCreateEditDto = buildArenaCreateEditDto();
+    void testUpdateArena() {
+        ArenaCreateEditDto createEditDto = ArenaCreateEditDto.builder().name("Updated Arena").build();
 
-        doNothing().when(arenaService).updateArena(anyLong(), any(ArenaCreateEditDto.class));
+        ArenaReadDto readDto = ArenaReadDto.builder().name("Updated Arena").build();
+        when(arenaService.updateArena(eq(ARENA_ID), any(ArenaCreateEditDto.class))).thenReturn(readDto);
 
-        mockMvc.perform(post("/admin/arenas/{id}/update", ARENA_ID)
-                        .flashAttr("arenaCreateEditDto", arenaCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/arenas"));
+        ResponseEntity<ArenaReadDto> response = arenaController.updateArena(ARENA_ID, createEditDto);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Updated Arena", response.getBody().getName());
+        verify(arenaService, times(1)).updateArena(eq(ARENA_ID), any(ArenaCreateEditDto.class));
     }
 
     @Test
-    public void testDeleteArena() throws Exception {
-        doNothing().when(arenaService).deleteArena(anyLong());
+    void testDeleteArena() {
+        doNothing().when(arenaService).deleteArena(ARENA_ID);
 
-        mockMvc.perform(post("/admin/arenas/{id}/delete", ARENA_ID))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/arenas"));
+        ResponseEntity<String> response = arenaController.deleteArena(ARENA_ID);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Arena deleted successfully", response.getBody());
+        verify(arenaService, times(1)).deleteArena(ARENA_ID);
     }
 
-    @Test
-    public void testDeleteArenaWithException() throws Exception {
-        doThrow(new DaoCrudException(new Throwable())).when(arenaService).deleteArena(anyLong());
-
-        mockMvc.perform(post("/admin/arenas/{id}/delete", ARENA_ID))
-                .andExpect(status().isOk())
-                .andExpect(view().name("error-jsp/error-page"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    private ArenaCreateEditDto buildArenaCreateEditDto(){
-        return ArenaCreateEditDto.builder()
-                .name("Test")
-                .city("Test city")
-                .capacity(1)
-                .build();
-    }
 }

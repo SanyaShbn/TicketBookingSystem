@@ -4,70 +4,67 @@ import com.example.ticketbookingsystem.controller.UserController;
 import com.example.ticketbookingsystem.dto.UserDto;
 import com.example.ticketbookingsystem.exception.UserAlreadyExistException;
 import com.example.ticketbookingsystem.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import ticketbookingsystem.test_config.TestMvcConfig;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = {TestMvcConfig.class})
+@ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
-
-    MockMvc mockMvc;
 
     @Mock
     private UserService userService;
 
+    @Mock
+    private BindingResult bindingResult;
+
     @InjectMocks
     private UserController userController;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(userController)
-                .setViewResolvers(new InternalResourceViewResolver("/WEB-INF/jsp/", ".jsp"))
-                .build();
-    }
-
     @Test
-    public void testLoginPage() throws Exception {
-        mockMvc.perform(get("/login"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("login"));
-    }
-
-    @Test
-    public void testShowRegistrationForm() throws Exception {
-        mockMvc.perform(get("/registration"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("registration"))
-                .andExpect(model().attributeExists("user"));
-    }
-
-    @Test
-    public void testRegisterUserAccount() throws Exception {
-        UserDto userDto = UserDto.builder().build();
-
+    void testRegisterUserAccount_success() throws UserAlreadyExistException {
+        UserDto userDto = UserDto.builder().email("test@example.com").build();
+        when(bindingResult.hasErrors()).thenReturn(false);
         doNothing().when(userService).registerNewUserAccount(any(UserDto.class));
 
-        mockMvc.perform(post("/registration")
-                        .with(csrf())
-                        .flashAttr("user", userDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login"));
+        ResponseEntity<UserDto> response = userController.registerUserAccount(userDto, bindingResult);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(userDto, response.getBody());
+        verify(userService, times(1)).registerNewUserAccount(any(UserDto.class));
     }
 
+    @Test
+    void testRegisterUserAccount_existingUser() throws UserAlreadyExistException {
+        UserDto userDto = UserDto.builder().email("test@example.com").build();
+        when(bindingResult.hasErrors()).thenReturn(false);
+        doThrow(new UserAlreadyExistException("User already exists")).when(userService)
+                .registerNewUserAccount(any(UserDto.class));
+
+        ResponseEntity<UserDto> response = userController.registerUserAccount(userDto, bindingResult);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(userDto, response.getBody());
+        verify(userService, times(1)).registerNewUserAccount(any(UserDto.class));
+    }
+
+    @Test
+    void testRegisterUserAccount_validationErrors() {
+        UserDto userDto = UserDto.builder().email("test@example.com").build();
+        when(bindingResult.hasErrors()).thenReturn(true);
+
+        ResponseEntity<UserDto> response = userController.registerUserAccount(userDto, bindingResult);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(userDto, response.getBody());
+        verify(userService, never()).registerNewUserAccount(any(UserDto.class));
+    }
 }

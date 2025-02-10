@@ -4,6 +4,8 @@ import com.example.ticketbookingsystem.dto.arena_dto.ArenaCreateEditDto;
 import com.example.ticketbookingsystem.dto.arena_dto.ArenaFilter;
 import com.example.ticketbookingsystem.dto.arena_dto.ArenaReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.mapper.arena_mapper.ArenaCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.arena_mapper.ArenaReadMapper;
 import com.example.ticketbookingsystem.repository.ArenaRepository;
@@ -11,7 +13,10 @@ import com.example.ticketbookingsystem.service.ArenaService;
 import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class ArenaServiceTest {
 
     private static final Long ENTITY_ID = 1L;
@@ -32,10 +38,10 @@ public class ArenaServiceTest {
     private ArenaRepository arenaRepository;
 
     @Mock
-    private ArenaCreateEditMapper arenaCreateEditMapper;
+    private ArenaReadMapper arenaReadMapper;
 
     @Mock
-    private ArenaReadMapper arenaReadMapper;
+    private ArenaCreateEditMapper arenaCreateEditMapper;
 
     @Captor
     private ArgumentCaptor<Predicate> predicateCaptor;
@@ -51,18 +57,16 @@ public class ArenaServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         arena = new Arena();
         arena.setId(ENTITY_ID);
         arenaCreateEditDto = ArenaCreateEditDto.builder().build();
         arenaReadDto = ArenaReadDto.builder().build();
-
-        when(arenaCreateEditMapper.toEntity(any(ArenaCreateEditDto.class))).thenReturn(arena);
-        when(arenaReadMapper.toDto(any(Arena.class))).thenReturn(arenaReadDto);
     }
 
     @Test
     public void testFindAll() {
+        when(arenaReadMapper.toDto(any(Arena.class))).thenReturn(arenaReadDto);
+
         when(arenaRepository.findAll()).thenReturn(List.of(arena));
 
         var result = arenaService.findAll();
@@ -74,6 +78,8 @@ public class ArenaServiceTest {
 
     @Test
     public void testFindAllWithFilterAndPageable() {
+        when(arenaReadMapper.toDto(any(Arena.class))).thenReturn(arenaReadDto);
+
         ArenaFilter arenaFilter = mock(ArenaFilter.class);
         Pageable pageable = PageRequest.of(0, 10);
         Page<Arena> arenaPage = new PageImpl<>(List.of(arena), pageable, 1);
@@ -93,6 +99,7 @@ public class ArenaServiceTest {
 
     @Test
     public void testFindById() {
+        when(arenaReadMapper.toDto(any(Arena.class))).thenReturn(arenaReadDto);
         when(arenaRepository.findById(ENTITY_ID)).thenReturn(Optional.of(arena));
 
         var result = arenaService.findById(ENTITY_ID);
@@ -104,6 +111,8 @@ public class ArenaServiceTest {
 
     @Test
     void createArena() {
+        when(arenaCreateEditMapper.toEntity(any(ArenaCreateEditDto.class))).thenReturn(arena);
+
         arenaService.createArena(arenaCreateEditDto);
 
         verify(arenaRepository, times(1)).save(arena);
@@ -111,6 +120,8 @@ public class ArenaServiceTest {
 
     @Test
     void updateArena() {
+        when(arenaCreateEditMapper.toEntity(any(ArenaCreateEditDto.class))).thenReturn(arena);
+
         arenaService.updateArena(ENTITY_ID, arenaCreateEditDto);
 
         verify(arenaRepository, times(1)).save(arena);
@@ -118,9 +129,34 @@ public class ArenaServiceTest {
 
     @Test
     void deleteArena() {
+        when(arenaRepository.existsById(ENTITY_ID)).thenReturn(true);
+
         arenaService.deleteArena(ENTITY_ID);
 
         verify(arenaRepository, times(1)).deleteById(ENTITY_ID);
+    }
+
+    @Test
+    void testDeleteArenaNotFound() {
+        when(arenaRepository.existsById(ENTITY_ID)).thenReturn(false);
+
+        assertThrows(DaoResourceNotFoundException.class, () -> arenaService.deleteArena(ENTITY_ID));
+    }
+
+    @Test
+    void testCreateArenaDataAccessException() {
+        when(arenaCreateEditMapper.toEntity(any(ArenaCreateEditDto.class))).thenReturn(arena);
+        when(arenaRepository.save(any(Arena.class))).thenThrow(new DataAccessException("...") {});
+
+        assertThrows(DaoCrudException.class, () -> arenaService.createArena(arenaCreateEditDto));
+    }
+
+    @Test
+    void testUpdateArenaDataAccessException() {
+        when(arenaCreateEditMapper.toEntity(any(ArenaCreateEditDto.class))).thenReturn(arena);
+        when(arenaRepository.save(any(Arena.class))).thenThrow(new DataAccessException("...") {});
+
+        assertThrows(DaoCrudException.class, () -> arenaService.updateArena(ENTITY_ID, arenaCreateEditDto));
     }
 
 }

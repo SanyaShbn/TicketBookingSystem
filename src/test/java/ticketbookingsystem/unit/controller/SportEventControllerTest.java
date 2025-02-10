@@ -1,131 +1,118 @@
 package ticketbookingsystem.unit.controller;
 
 import com.example.ticketbookingsystem.controller.SportEventController;
-import com.example.ticketbookingsystem.dto.arena_dto.ArenaReadDto;
+import com.example.ticketbookingsystem.dto.PageResponse;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventCreateEditDto;
+import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventFilter;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventReadDto;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.service.ArenaService;
 import com.example.ticketbookingsystem.service.SportEventService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.context.MessageSource;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class SportEventControllerTest {
 
     private static final Long SPORT_EVENT_ID = 1L;
-    private static final Long ARENA_ID = 1L;
 
-    MockMvc mockMvc;
+    private static final Long ARENA_ID = 1L;
 
     @Mock
     private SportEventService sportEventService;
 
-    @Mock
-    private ArenaService arenaService;
-
-    @Mock
-    private MessageSource messageSource;
-
     @InjectMocks
     private SportEventController sportEventController;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(sportEventController).build();
+    @Test
+    public void testFindAllSportEvents() {
+        SportEventReadDto event1 = SportEventReadDto.builder().eventName("Event1").build();
+        SportEventReadDto event2 = SportEventReadDto.builder().eventName("Event2").build();
+
+        List<SportEventReadDto> events = Arrays.asList(event1, event2);
+        Page<SportEventReadDto> page = new PageImpl<>(events);
+        when(sportEventService.findAll(any(SportEventFilter.class), any(Pageable.class))).thenReturn(page);
+
+        PageResponse<SportEventReadDto> response = sportEventController.findAllSportEvents(
+                new SportEventFilter(LocalDateTime.now(), LocalDateTime.now(), ARENA_ID, ""),
+                Pageable.unpaged());
+
+        assertEquals(2, response.getContent().size());
+        verify(sportEventService, times(1)).findAll(
+                any(SportEventFilter.class), any(Pageable.class));
     }
 
     @Test
-    public void testShowCreateSportEventForm() throws Exception {
-        when(arenaService.findAll()).thenReturn(List.of(ArenaReadDto.builder().build()));
+    void testGetSportEventById() {
+        SportEventReadDto event = SportEventReadDto.builder().eventName("Event1").build();
+        when(sportEventService.findById(SPORT_EVENT_ID)).thenReturn(Optional.of(event));
 
-        mockMvc.perform(get("/admin/sport_events/create"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("sport-events-jsp/create-sport-event"))
-                .andExpect(model().attributeExists("arenas"));
+        ResponseEntity<SportEventReadDto> response = sportEventController.getSportEventById(SPORT_EVENT_ID);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Event1", response.getBody().getEventName());
+        verify(sportEventService, times(1)).findById(SPORT_EVENT_ID);
     }
 
     @Test
-    public void testCreateSportEvent() throws Exception {
-        SportEventCreateEditDto sportEventCreateEditDto = buildSportEventCreateEditDto();
+    public void testCreateSportEvent() {
+        SportEventCreateEditDto createEditDto = SportEventCreateEditDto.builder().eventName("New Event").build();
 
-        doNothing().when(sportEventService).createSportEvent(any(SportEventCreateEditDto.class), anyLong());
+        SportEventReadDto readDto = SportEventReadDto.builder().eventName("New Event").build();
+        when(sportEventService.createSportEvent(any(SportEventCreateEditDto.class), any(Long.class)))
+                .thenReturn(readDto);
 
-        mockMvc.perform(post("/admin/sport_events/create")
-                        .param("arenaId", ARENA_ID.toString())
-                        .flashAttr("sportEventCreateEditDto", sportEventCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/sport_events"));
+        ResponseEntity<SportEventReadDto> response = sportEventController.createSportEvent(SPORT_EVENT_ID, createEditDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals("New Event", response.getBody().getEventName());
+        verify(sportEventService, times(1))
+                .createSportEvent(any(SportEventCreateEditDto.class), any(Long.class));
     }
 
     @Test
-    public void testShowUpdateSportEventForm() throws Exception {
-        when(sportEventService.findById(SPORT_EVENT_ID)).thenReturn(Optional.of(SportEventReadDto.builder().build()));
-        when(arenaService.findAll()).thenReturn(List.of(ArenaReadDto.builder().build()));
+    public void testUpdateSportEvent() {
+        SportEventCreateEditDto createEditDto = SportEventCreateEditDto.builder().eventName("Updated Event").build();
 
-        mockMvc.perform(get("/admin/sport_events/{id}/update", SPORT_EVENT_ID))
-                .andExpect(status().isOk())
-                .andExpect(view().name("sport-events-jsp/update-sport-event"))
-                .andExpect(model().attributeExists("sport_event"))
-                .andExpect(model().attributeExists("arenas"));
+        SportEventReadDto readDto = SportEventReadDto.builder().eventName("Updated Event").build();
+        when(sportEventService.updateSportEvent(eq(SPORT_EVENT_ID),
+                any(SportEventCreateEditDto.class),
+                any(Long.class)))
+                .thenReturn(readDto);
+
+        ResponseEntity<SportEventReadDto> response = sportEventController.updateSportEvent(
+                SPORT_EVENT_ID, SPORT_EVENT_ID, createEditDto);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Updated Event", response.getBody().getEventName());
+        verify(sportEventService, times(1)).updateSportEvent(
+                eq(SPORT_EVENT_ID), any(SportEventCreateEditDto.class), any(Long.class));
     }
 
     @Test
-    public void testUpdateSportEvent() throws Exception {
-        SportEventCreateEditDto sportEventCreateEditDto = buildSportEventCreateEditDto();
+    public void testDeleteSportEvent() {
+        doNothing().when(sportEventService).deleteSportEvent(SPORT_EVENT_ID);
 
-        doNothing().when(sportEventService).updateSportEvent(anyLong(), any(SportEventCreateEditDto.class), anyLong());
+        ResponseEntity<String> response = sportEventController.deleteSportEvent(SPORT_EVENT_ID);
 
-        mockMvc.perform(post("/admin/sport_events/{id}/update", SPORT_EVENT_ID)
-                        .param("arenaId", ARENA_ID.toString())
-                        .flashAttr("sportEventCreateEditDto", sportEventCreateEditDto))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/sport_events"));
-    }
-
-    @Test
-    public void testDeleteSportEvent() throws Exception {
-        doNothing().when(sportEventService).deleteSportEvent(anyLong());
-
-        mockMvc.perform(post("/admin/sport_events/{id}/delete", SPORT_EVENT_ID))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/sport_events"));
-    }
-
-    @Test
-    public void testDeleteSportEventWithException() throws Exception {
-        doThrow(new DaoCrudException(new Throwable())).when(sportEventService).deleteSportEvent(anyLong());
-
-        mockMvc.perform(post("/admin/sport_events/{id}/delete", SPORT_EVENT_ID))
-                .andExpect(status().isOk())
-                .andExpect(view().name("error-jsp/error-page"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    private SportEventCreateEditDto buildSportEventCreateEditDto(){
-        return SportEventCreateEditDto.builder()
-                .eventName("Test Event")
-                .eventDateTime(LocalDateTime.now())
-                .build();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Sporting event deleted successfully", response.getBody());
+        verify(sportEventService, times(1)).deleteSportEvent(SPORT_EVENT_ID);
     }
 
 }

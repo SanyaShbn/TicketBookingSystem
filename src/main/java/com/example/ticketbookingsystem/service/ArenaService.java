@@ -106,11 +106,12 @@ public class ArenaService {
      * @param arenaCreateEditDto the DTO of the arena to create
      * @throws ValidationException if the arena is not valid
      */
-    public void createArena(ArenaCreateEditDto arenaCreateEditDto) {
+    public ArenaReadDto createArena(ArenaCreateEditDto arenaCreateEditDto) {
         try {
             Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
-            arenaRepository.save(arena);
+            Arena savedArena = arenaRepository.save(arena);
             log.info("Arena created successfully with dto: {}", arenaCreateEditDto);
+            return arenaReadMapper.toDto(savedArena);
         } catch (DataAccessException e){
             log.error("Failed to create arena with dto: {}", arenaCreateEditDto);
             throw new DaoCrudException(e);
@@ -123,12 +124,13 @@ public class ArenaService {
      * @param arenaCreateEditDto the DTO of the updated arena
      * @throws ValidationException if the updated arena is not valid
      */
-    public void updateArena(Long id, ArenaCreateEditDto arenaCreateEditDto) {
+    public ArenaReadDto updateArena(Long id, ArenaCreateEditDto arenaCreateEditDto) {
         try {
             Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
             arena.setId(id);
-            arenaRepository.save(arena);
+            Arena updatedArena = arenaRepository.save(arena);
             log.info("Arena with id {} updated successfully with dto: {}", id, arenaCreateEditDto);
+            return arenaReadMapper.toDto(updatedArena);
         } catch (DataAccessException e){
             log.error("Failed to update arena {} with dto: {}", id, arenaCreateEditDto);
             throw new DaoCrudException(e);
@@ -141,6 +143,10 @@ public class ArenaService {
      * @param id the ID of the arena to delete
      */
     public void deleteArena(Long id) {
+        if (!arenaRepository.existsById(id)) {
+            log.error("Failed to find arena with provided id: {}", id);
+            throw new DaoResourceNotFoundException("Arena not found with id " + id);
+        }
         try {
             arenaRepository.deleteById(id);
             log.info("Arena with id {} deleted successfully.", id);

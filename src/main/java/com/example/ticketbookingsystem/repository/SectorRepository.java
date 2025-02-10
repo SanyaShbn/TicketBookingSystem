@@ -6,7 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * Repository for managing Sector entities.
@@ -15,6 +18,9 @@ import org.springframework.stereotype.Repository;
 public interface SectorRepository extends JpaRepository<Sector, Long> {
 
     Page<Sector> findAllByArenaId(Long arenaId, Pageable sortedPageable);
+
+    @Query("SELECT s FROM Sector s JOIN FETCH s.arena WHERE s.id = :id")
+    Optional<Sector> findById(@Param("id") Long id);
 
     @Modifying
     @Query("UPDATE Arena a SET a.generalSeatsNumb = a.generalSeatsNumb + :seatsNumb WHERE a.id = :arenaId")

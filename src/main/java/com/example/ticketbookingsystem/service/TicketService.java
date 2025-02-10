@@ -10,6 +10,7 @@ import com.example.ticketbookingsystem.entity.SportEvent;
 import com.example.ticketbookingsystem.entity.Ticket;
 import com.example.ticketbookingsystem.entity.TicketStatus;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.mapper.seat_mapper.SeatReadMapper;
 import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventReadMapper;
 import com.example.ticketbookingsystem.mapper.ticket_mapper.TicketCreateEditMapper;
@@ -110,7 +111,7 @@ public class TicketService {
      * @param eventId the ID of the sporting event to save ticket for
      * @param seatId the ID of the seat to save ticket for
      */
-    public void createTicket(TicketCreateEditDto ticketCreateEditDto, Long eventId, Long seatId) {
+    public TicketReadDto createTicket(TicketCreateEditDto ticketCreateEditDto, Long eventId, Long seatId) {
         try {
             Ticket ticket = ticketCreateEditMapper.toEntity(ticketCreateEditDto);
             SportEvent sportEvent = getSportEventById(eventId);
@@ -120,8 +121,9 @@ public class TicketService {
             ticket.setSportEvent(sportEvent);
             ticket.setSeat(seat);
 
-            ticketRepository.save(ticket);
+            Ticket savedTicket = ticketRepository.save(ticket);
             log.info("Ticket created successfully with dto: {}", ticketCreateEditDto);
+            return ticketReadMapper.toDto(savedTicket);
         } catch (DataAccessException e){
             log.error("Failed to create Ticket with dto: {}", ticketCreateEditDto);
             throw new DaoCrudException(e);
@@ -136,7 +138,7 @@ public class TicketService {
      * @param eventId the ID of the sporting event to save ticket for
      * @param seatId the ID of the seat to save ticket for
      */
-    public void updateTicket(Long id, TicketCreateEditDto ticketCreateEditDto, Long eventId, Long seatId) {
+    public TicketReadDto updateTicket(Long id, TicketCreateEditDto ticketCreateEditDto, Long eventId, Long seatId) {
         try {
             Ticket ticket = ticketCreateEditMapper.toEntity(ticketCreateEditDto);
             SportEvent sportEvent = getSportEventById(eventId);
@@ -147,8 +149,9 @@ public class TicketService {
             ticket.setSportEvent(sportEvent);
             ticket.setSeat(seat);
 
-            ticketRepository.save(ticket);
+            Ticket updatedTicket = ticketRepository.save(ticket);
             log.info("Ticket updated successfully with dto: {}", ticketCreateEditDto);
+            return ticketReadMapper.toDto(updatedTicket);
         } catch (DataAccessException e){
             log.error("Failed to update Ticket {} with dto: {}", id, ticketCreateEditDto);
             throw new DaoCrudException(e);
@@ -172,6 +175,10 @@ public class TicketService {
      * @param id the ID of the ticket to delete
      */
     public void deleteTicket(Long id) {
+        if (!ticketRepository.existsById(id)) {
+            log.error("Failed to find ticket with provided id: {}", id);
+            throw new DaoResourceNotFoundException("Ticket not found with id " + id);
+        }
         try {
             ticketRepository.deleteById(id);
             log.info("Ticket with id {} deleted successfully.", id);

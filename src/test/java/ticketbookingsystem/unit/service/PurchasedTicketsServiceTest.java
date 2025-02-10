@@ -4,10 +4,13 @@ import com.example.ticketbookingsystem.dto.PurchasedTicketDto;
 import com.example.ticketbookingsystem.entity.*;
 import com.example.ticketbookingsystem.repository.PurchasedTicketRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
+import com.example.ticketbookingsystem.repository.UserRepository;
 import com.example.ticketbookingsystem.service.PurchasedTicketsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class PurchasedTicketsServiceTest {
 
     private static final Long ENTITY_ID = 1L;
@@ -29,13 +33,18 @@ public class PurchasedTicketsServiceTest {
     @Mock
     private TicketRepository ticketRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     @InjectMocks
     private PurchasedTicketsService purchasedTicketsService;
 
+    private Ticket ticket;
+
+    private PurchasedTicket purchasedTicket;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-
         SportEvent sportEvent = new SportEvent();
         sportEvent.setEventName("Event Name");
         sportEvent.setEventDateTime(LocalDateTime.now());
@@ -56,25 +65,25 @@ public class PurchasedTicketsServiceTest {
         seat.setSeatNumber(1);
         seat.setRow(row);
 
-        Ticket ticket = new Ticket();
+        ticket = new Ticket();
         ticket.setId(ENTITY_ID);
         ticket.setSportEvent(sportEvent);
         ticket.setSeat(seat);
         ticket.setPrice(BigDecimal.valueOf(100.0));
 
-        PurchasedTicket purchasedTicket = PurchasedTicket.builder()
+        purchasedTicket = PurchasedTicket.builder()
                 .userId(ENTITY_ID)
                 .purchaseDate(LocalDateTime.now())
                 .ticket(ticket)
                 .build();
 
-        when(ticketRepository.findById(any(Long.class))).thenReturn(Optional.of(ticket));
-        when(purchasedTicketRepository.findAllByUserId(any(Long.class)))
-                .thenReturn(Collections.singletonList(purchasedTicket));
+        when(userRepository.existsById(any(Long.class))).thenReturn(true);
     }
 
     @Test
     public void testSavePurchasedTickets() {
+        when(ticketRepository.findById(any(Long.class))).thenReturn(Optional.of(ticket));
+
         List<Long> ticketIds = List.of(ENTITY_ID);
 
         purchasedTicketsService.savePurchasedTickets(ticketIds, ENTITY_ID);
@@ -85,6 +94,9 @@ public class PurchasedTicketsServiceTest {
 
     @Test
     public void testFindAllByUserId() {
+        when(purchasedTicketRepository.findAllByUserId(any(Long.class)))
+                .thenReturn(Collections.singletonList(purchasedTicket));
+
         List<PurchasedTicketDto> result = purchasedTicketsService.findAllByUserId(ENTITY_ID);
 
         assertNotNull(result);

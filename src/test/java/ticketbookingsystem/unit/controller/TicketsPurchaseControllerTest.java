@@ -2,34 +2,32 @@ package ticketbookingsystem.unit.controller;
 
 import com.example.ticketbookingsystem.controller.TicketsPurchaseController;
 import com.example.ticketbookingsystem.dto.PurchasedTicketDto;
-import com.example.ticketbookingsystem.dto.UserDto;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.service.PurchasedTicketsService;
 import com.example.ticketbookingsystem.service.UserCartService;
-import com.example.ticketbookingsystem.utils.AuthenticationUtil;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.MessageSource;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class TicketsPurchaseControllerTest {
 
     private static final Long USER_ID = 1L;
-
-    MockMvc mockMvc;
 
     @Mock
     private UserCartService userCartService;
@@ -40,88 +38,50 @@ public class TicketsPurchaseControllerTest {
     @Mock
     private PurchasedTicketsService purchasedTicketsService;
 
-    @Mock
-    private AuthenticationUtil authenticationUtil;
-
     @InjectMocks
     private TicketsPurchaseController ticketsPurchaseController;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(ticketsPurchaseController).build();
+    @Test
+    public void testCommitPurchaseSuccess() {
+        List<Long> ticketIds = Arrays.asList(1L, 2L, 3L);
+        when(userCartService.getTicketIds(anyLong())).thenReturn(ticketIds);
+        doNothing().when(purchasedTicketsService).savePurchasedTickets(ticketIds, USER_ID);
+
+        ResponseEntity<String> response = ticketsPurchaseController.commitPurchase(USER_ID);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Purchase successful", response.getBody());
+        verify(userCartService, times(1)).getTicketIds(anyLong());
+        verify(purchasedTicketsService, times(1)).savePurchasedTickets(ticketIds, USER_ID);
     }
 
     @Test
-    public void testShowPurchasePage() throws Exception {
-        mockMvc.perform(get("/purchase"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tickets-purchases-jsp/purchase"));
+    public void testGetPurchasedTicketsSuccess() {
+        List<PurchasedTicketDto> purchasedTickets = Arrays.asList(
+                PurchasedTicketDto.builder().build(), PurchasedTicketDto.builder().build());
+        when(purchasedTicketsService.findAllByUserId(anyLong())).thenReturn(purchasedTickets);
+
+        ResponseEntity<?> response = ticketsPurchaseController.getPurchasedTickets(USER_ID);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(purchasedTickets.toString(), response.getBody());
+        verify(purchasedTicketsService, times(1)).findAllByUserId(anyLong());
     }
 
     @Test
-    public void testCommitPurchaseSuccess() throws Exception {
-        UserDto userDto = UserDto.builder().id(USER_ID).build();
-        List<Long> ticketIds = List.of(1L, 2L);
+    public void testGetPurchasedTicketsException() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        when(authenticationUtil.getAuthenticatedUser()).thenReturn(Optional.of(userDto));
-        when(userCartService.getTicketIds(userDto.getId())).thenReturn(ticketIds);
+        when(purchasedTicketsService.findAllByUserId(anyLong())).thenThrow(
+                new DaoResourceNotFoundException("No user's tickets found"));
+        when(messageSource.getMessage(eq("get.purchasedTickets.error"), any(), any()))
+                .thenReturn("Error retrieving purchased tickets");
 
-        mockMvc.perform(post("/purchase"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/purchasedTickets"));
-    }
+        ResponseEntity<?> response = ticketsPurchaseController.getPurchasedTickets(USER_ID);
 
-    @Test
-    public void testCommitPurchaseDaoException() throws Exception {
-        UserDto userDto = UserDto.builder().id(USER_ID).build();
-        List<Long> ticketIds = List.of(1L, 2L);
-
-        when(authenticationUtil.getAuthenticatedUser()).thenReturn(Optional.of(userDto));
-        when(userCartService.getTicketIds(userDto.getId())).thenReturn(ticketIds);
-        doThrow(new DaoCrudException(new Throwable())).when(purchasedTicketsService).savePurchasedTickets(ticketIds, userDto.getId());
-
-        mockMvc.perform(post("/purchase"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tickets-purchases-jsp/purchase"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    @Test
-    public void testGetPurchasedTicketsSuccess() throws Exception {
-        UserDto userDto = UserDto.builder().id(USER_ID).build();
-        List<PurchasedTicketDto> purchasedTickets = List.of(PurchasedTicketDto.builder().build());
-
-        when(authenticationUtil.getAuthenticatedUser()).thenReturn(Optional.of(userDto));
-        when(purchasedTicketsService.findAllByUserId(userDto.getId())).thenReturn(purchasedTickets);
-
-        mockMvc.perform(get("/purchasedTickets"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tickets-purchases-jsp/purchased-tickets"))
-                .andExpect(model().attributeExists("purchasedTickets"))
-                .andExpect(model().attribute("purchasedTickets", purchasedTickets));
-    }
-
-    @Test
-    public void testGetPurchasedTicketsDaoException() throws Exception {
-        UserDto userDto = UserDto.builder().id(1L).build();
-
-        when(authenticationUtil.getAuthenticatedUser()).thenReturn(Optional.of(userDto));
-        doThrow(new DaoCrudException(new Throwable())).when(purchasedTicketsService).findAllByUserId(userDto.getId());
-
-        mockMvc.perform(get("/purchasedTickets"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tickets-purchases-jsp/purchased-tickets"))
-                .andExpect(model().attributeExists("errors"));
-    }
-
-    @Test
-    public void testGetPurchasedTicketsUserNotAuthenticated() throws Exception {
-        when(authenticationUtil.getAuthenticatedUser()).thenReturn(Optional.empty());
-
-        mockMvc.perform(get("/purchasedTickets"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tickets-purchases-jsp/purchased-tickets"))
-                .andExpect(model().attributeExists("errors"));
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("Error retrieving purchased tickets", response.getBody());
+        verify(purchasedTicketsService, times(1)).findAllByUserId(anyLong());
     }
 }

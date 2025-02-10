@@ -5,6 +5,8 @@ import com.example.ticketbookingsystem.dto.sector_dto.SectorFilter;
 import com.example.ticketbookingsystem.dto.sector_dto.SectorReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
 import com.example.ticketbookingsystem.entity.Sector;
+import com.example.ticketbookingsystem.exception.DaoCrudException;
+import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.mapper.sector_mapper.SectorCreateEditMapper;
 import com.example.ticketbookingsystem.mapper.sector_mapper.SectorReadMapper;
 import com.example.ticketbookingsystem.repository.SectorRepository;
@@ -13,9 +15,11 @@ import com.example.ticketbookingsystem.service.SectorService;
 import com.example.ticketbookingsystem.utils.SortUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 
 import java.util.LinkedHashMap;
@@ -27,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class SectorServiceTest {
 
     private static final Long ENTITY_ID = 1L;
@@ -56,21 +61,17 @@ public class SectorServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         sector = new Sector();
         sector.setId(ENTITY_ID);
         arena = new Arena();
         arena.setId(ENTITY_ID);
         sectorCreateEditDto = SectorCreateEditDto.builder().build();
         sectorReadDto = SectorReadDto.builder().build();
-
-        when(sectorCreateEditMapper.toEntity(any(SectorCreateEditDto.class))).thenReturn(sector);
-        when(sectorReadMapper.toDto(any(Sector.class))).thenReturn(sectorReadDto);
-        when(arenaService.findArenaById(any(Long.class))).thenReturn(arena);
     }
 
     @Test
     public void testFindAll() {
+        when(sectorReadMapper.toDto(any(Sector.class))).thenReturn(sectorReadDto);
         when(sectorRepository.findAll()).thenReturn(List.of(sector));
 
         var result = sectorService.findAll();
@@ -82,6 +83,8 @@ public class SectorServiceTest {
 
     @Test
     public void testFindAllSectors() {
+        when(sectorReadMapper.toDto(any(Sector.class))).thenReturn(sectorReadDto);
+
         SectorFilter sectorFilter = mock(SectorFilter.class);
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -113,6 +116,7 @@ public class SectorServiceTest {
 
     @Test
     public void testFindById() {
+        when(sectorReadMapper.toDto(any(Sector.class))).thenReturn(sectorReadDto);
         when(sectorRepository.findById(ENTITY_ID)).thenReturn(Optional.of(sector));
 
         var result = sectorService.findById(ENTITY_ID);
@@ -124,6 +128,9 @@ public class SectorServiceTest {
 
     @Test
     void createSector() {
+        when(sectorCreateEditMapper.toEntity(any(SectorCreateEditDto.class))).thenReturn(sector);
+        when(arenaService.findArenaById(any(Long.class))).thenReturn(arena);
+
         sectorService.createSector(sectorCreateEditDto, arena.getId());
 
         verify(sectorRepository, times(1)).save(sector);
@@ -133,6 +140,9 @@ public class SectorServiceTest {
 
     @Test
     void updateSector() {
+        when(sectorCreateEditMapper.toEntity(any(SectorCreateEditDto.class))).thenReturn(sector);
+        when(arenaService.findArenaById(any(Long.class))).thenReturn(arena);
+
         when(sectorRepository.findById(any(Long.class))).thenReturn(Optional.of(sector));
 
         sectorService.updateSector(ENTITY_ID, sectorCreateEditDto, arena.getId());
@@ -157,6 +167,33 @@ public class SectorServiceTest {
         verify(sectorRepository, times(1)).delete(sectorWithID);
         verify(sectorRepository, times(1)).updateArenaAfterSectorDelete(arenaWithID.getId(),
                 sectorWithID.getMaxSeatsNumb());
+    }
+
+    @Test
+    void testDeleteSectorNotFound() {
+        when(sectorRepository.findById(ENTITY_ID)).thenReturn(Optional.empty());
+
+        assertThrows(DaoResourceNotFoundException.class, () -> sectorService.deleteSector(ENTITY_ID));
+    }
+
+    @Test
+    void testCreateSectorDataAccessException() {
+        when(sectorCreateEditMapper.toEntity(any(SectorCreateEditDto.class))).thenReturn(sector);
+        when(sectorRepository.save(any(Sector.class))).thenThrow(new DataAccessException("...") {});
+
+        assertThrows(DaoCrudException.class,
+                () -> sectorService.createSector(sectorCreateEditDto, arena.getId()));
+    }
+
+    @Test
+    void testUpdateSectorDataAccessException() {
+        when(sectorRepository.findById(ENTITY_ID)).thenReturn(Optional.of(sector));
+
+        when(sectorCreateEditMapper.toEntity(any(SectorCreateEditDto.class))).thenReturn(sector);
+        when(sectorRepository.save(any(Sector.class))).thenThrow(new DataAccessException("...") {});
+
+        assertThrows(DaoCrudException.class,
+                () -> sectorService.updateSector(ENTITY_ID, sectorCreateEditDto, arena.getId()));
     }
 
 }
