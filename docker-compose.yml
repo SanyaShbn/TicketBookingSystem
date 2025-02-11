@@ -12,21 +12,17 @@ services:
     ports:
       - "5432:5432"
 
-  app:
+  spring-boot-app:
     build: .
-    container_name: tomcat_container
+    container_name: spring_boot_container
     depends_on:
       - db
     environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_NAME=ticket-booking-system
-      - DB_USER=postgres
+      - DB_URL=jdbc:postgresql://db:5432/ticket-booking-system
+      - DB_USERNAME=postgres
       - DB_PASSWORD=12345
     ports:
       - "8080:8080"
-    volumes:
-      - ./tomcat/logs:/usr/local/tomcat/logs
 
 volumes:
   db_data:

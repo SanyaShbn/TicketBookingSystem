@@ -1,10 +1,11 @@
-FROM tomcat:11-jdk21-temurin-noble
+FROM openjdk:17-jdk-slim
 
 LABEL authors="shubi"
 
-COPY target/TicketBookingSystem-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
-COPY tomcat/conf/context.xml /usr/local/tomcat/conf/
+WORKDIR /app
+
+COPY target/TicketBookingSystem-1.0-SNAPSHOT.war app.war
 
 EXPOSE 8080
 
-CMD ["catalina.sh", "run"]
+ENTRYPOINT ["java", "-jar", "app.war"]
