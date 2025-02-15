@@ -9,12 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Merged spring-boot-develop branch, removed some of the redundant dependencies from pom.xml">
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Refactor: fixed docker containers (created container for spring boot app instead of pure tomcat container)">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/connection_pool/HikariCPTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +78,7 @@
     &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/TicketBookingSystem/src/test/resources&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Стажа. Innowise. Материалы, задания&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -110,7 +110,22 @@
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\arena-jsp" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.ApplicationRunner">
+  <component name="RunManager" selected="JUnit.RefreshTokenRepositoryTest">
+    <configuration name="ArenaRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.integration.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration.repository" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.repository.ArenaRepositoryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="HikariCPTest.testConnectionPool" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
@@ -127,6 +142,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="PurchasedTicketRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.integration.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration.repository" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.repository.PurchasedTicketRepositoryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RefreshTokenRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.integration.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration.repository" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.repository.RefreshTokenRepositoryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="RowServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
@@ -138,53 +183,6 @@
       <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
       <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.RowServiceTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SportEventControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.SportEventControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SportEventControllerTest.testCreateSportEventWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.SportEventControllerTest" />
-      <option name="METHOD_NAME" value="testCreateSportEventWithException" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SportEventControllerTest.testUpdateSportEventWithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.SportEventControllerTest" />
-      <option name="METHOD_NAME" value="testUpdateSportEventWithException" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -284,11 +282,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RefreshTokenRepositoryTest" />
+        <item itemvalue="JUnit.ArenaRepositoryTest" />
+        <item itemvalue="JUnit.PurchasedTicketRepositoryTest" />
         <item itemvalue="JUnit.HikariCPTest.testConnectionPool" />
         <item itemvalue="JUnit.RowServiceTest" />
-        <item itemvalue="JUnit.SportEventControllerTest" />
-        <item itemvalue="JUnit.SportEventControllerTest.testUpdateSportEventWithException" />
-        <item itemvalue="JUnit.SportEventControllerTest.testCreateSportEventWithException" />
       </list>
     </recent_temporary>
   </component>
@@ -432,7 +430,19 @@
       <workItem from="1739120368274" duration="10182000" />
       <workItem from="1739168909365" duration="8904000" />
       <workItem from="1739185890915" duration="303000" />
-      <workItem from="1739249924414" duration="1824000" />
+      <workItem from="1739249924414" duration="2071000" />
+      <workItem from="1739278281276" duration="55000" />
+      <workItem from="1739348402781" duration="1274000" />
+      <workItem from="1739351146052" duration="1745000" />
+      <workItem from="1739364174922" duration="4112000" />
+      <workItem from="1739387813475" duration="39000" />
+      <workItem from="1739389444537" duration="17000" />
+      <workItem from="1739457431244" duration="903000" />
+      <workItem from="1739520730950" duration="29000" />
+      <workItem from="1739599987397" duration="41000" />
+      <workItem from="1739605143984" duration="1258000" />
+      <workItem from="1739606659572" duration="254000" />
+      <workItem from="1739606966976" duration="666000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -778,7 +788,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739215792484</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Refactor: fixed docker containers (created container for spring boot app instead of pure tomcat container)">
+      <option name="closed" value="true" />
+      <created>1739251974455</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1739251974455</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -821,7 +839,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implemented Hibernate for User and Arena entities" />
     <MESSAGE value="Written tests for UserDao and ArenaDao" />
     <MESSAGE value="Added HikariCP connection pool + did some refactoring" />
     <MESSAGE value="Implemented Hibernate for SectorDao, added tests for SectorDao class + again some refactoring and java doc" />
@@ -846,7 +863,8 @@
     <MESSAGE value="Refactored unit-tests for controller layer" />
     <MESSAGE value="Wrote integration tests for repositories using Testcontainers (no unit-tests for repositories)" />
     <MESSAGE value="Merged spring-boot-develop branch, removed some of the redundant dependencies from pom.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merged spring-boot-develop branch, removed some of the redundant dependencies from pom.xml" />
+    <MESSAGE value="Refactor: fixed docker containers (created container for spring boot app instead of pure tomcat container)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor: fixed docker containers (created container for spring boot app instead of pure tomcat container)" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
