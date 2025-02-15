@@ -9,7 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Added some info into README, excluded integration tests from build" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Added some info into README for proper testing of my app locally" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -436,7 +436,7 @@
       <workItem from="1739599987397" duration="41000" />
       <workItem from="1739605143984" duration="1258000" />
       <workItem from="1739606659572" duration="254000" />
-      <workItem from="1739606966976" duration="823000" />
+      <workItem from="1739606966976" duration="1165000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -798,7 +798,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739607727781</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Added some info into README for proper testing of my app locally">
+      <option name="closed" value="true" />
+      <created>1739608076535</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1739608076535</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -841,7 +849,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added HikariCP connection pool + did some refactoring" />
     <MESSAGE value="Implemented Hibernate for SectorDao, added tests for SectorDao class + again some refactoring and java doc" />
     <MESSAGE value="Implemented Hibernate for SportEventDao" />
     <MESSAGE value="Started implementing Hibernate for remaining dao classes (for now, have some bugs and no unit-tests)" />
@@ -866,7 +873,8 @@
     <MESSAGE value="Merged spring-boot-develop branch, removed some of the redundant dependencies from pom.xml" />
     <MESSAGE value="Refactor: fixed docker containers (created container for spring boot app instead of pure tomcat container)" />
     <MESSAGE value="Added some info into README, excluded integration tests from build" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added some info into README, excluded integration tests from build" />
+    <MESSAGE value="Added some info into README for proper testing of my app locally" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added some info into README for proper testing of my app locally" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
