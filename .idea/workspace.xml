@@ -9,13 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Refactor: fixed docker containers (created container for spring boot app instead of pure tomcat container)">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a/storage_v2/_src_/database/ticket-booking-system.BLdFew/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-    </list>
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Added some info into README, excluded integration tests from build" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,7 +104,7 @@
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\arena-jsp" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.RefreshTokenRepositoryTest">
+  <component name="RunManager" selected="Spring Boot.ApplicationRunner">
     <configuration name="ArenaRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
@@ -442,7 +436,7 @@
       <workItem from="1739599987397" duration="41000" />
       <workItem from="1739605143984" duration="1258000" />
       <workItem from="1739606659572" duration="254000" />
-      <workItem from="1739606966976" duration="666000" />
+      <workItem from="1739606966976" duration="823000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -796,7 +790,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739251974455</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Added some info into README, excluded integration tests from build">
+      <option name="closed" value="true" />
+      <created>1739607727781</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1739607727781</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -839,7 +841,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Written tests for UserDao and ArenaDao" />
     <MESSAGE value="Added HikariCP connection pool + did some refactoring" />
     <MESSAGE value="Implemented Hibernate for SectorDao, added tests for SectorDao class + again some refactoring and java doc" />
     <MESSAGE value="Implemented Hibernate for SportEventDao" />
@@ -864,7 +865,8 @@
     <MESSAGE value="Wrote integration tests for repositories using Testcontainers (no unit-tests for repositories)" />
     <MESSAGE value="Merged spring-boot-develop branch, removed some of the redundant dependencies from pom.xml" />
     <MESSAGE value="Refactor: fixed docker containers (created container for spring boot app instead of pure tomcat container)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor: fixed docker containers (created container for spring boot app instead of pure tomcat container)" />
+    <MESSAGE value="Added some info into README, excluded integration tests from build" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added some info into README, excluded integration tests from build" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
