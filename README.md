@@ -106,4 +106,4 @@ http://localhost:8080/swagger-ui/index.html
 
 username/email: admin@gmail.com
 
-пароль: Admin_12345**
+пароль: Admin_12345
