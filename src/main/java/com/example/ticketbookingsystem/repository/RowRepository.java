@@ -17,6 +17,7 @@ import java.util.Optional;
 @Repository
 public interface RowRepository extends JpaRepository<Row, Long> {
 
+    @Query("FROM Row r JOIN FETCH r.sector s JOIN FETCH s.arena WHERE r.sector.id = :sectorId")
     Page<Row> findAllBySectorId(Long sectorId, Pageable sortedPageable);
 
     @Query("SELECT r FROM Row r JOIN FETCH r.sector s JOIN FETCH s.arena WHERE r.id = :id")
