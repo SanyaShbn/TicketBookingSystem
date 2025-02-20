@@ -24,6 +24,7 @@ import java.util.List;
 
 import static com.example.ticketbookingsystem.entity.Role.ADMIN;
 import static com.example.ticketbookingsystem.entity.Role.USER;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 /**
@@ -52,13 +53,13 @@ public class SecurityConfiguration {
 
     private static final String PURCHASES_PATH = "/api/purchases/**";
 
-    private static final String CORS_ALLOWED_ORIGIN = "http://localhost:3000";
+    private static final String CORS_ALLOWED_ORIGIN = "http://localhost:4200";
 
-    private final UserDetailsServiceImpl userDetailsService;
-
-    private final AuthenticationFilter authenticationFilter;
-
-    private final AuthEntryPoint exceptionHandler;
+//    private final UserDetailsServiceImpl userDetailsService;
+//
+//    private final AuthenticationFilter authenticationFilter;
+//
+//    private final AuthEntryPoint exceptionHandler;
 
     /**
      * Configures the global authentication manager.
@@ -66,12 +67,12 @@ public class SecurityConfiguration {
      * @param auth the authentication manager builder.
      * @throws Exception if an error occurs during configuration.
      */
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth)
-            throws Exception  {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(new BCryptPasswordEncoder());
-    }
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth)
+//            throws Exception  {
+//        auth.userDetailsService(userDetailsService)
+//                .passwordEncoder(new BCryptPasswordEncoder());
+//    }
 
     /**
      * Configures the authentication manager.
@@ -79,14 +80,14 @@ public class SecurityConfiguration {
      * @param userDetailsService the user details service.
      * @return the authentication manager.
      */
-    @Bean
-    public AuthenticationManager authenticationManager(UserDetailsServiceImpl userDetailsService) {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
-
-        return new ProviderManager(authenticationProvider);
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(UserDetailsServiceImpl userDetailsService) {
+//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+//        authenticationProvider.setUserDetailsService(userDetailsService);
+//        authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+//
+//        return new ProviderManager(authenticationProvider);
+//    }
 
     /**
      * Configures CORS settings for supposed origin server, where client's part may be hosted.
@@ -117,21 +118,30 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(CsrfConfigurer:: disable)
+//        http.csrf(CsrfConfigurer:: disable)
+//                .sessionManagement((session) -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                )
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(AUTH_WHITELIST).permitAll()
+//                        .requestMatchers(request -> request.getParameter("lang") != null).permitAll()
+//                        .requestMatchers(ADMIN_ROLE_PATH).hasRole(ADMIN.getAuthority())
+//                        .requestMatchers(USER_CART_PATH,
+//                                PURCHASES_PATH).hasRole(USER.getAuthority())
+//                        .anyRequest().authenticated()
+//                )
+//                .exceptionHandling((ex) -> ex
+//                        .authenticationEntryPoint(exceptionHandler)
+//                ).addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.csrf(CsrfConfigurer::disable)
+                .cors(withDefaults())
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()
+                )
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(AUTH_WHITELIST).permitAll()
-                        .requestMatchers(request -> request.getParameter("lang") != null).permitAll()
-                        .requestMatchers(ADMIN_ROLE_PATH).hasRole(ADMIN.getAuthority())
-                        .requestMatchers(USER_CART_PATH,
-                                PURCHASES_PATH).hasRole(USER.getAuthority())
-                        .anyRequest().authenticated()
-                )
-                .exceptionHandling((ex) -> ex
-                        .authenticationEntryPoint(exceptionHandler)
-                ).addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);;
+                );
 
         return http.build();
     }
