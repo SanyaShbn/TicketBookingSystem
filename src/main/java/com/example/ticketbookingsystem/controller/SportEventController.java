@@ -4,22 +4,16 @@ import com.example.ticketbookingsystem.dto.*;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventCreateEditDto;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventFilter;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventReadDto;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.service.SportEventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.Locale;
 import java.util.Optional;
-
-import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
  * REST Controller class for managing sport events in the Ticket Booking System application.
@@ -31,8 +25,6 @@ import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 public class SportEventController {
 
     private final SportEventService sportEventService;
-
-    private final MessageSource messageSource;
 
     /**
      * Handles GET requests to retrieve and return a paginated list of sport events.
@@ -71,15 +63,9 @@ public class SportEventController {
     @PostMapping
     public ResponseEntity<SportEventReadDto> createSportEvent(@RequestParam("arenaId") Long arenaId,
                                                               @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto) {
-        try {
-            log.info("Creating new sporting event with details: {}", sportEventCreateEditDto);
-            SportEventReadDto createdSportEvent = sportEventService.createSportEvent(sportEventCreateEditDto, arenaId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdSportEvent);
-        } catch (DaoCrudException e) {
-            log.error("CRUD exception occurred while creating sporting event: {}", e.getMessage());
-            SportEventReadDto failedToCreateSportEvent = createFailedSportEventReadDto(sportEventCreateEditDto);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(failedToCreateSportEvent);
-        }
+        log.info("Creating new sporting event with details: {}", sportEventCreateEditDto);
+        SportEventReadDto createdSportEvent = sportEventService.createSportEvent(sportEventCreateEditDto, arenaId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSportEvent);
     }
 
     /**
@@ -94,19 +80,13 @@ public class SportEventController {
     public ResponseEntity<SportEventReadDto> updateSportEvent(@RequestParam("arenaId") Long arenaId,
                                                               @PathVariable("id") Long id,
                                                               @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto) {
-        try {
-            log.info("Updating sporting event {} with details: {}", id, sportEventCreateEditDto);
-            SportEventReadDto updatedSportEvent = sportEventService.updateSportEvent(
-                    id,
-                    sportEventCreateEditDto,
-                    arenaId
-            );
-            return ResponseEntity.ok(updatedSportEvent);
-        } catch (DaoCrudException e) {
-            log.error("CRUD exception occurred while updating sporting event: {}", e.getMessage());
-            SportEventReadDto failedToUpdateSportEvent = createFailedSportEventReadDto(sportEventCreateEditDto);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(failedToUpdateSportEvent);
-        }
+        log.info("Updating sporting event {} with details: {}", id, sportEventCreateEditDto);
+        SportEventReadDto updatedSportEvent = sportEventService.updateSportEvent(
+                id,
+                sportEventCreateEditDto,
+                arenaId
+        );
+        return ResponseEntity.ok(updatedSportEvent);
     }
 
     /**
@@ -117,23 +97,9 @@ public class SportEventController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSportEvent(@PathVariable("id") Long id) {
-        try {
-            log.info("Deleting sporting event with id: {}", id);
-            sportEventService.deleteSportEvent(id);
-            return ResponseEntity.ok("Sporting event deleted successfully");
-        } catch (DaoCrudException | DaoResourceNotFoundException e) {
-            log.error("CRUD exception occurred while trying to delete sporting event: {}", e.getMessage());
-            Locale locale = getLocale();
-            String errorMessage = messageSource.getMessage("delete.sport.event.fail", null, locale);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
-    }
-
-    private SportEventReadDto createFailedSportEventReadDto(SportEventCreateEditDto sportEventCreateEditDto) {
-        return SportEventReadDto.builder()
-                .eventName(sportEventCreateEditDto.getEventName())
-                .eventDateTime(sportEventCreateEditDto.getEventDateTime())
-                .build();
+        log.info("Deleting sporting event with id: {}", id);
+        sportEventService.deleteSportEvent(id);
+        return ResponseEntity.ok("Sporting event deleted successfully");
     }
 
 }

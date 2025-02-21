@@ -1,7 +1,6 @@
 package com.example.ticketbookingsystem.controller;
 
 import com.example.ticketbookingsystem.dto.UserDto;
-import com.example.ticketbookingsystem.exception.UserAlreadyExistException;
 import com.example.ticketbookingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +33,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userDto);
         }
-        try {
-            userService.registerNewUserAccount(userDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
-        } catch (UserAlreadyExistException uaeEx) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userDto);
-        }
+        userService.registerNewUserAccount(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 }

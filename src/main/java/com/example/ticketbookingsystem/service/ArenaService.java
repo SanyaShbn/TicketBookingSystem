@@ -12,6 +12,7 @@ import com.example.ticketbookingsystem.mapper.arena_mapper.ArenaCreateEditMapper
 import com.example.ticketbookingsystem.mapper.arena_mapper.ArenaReadMapper;
 import com.example.ticketbookingsystem.repository.ArenaRepository;
 import com.example.ticketbookingsystem.utils.SortUtils;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -126,12 +127,19 @@ public class ArenaService {
      */
     public ArenaReadDto updateArena(Long id, ArenaCreateEditDto arenaCreateEditDto) {
         try {
-            Arena arena = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
-            arena.setId(id);
-            Arena updatedArena = arenaRepository.save(arena);
+            Optional<Arena> optionalArenaBeforeUpdate = arenaRepository.findById(id);
+            if (optionalArenaBeforeUpdate.isEmpty()) {
+                throw new EntityNotFoundException("Arena with id " + id + " not found");
+            }
+            Arena arenaBeforeUpdate = optionalArenaBeforeUpdate.get();
+
+            Arena arenaAfterUpdate = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
+            arenaAfterUpdate.setId(id);
+            arenaAfterUpdate.setGeneralSeatsNumb(arenaBeforeUpdate.getGeneralSeatsNumb());
+            Arena updatedArena = arenaRepository.save(arenaAfterUpdate);
             log.info("Arena with id {} updated successfully with dto: {}", id, arenaCreateEditDto);
             return arenaReadMapper.toDto(updatedArena);
-        } catch (DataAccessException e){
+        } catch (EntityNotFoundException | DataAccessException e){
             log.error("Failed to update arena {} with dto: {}", id, arenaCreateEditDto);
             throw new DaoCrudException(e);
         }

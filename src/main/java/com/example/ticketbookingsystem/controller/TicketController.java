@@ -4,22 +4,16 @@ import com.example.ticketbookingsystem.dto.*;
 import com.example.ticketbookingsystem.dto.ticket_dto.TicketCreateEditDto;
 import com.example.ticketbookingsystem.dto.ticket_dto.TicketFilter;
 import com.example.ticketbookingsystem.dto.ticket_dto.TicketReadDto;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.Locale;
 import java.util.Optional;
-
-import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
  * REST Controller class for managing tickets in the Ticket Booking System application.
@@ -31,8 +25,6 @@ import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 public class TicketController {
 
     private final TicketService ticketService;
-
-    private final MessageSource messageSource;
 
     /**
      * Handles GET requests to retrieve and display all tickets.
@@ -75,15 +67,9 @@ public class TicketController {
     public ResponseEntity<TicketReadDto> createTicket(@RequestParam("eventId") Long eventId,
                                                       @RequestParam("seatId") Long seatId,
                                                       @ModelAttribute @Validated TicketCreateEditDto ticketCreateEditDto) {
-        try {
-            log.info("Creating new ticket with details: {}", ticketCreateEditDto);
-            TicketReadDto savedTicket = ticketService.createTicket(ticketCreateEditDto, eventId, seatId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedTicket);
-        } catch (NumberFormatException e) {
-            log.error("Number format exception occurred: {}", e.getMessage());
-            TicketReadDto failedToCreateTicket = createFailedTicketReadDto(ticketCreateEditDto);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(failedToCreateTicket);
-        }
+        log.info("Creating new ticket with details: {}", ticketCreateEditDto);
+        TicketReadDto savedTicket = ticketService.createTicket(ticketCreateEditDto, eventId, seatId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTicket);
     }
 
     /**
@@ -100,15 +86,9 @@ public class TicketController {
                                @RequestParam("seatId") Long seatId,
                                @PathVariable("id") Long id,
                                @ModelAttribute @Validated TicketCreateEditDto ticketCreateEditDto) {
-        try {
-            log.info("Updating ticket {} with details: {}", id, ticketCreateEditDto);
-            TicketReadDto updatedTicket = ticketService.updateTicket(id, ticketCreateEditDto, eventId, seatId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(updatedTicket);
-        } catch (NumberFormatException e) {
-            log.error("Number format exception occurred: {}", e.getMessage());
-            TicketReadDto failedToUpdateTicket = createFailedTicketReadDto(ticketCreateEditDto);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(failedToUpdateTicket);
-        }
+        log.info("Updating ticket {} with details: {}", id, ticketCreateEditDto);
+        TicketReadDto updatedTicket = ticketService.updateTicket(id, ticketCreateEditDto, eventId, seatId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedTicket);
     }
 
     /**
@@ -119,23 +99,9 @@ public class TicketController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTicket(@PathVariable("id") Long id) {
-        try {
-            log.info("Deleting ticket with id: {}", id);
-            ticketService.deleteTicket(id);
-            return ResponseEntity.ok("Ticket deleted successfully");
-        } catch (DaoCrudException | DaoResourceNotFoundException e) {
-            log.error("CRUD exception occurred while trying to delete ticket: {}", e.getMessage());
-            Locale locale = getLocale();
-            String errorMessage = messageSource.getMessage("delete.ticket.fail", null, locale);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
-    }
-
-    private TicketReadDto createFailedTicketReadDto(TicketCreateEditDto ticketCreateEditDto) {
-        return TicketReadDto.builder()
-                .price(ticketCreateEditDto.getPrice())
-                .status(ticketCreateEditDto.getStatus())
-                .build();
+        log.info("Deleting ticket with id: {}", id);
+        ticketService.deleteTicket(id);
+        return ResponseEntity.ok("Ticket deleted successfully");
     }
 
 }

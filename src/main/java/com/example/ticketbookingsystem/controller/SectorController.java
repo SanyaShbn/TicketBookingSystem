@@ -4,12 +4,9 @@ import com.example.ticketbookingsystem.dto.PageResponse;
 import com.example.ticketbookingsystem.dto.sector_dto.SectorCreateEditDto;
 import com.example.ticketbookingsystem.dto.sector_dto.SectorFilter;
 import com.example.ticketbookingsystem.dto.sector_dto.SectorReadDto;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.service.SectorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Locale;
 import java.util.Optional;
-
-import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 
 /**
  * REST Controller class for managing sectors in the Ticket Booking System application.
@@ -32,8 +26,6 @@ import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
 public class SectorController {
 
     private final SectorService sectorService;
-
-    private final MessageSource messageSource;
 
     /**
      * Handles GET requests to retrieve and display all sectors.
@@ -74,15 +66,9 @@ public class SectorController {
     @PostMapping
     public ResponseEntity<SectorReadDto> createSector(@RequestParam("arenaId") Long arenaId,
                                                       @RequestBody @Validated SectorCreateEditDto sectorCreateEditDto) {
-        try {
-            log.info("Creating new sector with details: {}", sectorCreateEditDto);
-            SectorReadDto createdSector = sectorService.createSector(sectorCreateEditDto, arenaId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdSector);
-        } catch (DaoCrudException | DaoResourceNotFoundException e) {
-            log.error("CRUD exception occurred while creating sector: {}", e.getMessage());
-            SectorReadDto failedToCreateSector = createFailedSectorReadDto(sectorCreateEditDto);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(failedToCreateSector);
-        }
+        log.info("Creating new sector with details: {}", sectorCreateEditDto);
+        SectorReadDto createdSector = sectorService.createSector(sectorCreateEditDto, arenaId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSector);
     }
 
     /**
@@ -97,15 +83,9 @@ public class SectorController {
     public ResponseEntity<SectorReadDto> updateSector(@RequestParam("arenaId") Long arenaId,
                                                       @PathVariable("id") Long id,
                                                       @RequestBody @Validated SectorCreateEditDto sectorCreateEditDto) {
-        try {
-            log.info("Updating sector {} with details: {}", id, sectorCreateEditDto);
-            SectorReadDto updatedSector = sectorService.updateSector(id, sectorCreateEditDto, arenaId);
-            return ResponseEntity.ok(updatedSector);
-        } catch (DaoCrudException | DaoResourceNotFoundException e) {
-            log.error("CRUD exception occurred while updating sector: {}", e.getMessage());
-            SectorReadDto failedToUpdateSector = createFailedSectorReadDto(sectorCreateEditDto);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(failedToUpdateSector);
-        }
+        log.info("Updating sector {} with details: {}", id, sectorCreateEditDto);
+        SectorReadDto updatedSector = sectorService.updateSector(id, sectorCreateEditDto, arenaId);
+        return ResponseEntity.ok(updatedSector);
     }
 
     /**
@@ -116,24 +96,9 @@ public class SectorController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSector(@PathVariable("id") Long id) {
-        try {
-            log.info("Deleting sector with id: {}", id);
-            sectorService.deleteSector(id);
-            return ResponseEntity.ok("Sector deleted successfully");
-        } catch (DaoCrudException | DaoResourceNotFoundException e) {
-            log.error("CRUD exception occurred while trying to delete sector: {}", e.getMessage());
-            Locale locale = getLocale();
-            String errorMessage = messageSource.getMessage("delete.sector.fail", null, locale);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
-    }
-
-    private SectorReadDto createFailedSectorReadDto(SectorCreateEditDto sectorCreateEditDto) {
-        return SectorReadDto.builder()
-                .sectorName(sectorCreateEditDto.getSectorName())
-                .maxRowsNumb(sectorCreateEditDto.getMaxRowsNumb())
-                .maxSeatsNumb(sectorCreateEditDto.getMaxSeatsNumb())
-                .build();
+        log.info("Deleting sector with id: {}", id);
+        sectorService.deleteSector(id);
+        return ResponseEntity.ok("Sector deleted successfully");
     }
 
 }

@@ -1,8 +1,6 @@
 package com.example.ticketbookingsystem.controller;
 
 import com.example.ticketbookingsystem.dto.PurchasedTicketDto;
-import com.example.ticketbookingsystem.exception.DaoCrudException;
-import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.service.PurchasedTicketsService;
 import com.example.ticketbookingsystem.service.UserCartService;
 import lombok.RequiredArgsConstructor;
@@ -42,12 +40,8 @@ public class TicketsPurchaseController {
         boolean sufficientFunds = simulatePayment();
 
         if (sufficientFunds) {
-            try {
-                purchasedTicketsService.savePurchasedTickets(ticketIds, userId);
-                return ResponseEntity.ok("Purchase successful");
-            } catch (DaoCrudException | DaoResourceNotFoundException e) {
-                return handlePurchaseError("purchase.error.duplicate");
-            }
+            purchasedTicketsService.savePurchasedTickets(ticketIds, userId);
+            return ResponseEntity.ok("Purchase successful");
         } else {
             return handlePurchaseError("purchase.error.insufficientFunds");
         }
@@ -61,12 +55,8 @@ public class TicketsPurchaseController {
      */
     @GetMapping("/purchasedTickets")
     public ResponseEntity<?> getPurchasedTickets(@RequestParam Long userId) {
-        try {
-            List<PurchasedTicketDto> purchasedTickets = purchasedTicketsService.findAllByUserId(userId);
-            return ResponseEntity.ok(purchasedTickets.toString());
-        } catch (DaoCrudException | DaoResourceNotFoundException e) {
-            return handlePurchaseError("get.purchasedTickets.error");
-        }
+        List<PurchasedTicketDto> purchasedTickets = purchasedTicketsService.findAllByUserId(userId);
+        return ResponseEntity.ok(purchasedTickets.toString());
     }
 
     private ResponseEntity<String> handlePurchaseError(String errorCode) {
