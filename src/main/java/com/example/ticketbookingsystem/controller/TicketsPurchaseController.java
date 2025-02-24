@@ -17,7 +17,7 @@ import static com.example.ticketbookingsystem.utils.LocaleUtils.getLocale;
  * REST Controller class for managing ticket purchases in the Ticket Booking System application.
  */
 @RestController
-@RequestMapping("/api/purchases")
+@RequestMapping("/api/v1/purchases")
 @RequiredArgsConstructor
 public class TicketsPurchaseController {
 

@@ -14,13 +14,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * REST Controller class for managing rows in the Ticket Booking System application.
  */
 @RestController
-@RequestMapping("/api/admin/rows")
+@RequestMapping("/api/v1/admin/rows")
 @RequiredArgsConstructor
 @Slf4j
 public class RowController {
@@ -65,7 +67,7 @@ public class RowController {
      */
     @PostMapping
     public ResponseEntity<RowReadDto> createRow(@RequestParam("sectorId") Long sectorId,
-                                                @ModelAttribute @Validated RowCreateEditDto rowCreateEditDto) {
+                                                @RequestBody @Validated RowCreateEditDto rowCreateEditDto) {
         log.info("Creating new row with details: {}", rowCreateEditDto);
         RowReadDto createdRow = rowService.createRow(rowCreateEditDto, sectorId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRow);
@@ -82,7 +84,7 @@ public class RowController {
     @PutMapping("/{id}")
     public ResponseEntity<RowReadDto> updateRow(@RequestParam("sectorId") Long sectorId,
                                                 @PathVariable("id") Long id,
-                                                @ModelAttribute @Validated RowCreateEditDto rowCreateEditDto) {
+                                                @RequestBody @Validated RowCreateEditDto rowCreateEditDto) {
         log.info("Updating row {} with details: {}", id, rowCreateEditDto);
         RowReadDto updatedRow = rowService.updateRow(id, rowCreateEditDto, sectorId);
         return ResponseEntity.ok(updatedRow);
@@ -95,9 +97,11 @@ public class RowController {
      * @return A ResponseEntity containing the HTTP status of the delete operation.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteRow(@PathVariable("id") Long id) {
+    public ResponseEntity<Map<String, String>> deleteRow(@PathVariable("id") Long id) {
         log.info("Deleting row with id: {}", id);
         rowService.deleteRow(id);
-        return ResponseEntity.ok("Row deleted successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Row deleted successfully");
+        return ResponseEntity.ok(response);
     }
 }

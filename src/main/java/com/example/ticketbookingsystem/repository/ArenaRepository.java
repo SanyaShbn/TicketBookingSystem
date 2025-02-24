@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
  * Repository for managing Arena entities.
  */
 @Repository
-public interface ArenaRepository extends JpaRepository<Arena, Long>, QuerydslPredicateExecutor<Arena> {
-}
+public interface ArenaRepository extends JpaRepository<Arena, Long>, QuerydslPredicateExecutor<Arena> { }

@@ -132,26 +132,54 @@ public class SectorService {
     @Transactional
     public SectorReadDto updateSector(Long id, SectorCreateEditDto sectorCreateEditDto, Long arenaId) {
         try {
-            Optional<Sector> sectorBeforeUpdate = sectorRepository.findById(id);
-            if (sectorBeforeUpdate.isEmpty()) {
-                log.error("Failed to find sector with provided id: {}", id);
-                throw new DaoResourceNotFoundException("Sector not found");
-            }
+            Sector sectorBeforeUpdate = getExistingSector(id);
+            validateSector(sectorBeforeUpdate, sectorCreateEditDto);
 
-            Sector sector = sectorCreateEditMapper.toEntity(sectorCreateEditDto);
-            Arena arena = arenaService.findArenaById(arenaId);
-            sector.setId(id);
-            sector.setArena(arena);
-            sectorRepository.updateArenaBeforeSectorUpdate(arenaId,
-                    sectorBeforeUpdate.get().getMaxSeatsNumb(), sector.getMaxSeatsNumb());
-            Sector updatedSector = sectorRepository.save(sector);
-            sectorRepository.flush();
+            Sector sector = prepareSectorForUpdate(id, sectorCreateEditDto, arenaId, sectorBeforeUpdate);
+            Sector updatedSector = saveSectorAndFlush(sector, arenaId, sectorBeforeUpdate);
+
             log.info("Sector with id {} updated successfully with dto: {}", id, sectorCreateEditDto);
             return sectorReadMapper.toDto(updatedSector);
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             log.error("Failed to update sector {} with dto: {}", id, sectorCreateEditDto);
-            throw new DaoCrudException(e);
+            throw new DaoCrudException("Database access error occurred", e);
         }
+    }
+
+    private Sector getExistingSector(Long id) {
+        return sectorRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Failed to find sector with provided id: {}", id);
+                    return new DaoResourceNotFoundException("Sector not found");
+                });
+    }
+
+    private void validateSector(Sector sectorBeforeUpdate, SectorCreateEditDto sectorCreateEditDto) {
+        if (sectorBeforeUpdate.getAvailableRowsNumb() > sectorCreateEditDto.getMaxRowsNumb() ||
+                sectorBeforeUpdate.getAvailableSeatsNumb() > sectorCreateEditDto.getMaxSeatsNumb()) {
+            log.error("Failed to update sector {} with dto: {}", sectorBeforeUpdate.getId(), sectorCreateEditDto);
+            throw new DaoCrudException(
+                    "Available rows or seats exceed the maximum allowed in the new sector configuration."
+            );
+        }
+    }
+
+    private Sector prepareSectorForUpdate(Long id, SectorCreateEditDto sectorCreateEditDto, Long arenaId, Sector sectorBeforeUpdate) {
+        Sector sector = sectorCreateEditMapper.toEntity(sectorCreateEditDto);
+        Arena arena = arenaService.findArenaById(arenaId);
+        sector.setId(id);
+        sector.setArena(arena);
+        sector.setAvailableRowsNumb(sectorBeforeUpdate.getAvailableRowsNumb());
+        sector.setAvailableSeatsNumb(sectorBeforeUpdate.getAvailableSeatsNumb());
+        return sector;
+    }
+
+    private Sector saveSectorAndFlush(Sector sector, Long arenaId, Sector sectorBeforeUpdate) {
+        sectorRepository.updateArenaBeforeSectorUpdate(arenaId,
+                sectorBeforeUpdate.getMaxSeatsNumb(), sector.getMaxSeatsNumb());
+        Sector updatedSector = sectorRepository.save(sector);
+        sectorRepository.flush();
+        return updatedSector;
     }
 
     /**

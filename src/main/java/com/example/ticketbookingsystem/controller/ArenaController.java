@@ -14,13 +14,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * REST Controller class for managing arenas in the Ticket Booking System application.
  */
 @RestController
-@RequestMapping("/api/admin/arenas")
+@RequestMapping("/api/v1/admin/arenas")
 @RequiredArgsConstructor
 @Slf4j
 public class ArenaController {
@@ -37,7 +39,19 @@ public class ArenaController {
     @GetMapping
     public PageResponse<ArenaReadDto> findAll(ArenaFilter arenaFilter, Pageable pageable){
         Page<ArenaReadDto> page = arenaService.findAll(arenaFilter, pageable);
-        return  PageResponse.of(page);
+        return PageResponse.of(page);
+    }
+
+    /**
+     * Handles GET requests to search and return a paginated list of arenas (with no applied filters).
+     *
+     * @param pageable The pagination information.
+     * @return A PageResponse containing a paginated list of ArenaReadDto.
+     */
+    @GetMapping("/search")
+    public PageResponse<ArenaReadDto> searchArenasForSportEvents(Pageable pageable) {
+        Page<ArenaReadDto> arenasPage = arenaService.findAllWithNoFilter(pageable);
+        return PageResponse.of(arenasPage);
     }
 
     /**
@@ -88,9 +102,11 @@ public class ArenaController {
      * @return A ResponseEntity containing the HTTP status of the delete operation.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteArena(@PathVariable("id") Long id) {
+    public ResponseEntity<Map<String, String>> deleteArena(@PathVariable("id") Long id) {
         log.info("Deleting arena with id: {}", id);
         arenaService.deleteArena(id);
-        return ResponseEntity.ok("Arena deleted successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Arena deleted successfully");
+        return ResponseEntity.ok(response);
     }
 }

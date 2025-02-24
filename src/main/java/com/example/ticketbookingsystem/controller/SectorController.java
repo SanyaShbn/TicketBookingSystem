@@ -14,13 +14,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * REST Controller class for managing sectors in the Ticket Booking System application.
  */
 @RestController
-@RequestMapping("/api/admin/sectors")
+@RequestMapping("/api/v1/admin/sectors")
 @RequiredArgsConstructor
 @Slf4j
 public class SectorController {
@@ -95,10 +97,12 @@ public class SectorController {
      * @return A ResponseEntity containing the HTTP status of the delete operation.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSector(@PathVariable("id") Long id) {
+    public ResponseEntity<Map<String, String>> deleteSector(@PathVariable("id") Long id) {
         log.info("Deleting sector with id: {}", id);
         sectorService.deleteSector(id);
-        return ResponseEntity.ok("Sector deleted successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Sector deleted successfully");
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -47,11 +47,11 @@ public class SecurityConfiguration {
             "/actuator/**"
     };
 
-    private static final String ADMIN_ROLE_PATH = "/api/admin/**";
+    private static final String ADMIN_ROLE_PATH = "/api/v1/admin/**";
 
-    private static final String USER_CART_PATH = "/api/user_cart";
+    private static final String USER_CART_PATH = "/api/v1/user_cart";
 
-    private static final String PURCHASES_PATH = "/api/purchases/**";
+    private static final String PURCHASES_PATH = "/api/v1/purchases/**";
 
     private static final String CORS_ALLOWED_ORIGIN = "http://localhost:4200";
 

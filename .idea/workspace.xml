@@ -9,17 +9,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Switched off some of the spring security settings for testing communication with the front-end Angular app">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/exception/GlobalExceptionHandler.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Refactored code after reading my code-review recommendations (added RestControllerAdvice to handle exceptions, occurred in the controller layer, globally)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/ArenaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/MessageRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/MessageRestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/RowController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/RowController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SectorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SectorController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketsPurchaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketsPurchaseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserCartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserCartController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/exception/DaoCrudException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/exception/DaoCrudException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/ArenaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/ArenaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ArenaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SectorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/ArenaControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/ArenaControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/RowControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/RowControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SectorControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SectorControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SportEventControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SportEventControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/TicketControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/TicketControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -459,15 +469,17 @@
       <workItem from="1740057407171" duration="1724000" />
       <workItem from="1740068689736" duration="303000" />
       <workItem from="1740125681627" duration="3889000" />
-      <workItem from="1740139388964" duration="3711000" />
-    </task>
-    <task id="LOCAL-00002" summary="Refactoring (implemented dto into Arena module)">
-      <option name="closed" value="true" />
-      <created>1732970375984</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1732970375984</updated>
+      <workItem from="1740139388964" duration="4041000" />
+      <workItem from="1740151262325" duration="3438000" />
+      <workItem from="1740212985658" duration="5869000" />
+      <workItem from="1740225816235" duration="6450000" />
+      <workItem from="1740242649439" duration="4566000" />
+      <workItem from="1740299019962" duration="3165000" />
+      <workItem from="1740313806028" duration="8169000" />
+      <workItem from="1740334987478" duration="10894000" />
+      <workItem from="1740384774175" duration="9570000" />
+      <workItem from="1740401672358" duration="7435000" />
+      <workItem from="1740410612503" duration="4731000" />
     </task>
     <task id="LOCAL-00003" summary="Continuing working on feature№2 (for now, CRUD operations with sector's rows) + implementing necessary validation">
       <option name="closed" value="true" />
@@ -853,7 +865,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740068982426</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Refactored code after reading my code-review recommendations (added RestControllerAdvice to handle exceptions, occurred in the controller layer, globally)">
+      <option name="closed" value="true" />
+      <created>1740145587263</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1740145587263</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -896,7 +916,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started implementing Hibernate for remaining dao classes (for now, have some bugs and no unit-tests)" />
     <MESSAGE value="Continuing implementing Hibernate for remaining dao classes (fixed bugs, still no tests)" />
     <MESSAGE value="Started implementing language internationalization" />
     <MESSAGE value="Continuing implementing language internationalization (refactored all the .jsp files)" />
@@ -921,7 +940,8 @@
     <MESSAGE value="Added some info into README for proper testing of my app locally" />
     <MESSAGE value="Refactored RowRepository and SectorRepository (found some problems while testing once again with Swagger)" />
     <MESSAGE value="Switched off some of the spring security settings for testing communication with the front-end Angular app" />
-    <option name="LAST_COMMIT_MESSAGE" value="Switched off some of the spring security settings for testing communication with the front-end Angular app" />
+    <MESSAGE value="Refactored code after reading my code-review recommendations (added RestControllerAdvice to handle exceptions, occurred in the controller layer, globally)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored code after reading my code-review recommendations (added RestControllerAdvice to handle exceptions, occurred in the controller layer, globally)" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

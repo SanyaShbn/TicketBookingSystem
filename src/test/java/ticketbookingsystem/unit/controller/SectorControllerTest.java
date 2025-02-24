@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -102,10 +103,10 @@ public class SectorControllerTest {
     public void testDeleteSector() {
         doNothing().when(sectorService).deleteSector(SECTOR_ID);
 
-        ResponseEntity<String> response = sectorController.deleteSector(SECTOR_ID);
+        ResponseEntity<Map<String, String>> response = sectorController.deleteSector(SECTOR_ID);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Sector deleted successfully", response.getBody());
+        assertEquals("Sector deleted successfully", response.getBody().get("message"));
         verify(sectorService, times(1)).deleteSector(SECTOR_ID);
     }
 }

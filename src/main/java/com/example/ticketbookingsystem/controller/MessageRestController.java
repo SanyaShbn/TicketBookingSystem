@@ -13,7 +13,7 @@ import java.util.Locale;
  * REST controller for handling internationalized messages.
  */
 @RestController
-@RequestMapping("/api/messages")
+@RequestMapping("/api/v1/messages")
 @RequiredArgsConstructor
 public class MessageRestController {
 

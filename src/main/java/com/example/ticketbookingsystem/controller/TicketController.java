@@ -13,13 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * REST Controller class for managing tickets in the Ticket Booking System application.
  */
 @RestController
-@RequestMapping("/api/admin/tickets")
+@RequestMapping("/api/v1/admin/tickets")
 @RequiredArgsConstructor
 @Slf4j
 public class TicketController {
@@ -66,7 +69,7 @@ public class TicketController {
     @PostMapping
     public ResponseEntity<TicketReadDto> createTicket(@RequestParam("eventId") Long eventId,
                                                       @RequestParam("seatId") Long seatId,
-                                                      @ModelAttribute @Validated TicketCreateEditDto ticketCreateEditDto) {
+                                                      @RequestBody @Validated TicketCreateEditDto ticketCreateEditDto) {
         log.info("Creating new ticket with details: {}", ticketCreateEditDto);
         TicketReadDto savedTicket = ticketService.createTicket(ticketCreateEditDto, eventId, seatId);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTicket);
@@ -85,7 +88,7 @@ public class TicketController {
     public ResponseEntity<TicketReadDto> updateTicket(@RequestParam("eventId") Long eventId,
                                @RequestParam("seatId") Long seatId,
                                @PathVariable("id") Long id,
-                               @ModelAttribute @Validated TicketCreateEditDto ticketCreateEditDto) {
+                               @RequestBody @Validated TicketCreateEditDto ticketCreateEditDto) {
         log.info("Updating ticket {} with details: {}", id, ticketCreateEditDto);
         TicketReadDto updatedTicket = ticketService.updateTicket(id, ticketCreateEditDto, eventId, seatId);
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedTicket);
@@ -98,10 +101,12 @@ public class TicketController {
      * @return A ResponseEntity containing the HTTP status of the delete operation.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTicket(@PathVariable("id") Long id) {
+    public ResponseEntity<Map<String, String>> deleteTicket(@PathVariable("id") Long id) {
         log.info("Deleting ticket with id: {}", id);
         ticketService.deleteTicket(id);
-        return ResponseEntity.ok("Ticket deleted successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Ticket deleted successfully");
+        return ResponseEntity.ok(response);
     }
 
 }

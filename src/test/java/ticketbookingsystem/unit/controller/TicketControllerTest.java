@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -107,10 +108,10 @@ public class TicketControllerTest {
     public void testDeleteTicket() {
         doNothing().when(ticketService).deleteTicket(TICKET_ID);
 
-        ResponseEntity<String> response = ticketController.deleteTicket(TICKET_ID);
+        ResponseEntity<Map<String, String>> response = ticketController.deleteTicket(TICKET_ID);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Ticket deleted successfully", response.getBody());
+        assertEquals("Ticket deleted successfully", response.getBody().get("message"));
         verify(ticketService, times(1)).deleteTicket(TICKET_ID);
     }
 

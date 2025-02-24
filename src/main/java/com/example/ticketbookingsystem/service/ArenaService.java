@@ -86,6 +86,17 @@ public class ArenaService {
     }
 
     /**
+     * Searches available arenas for the sport events retrieves a paginated list of results.
+     *
+     * @param pageable The pagination information.
+     * @return A Page containing a paginated list of ArenaReadDto.
+     */
+    public Page<ArenaReadDto> findAllWithNoFilter(Pageable pageable) {
+        return arenaRepository.findAll(pageable)
+                .map(arenaReadMapper::toDto);
+    }
+
+    /**
      * Finds an arena by its ID.
      *
      * @param id the ID of the arena

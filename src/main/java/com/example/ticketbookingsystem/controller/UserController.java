@@ -28,7 +28,7 @@ public class UserController {
      * @return A ResponseEntity containing the registered UserDto and HTTP status.
      */
     @RequestMapping(value="/registration", method = RequestMethod.POST)
-    public ResponseEntity<UserDto> registerUserAccount(@ModelAttribute("user") @Validated UserDto userDto,
+    public ResponseEntity<UserDto> registerUserAccount(@RequestBody @Validated UserDto userDto,
                                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userDto);

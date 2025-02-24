@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * REST Controller class for managing user cart in the Ticket Booking System application.
  */
 @RestController
-@RequestMapping("/api/user_cart")
+@RequestMapping("/api/v1/user_cart")
 @RequiredArgsConstructor
 public class UserCartController {
 

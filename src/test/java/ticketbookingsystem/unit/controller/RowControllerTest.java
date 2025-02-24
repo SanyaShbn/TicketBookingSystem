@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -98,10 +99,10 @@ public class RowControllerTest {
     public void testDeleteRow() {
         doNothing().when(rowService).deleteRow(ROW_ID);
 
-        ResponseEntity<String> response = rowController.deleteRow(ROW_ID);
+        ResponseEntity<Map<String, String>> response = rowController.deleteRow(ROW_ID);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Row deleted successfully", response.getBody());
+        assertEquals("Row deleted successfully", response.getBody().get("message"));
         verify(rowService, times(1)).deleteRow(ROW_ID);
     }
 

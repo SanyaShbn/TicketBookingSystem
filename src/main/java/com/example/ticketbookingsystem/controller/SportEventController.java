@@ -13,13 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * REST Controller class for managing sport events in the Ticket Booking System application.
  */
 @RestController
-@RequestMapping("/api/admin/sport_events")
+@RequestMapping("/api/v1/admin/sport_events")
 @RequiredArgsConstructor
 @Slf4j
 public class SportEventController {
@@ -34,8 +37,7 @@ public class SportEventController {
      * @return A PageResponse containing a paginated list of SportEventReadDto.
      */
     @GetMapping
-    public PageResponse<SportEventReadDto> findAllSportEvents(SportEventFilter sportEventFilter,
-                                                                              Pageable pageable) {
+    public PageResponse<SportEventReadDto> findAllSportEvents(SportEventFilter sportEventFilter, Pageable pageable) {
         Page<SportEventReadDto> sportEventsPage = sportEventService.findAll(sportEventFilter, pageable);
         return PageResponse.of(sportEventsPage);
     }
@@ -62,7 +64,7 @@ public class SportEventController {
      */
     @PostMapping
     public ResponseEntity<SportEventReadDto> createSportEvent(@RequestParam("arenaId") Long arenaId,
-                                                              @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto) {
+                                                              @RequestBody @Validated SportEventCreateEditDto sportEventCreateEditDto) {
         log.info("Creating new sporting event with details: {}", sportEventCreateEditDto);
         SportEventReadDto createdSportEvent = sportEventService.createSportEvent(sportEventCreateEditDto, arenaId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSportEvent);
@@ -79,7 +81,7 @@ public class SportEventController {
     @PutMapping("/{id}")
     public ResponseEntity<SportEventReadDto> updateSportEvent(@RequestParam("arenaId") Long arenaId,
                                                               @PathVariable("id") Long id,
-                                                              @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto) {
+                                                              @RequestBody @Validated SportEventCreateEditDto sportEventCreateEditDto) {
         log.info("Updating sporting event {} with details: {}", id, sportEventCreateEditDto);
         SportEventReadDto updatedSportEvent = sportEventService.updateSportEvent(
                 id,
@@ -96,10 +98,12 @@ public class SportEventController {
      * @return A ResponseEntity containing the HTTP status of the delete operation.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSportEvent(@PathVariable("id") Long id) {
+    public ResponseEntity<Map<String, String>> deleteSportEvent(@PathVariable("id") Long id) {
         log.info("Deleting sporting event with id: {}", id);
         sportEventService.deleteSportEvent(id);
-        return ResponseEntity.ok("Sporting event deleted successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Sporting event deleted successfully");
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -108,10 +109,10 @@ public class SportEventControllerTest {
     public void testDeleteSportEvent() {
         doNothing().when(sportEventService).deleteSportEvent(SPORT_EVENT_ID);
 
-        ResponseEntity<String> response = sportEventController.deleteSportEvent(SPORT_EVENT_ID);
+        ResponseEntity<Map<String, String>> response = sportEventController.deleteSportEvent(SPORT_EVENT_ID);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Sporting event deleted successfully", response.getBody());
+        assertEquals("Sporting event deleted successfully", response.getBody().get("message"));
         verify(sportEventService, times(1)).deleteSportEvent(SPORT_EVENT_ID);
     }
 
