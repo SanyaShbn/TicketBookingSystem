@@ -4,6 +4,7 @@ import com.example.ticketbookingsystem.validator.custom_annotations.LocalizedNot
 import com.example.ticketbookingsystem.validator.custom_annotations.ValidEventDateTime;
 import lombok.Builder;
 import lombok.Value;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -20,4 +21,7 @@ public class SportEventCreateEditDto {
 
     @ValidEventDateTime
     LocalDateTime eventDateTime;
+
+    MultipartFile imageFile;
+
 }

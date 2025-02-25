@@ -11,9 +11,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -28,6 +33,8 @@ import java.util.Optional;
 public class SportEventController {
 
     private final SportEventService sportEventService;
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     /**
      * Handles GET requests to retrieve and return a paginated list of sport events.
@@ -64,10 +71,37 @@ public class SportEventController {
      */
     @PostMapping
     public ResponseEntity<SportEventReadDto> createSportEvent(@RequestParam("arenaId") Long arenaId,
-                                                              @RequestBody @Validated SportEventCreateEditDto sportEventCreateEditDto) {
+                                                              @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto) {
         log.info("Creating new sporting event with details: {}", sportEventCreateEditDto);
-        SportEventReadDto createdSportEvent = sportEventService.createSportEvent(sportEventCreateEditDto, arenaId);
+
+        String imageUrl = null;
+        MultipartFile file = sportEventCreateEditDto.getImageFile();
+        if (file != null && !file.isEmpty()) {
+            imageUrl = sportEventService.uploadImage(convertMultiPartToFile(file));
+        }
+
+        SportEventReadDto createdSportEvent = sportEventService
+                .createSportEvent(
+                        sportEventCreateEditDto,
+                        arenaId
+//                        imageUrl
+                );
+
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            kafkaTemplate.send("image.saved", "Image uploaded with URL: " + imageUrl);
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSportEvent);
+    }
+
+    private File convertMultiPartToFile(MultipartFile file) {
+        File convFile = new File(file.getOriginalFilename());
+        try (FileOutputStream fos = new FileOutputStream(convFile)) {
+            fos.write(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return convFile;
     }
 
     /**
@@ -83,11 +117,25 @@ public class SportEventController {
                                                               @PathVariable("id") Long id,
                                                               @RequestBody @Validated SportEventCreateEditDto sportEventCreateEditDto) {
         log.info("Updating sporting event {} with details: {}", id, sportEventCreateEditDto);
-        SportEventReadDto updatedSportEvent = sportEventService.updateSportEvent(
-                id,
-                sportEventCreateEditDto,
-                arenaId
-        );
+
+        String imageUrl = null;
+        MultipartFile file = sportEventCreateEditDto.getImageFile();
+        if (file != null && !file.isEmpty()) {
+            imageUrl = sportEventService.uploadImage(convertMultiPartToFile(file));
+        }
+
+        SportEventReadDto updatedSportEvent = sportEventService
+                .updateSportEvent(
+                        id,
+                        sportEventCreateEditDto,
+                        arenaId
+//                        imageUrl
+                );
+
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            kafkaTemplate.send("image.saved", "Image uploaded with URL: " + imageUrl);
+        }
+
         return ResponseEntity.ok(updatedSportEvent);
     }
 

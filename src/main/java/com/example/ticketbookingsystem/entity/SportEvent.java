@@ -32,4 +32,7 @@ public class SportEvent {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "arena_id", nullable = false)
     private Arena arena;
+
+    @Column(name = "poster_image_url")
+    private String posterImageUrl;
 }

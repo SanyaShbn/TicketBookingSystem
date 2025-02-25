@@ -25,6 +25,8 @@ spring:
     open-in-view: false
   messages:
     basename: messages
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER}
 
 management:
   endpoints:

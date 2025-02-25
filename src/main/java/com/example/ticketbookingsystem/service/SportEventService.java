@@ -14,11 +14,19 @@ import com.example.ticketbookingsystem.repository.SportEventRepository;
 import com.example.ticketbookingsystem.utils.SortUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +52,10 @@ public class SportEventService {
     private final SportEventCreateEditMapper sportEventCreateEditMapper;
 
     private final ArenaService arenaService;
+
+    private final RestTemplate restTemplate;
+
+    private final String IMAGE_SERVICE_URL = "http://localhost:8081/api/v1/images";
 
     /**
      * Finds all sporting events.
@@ -103,11 +115,17 @@ public class SportEventService {
      *
      * @param sportEventCreateEditDto the DTO of the sporting event to create
      */
-    public SportEventReadDto createSportEvent(SportEventCreateEditDto sportEventCreateEditDto, Long arenaId) {
+    @Transactional
+    public SportEventReadDto createSportEvent(SportEventCreateEditDto sportEventCreateEditDto,
+                                              Long arenaId){
+//                                              String posterImageUrl) {
         try {
             SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
             Arena arena = arenaService.findArenaById(arenaId);
             sportEvent.setArena(arena);
+//            if (posterImageUrl != null && !posterImageUrl.isEmpty()) {
+//                sportEvent.setPosterImageUrl(posterImageUrl);
+//            }
             SportEvent savedSportEvent = sportEventRepository.save(sportEvent);
             log.info("SportEvent created successfully with dto: {}", sportEventCreateEditDto);
             return sportEventReadMapper.toDto(savedSportEvent);
@@ -124,12 +142,24 @@ public class SportEventService {
      * @param sportEventCreateEditDto the DTO of the updated sporting event
      */
     @Transactional
-    public SportEventReadDto updateSportEvent(Long id, SportEventCreateEditDto sportEventCreateEditDto, Long arenaId) {
+    public SportEventReadDto updateSportEvent(Long id,
+                                              SportEventCreateEditDto sportEventCreateEditDto,
+                                              Long arenaId
+//                                              String posterImageUrl
+    ) {
         try {
             SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
             Arena arena = arenaService.findArenaById(arenaId);
             sportEvent.setId(id);
             sportEvent.setArena(arena);
+//            if (posterImageUrl != null && !posterImageUrl.isEmpty()) {
+//                String oldImageUrl = sportEventRepository.findById(id).get().getPosterImageUrl();
+//                if (oldImageUrl != null && !oldImageUrl.isEmpty()) {
+//                    String oldImageId = extractImageIdFromUrl(oldImageUrl);
+//                    deleteImage(oldImageId);
+//                }
+//                sportEvent.setPosterImageUrl(posterImageUrl);
+//            }
             SportEvent updatedSportEvent = sportEventRepository.save(sportEvent);
             log.info("SportEvent with id {} updated successfully with dto: {}", id, sportEventCreateEditDto);
             return sportEventReadMapper.toDto(updatedSportEvent);
@@ -144,18 +174,58 @@ public class SportEventService {
      *
      * @param id the ID of the event to delete
      */
+    @Transactional
     public void deleteSportEvent(Long id) {
-        if (!sportEventRepository.existsById(id)) {
+        Optional<SportEvent> sportEventOptional = sportEventRepository.findById(id);
+        if (sportEventOptional.isEmpty()) {
             log.error("Failed to find sport event with provided id: {}", id);
             throw new DaoResourceNotFoundException("Sport Event not found with id " + id);
         }
         try {
             sportEventRepository.deleteById(id);
+
+            String imageUrl = sportEventOptional.get().getPosterImageUrl();
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                String imageId = extractImageIdFromUrl(imageUrl);
+                deleteImage(imageId);
+            }
+
             log.info("SportEvent with id {} deleted successfully.", id);
         } catch (DataAccessException e){
             log.error("Failed to delete SportEvent with id {}", id);
             throw new DaoCrudException(e);
         }
+    }
+
+    private String extractImageIdFromUrl(String imageUrl) {
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            String[] parts = imageUrl.split("/");
+            return parts[parts.length - 1];  // Извлечение ID из URL
+        }
+        return null;
+    }
+
+    public String uploadImage(File file) {
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", new FileSystemResource(file));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        try {
+            String response = restTemplate.postForObject(IMAGE_SERVICE_URL + "/upload", requestEntity, String.class);
+            log.info("Image upload response: {}", response);
+            return response;
+        } catch (Exception e) {
+            log.error("Error uploading image", e);
+            return null;
+        }
+    }
+
+    public void deleteImage(String id) {
+        restTemplate.delete(IMAGE_SERVICE_URL + "/" + id);
     }
 
 }
