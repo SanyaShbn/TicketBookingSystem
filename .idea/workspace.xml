@@ -9,24 +9,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Refactored code for proper testing of front-end (working with Angular)">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/KafkaConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/RestTemplateConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/db.changelog-4.0.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Started managing services communication">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/KafkaConsumerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/KafkaProducerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/KafkaTopicConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/listener/KafkaMessageListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/KafkaConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/config/KafkaConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/sport_event_dto/SportEventCreateEditDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/sport_event_dto/SportEventCreateEditDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/sport_event_dto/SportEventReadDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/sport_event_dto/SportEventReadDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/SportEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/SportEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/sport_event_mapper/SportEventCreateEditMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/sport_event_mapper/SportEventCreateEditMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/db.changelog-master.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/db.changelog-master.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SportEventControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SportEventControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SportEventServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SportEventServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -500,15 +491,10 @@
       <workItem from="1740463775102" duration="9863000" />
       <workItem from="1740476097911" duration="5271000" />
       <workItem from="1740491564253" duration="3345000" />
-      <workItem from="1740510071772" duration="4487000" />
-    </task>
-    <task id="LOCAL-00004" summary="Started working on feature№3 (for now, CRUD operations with sport_events)">
-      <option name="closed" value="true" />
-      <created>1733305438287</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1733305438287</updated>
+      <workItem from="1740510071772" duration="4799000" />
+      <workItem from="1740570884319" duration="1247000" />
+      <workItem from="1740577611476" duration="6653000" />
+      <workItem from="1740593858928" duration="8204000" />
     </task>
     <task id="LOCAL-00005" summary="Continuing working on feature№3 (did some refactoring)">
       <option name="closed" value="true" />
@@ -894,7 +880,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740416555094</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Started managing services communication">
+      <option name="closed" value="true" />
+      <created>1740514996654</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1740514996654</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -937,7 +931,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started implementing language internationalization" />
     <MESSAGE value="Continuing implementing language internationalization (refactored all the .jsp files)" />
     <MESSAGE value="Finished implementing language internationalization" />
     <MESSAGE value="Added mappers, java doc (+ some refactoring in my jsp pages)" />
@@ -962,7 +955,8 @@
     <MESSAGE value="Switched off some of the spring security settings for testing communication with the front-end Angular app" />
     <MESSAGE value="Refactored code after reading my code-review recommendations (added RestControllerAdvice to handle exceptions, occurred in the controller layer, globally)" />
     <MESSAGE value="Refactored code for proper testing of front-end (working with Angular)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored code for proper testing of front-end (working with Angular)" />
+    <MESSAGE value="Started managing services communication" />
+    <option name="LAST_COMMIT_MESSAGE" value="Started managing services communication" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

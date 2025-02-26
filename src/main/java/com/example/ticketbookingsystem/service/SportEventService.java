@@ -205,7 +205,7 @@ public class SportEventService {
         return null;
     }
 
-    public String uploadImage(File file) {
+    public void uploadImage(File file) {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", new FileSystemResource(file));
 
@@ -217,10 +217,8 @@ public class SportEventService {
         try {
             String response = restTemplate.postForObject(IMAGE_SERVICE_URL + "/upload", requestEntity, String.class);
             log.info("Image upload response: {}", response);
-            return response;
         } catch (Exception e) {
             log.error("Error uploading image", e);
-            return null;
         }
     }
 

@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,8 +32,6 @@ import java.util.Optional;
 public class SportEventController {
 
     private final SportEventService sportEventService;
-
-    private final KafkaTemplate<String, String> kafkaTemplate;
 
     /**
      * Handles GET requests to retrieve and return a paginated list of sport events.
@@ -74,22 +71,13 @@ public class SportEventController {
                                                               @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto) {
         log.info("Creating new sporting event with details: {}", sportEventCreateEditDto);
 
-        String imageUrl = null;
         MultipartFile file = sportEventCreateEditDto.getImageFile();
         if (file != null && !file.isEmpty()) {
-            imageUrl = sportEventService.uploadImage(convertMultiPartToFile(file));
+            sportEventService.uploadImage(convertMultiPartToFile(file));
         }
 
         SportEventReadDto createdSportEvent = sportEventService
-                .createSportEvent(
-                        sportEventCreateEditDto,
-                        arenaId
-//                        imageUrl
-                );
-
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            kafkaTemplate.send("image.saved", "Image uploaded with URL: " + imageUrl);
-        }
+                .createSportEvent(sportEventCreateEditDto, arenaId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSportEvent);
     }
@@ -115,26 +103,16 @@ public class SportEventController {
     @PutMapping("/{id}")
     public ResponseEntity<SportEventReadDto> updateSportEvent(@RequestParam("arenaId") Long arenaId,
                                                               @PathVariable("id") Long id,
-                                                              @RequestBody @Validated SportEventCreateEditDto sportEventCreateEditDto) {
+                                                              @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto) {
         log.info("Updating sporting event {} with details: {}", id, sportEventCreateEditDto);
 
-        String imageUrl = null;
         MultipartFile file = sportEventCreateEditDto.getImageFile();
         if (file != null && !file.isEmpty()) {
-            imageUrl = sportEventService.uploadImage(convertMultiPartToFile(file));
+            sportEventService.uploadImage(convertMultiPartToFile(file));
         }
 
         SportEventReadDto updatedSportEvent = sportEventService
-                .updateSportEvent(
-                        id,
-                        sportEventCreateEditDto,
-                        arenaId
-//                        imageUrl
-                );
-
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            kafkaTemplate.send("image.saved", "Image uploaded with URL: " + imageUrl);
-        }
+                .updateSportEvent(id, sportEventCreateEditDto, arenaId);
 
         return ResponseEntity.ok(updatedSportEvent);
     }
