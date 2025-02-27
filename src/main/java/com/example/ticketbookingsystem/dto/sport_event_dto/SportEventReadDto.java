@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * SportEventDto - Data Transfer Object representing information about a sport event.
  */
 @Value
-@Builder
+@Builder(toBuilder = true)
 public class SportEventReadDto {
     Long id;
     String eventName;

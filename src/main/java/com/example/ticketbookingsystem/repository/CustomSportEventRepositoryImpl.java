@@ -7,6 +7,8 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -28,7 +30,7 @@ public class CustomSportEventRepositoryImpl implements CustomSportEventRepositor
      * @return A list of SportEvents.
      */
     @Override
-    public List<SportEvent> findAllWithArena(Predicate predicate, Pageable pageable) {
+    public Page<SportEvent> findAllWithArena(Predicate predicate, Pageable pageable) {
         JPAQuery<SportEvent> query = new JPAQuery<>(entityManager);
         QSportEvent sportEvent = QSportEvent.sportEvent;
 
@@ -39,7 +41,13 @@ public class CustomSportEventRepositoryImpl implements CustomSportEventRepositor
             }
         }
 
-        return query
+        long total = query
+                .select(sportEvent)
+                .from(sportEvent)
+                .where(predicate)
+                .fetch().size();
+
+        List<SportEvent> results = query
                 .select(sportEvent)
                 .from(sportEvent)
                 .leftJoin(sportEvent.arena).fetchJoin()
@@ -47,6 +55,8 @@ public class CustomSportEventRepositoryImpl implements CustomSportEventRepositor
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
+        return new PageImpl<>(results, pageable, total);
     }
 
     private OrderSpecifier<?> getOrderSpecifier(QSportEvent sportEvent, Sort.Order order) {

@@ -1,10 +1,10 @@
 package com.example.ticketbookingsystem.service;
 
-import com.example.ticketbookingsystem.dto.*;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventCreateEditDto;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventFilter;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventReadDto;
 import com.example.ticketbookingsystem.entity.Arena;
+import com.example.ticketbookingsystem.entity.QSportEvent;
 import com.example.ticketbookingsystem.entity.SportEvent;
 import com.example.ticketbookingsystem.exception.DaoCrudException;
 import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
@@ -12,6 +12,8 @@ import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventCreat
 import com.example.ticketbookingsystem.mapper.sport_event_mapper.SportEventReadMapper;
 import com.example.ticketbookingsystem.repository.SportEventRepository;
 import com.example.ticketbookingsystem.utils.SortUtils;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
@@ -27,13 +29,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.example.ticketbookingsystem.entity.QSportEvent.sportEvent;
 
 /**
  * Service class for managing sporting events.
@@ -76,11 +73,7 @@ public class SportEventService {
      * @return a list of sporting events matching the filter
      */
     public Page<SportEventReadDto> findAll(SportEventFilter sportEventFilter, Pageable pageable){
-        var predicate = QPredicates.builder()
-                .add(sportEventFilter.startDate(), sportEvent.eventDateTime::after)
-                .add(sportEventFilter.endDate(), sportEvent.eventDateTime::before)
-                .add(sportEventFilter.arenaId(), sportEvent.arena.id::eq)
-                .build();
+        Predicate predicate = toPredicate(sportEventFilter);
 
         Map<String, String> sortOrders = new LinkedHashMap<>();
         if (sportEventFilter.sortOrder() != null && !sportEventFilter.sortOrder().isEmpty()) {
@@ -90,13 +83,27 @@ public class SportEventService {
         Sort sort = SortUtils.buildSort(sortOrders);
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 
-        List<SportEvent> sportEvents = sportEventRepository.findAllWithArena(predicate, sortedPageable);
+        return sportEventRepository.findAllWithArena(predicate, sortedPageable)
+                .map(sportEventReadMapper::toDto);
+    }
 
-        return new PageImpl<>(
-                sportEvents.stream().map(sportEventReadMapper::toDto).collect(Collectors.toList()),
-                sortedPageable,
-                sportEvents.size()
-        );
+    private Predicate toPredicate(SportEventFilter sportEventFilter) {
+        BooleanBuilder builder = new BooleanBuilder();
+        QSportEvent sportEvent = QSportEvent.sportEvent;
+
+        if (sportEventFilter.startDate() != null) {
+            builder.and(sportEvent.eventDateTime.after(sportEventFilter.startDate()));
+        }
+
+        if (sportEventFilter.endDate() != null) {
+            builder.and(sportEvent.eventDateTime.before(sportEventFilter.endDate()));
+        }
+
+        if (sportEventFilter.arenaId() != null) {
+            builder.and(sportEvent.arena.id.eq(sportEventFilter.arenaId()));
+        }
+
+        return builder;
     }
 
     /**
