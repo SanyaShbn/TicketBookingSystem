@@ -16,4 +16,6 @@ public interface SportEventRepository extends JpaRepository<SportEvent, Long>, C
 
     @Query("SELECT se FROM SportEvent se JOIN FETCH se.arena WHERE se.id = :id")
     Optional<SportEvent> findById(@Param("id") Long id);
+
+    boolean existsByPosterImage(String posterImage);
 }

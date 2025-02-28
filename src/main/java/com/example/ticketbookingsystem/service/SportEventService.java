@@ -16,19 +16,19 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -125,14 +125,15 @@ public class SportEventService {
     @Transactional
     public SportEventReadDto createSportEvent(SportEventCreateEditDto sportEventCreateEditDto,
                                               Long arenaId){
-//                                              String posterImageUrl) {
         try {
             SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
             Arena arena = arenaService.findArenaById(arenaId);
             sportEvent.setArena(arena);
-//            if (posterImageUrl != null && !posterImageUrl.isEmpty()) {
-//                sportEvent.setPosterImageUrl(posterImageUrl);
-//            }
+
+            if (sportEventCreateEditDto.getImageFile() != null) {
+                uploadImage(sportEventCreateEditDto.getImageFile());
+            }
+
             SportEvent savedSportEvent = sportEventRepository.save(sportEvent);
             log.info("SportEvent created successfully with dto: {}", sportEventCreateEditDto);
             return sportEventReadMapper.toDto(savedSportEvent);
@@ -151,22 +152,17 @@ public class SportEventService {
     @Transactional
     public SportEventReadDto updateSportEvent(Long id,
                                               SportEventCreateEditDto sportEventCreateEditDto,
-                                              Long arenaId
-//                                              String posterImageUrl
-    ) {
+                                              Long arenaId) {
         try {
             SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
             Arena arena = arenaService.findArenaById(arenaId);
             sportEvent.setId(id);
             sportEvent.setArena(arena);
-//            if (posterImageUrl != null && !posterImageUrl.isEmpty()) {
-//                String oldImageUrl = sportEventRepository.findById(id).get().getPosterImageUrl();
-//                if (oldImageUrl != null && !oldImageUrl.isEmpty()) {
-//                    String oldImageId = extractImageIdFromUrl(oldImageUrl);
-//                    deleteImage(oldImageId);
-//                }
-//                sportEvent.setPosterImageUrl(posterImageUrl);
-//            }
+
+            if (sportEventCreateEditDto.getImageFile() != null) {
+                uploadImage(sportEventCreateEditDto.getImageFile());
+            }
+
             SportEvent updatedSportEvent = sportEventRepository.save(sportEvent);
             log.info("SportEvent with id {} updated successfully with dto: {}", id, sportEventCreateEditDto);
             return sportEventReadMapper.toDto(updatedSportEvent);
@@ -191,10 +187,11 @@ public class SportEventService {
         try {
             sportEventRepository.deleteById(id);
 
-            String imageUrl = sportEventOptional.get().getPosterImageUrl();
+            String imageUrl = sportEventOptional.get().getPosterImage();
             if (imageUrl != null && !imageUrl.isEmpty()) {
-                String imageId = extractImageIdFromUrl(imageUrl);
-                deleteImage(imageId);
+                if (!sportEventRepository.existsByPosterImage(imageUrl)) {
+                    deleteImage(imageUrl);
+                }
             }
 
             log.info("SportEvent with id {} deleted successfully.", id);
@@ -204,17 +201,9 @@ public class SportEventService {
         }
     }
 
-    private String extractImageIdFromUrl(String imageUrl) {
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            String[] parts = imageUrl.split("/");
-            return parts[parts.length - 1];  // Извлечение ID из URL
-        }
-        return null;
-    }
-
-    public void uploadImage(File file) {
+    public void uploadImage(MultipartFile file) {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", new FileSystemResource(file));
+        body.add("file", file.getResource());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -222,15 +211,51 @@ public class SportEventService {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
         try {
-            String response = restTemplate.postForObject(IMAGE_SERVICE_URL + "/upload", requestEntity, String.class);
-            log.info("Image upload response: {}", response);
-        } catch (Exception e) {
-            log.error("Error uploading image", e);
+            ResponseEntity<String> response = restTemplate.postForEntity(
+                    IMAGE_SERVICE_URL + "/upload", requestEntity, String.class
+            );
+            if (response.getStatusCode() != HttpStatus.OK) {
+                throw new IOException("Failed to upload image, received status code: " + response.getStatusCode());
+            }
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            log.error("HTTP error occurred while uploading image: ", e);
+            throw e;
+        } catch (ResourceAccessException e) {
+            log.error("Resource access error occurred while uploading image: ", e);
+            throw e;
+        } catch (IOException e) {
+            log.error("I/O error occurred while uploading image: ", e);
+            throw new DaoCrudException(e);
         }
     }
 
-    public void deleteImage(String id) {
-        restTemplate.delete(IMAGE_SERVICE_URL + "/" + id);
+    public byte[] fetchImageFromImageService(String fileName) {
+        byte[] imageBytes = null;
+        try {
+            String url = IMAGE_SERVICE_URL + "/" + fileName;
+            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {}
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                Map<String, Object> responseBody = response.getBody();
+                if (responseBody.containsKey("image")) {
+                    String imageBase64 = (String) responseBody.get("image");
+                    imageBytes = Base64.getDecoder().decode(imageBase64);
+                }
+            }
+        } catch (RestClientException e) {
+            log.error("Error fetching image from ImageService", e);
+        }
+        return imageBytes;
+    }
+
+
+    public void deleteImage(String filename) {
+        restTemplate.delete(IMAGE_SERVICE_URL + "/" + filename);
     }
 
 }

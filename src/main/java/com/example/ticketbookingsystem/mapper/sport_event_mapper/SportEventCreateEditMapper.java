@@ -15,13 +15,13 @@ import org.springframework.web.multipart.MultipartFile;
 public interface SportEventCreateEditMapper {
     SportEventCreateEditMapper INSTANCE = Mappers.getMapper(SportEventCreateEditMapper.class);
 
-    @Mapping(target = "posterImageUrl", source = "imageFile", qualifiedByName = "fileToUrl")
+    @Mapping(target = "posterImage", source = "imageFile", qualifiedByName = "fileToFilename")
     SportEvent toEntity(SportEventCreateEditDto sportEventCreateEditDto);
 
     SportEventCreateEditDto toDto(SportEvent sportEvent);
 
-    @Named("fileToUrl")
-    default String fileToUrl(MultipartFile file) {
+    @Named("fileToFilename")
+    default String fileToImageName(MultipartFile file) {
         if (file != null && !file.isEmpty()) {
             return file.getOriginalFilename();
         }

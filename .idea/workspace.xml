@@ -9,13 +9,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Added proper Kafka configs, now communication with the second microservice is working">
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Fixed pagination and filtration for SportEvent entities">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/sport_event_dto/SportEventReadDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/sport_event_dto/SportEventReadDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/CustomSportEventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/CustomSportEventRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/CustomSportEventRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/CustomSportEventRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/SportEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/SportEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/sport_event_mapper/SportEventCreateEditMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/sport_event_mapper/SportEventCreateEditMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SportEventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SportEventRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SportEventServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SportEventServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/db.changelog-4.0.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/db.changelog-4.0.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -493,15 +495,11 @@
       <workItem from="1740570884319" duration="1247000" />
       <workItem from="1740577611476" duration="6653000" />
       <workItem from="1740593858928" duration="8350000" />
-      <workItem from="1740678720718" duration="8711000" />
-    </task>
-    <task id="LOCAL-00006" summary="Finished feature№3">
-      <option name="closed" value="true" />
-      <created>1733429826778</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1733429826778</updated>
+      <workItem from="1740678720718" duration="9065000" />
+      <workItem from="1740730854732" duration="1164000" />
+      <workItem from="1740734539693" duration="1970000" />
+      <workItem from="1740739657578" duration="11939000" />
+      <workItem from="1740764127039" duration="5013000" />
     </task>
     <task id="LOCAL-00007" summary="Started implementing filtration/sorting/pagination (feature №4)">
       <option name="closed" value="true" />
@@ -887,7 +885,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740603217935</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Fixed pagination and filtration for SportEvent entities">
+      <option name="closed" value="true" />
+      <created>1740687817107</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1740687817107</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -930,7 +936,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Finished implementing language internationalization" />
     <MESSAGE value="Added mappers, java doc (+ some refactoring in my jsp pages)" />
     <MESSAGE value="Moved some of the Hibernate db connection properties values into env vars" />
     <MESSAGE value="Refactored architecture (moved transactions management into service layer, tested services)" />
@@ -955,7 +960,8 @@
     <MESSAGE value="Refactored code for proper testing of front-end (working with Angular)" />
     <MESSAGE value="Started managing services communication" />
     <MESSAGE value="Added proper Kafka configs, now communication with the second microservice is working" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added proper Kafka configs, now communication with the second microservice is working" />
+    <MESSAGE value="Fixed pagination and filtration for SportEvent entities" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed pagination and filtration for SportEvent entities" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

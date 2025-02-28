@@ -33,6 +33,6 @@ public class SportEvent {
     @JoinColumn(name = "arena_id", nullable = false)
     private Arena arena;
 
-    @Column(name = "poster_image_url")
-    private String posterImageUrl;
+    @Column(name = "poster_image")
+    private String posterImage;
 }

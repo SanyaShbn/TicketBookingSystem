@@ -9,15 +9,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -73,23 +73,13 @@ public class SportEventController {
 
         MultipartFile file = sportEventCreateEditDto.getImageFile();
         if (file != null && !file.isEmpty()) {
-            sportEventService.uploadImage(convertMultiPartToFile(file));
+            sportEventService.uploadImage(file);
         }
 
         SportEventReadDto createdSportEvent = sportEventService
                 .createSportEvent(sportEventCreateEditDto, arenaId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSportEvent);
-    }
-
-    private File convertMultiPartToFile(MultipartFile file) {
-        File convFile = new File(file.getOriginalFilename());
-        try (FileOutputStream fos = new FileOutputStream(convFile)) {
-            fos.write(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return convFile;
     }
 
     /**
@@ -108,7 +98,7 @@ public class SportEventController {
 
         MultipartFile file = sportEventCreateEditDto.getImageFile();
         if (file != null && !file.isEmpty()) {
-            sportEventService.uploadImage(convertMultiPartToFile(file));
+            sportEventService.uploadImage(file);
         }
 
         SportEventReadDto updatedSportEvent = sportEventService
@@ -130,6 +120,19 @@ public class SportEventController {
         Map<String, String> response = new HashMap<>();
         response.put("message", "Sporting event deleted successfully");
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/poster/{filename}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> findPosterImage(@PathVariable("filename") String filename) {
+        byte[] imageBytes = sportEventService.fetchImageFromImageService(filename);
+        if (imageBytes != null) {
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+                    .contentLength(imageBytes.length)
+                    .body(imageBytes);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

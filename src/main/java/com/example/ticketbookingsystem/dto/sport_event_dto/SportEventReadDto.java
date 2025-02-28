@@ -16,5 +16,5 @@ public class SportEventReadDto {
     String eventName;
     LocalDateTime eventDateTime;
     Arena arena;
-    String posterImageUrl;
+    String posterImage;
 }
