@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -154,14 +153,18 @@ public class SportEventService {
                                               SportEventCreateEditDto sportEventCreateEditDto,
                                               Long arenaId) {
         try {
+            SportEvent sportEventBeforeUpdate = sportEventRepository.findById(id)
+                    .orElseThrow(() -> {
+                        log.error("Failed to find sport event with provided id: {}", id);
+                        return new DaoResourceNotFoundException("Sport event not found");
+                    });
+
             SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
             Arena arena = arenaService.findArenaById(arenaId);
             sportEvent.setId(id);
             sportEvent.setArena(arena);
 
-            if (sportEventCreateEditDto.getImageFile() != null) {
-                uploadImage(sportEventCreateEditDto.getImageFile());
-            }
+            updatePosterImageIfNecessary(sportEventCreateEditDto, sportEvent, sportEventBeforeUpdate);
 
             SportEvent updatedSportEvent = sportEventRepository.save(sportEvent);
             log.info("SportEvent with id {} updated successfully with dto: {}", id, sportEventCreateEditDto);
@@ -169,6 +172,14 @@ public class SportEventService {
         } catch (DataAccessException e){
             log.error("Failed to update SportEvent {} with dto: {}", id, sportEventCreateEditDto);
             throw new DaoCrudException(e);
+        }
+    }
+
+    private void updatePosterImageIfNecessary(SportEventCreateEditDto dto, SportEvent sportEvent, SportEvent sportEventBeforeUpdate) {
+        if (dto.getImageFile() != null) {
+            uploadImage(dto.getImageFile());
+        } else {
+            sportEvent.setPosterImage(sportEventBeforeUpdate.getPosterImage());
         }
     }
 

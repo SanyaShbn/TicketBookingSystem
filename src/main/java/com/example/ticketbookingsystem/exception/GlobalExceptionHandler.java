@@ -1,6 +1,7 @@
 package com.example.ticketbookingsystem.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,6 +14,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DaoCrudException.class)
     public ResponseEntity<String> handleDaoCrudException(DaoCrudException ex) {
         log.error("CRUD exception: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("An error occurred while processing your request.");
+    }
+
+    @ExceptionHandler(PSQLException.class)
+    public ResponseEntity<String> handlePSQLException(PSQLException ex) {
+        log.error("PSQLException exception: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("An error occurred while processing your request.");
     }
