@@ -9,12 +9,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Did some refactoring, now finally able to get the images (and show them on the client-side) from the second microservice (ImageService)">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Fixed the updating of the SportEvent entity (now with it's poster image)">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/exception/UploadImageException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/ImageService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SportEventController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/sport_event_dto/SportEventFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/dto/sport_event_dto/SportEventFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SportEventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SportEventRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SportEventService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/LoginControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/LoginControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SportEventControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/SportEventControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/JwtServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/JwtServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SportEventServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/SportEventServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,69 +118,8 @@
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\arena-jsp" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.ApplicationRunner">
-    <configuration name="ArenaRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.integration.repository.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration.repository" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.repository.ArenaRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HikariCPTest.testConnectionPool" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.connection_pool.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.connection_pool" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.connection_pool.HikariCPTest" />
-      <option name="METHOD_NAME" value="testConnectionPool" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PurchasedTicketRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.integration.repository.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration.repository" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.repository.PurchasedTicketRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RefreshTokenRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.integration.repository.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration.repository" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.repository.RefreshTokenRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RowServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.SportEventServiceTest.testFindAllSportEvents">
+    <configuration name="SportEventServiceTest.testDeleteSportEvent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
@@ -181,8 +128,73 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.RowServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.SportEventServiceTest" />
+      <option name="METHOD_NAME" value="testDeleteSportEvent" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SportEventServiceTest.testDeleteSportEventNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.SportEventServiceTest" />
+      <option name="METHOD_NAME" value="testDeleteSportEventNotFound" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SportEventServiceTest.testFindAllSportEvents" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.SportEventServiceTest" />
+      <option name="METHOD_NAME" value="testFindAllSportEvents" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SportEventServiceTest.testUpdateSportEvent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.SportEventServiceTest" />
+      <option name="METHOD_NAME" value="testUpdateSportEvent" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SportEventServiceTest.testUpdateSportEventDataAccessException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.SportEventServiceTest" />
+      <option name="METHOD_NAME" value="testUpdateSportEventDataAccessException" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -292,21 +304,21 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.ArenaRepositoryTest" />
-      <item itemvalue="JUnit.HikariCPTest.testConnectionPool" />
-      <item itemvalue="JUnit.PurchasedTicketRepositoryTest" />
-      <item itemvalue="JUnit.RefreshTokenRepositoryTest" />
-      <item itemvalue="JUnit.RowServiceTest" />
+      <item itemvalue="JUnit.SportEventServiceTest.testDeleteSportEvent" />
+      <item itemvalue="JUnit.SportEventServiceTest.testDeleteSportEventNotFound" />
+      <item itemvalue="JUnit.SportEventServiceTest.testFindAllSportEvents" />
+      <item itemvalue="JUnit.SportEventServiceTest.testUpdateSportEvent" />
+      <item itemvalue="JUnit.SportEventServiceTest.testUpdateSportEventDataAccessException" />
       <item itemvalue="Spring Boot.ApplicationRunner" />
       <item itemvalue="Tomcat Server.Tomcat 11.0.1" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RefreshTokenRepositoryTest" />
-        <item itemvalue="JUnit.ArenaRepositoryTest" />
-        <item itemvalue="JUnit.PurchasedTicketRepositoryTest" />
-        <item itemvalue="JUnit.HikariCPTest.testConnectionPool" />
-        <item itemvalue="JUnit.RowServiceTest" />
+        <item itemvalue="JUnit.SportEventServiceTest.testFindAllSportEvents" />
+        <item itemvalue="JUnit.SportEventServiceTest.testDeleteSportEvent" />
+        <item itemvalue="JUnit.SportEventServiceTest.testDeleteSportEventNotFound" />
+        <item itemvalue="JUnit.SportEventServiceTest.testUpdateSportEvent" />
+        <item itemvalue="JUnit.SportEventServiceTest.testUpdateSportEventDataAccessException" />
       </list>
     </recent_temporary>
   </component>
@@ -500,14 +512,11 @@
       <workItem from="1740814129448" duration="4365000" />
       <workItem from="1740828108202" duration="1756000" />
       <workItem from="1740830009887" duration="2077000" />
-    </task>
-    <task id="LOCAL-00008" summary="Continuing working on feature №4 (added filter-bar for sport events, arenas and tickets)">
-      <option name="closed" value="true" />
-      <created>1733521395062</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1733521395062</updated>
+      <workItem from="1740838539474" duration="229000" />
+      <workItem from="1740897604111" duration="6040000" />
+      <workItem from="1740907391127" duration="10989000" />
+      <workItem from="1740930801046" duration="3606000" />
+      <workItem from="1740940774050" duration="5929000" />
     </task>
     <task id="LOCAL-00009" summary="Working on features 5 and 6 (added visualization of available tickets and user's cart)">
       <option name="closed" value="true" />
@@ -893,7 +902,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740769908825</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="Fixed the updating of the SportEvent entity (now with it's poster image)">
+      <option name="closed" value="true" />
+      <created>1740838723737</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1740838723738</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -936,7 +953,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Moved some of the Hibernate db connection properties values into env vars" />
     <MESSAGE value="Refactored architecture (moved transactions management into service layer, tested services)" />
     <MESSAGE value="Started implementing Spring Boot (refactoring pom.xml, adding necessary starters, not completely successful yet)" />
     <MESSAGE value="Started moving from MVC to REST, added Swagger and Liquibase" />
@@ -961,7 +977,8 @@
     <MESSAGE value="Added proper Kafka configs, now communication with the second microservice is working" />
     <MESSAGE value="Fixed pagination and filtration for SportEvent entities" />
     <MESSAGE value="Did some refactoring, now finally able to get the images (and show them on the client-side) from the second microservice (ImageService)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Did some refactoring, now finally able to get the images (and show them on the client-side) from the second microservice (ImageService)" />
+    <MESSAGE value="Fixed the updating of the SportEvent entity (now with it's poster image)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed the updating of the SportEvent entity (now with it's poster image)" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

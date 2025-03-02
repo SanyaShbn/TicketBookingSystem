@@ -4,6 +4,7 @@ import com.example.ticketbookingsystem.dto.*;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventCreateEditDto;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventFilter;
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventReadDto;
+import com.example.ticketbookingsystem.service.ImageService;
 import com.example.ticketbookingsystem.service.SportEventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -32,6 +31,8 @@ import java.util.Optional;
 public class SportEventController {
 
     private final SportEventService sportEventService;
+
+    private final ImageService imageService;
 
     /**
      * Handles GET requests to retrieve and return a paginated list of sport events.
@@ -71,11 +72,6 @@ public class SportEventController {
                                                               @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto) {
         log.info("Creating new sporting event with details: {}", sportEventCreateEditDto);
 
-        MultipartFile file = sportEventCreateEditDto.getImageFile();
-        if (file != null && !file.isEmpty()) {
-            sportEventService.uploadImage(file);
-        }
-
         SportEventReadDto createdSportEvent = sportEventService
                 .createSportEvent(sportEventCreateEditDto, arenaId);
 
@@ -95,11 +91,6 @@ public class SportEventController {
                                                               @PathVariable("id") Long id,
                                                               @ModelAttribute @Validated SportEventCreateEditDto sportEventCreateEditDto) {
         log.info("Updating sporting event {} with details: {}", id, sportEventCreateEditDto);
-
-        MultipartFile file = sportEventCreateEditDto.getImageFile();
-        if (file != null && !file.isEmpty()) {
-            sportEventService.uploadImage(file);
-        }
 
         SportEventReadDto updatedSportEvent = sportEventService
                 .updateSportEvent(id, sportEventCreateEditDto, arenaId);
@@ -122,9 +113,15 @@ public class SportEventController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Retrieves a poster image of the sport event by its filename.
+     *
+     * @param filename the name of the poster image file
+     * @return a ResponseEntity containing the image bytes, or a 404 status if not found
+     */
     @GetMapping(value = "/poster/{filename}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> findPosterImage(@PathVariable("filename") String filename) {
-        byte[] imageBytes = sportEventService.fetchImageFromImageService(filename);
+        byte[] imageBytes = imageService.fetchImage(filename);
         if (imageBytes != null) {
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -133,6 +130,18 @@ public class SportEventController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * Deletes a poster image by its filename.
+     *
+     * @param filename the name of the poster image file
+     * @return a ResponseEntity with a 204 status if the image was deleted successfully
+     */
+    @DeleteMapping("/poster/{filename}")
+    public ResponseEntity<Void> deletePosterImage(@PathVariable("filename") String filename) {
+        sportEventService.deletePosterImageForSportEvent(filename);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -36,3 +36,7 @@ management:
   endpoint:
     health:
       show-details:
+
+image:
+  service:
+    url: http://localhost:8081/api/v1/images

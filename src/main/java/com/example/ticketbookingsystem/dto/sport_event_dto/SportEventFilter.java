@@ -8,6 +8,6 @@ import java.time.LocalDateTime;
 public record SportEventFilter (
         LocalDateTime startDate,
         LocalDateTime endDate,
-        Long arenaId,
+        String arenaName,
         String sortOrder
 ){}

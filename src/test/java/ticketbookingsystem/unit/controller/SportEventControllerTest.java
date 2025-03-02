@@ -32,7 +32,7 @@ public class SportEventControllerTest {
 
     private static final Long SPORT_EVENT_ID = 1L;
 
-    private static final Long ARENA_ID = 1L;
+    private static final String ARENA_NAME = "Test_Arena";
 
     @Mock
     private SportEventService sportEventService;
@@ -50,7 +50,7 @@ public class SportEventControllerTest {
         when(sportEventService.findAll(any(SportEventFilter.class), any(Pageable.class))).thenReturn(page);
 
         PageResponse<SportEventReadDto> response = sportEventController.findAllSportEvents(
-                new SportEventFilter(LocalDateTime.now(), LocalDateTime.now(), ARENA_ID, ""),
+                new SportEventFilter(LocalDateTime.now(), LocalDateTime.now(), ARENA_NAME, ""),
                 Pageable.unpaged());
 
         assertEquals(2, response.getContent().size());
@@ -70,51 +70,51 @@ public class SportEventControllerTest {
         verify(sportEventService, times(1)).findById(SPORT_EVENT_ID);
     }
 
-//    @Test
-//    public void testCreateSportEvent() {
-//        SportEventCreateEditDto createEditDto = SportEventCreateEditDto.builder().eventName("New Event").build();
-//
-//        SportEventReadDto readDto = SportEventReadDto.builder().eventName("New Event").build();
-//        when(sportEventService.createSportEvent(any(SportEventCreateEditDto.class), any(Long.class)))
-//                .thenReturn(readDto);
-//
-//        ResponseEntity<SportEventReadDto> response = sportEventController
-//                .createSportEvent(SPORT_EVENT_ID, createEditDto);
-//
-//        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-//        assertEquals("New Event", response.getBody().getEventName());
-//        verify(sportEventService, times(1))
-//                .createSportEvent(any(SportEventCreateEditDto.class), any(Long.class));
-//    }
+    @Test
+    public void testCreateSportEvent() {
+        SportEventCreateEditDto createEditDto = SportEventCreateEditDto.builder().eventName("New Event").build();
 
-//    @Test
-//    public void testUpdateSportEvent() {
-//        SportEventCreateEditDto createEditDto = SportEventCreateEditDto.builder().eventName("Updated Event").build();
-//
-//        SportEventReadDto readDto = SportEventReadDto.builder().eventName("Updated Event").build();
-//        when(sportEventService.updateSportEvent(eq(SPORT_EVENT_ID),
-//                any(SportEventCreateEditDto.class),
-//                any(Long.class)))
-//                .thenReturn(readDto);
-//
-//        ResponseEntity<SportEventReadDto> response = sportEventController.updateSportEvent(
-//                SPORT_EVENT_ID, SPORT_EVENT_ID, createEditDto);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        assertEquals("Updated Event", response.getBody().getEventName());
-//        verify(sportEventService, times(1)).updateSportEvent(
-//                eq(SPORT_EVENT_ID), any(SportEventCreateEditDto.class), any(Long.class));
-//    }
-//
-//    @Test
-//    public void testDeleteSportEvent() {
-//        doNothing().when(sportEventService).deleteSportEvent(SPORT_EVENT_ID);
-//
-//        ResponseEntity<Map<String, String>> response = sportEventController.deleteSportEvent(SPORT_EVENT_ID);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        assertEquals("Sporting event deleted successfully", response.getBody().get("message"));
-//        verify(sportEventService, times(1)).deleteSportEvent(SPORT_EVENT_ID);
-//    }
+        SportEventReadDto readDto = SportEventReadDto.builder().eventName("New Event").build();
+        when(sportEventService.createSportEvent(any(SportEventCreateEditDto.class), any(Long.class)))
+                .thenReturn(readDto);
+
+        ResponseEntity<SportEventReadDto> response = sportEventController
+                .createSportEvent(SPORT_EVENT_ID, createEditDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals("New Event", response.getBody().getEventName());
+        verify(sportEventService, times(1))
+                .createSportEvent(any(SportEventCreateEditDto.class), any(Long.class));
+    }
+
+    @Test
+    public void testUpdateSportEvent() {
+        SportEventCreateEditDto createEditDto = SportEventCreateEditDto.builder().eventName("Updated Event").build();
+
+        SportEventReadDto readDto = SportEventReadDto.builder().eventName("Updated Event").build();
+        when(sportEventService.updateSportEvent(eq(SPORT_EVENT_ID),
+                any(SportEventCreateEditDto.class),
+                any(Long.class)))
+                .thenReturn(readDto);
+
+        ResponseEntity<SportEventReadDto> response = sportEventController.updateSportEvent(
+                SPORT_EVENT_ID, SPORT_EVENT_ID, createEditDto);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Updated Event", response.getBody().getEventName());
+        verify(sportEventService, times(1)).updateSportEvent(
+                eq(SPORT_EVENT_ID), any(SportEventCreateEditDto.class), any(Long.class));
+    }
+
+    @Test
+    public void testDeleteSportEvent() {
+        doNothing().when(sportEventService).deleteSportEvent(SPORT_EVENT_ID);
+
+        ResponseEntity<Map<String, String>> response = sportEventController.deleteSportEvent(SPORT_EVENT_ID);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Sporting event deleted successfully", response.getBody().get("message"));
+        verify(sportEventService, times(1)).deleteSportEvent(SPORT_EVENT_ID);
+    }
 
 }

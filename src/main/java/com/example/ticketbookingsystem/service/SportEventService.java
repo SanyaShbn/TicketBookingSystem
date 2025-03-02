@@ -16,18 +16,11 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,9 +42,7 @@ public class SportEventService {
 
     private final ArenaService arenaService;
 
-    private final RestTemplate restTemplate;
-
-    private final String IMAGE_SERVICE_URL = "http://localhost:8081/api/v1/images";
+    private final ImageService imageService;
 
     /**
      * Finds all sporting events.
@@ -98,8 +89,8 @@ public class SportEventService {
             builder.and(sportEvent.eventDateTime.before(sportEventFilter.endDate()));
         }
 
-        if (sportEventFilter.arenaId() != null) {
-            builder.and(sportEvent.arena.id.eq(sportEventFilter.arenaId()));
+        if (sportEventFilter.arenaName() != null && !sportEventFilter.arenaName().isEmpty()) {
+            builder.and(sportEvent.arena.name.like(sportEventFilter.arenaName()));
         }
 
         return builder;
@@ -130,7 +121,7 @@ public class SportEventService {
             sportEvent.setArena(arena);
 
             if (sportEventCreateEditDto.getImageFile() != null) {
-                uploadImage(sportEventCreateEditDto.getImageFile());
+                imageService.uploadImage(sportEventCreateEditDto.getImageFile());
             }
 
             SportEvent savedSportEvent = sportEventRepository.save(sportEvent);
@@ -177,7 +168,7 @@ public class SportEventService {
 
     private void updatePosterImageIfNecessary(SportEventCreateEditDto dto, SportEvent sportEvent, SportEvent sportEventBeforeUpdate) {
         if (dto.getImageFile() != null) {
-            uploadImage(dto.getImageFile());
+            imageService.uploadImage(dto.getImageFile());
         } else {
             sportEvent.setPosterImage(sportEventBeforeUpdate.getPosterImage());
         }
@@ -197,14 +188,6 @@ public class SportEventService {
         }
         try {
             sportEventRepository.deleteById(id);
-
-            String imageUrl = sportEventOptional.get().getPosterImage();
-            if (imageUrl != null && !imageUrl.isEmpty()) {
-                if (!sportEventRepository.existsByPosterImage(imageUrl)) {
-                    deleteImage(imageUrl);
-                }
-            }
-
             log.info("SportEvent with id {} deleted successfully.", id);
         } catch (DataAccessException e){
             log.error("Failed to delete SportEvent with id {}", id);
@@ -212,61 +195,15 @@ public class SportEventService {
         }
     }
 
-    public void uploadImage(MultipartFile file) {
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", file.getResource());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-        try {
-            ResponseEntity<String> response = restTemplate.postForEntity(
-                    IMAGE_SERVICE_URL + "/upload", requestEntity, String.class
-            );
-            if (response.getStatusCode() != HttpStatus.OK) {
-                throw new IOException("Failed to upload image, received status code: " + response.getStatusCode());
-            }
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            log.error("HTTP error occurred while uploading image: ", e);
-            throw e;
-        } catch (ResourceAccessException e) {
-            log.error("Resource access error occurred while uploading image: ", e);
-            throw e;
-        } catch (IOException e) {
-            log.error("I/O error occurred while uploading image: ", e);
-            throw new DaoCrudException(e);
-        }
-    }
-
-    public byte[] fetchImageFromImageService(String fileName) {
-        byte[] imageBytes = null;
-        try {
-            String url = IMAGE_SERVICE_URL + "/" + fileName;
-            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<>() {}
-            );
-
-            if (response.getStatusCode() == HttpStatus.OK) {
-                Map<String, Object> responseBody = response.getBody();
-                if (responseBody.containsKey("image")) {
-                    String imageBase64 = (String) responseBody.get("image");
-                    imageBytes = Base64.getDecoder().decode(imageBase64);
-                }
-            }
-        } catch (RestClientException e) {
-            log.error("Error fetching image from ImageService", e);
-        }
-        return imageBytes;
-    }
-
-
-    public void deleteImage(String filename) {
-        restTemplate.delete(IMAGE_SERVICE_URL + "/" + filename);
+    /**
+     * Deletes a poster image for a sport event by its filename and updates the database.
+     *
+     * @param filename the name of the poster image file to be deleted
+     */
+    @Transactional
+    public void deletePosterImageForSportEvent(String filename) {
+        imageService.deleteImageFromDb(filename);
+        sportEventRepository.updatePosterImagesAfterImageDeleting(filename);
     }
 
 }

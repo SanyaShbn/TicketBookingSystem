@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Slf4j
 @RestControllerAdvice
@@ -41,6 +42,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUserAlreadyExistException(UserAlreadyExistException ex) {
         log.error("User already exists exception: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.");
+    }
+
+    @ExceptionHandler(UploadImageException.class)
+    public ResponseEntity<String> UploadImageException(UploadImageException ex) {
+        log.error("UploadImageException occurred while uploading the image: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Failed to upload image.");
     }
 
 }
