@@ -5,8 +5,8 @@
               maxTotal="100"
               maxIdle="30"
               maxWaitMillis="10000"
-              username="${env.DB_USER}"
+              username="${env.DB_USERNAME}"
               password="${env.DB_PASSWORD}"
               driverClassName="org.postgresql.Driver"
-              url="jdbc:postgresql://db:5432/ticket-booking-system"/>
+              url="${env.DB_URL}"/>
 </Context>
