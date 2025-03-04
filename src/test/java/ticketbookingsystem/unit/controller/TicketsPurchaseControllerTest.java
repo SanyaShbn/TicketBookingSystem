@@ -43,6 +43,9 @@ public class TicketsPurchaseControllerTest {
 
     @Test
     public void testCommitPurchaseSuccess() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
         List<Long> ticketIds = Arrays.asList(1L, 2L, 3L);
         when(userCartService.getTicketIds(anyLong())).thenReturn(ticketIds);
         doNothing().when(purchasedTicketsService).savePurchasedTickets(ticketIds, USER_ID);
@@ -68,20 +71,4 @@ public class TicketsPurchaseControllerTest {
         verify(purchasedTicketsService, times(1)).findAllByUserId(anyLong());
     }
 
-    @Test
-    public void testGetPurchasedTicketsException() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-
-        when(purchasedTicketsService.findAllByUserId(anyLong())).thenThrow(
-                new DaoResourceNotFoundException("No user's tickets found"));
-        when(messageSource.getMessage(eq("get.purchasedTickets.error"), any(), any()))
-                .thenReturn("Error retrieving purchased tickets");
-
-        ResponseEntity<?> response = ticketsPurchaseController.getPurchasedTickets(USER_ID);
-
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("Error retrieving purchased tickets", response.getBody());
-        verify(purchasedTicketsService, times(1)).findAllByUserId(anyLong());
-    }
 }

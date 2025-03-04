@@ -3,6 +3,7 @@ package com.example.ticketbookingsystem.mapper.row_mapper;
 import com.example.ticketbookingsystem.dto.row_dto.RowCreateEditDto;
 import com.example.ticketbookingsystem.entity.Row;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -15,4 +16,6 @@ public interface RowCreateEditMapper {
     Row toEntity(RowCreateEditDto rowCreateEditDto);
 
     RowCreateEditDto toDto(Row row);
+
+    void updateEntityFromDto(RowCreateEditDto rowCreateEditDto, @MappingTarget Row row);
 }

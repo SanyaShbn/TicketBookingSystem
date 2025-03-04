@@ -107,6 +107,12 @@ public class ArenaService {
                 .map(arenaReadMapper::toDto);
     }
 
+    /**
+     * Finds an arena by its ID.
+     *
+     * @param id the ID of the arena
+     * @return the found arena entity (without mapping to ArenaReadDto), or throws exception if not found
+     */
     public Arena findArenaById(Long id) {
         return arenaRepository.findById(id)
                 .orElseThrow(() -> new DaoResourceNotFoundException("Arena not found"));
@@ -138,18 +144,17 @@ public class ArenaService {
      */
     public ArenaReadDto updateArena(Long id, ArenaCreateEditDto arenaCreateEditDto) {
         try {
-            Optional<Arena> optionalArenaBeforeUpdate = arenaRepository.findById(id);
-            if (optionalArenaBeforeUpdate.isEmpty()) {
+            Optional<Arena> optionalArena = arenaRepository.findById(id);
+            if (optionalArena.isEmpty()) {
                 throw new EntityNotFoundException("Arena with id " + id + " not found");
             }
-            Arena arenaBeforeUpdate = optionalArenaBeforeUpdate.get();
+            Arena arenaToUpdate = optionalArena.get();
 
-            Arena arenaAfterUpdate = arenaCreateEditMapper.toEntity(arenaCreateEditDto);
-            arenaAfterUpdate.setId(id);
-            arenaAfterUpdate.setGeneralSeatsNumb(arenaBeforeUpdate.getGeneralSeatsNumb());
-            Arena updatedArena = arenaRepository.save(arenaAfterUpdate);
+            arenaCreateEditMapper.updateEntityFromDto(arenaCreateEditDto, arenaToUpdate);
+
+            arenaRepository.save(arenaToUpdate);
             log.info("Arena with id {} updated successfully with dto: {}", id, arenaCreateEditDto);
-            return arenaReadMapper.toDto(updatedArena);
+            return arenaReadMapper.toDto(arenaToUpdate);
         } catch (EntityNotFoundException | DataAccessException e){
             log.error("Failed to update arena {} with dto: {}", id, arenaCreateEditDto);
             throw new DaoCrudException(e);

@@ -119,16 +119,15 @@ public class SportEventServiceTest {
 
     @Test
     public void testUpdateSportEvent() {
-        when(sportEventCreateEditMapper.toEntity(any(SportEventCreateEditDto.class))).thenReturn(sportEventEntity);
-        when(sportEventRepository.findById(ENTITY_ID)).thenReturn(Optional.of(new SportEvent()));
+        when(sportEventRepository.findById(ENTITY_ID)).thenReturn(Optional.of(sportEventEntity));
         when(arenaService.findArenaById(arena.getId())).thenReturn(arena);
         when(sportEventRepository.save(any(SportEvent.class))).thenReturn(sportEventEntity);
 
         sportEventService.updateSportEvent(ENTITY_ID, sportEventCreateEditDto, arena.getId());
 
         verify(sportEventRepository, times(1)).findById(ENTITY_ID);
-        verify(sportEventCreateEditMapper, times(1)).toEntity(
-                any(SportEventCreateEditDto.class)
+        verify(sportEventCreateEditMapper, times(1)).updateEntityFromDto(
+                any(SportEventCreateEditDto.class), any(SportEvent.class)
         );
         verify(sportEventRepository, times(1)).save(sportEventEntity);
         verify(arenaService, times(1)).findArenaById(arena.getId());

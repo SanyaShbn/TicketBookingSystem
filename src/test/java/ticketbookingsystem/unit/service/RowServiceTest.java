@@ -34,7 +34,12 @@ import static org.mockito.Mockito.*;
 public class RowServiceTest {
 
     private static final Long ROW_ID = 1L;
+
     private static final Long SECTOR_ID = 1L;
+
+    private static final Integer ROW_NUMBER = 1;
+
+    private static final Integer SEATS_NUMB = 5;
 
     @Mock
     private RowRepository rowRepository;
@@ -65,7 +70,10 @@ public class RowServiceTest {
         row.setId(ROW_ID);
         sector = new Sector();
         sector.setId(SECTOR_ID);
-        rowCreateEditDto = RowCreateEditDto.builder().build();
+        rowCreateEditDto = RowCreateEditDto.builder()
+                .rowNumber(ROW_NUMBER)
+                .seatsNumb(SEATS_NUMB)
+                .build();
         rowReadDto = RowReadDto.builder().build();
     }
 
@@ -136,14 +144,13 @@ public class RowServiceTest {
 
     @Test
     void updateRow() {
-        when(rowCreateEditMapper.toEntity(any(RowCreateEditDto.class))).thenReturn(row);
         when(rowRepository.findById(any(Long.class))).thenReturn(Optional.of(row));
 
         rowService.updateRow(ROW_ID, rowCreateEditDto, sector.getId());
 
         verify(rowRepository, times(1)).save(row);
         verify(rowRepository, times(1)).updateSectorBeforeRowUpdate(sector.getId(),
-                row.getSeatsNumb(), row.getSeatsNumb());
+                row.getSeatsNumb(), rowCreateEditDto.getSeatsNumb());
     }
 
     @Test
@@ -183,7 +190,6 @@ public class RowServiceTest {
     void testUpdateRowDataAccessException() {
         when(rowRepository.findById(ROW_ID)).thenReturn(Optional.of(row));
 
-        when(rowCreateEditMapper.toEntity(any(RowCreateEditDto.class))).thenReturn(row);
         when(rowRepository.save(any(Row.class))).thenThrow(new DataAccessException("...") {});
 
         assertThrows(DaoCrudException.class,

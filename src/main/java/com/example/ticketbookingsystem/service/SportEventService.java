@@ -144,33 +144,26 @@ public class SportEventService {
                                               SportEventCreateEditDto sportEventCreateEditDto,
                                               Long arenaId) {
         try {
-            SportEvent sportEventBeforeUpdate = sportEventRepository.findById(id)
+            SportEvent sportEventToUpdate = sportEventRepository.findById(id)
                     .orElseThrow(() -> {
                         log.error("Failed to find sport event with provided id: {}", id);
                         return new DaoResourceNotFoundException("Sport event not found");
                     });
 
-            SportEvent sportEvent = sportEventCreateEditMapper.toEntity(sportEventCreateEditDto);
+            sportEventCreateEditMapper.updateEntityFromDto(sportEventCreateEditDto, sportEventToUpdate);
             Arena arena = arenaService.findArenaById(arenaId);
-            sportEvent.setId(id);
-            sportEvent.setArena(arena);
+            sportEventToUpdate.setArena(arena);
 
-            updatePosterImageIfNecessary(sportEventCreateEditDto, sportEvent, sportEventBeforeUpdate);
+            if (sportEventCreateEditDto.getImageFile() != null) {
+                imageService.uploadImage(sportEventCreateEditDto.getImageFile());
+            }
 
-            SportEvent updatedSportEvent = sportEventRepository.save(sportEvent);
+            sportEventRepository.save(sportEventToUpdate);
             log.info("SportEvent with id {} updated successfully with dto: {}", id, sportEventCreateEditDto);
-            return sportEventReadMapper.toDto(updatedSportEvent);
+            return sportEventReadMapper.toDto(sportEventToUpdate);
         } catch (DataAccessException e){
             log.error("Failed to update SportEvent {} with dto: {}", id, sportEventCreateEditDto);
             throw new DaoCrudException(e);
-        }
-    }
-
-    private void updatePosterImageIfNecessary(SportEventCreateEditDto dto, SportEvent sportEvent, SportEvent sportEventBeforeUpdate) {
-        if (dto.getImageFile() != null) {
-            imageService.uploadImage(dto.getImageFile());
-        } else {
-            sportEvent.setPosterImage(sportEventBeforeUpdate.getPosterImage());
         }
     }
 

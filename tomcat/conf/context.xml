@@ -8,5 +8,5 @@
               username="${env.DB_USER}"
               password="${env.DB_PASSWORD}"
               driverClassName="org.postgresql.Driver"
-              url="jdbc:postgresql://${env.DB_HOST}:${env.DB_PORT}/${env.DB_NAME}"/>
+              url="jdbc:postgresql://db:5432/ticket-booking-system"/>
 </Context>

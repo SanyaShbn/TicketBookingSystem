@@ -123,22 +123,25 @@ public class RowService {
     @Transactional
     public RowReadDto updateRow(Long id, RowCreateEditDto rowCreateEditDto, Long sectorId) {
         try {
-            Optional<Row> rowBeforeUpdate = rowRepository.findById(id);
-            if (rowBeforeUpdate.isEmpty()) {
+            Optional<Row> optionalRow = rowRepository.findById(id);
+            if (optionalRow.isEmpty()) {
                 log.error("Failed to find row with provided id: {}", id);
                 throw new DaoResourceNotFoundException("Row not found");
             }
+            Row rowToUpdate = optionalRow.get();
 
-            Row row = rowCreateEditMapper.toEntity(rowCreateEditDto);
-            Sector sector = sectorService.findSectorById(sectorId);
-            row.setId(id);
-            row.setSector(sector);
             rowRepository.updateSectorBeforeRowUpdate(sectorId,
-                    rowBeforeUpdate.get().getSeatsNumb(), row.getSeatsNumb());
-            Row updatedRow = rowRepository.save(row);
+                    rowToUpdate.getSeatsNumb(), rowCreateEditDto.getSeatsNumb());
+
+            rowCreateEditMapper.updateEntityFromDto(rowCreateEditDto, rowToUpdate);
+
+            Sector sector = sectorService.findSectorById(sectorId);
+            rowToUpdate.setSector(sector);
+
+            rowRepository.save(rowToUpdate);
             rowRepository.flush();
             log.info("Row with id {} updated successfully with dto: {}", id, rowCreateEditDto);
-            return rowReadMapper.toDto(updatedRow);
+            return rowReadMapper.toDto(rowToUpdate);
         } catch (DataAccessException e){
             log.error("Failed to update row {} with dto: {}", id, rowCreateEditDto);
             throw new DaoCrudException(e);

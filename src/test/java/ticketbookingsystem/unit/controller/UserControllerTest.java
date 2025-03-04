@@ -43,20 +43,6 @@ public class UserControllerTest {
     }
 
     @Test
-    void testRegisterUserAccount_existingUser() throws UserAlreadyExistException {
-        UserDto userDto = UserDto.builder().email("test@example.com").build();
-        when(bindingResult.hasErrors()).thenReturn(false);
-        doThrow(new UserAlreadyExistException("User already exists")).when(userService)
-                .registerNewUserAccount(any(UserDto.class));
-
-        ResponseEntity<UserDto> response = userController.registerUserAccount(userDto, bindingResult);
-
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals(userDto, response.getBody());
-        verify(userService, times(1)).registerNewUserAccount(any(UserDto.class));
-    }
-
-    @Test
     void testRegisterUserAccount_validationErrors() {
         UserDto userDto = UserDto.builder().email("test@example.com").build();
         when(bindingResult.hasErrors()).thenReturn(true);

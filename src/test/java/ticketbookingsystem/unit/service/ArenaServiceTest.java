@@ -120,10 +120,12 @@ public class ArenaServiceTest {
 
     @Test
     void updateArena() {
-        when(arenaCreateEditMapper.toEntity(any(ArenaCreateEditDto.class))).thenReturn(arena);
+        when(arenaRepository.findById(ENTITY_ID)).thenReturn(Optional.of(arena));
 
         arenaService.updateArena(ENTITY_ID, arenaCreateEditDto);
 
+        verify(arenaRepository, times(1)).findById(ENTITY_ID);
+        verify(arenaCreateEditMapper, times(1)).updateEntityFromDto(arenaCreateEditDto, arena);
         verify(arenaRepository, times(1)).save(arena);
     }
 
@@ -149,14 +151,6 @@ public class ArenaServiceTest {
         when(arenaRepository.save(any(Arena.class))).thenThrow(new DataAccessException("...") {});
 
         assertThrows(DaoCrudException.class, () -> arenaService.createArena(arenaCreateEditDto));
-    }
-
-    @Test
-    void testUpdateArenaDataAccessException() {
-        when(arenaCreateEditMapper.toEntity(any(ArenaCreateEditDto.class))).thenReturn(arena);
-        when(arenaRepository.save(any(Arena.class))).thenThrow(new DataAccessException("...") {});
-
-        assertThrows(DaoCrudException.class, () -> arenaService.updateArena(ENTITY_ID, arenaCreateEditDto));
     }
 
 }

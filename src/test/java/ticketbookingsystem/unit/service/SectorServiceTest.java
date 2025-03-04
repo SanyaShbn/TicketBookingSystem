@@ -36,6 +36,12 @@ public class SectorServiceTest {
 
     private static final Long ENTITY_ID = 1L;
 
+    private static final String SECTOR_NAME = "Sector";
+
+    private static final Integer MAX_ROWS_NUMB = 10;
+
+    private static final Integer MAX_SEATS_NUMB = 100;
+
     @Mock
     private SectorRepository sectorRepository;
 
@@ -65,7 +71,10 @@ public class SectorServiceTest {
         sector.setId(ENTITY_ID);
         arena = new Arena();
         arena.setId(ENTITY_ID);
-        sectorCreateEditDto = SectorCreateEditDto.builder().build();
+        sectorCreateEditDto = SectorCreateEditDto.builder()
+                .sectorName(SECTOR_NAME)
+                .maxRowsNumb(MAX_ROWS_NUMB)
+                .maxSeatsNumb(MAX_SEATS_NUMB).build();
         sectorReadDto = SectorReadDto.builder().build();
     }
 
