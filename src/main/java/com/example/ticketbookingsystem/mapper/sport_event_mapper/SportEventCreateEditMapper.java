@@ -2,10 +2,7 @@ package com.example.ticketbookingsystem.mapper.sport_event_mapper;
 
 import com.example.ticketbookingsystem.dto.sport_event_dto.SportEventCreateEditDto;
 import com.example.ticketbookingsystem.entity.SportEvent;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +18,7 @@ public interface SportEventCreateEditMapper {
 
     SportEventCreateEditDto toDto(SportEvent sportEvent);
 
-    @Mapping(target = "posterImage", source = "imageFile", qualifiedByName = "fileToFilename")
+    @Mapping(target = "posterImage", ignore = true)
     void updateEntityFromDto(SportEventCreateEditDto sportEventCreateEditDto, @MappingTarget SportEvent sportEvent);
 
     @Named("fileToFilename")
@@ -30,5 +27,13 @@ public interface SportEventCreateEditMapper {
             return file.getOriginalFilename();
         }
         return null;
+    }
+
+    @AfterMapping
+    default void afterUpdateEntityFromDto(SportEventCreateEditDto sportEventCreateEditDto,
+                                          @MappingTarget SportEvent sportEvent) {
+        if (sportEventCreateEditDto.getImageFile() != null && !sportEventCreateEditDto.getImageFile().isEmpty()) {
+            sportEvent.setPosterImage(sportEventCreateEditDto.getImageFile().getOriginalFilename());
+        }
     }
 }

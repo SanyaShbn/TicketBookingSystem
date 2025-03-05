@@ -25,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -87,12 +88,6 @@ public class TicketService {
                 .map(ticketReadMapper::toDto);
     }
 
-    public List<TicketReadDto> findByEventId(Long eventId){
-        return ticketRepository.findAllBySportEventId(eventId).stream()
-                .map(ticketReadMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
     /**
      * Finds a ticket by its ID.
      *
@@ -111,6 +106,7 @@ public class TicketService {
      * @param eventId the ID of the sporting event to save ticket for
      * @param seatId the ID of the seat to save ticket for
      */
+    @Transactional
     public TicketReadDto createTicket(TicketCreateEditDto ticketCreateEditDto, Long eventId, Long seatId) {
         try {
             Ticket ticket = ticketCreateEditMapper.toEntity(ticketCreateEditDto);
@@ -138,6 +134,7 @@ public class TicketService {
      * @param eventId the ID of the sporting event to save ticket for
      * @param seatId the ID of the seat to save ticket for
      */
+    @Transactional
     public TicketReadDto updateTicket(Long id, TicketCreateEditDto ticketCreateEditDto, Long eventId, Long seatId) {
         try {
             Ticket ticket = ticketCreateEditMapper.toEntity(ticketCreateEditDto);
@@ -174,6 +171,7 @@ public class TicketService {
      *
      * @param id the ID of the ticket to delete
      */
+    @Transactional
     public void deleteTicket(Long id) {
         if (!ticketRepository.existsById(id)) {
             log.error("Failed to find ticket with provided id: {}", id);

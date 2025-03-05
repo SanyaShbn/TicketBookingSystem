@@ -87,14 +87,6 @@ class TicketRepositoryTest extends BaseRepositoryTest {
         assertEquals(1, tickets.getTotalElements());
     }
 
-    @Test
-    void testFindAllBySportEventId() {
-        createTicket(event, seat, TicketStatus.AVAILABLE);
-
-        List<Ticket> tickets = ticketRepository.findAllBySportEventId(event.getId());
-        assertEquals(1, tickets.size());
-    }
-
     private Arena createArena(String name, String city, int capacity) {
         Arena arena = Arena.builder()
                 .name(name)

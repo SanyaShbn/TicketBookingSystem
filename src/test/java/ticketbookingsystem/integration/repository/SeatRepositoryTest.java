@@ -21,8 +21,6 @@ class SeatRepositoryTest extends BaseRepositoryTest {
 
     private static final Long EVENT_ID = 1L;
 
-    private static final Long SEAT_ID = 1L;
-
     @Autowired
     private SeatRepository seatRepository;
 
@@ -79,18 +77,6 @@ class SeatRepositoryTest extends BaseRepositoryTest {
     @Test
     void testFindByEventId() {
         List<Seat> seats = seatRepository.findByEventId(EVENT_ID);
-        assertEquals(0, seats.size());
-    }
-
-    @Test
-    void testFindByEventIdWithNoTickets() {
-        List<Seat> seats = seatRepository.findByEventIdWithNoTickets(EVENT_ID);
-        assertEquals(0, seats.size());
-    }
-
-    @Test
-    void testFindAllByEventIdWhenUpdate() {
-        List<Seat> seats = seatRepository.findAllByEventIdWhenUpdate(EVENT_ID, SEAT_ID);
         assertEquals(0, seats.size());
     }
 
