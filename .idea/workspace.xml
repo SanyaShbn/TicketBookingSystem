@@ -9,17 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Updated README file">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/SeatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1a66c97-d06b-4d24-80f8-b131e77e2d1a.xml" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Refactored Seat and Ticket module in order to configure the frontend app in Angular properly (developing UI for working with tickets there)">
+      <change afterPath="$PROJECT_DIR$/kubernetes/persistent-volumes.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kubernetes/postgres-deployment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kubernetes/spring-boot-app-deployment.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/sport_event_mapper/SportEventCreateEditMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/mapper/sport_event_mapper/SportEventCreateEditMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SeatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/SeatRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/TicketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/TicketRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SeatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/SeatService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/TicketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/SeatRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/SeatRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/TicketRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/integration/repository/TicketRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +37,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="rest-and-microservices" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -81,7 +75,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;rest-and-microservices&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;learning-ci-cd-and-k8s&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/TicketBookingSystem/.env&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
@@ -524,15 +518,12 @@
       <workItem from="1741114959987" duration="1433000" />
       <workItem from="1741163131561" duration="6893000" />
       <workItem from="1741174190736" duration="6543000" />
-      <workItem from="1741202140031" duration="3810000" />
-    </task>
-    <task id="LOCAL-00011" summary="Started implementing authorization (feature №7)">
-      <option name="closed" value="true" />
-      <created>1733739033721</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1733739033721</updated>
+      <workItem from="1741202140031" duration="3980000" />
+      <workItem from="1741280348571" duration="356000" />
+      <workItem from="1741287905338" duration="619000" />
+      <workItem from="1741288741926" duration="2882000" />
+      <workItem from="1741332608353" duration="6824000" />
+      <workItem from="1741349138964" duration="869000" />
     </task>
     <task id="LOCAL-00012" summary="Implemented authorization (for now, without user ticket purchasing functionality)">
       <option name="closed" value="true" />
@@ -918,7 +909,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741101708096</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Refactored Seat and Ticket module in order to configure the frontend app in Angular properly (developing UI for working with tickets there)">
+      <option name="closed" value="true" />
+      <created>1741207414360</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1741207414360</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -961,7 +960,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started moving from MVC to REST, added Swagger and Liquibase" />
     <MESSAGE value="Refactored ArenaController, SectorController, RowController, SportEventController (REST instead of MVC)" />
     <MESSAGE value="Refactored the rest of the controllers: UserCartController, UserController, TicketController, TicketsPurchaseController (REST instead of MVC)" />
     <MESSAGE value="Started implementing JWT into SpringSecurity" />
@@ -986,7 +984,8 @@
     <MESSAGE value="Fixed the updating of the SportEvent entity (now with it's poster image)" />
     <MESSAGE value="Finished refactoring the SportEvent module as well as managing images functionality (except WebSocket yet), added some JavaDoc, refactored some of the tests" />
     <MESSAGE value="Updated README file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated README file" />
+    <MESSAGE value="Refactored Seat and Ticket module in order to configure the frontend app in Angular properly (developing UI for working with tickets there)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored Seat and Ticket module in order to configure the frontend app in Angular properly (developing UI for working with tickets there)" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
