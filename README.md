@@ -74,3 +74,93 @@ http://localhost:8080/swagger-ui/index.html
 username/email: admin@gmail.com
 
 пароль: Admin_12345
+
+## Описание процесса деплоя в kubernetes (на данный момент, инструкция - только для Windows)
+
+### Предварительные требования
+
+Убедитесь, что установлены следующие инструменты:
+
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/) (для локального Kubernetes-кластера)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/) (для управления кластером)
+- Docker (с поддержкой локального демона Minikube)
+- В качестве виртуальной машины использовал Oracle VirtualBox(https://www.virtualbox.org/wiki/Downloads)
+
+### Шаг 1: Запуск Minikube
+
+Запустите Minikube, если он ещё не запущен (в PowerShell):
+
+```
+minikube start --no-vtx-check
+```
+
+Настройте Docker-клиент на использование Docker-демона Minikube:
+
+```
+minikube docker-env | Invoke-Expression
+```
+
+### Шаг 2: Построение Docker-образа
+
+Перейдите в корневую директорию проекта и выполните:
+
+```
+docker build -t ticketbookingsystem-spring-boot-app:latest .
+```
+
+### Шаг 3: PostgreSQL
+
+Перейдите в корень проекта и используйте следующую команду для создания ConfigMap на основе содержимого папки initdb:
+
+```
+kubectl create configmap postgres-initdb --from-file=./initdb
+```
+
+Перейдите в директорию "kubernetes" в корне проекта, содержащую .yaml-файлы, необходимые для деплоя
+проекта в kubernetes.
+Примените файл persistent-volumes.yaml для настройки Persistent Volume в PostgreSQL:
+
+```
+kubectl apply -f persistent-volumes.yaml
+```
+
+Далее задеплойте PostgreSQL:
+
+```
+kubectl apply -f postgres-deployment.yaml
+```
+
+### Шаг 4: Деплой Kafka
+
+Тестирование созданного и развернутого кластера рекомендуется производить совместно со вторым микросервисом,
+ImageService(https://github.com/SanyaShbn/ImageService). По данной ссылке на репозиторий второго проекта доступен и
+README с инструкцией по деплою в Docker и Kubernetes непосредственно этого второго проекта-микросервиса, которую стоит
+выполнить перед переходом к остальным шагам данного гайда. Если же желаете работать только с текущим сервисом, все равно
+рекомендую изучить README, доступный по предоставленной ранее ссылке, так как там описан, в том числе, процесс деплоя в Kubernetes
+контейнера для Kafka. Этот шаг необходим для корректного деплоя данного проекта! Можете создать в директории 'kubernetes'
+данного проекта .yaml-файлы с целью создания Deployment и Service для компонента Kafka. Затем скопировать туда код из файлов kafka-deployment.yaml и zookeeper-deployment.yaml второго проекта, а затем применить 
+этот файл в kubectl (либо полностью развернуть второй проект, тогда компонент с Kafka уже будет присутствовать, и можете
+приступать к дальнейшим шагам уже текущего гайда).
+
+Рекомендуется периодически осуществлять проверку статуса подов, чтобы удостовериться, что все они запущены и корректно
+работают перед развертыванием ImageService:
+
+```
+kubectl get pods
+```
+
+### Шаг 5: Деплой TicketBookingSystem
+
+Примените файл spring-boot-app-deployment.yaml:
+
+```
+kubectl apply -f spring-boot-app-deployment.yaml
+```
+
+Перенаправьте порт для локального доступа после его запуска:
+
+```
+kubectl port-forward svc/spring-boot-app-service 8080:8080
+```
+
+Теперь тестирование сервиса доступно по адресу http://localhost:8080/swagger-ui/index.html.
