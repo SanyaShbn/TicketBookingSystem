@@ -26,17 +26,24 @@ public class SeatService {
     private final SeatReadMapper seatReadMapper;
 
     /**
-     * Finds seats to add seat tickets by a specific event ID.
+     * Finds pageable seats to add seat tickets by a specific event ID.
      *
      * @param eventId the ID of the event
      * @param pageable The pagination information.
-     * @return a list of seats which are not yet available for ticket purchasing
+     * @return a page of seats which are not yet available for ticket purchasing
      */
     public Page<SeatReadDto> findByEventIdWithNoTickets(Long eventId, Pageable pageable){
         return seatRepository.findByEventIdWithNoTickets(eventId, pageable)
                 .map(seatReadMapper::toDto);
     }
 
+    /**
+     * Finds the list of the whole seats available for a specific event
+     * (not pageable, just the list with all the records).
+     *
+     * @param eventId the ID of the event
+     * @return list of all seats for this sporting event
+     */
     public List<SeatReadDto> findByEventId(Long eventId){
         return seatRepository.findByEventId(eventId).stream()
                 .map(seatReadMapper::toDto)
@@ -44,12 +51,12 @@ public class SeatService {
     }
 
     /**
-     * Finds seats to add seat tickets by a specific event ID including the updating one.
+     * Finds pageable seats to add seat tickets by a specific event ID including the updating one.
      *
      * @param eventId the ID of the event
      * @param seatId the ID of the seat for which there is already a ticket (the updating one)
      * @param pageable The pagination information.
-     * @return a list of seats which are not yet available for ticket purchasing and the updating one
+     * @return a page of seats which are not yet available for ticket purchasing and the updating one
      */
     public Page<SeatReadDto> findAllByEventIdWhenUpdate(Long eventId, Long seatId, Pageable pageable){
         return seatRepository.findAllByEventIdWhenUpdate(eventId, seatId, pageable)

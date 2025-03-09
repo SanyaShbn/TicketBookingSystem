@@ -49,13 +49,13 @@ public class TicketControllerTest {
 
         List<TicketReadDto> tickets = Arrays.asList(ticket1, ticket2);
         Page<TicketReadDto> page = new PageImpl<>(tickets);
-        when(ticketService.findAll(any(Long.class), any(TicketFilter.class), any(Pageable.class))).thenReturn(page);
+        when(ticketService.findAllByEventId(any(Long.class), any(TicketFilter.class), any(Pageable.class))).thenReturn(page);
 
-        PageResponse<TicketReadDto> response = ticketController.findAllTickets(
+        PageResponse<TicketReadDto> response = ticketController.findAllTicketsByEventId(
                 TICKET_ID, new TicketFilter(""), Pageable.unpaged());
 
         assertEquals(2, response.getContent().size());
-        verify(ticketService, times(1)).findAll(
+        verify(ticketService, times(1)).findAllByEventId(
                 any(Long.class), any(TicketFilter.class), any(Pageable.class));
     }
 

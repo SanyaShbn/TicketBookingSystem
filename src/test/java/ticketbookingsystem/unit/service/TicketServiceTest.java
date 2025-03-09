@@ -80,18 +80,6 @@ public class TicketServiceTest {
     }
 
     @Test
-    public void testFindAll() {
-        when(ticketReadMapper.toDto(any(Ticket.class))).thenReturn(ticketReadDto);
-        when(ticketRepository.findAll()).thenReturn(List.of(ticket));
-
-        var result = ticketService.findAll();
-
-        assertEquals(1, result.size());
-        assertEquals(ticketReadDto, result.get(0));
-        verify(ticketRepository, times(1)).findAll();
-    }
-
-    @Test
     public void testFindAllTickets() {
         when(ticketReadMapper.toDto(any(Ticket.class))).thenReturn(ticketReadDto);
         TicketFilter ticketFilter = mock(TicketFilter.class);
@@ -104,14 +92,14 @@ public class TicketServiceTest {
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 
         List<Ticket> tickets = List.of(ticket);
-        when(ticketRepository.findAllBySportEventId(eq(ENTITY_ID), eq(sortedPageable))).thenReturn(new PageImpl<>(tickets));
+        when(ticketRepository.findAllBySportEventIdPageable(eq(ENTITY_ID), eq(sortedPageable))).thenReturn(new PageImpl<>(tickets));
 
-        Page<TicketReadDto> result = ticketService.findAll(ENTITY_ID, ticketFilter, pageable);
+        Page<TicketReadDto> result = ticketService.findAllByEventId(ENTITY_ID, ticketFilter, pageable);
 
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
         assertEquals(ticketReadDto, result.getContent().get(0));
-        verify(ticketRepository, times(1)).findAllBySportEventId(ENTITY_ID, sortedPageable);
+        verify(ticketRepository, times(1)).findAllBySportEventIdPageable(ENTITY_ID, sortedPageable);
         verify(ticketReadMapper, times(1)).toDto(ticket);
     }
 

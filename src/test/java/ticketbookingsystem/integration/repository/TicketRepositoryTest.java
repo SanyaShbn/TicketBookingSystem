@@ -83,7 +83,7 @@ class TicketRepositoryTest extends BaseRepositoryTest {
         createTicket(event, seat, TicketStatus.AVAILABLE);
 
         Pageable pageable = PageRequest.of(0, 10);
-        var tickets = ticketRepository.findAllBySportEventId(event.getId(), pageable);
+        var tickets = ticketRepository.findAllBySportEventIdPageable(event.getId(), pageable);
         assertEquals(1, tickets.getTotalElements());
     }
 

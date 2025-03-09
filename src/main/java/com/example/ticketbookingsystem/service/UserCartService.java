@@ -127,4 +127,16 @@ public class UserCartService {
         }
         return false;
     }
+
+    /**
+     * Retrieves the list of items in user cart by a specific user ID.
+     *
+     * @param userId the ID of the user who is currently using the cart for ticket purchase
+     * @return list of user cart items
+     */
+    public List<UserCartDto> findItemsInCart(Long userId) {
+        return userCartRepository.findByUserId(userId).stream()
+                .map(userCartMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

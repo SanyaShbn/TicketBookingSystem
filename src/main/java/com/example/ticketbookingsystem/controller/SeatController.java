@@ -7,10 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * REST Controller class for managing seats in the Ticket Booking System application.
@@ -22,6 +25,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class SeatController {
 
     private final SeatService seatService;
+
+    /**
+     * Handles GET requests to retrieve and display available seats when choosing a ticket to purchase (by users).
+     *
+     * @param eventId The ID of the event which the seats belong to.
+     * @return list of all seats for this sporting event (mapped into SeatReadDto).
+     */
+    @GetMapping
+    public ResponseEntity<List<SeatReadDto>> findByEventId(@RequestParam("eventId") Long eventId) {
+        List<SeatReadDto> seats = seatService.findByEventId(eventId);
+        return ResponseEntity.ok(seats);
+    }
 
     /**
      * Handles GET requests to retrieve and display available seats when creating new ticket.

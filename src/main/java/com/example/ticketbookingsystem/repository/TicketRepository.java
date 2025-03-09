@@ -31,6 +31,10 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query("FROM Ticket t JOIN FETCH t.sportEvent se JOIN FETCH t.seat s JOIN FETCH s.row r " +
             "JOIN FETCH r.sector sec JOIN FETCH sec.arena a WHERE t.sportEvent.id = :eventId")
-    Page<Ticket> findAllBySportEventId(Long eventId, Pageable sortedPageable);
+    Page<Ticket> findAllBySportEventIdPageable(Long eventId, Pageable sortedPageable);
+
+    @Query("FROM Ticket t JOIN FETCH t.sportEvent se JOIN FETCH t.seat s JOIN FETCH s.row r " +
+            "JOIN FETCH r.sector sec JOIN FETCH sec.arena a WHERE t.sportEvent.id = :eventId")
+    List<Ticket> findAllBySportEventId(Long eventId);
 
 }

@@ -58,25 +58,25 @@ public class TicketService {
     private final SeatReadMapper seatReadMapper;
 
     /**
-     * Finds all tickets.
+     * Finds the list of all tickets for a specific sport event.
      *
      * @return a list of all tickets
      */
-    public List<TicketReadDto> findAll(){
-        return ticketRepository.findAll().stream()
+    public List<TicketReadDto> findAllByEventId(Long eventId){
+        return ticketRepository.findAllBySportEventId(eventId).stream()
                 .map(ticketReadMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Finds all tickets matching the given filter.
+     * Finds all pageable tickets for a specific sport event matching the given filter.
      *
      * @param ticketFilter the filter to apply
      * @param eventId the ID of the event for which is needed to get tickets
      * @param pageable object of Pageable interface to apply pagination correctly
-     * @return a list of tickets matching the filter
+     * @return a page of tickets matching the filter
      */
-    public Page<TicketReadDto> findAll(Long eventId, TicketFilter ticketFilter, Pageable pageable){
+    public Page<TicketReadDto> findAllByEventId(Long eventId, TicketFilter ticketFilter, Pageable pageable){
         Map<String, String> sortOrders = new LinkedHashMap<>();
         if (ticketFilter.priceSortOrder() != null && !ticketFilter.priceSortOrder().isEmpty()) {
             sortOrders.put(SORT_BY_PRICE, ticketFilter.priceSortOrder());
@@ -84,7 +84,7 @@ public class TicketService {
 
         Sort sort = SortUtils.buildSort(sortOrders);
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
-        return ticketRepository.findAllBySportEventId(eventId, sortedPageable)
+        return ticketRepository.findAllBySportEventIdPageable(eventId, sortedPageable)
                 .map(ticketReadMapper::toDto);
     }
 

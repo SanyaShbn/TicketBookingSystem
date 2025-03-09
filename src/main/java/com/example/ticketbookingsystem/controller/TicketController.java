@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,18 +31,30 @@ public class TicketController {
     private final TicketService ticketService;
 
     /**
-     * Handles GET requests to retrieve and display all tickets.
+     * Handles GET requests to retrieve and display all tickets for a specific sport event.
      *
      * @param eventId The ID of the event to which the tickets belong.
-     * @param ticketFilter The filter criteria for ticekts.
+     * @return list of retrieved tickets.
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<TicketReadDto>> findAllTicketsByEventId(@RequestParam("eventId") Long eventId) {
+        List<TicketReadDto> tickets = ticketService.findAllByEventId(eventId);
+        return ResponseEntity.ok(tickets);
+    }
+
+    /**
+     * Handles GET requests to retrieve and display pageable tickets for a specific sport event.
+     *
+     * @param eventId The ID of the event to which the tickets belong.
+     * @param ticketFilter The filter criteria for tickets.
      * @param pageable The pagination information.
      * @return A PageResponse containing a paginated list of TicketReadDto.
      */
     @GetMapping
-    public PageResponse<TicketReadDto> findAllTickets(@RequestParam("eventId") Long eventId,
+    public PageResponse<TicketReadDto> findAllTicketsByEventId(@RequestParam("eventId") Long eventId,
                                                       TicketFilter ticketFilter,
                                                       Pageable pageable) {
-        Page<TicketReadDto> ticketsPage = ticketService.findAll(eventId, ticketFilter, pageable);
+        Page<TicketReadDto> ticketsPage = ticketService.findAllByEventId(eventId, ticketFilter, pageable);
         return PageResponse.of(ticketsPage);
     }
 

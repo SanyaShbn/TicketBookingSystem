@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * REST Controller class for managing user cart in the Ticket Booking System application.
  */
@@ -20,6 +22,18 @@ public class UserCartController {
     private final UserCartService userCartService;
 
     private final TicketService ticketService;
+
+    /**
+     * Handles GET requests to retrieve user cart info when purchasing tickets.
+     *
+     * @param userId  The ID of the authenticated user.
+     * @return A ResponseEntity containing the list of user cart items.
+     */
+    @GetMapping
+    public ResponseEntity<List<UserCartDto>> getUserCart(@RequestParam Long userId) {
+        List<UserCartDto> userCart = userCartService.findItemsInCart(userId);
+        return ResponseEntity.ok(userCart);
+    }
 
     /**
      * Handles POST requests to manage user cart actions such as add, remove, or clear.
