@@ -1,6 +1,5 @@
 package com.example.ticketbookingsystem.repository;
 
-import com.example.ticketbookingsystem.entity.SportEvent;
 import com.example.ticketbookingsystem.entity.Ticket;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -38,6 +38,7 @@ public class UserCartService {
      *
      * @param userId the ID of the user who is currently using the cart for ticket purchase
      */
+    @Transactional
     public void clearUserCart(Long userId) {
         List<UserCart> userCarts = userCartRepository.findByUserId(userId);
         List<Ticket> ticketsToUpdate = new ArrayList<>();
@@ -59,6 +60,7 @@ public class UserCartService {
      *
      * @param userCartDto the DTO of the user cart to create
      */
+    @Transactional
     public void addItemToCart(UserCartDto userCartDto) {
         UserCart userCart = userCartMapper.toEntity(userCartDto);
         Optional<Ticket> ticketOpt = ticketRepository.findById(userCart.getId().getTicketId());
@@ -80,6 +82,7 @@ public class UserCartService {
      *
      * @param userCartDto the DTO of the user cart to remove items from
      */
+    @Transactional
     public void removeItemFromCart(UserCartDto userCartDto) {
         UserCart userCart = userCartMapper.toEntity(userCartDto);
         List<Ticket> ticketsToUpdate = new ArrayList<>();

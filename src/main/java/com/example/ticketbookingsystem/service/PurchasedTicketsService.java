@@ -7,6 +7,7 @@ import com.example.ticketbookingsystem.entity.TicketStatus;
 import com.example.ticketbookingsystem.exception.DaoResourceNotFoundException;
 import com.example.ticketbookingsystem.repository.PurchasedTicketRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
+import com.example.ticketbookingsystem.repository.UserCartRepository;
 import com.example.ticketbookingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +32,8 @@ public class PurchasedTicketsService {
 
     private final UserRepository userRepository;
 
+    private final UserCartRepository userCartRepository;
+
     /**
      * Creates new purchased tickets record
      *
@@ -44,25 +46,20 @@ public class PurchasedTicketsService {
             log.error("Now such User with provided id: {}", userId);
             throw new DaoResourceNotFoundException("User not found with id " + userId);
         }
-        List<PurchasedTicket> purchasedTickets = ticketIds.stream()
-                .map(ticketId -> {
-                    Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
-                    if (ticket != null) {
-                        ticket.setStatus(TicketStatus.SOLD);
-                        ticketRepository.save(ticket);
+        List<Ticket> tickets = ticketRepository.findAllById(ticketIds);
+        tickets.forEach(ticket -> ticket.setStatus(TicketStatus.SOLD));
+        ticketRepository.saveAll(tickets);
 
-                        return PurchasedTicket.builder()
-                                .userId(userId)
-                                .purchaseDate(LocalDateTime.now())
-                                .ticket(ticket)
-                                .build();
-                    }
-                    return null;
-                })
-                .filter(Objects::nonNull)
+        List<PurchasedTicket> purchasedTickets = tickets.stream()
+                .map(ticket -> PurchasedTicket.builder()
+                        .userId(userId)
+                        .purchaseDate(LocalDateTime.now())
+                        .ticket(ticket)
+                        .build())
                 .collect(Collectors.toList());
 
         purchasedTicketRepository.saveAll(purchasedTickets);
+        userCartRepository.deleteByUserId(userId);
         log.info("Ticket purchase successfully committed by user with user ID: {}", userId);
     }
 

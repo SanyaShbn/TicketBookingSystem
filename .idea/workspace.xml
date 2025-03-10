@@ -9,8 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Implemented ticket selection when purchasing tickets by user in my frontend-app in Angular, that's why did code refactoring on my backend in this project">
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Added into README k8s deploy guide info">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketsPurchaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketsPurchaseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/TicketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/TicketRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/PurchasedTicketsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/PurchasedTicketsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserCartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserCartService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -526,15 +530,9 @@
       <workItem from="1741450418574" duration="1212000" />
       <workItem from="1741498351713" duration="4604000" />
       <workItem from="1741507871236" duration="7884000" />
-      <workItem from="1741525890705" duration="2318000" />
-    </task>
-    <task id="LOCAL-00014" summary="Managed concurrency when adding tickets into user's cart before committing purchase">
-      <option name="closed" value="true" />
-      <created>1733929316111</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1733929316111</updated>
+      <workItem from="1741525890705" duration="7326000" />
+      <workItem from="1741597519725" duration="3955000" />
+      <workItem from="1741605491820" duration="5141000" />
     </task>
     <task id="LOCAL-00015" summary="Implemented committing purchase functionality + viewing purchased tickets">
       <option name="closed" value="true" />
@@ -920,7 +918,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741518837043</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="Added into README k8s deploy guide info">
+      <option name="closed" value="true" />
+      <created>1741534956408</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1741534956408</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -963,7 +969,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started implementing JWT into SpringSecurity" />
     <MESSAGE value="Implemented JWT into SpringSecurity (have role authorization, but for now - no refresh tokens)" />
     <MESSAGE value="Adding refresh token mechanism (not fully successfully tested yet)" />
     <MESSAGE value="Fixed and tested refresh token mechanism, refactored internalization (EN/RU), tested metrics within Actuator, added JavaDoc" />
@@ -988,7 +993,8 @@
     <MESSAGE value="Refactored Seat and Ticket module in order to configure the frontend app in Angular properly (developing UI for working with tickets there)" />
     <MESSAGE value="Started configuring Kubernetes (successfully, but need some refactoring for additional functionality + haven't finished frontend project yet, so don't have it in the k8s-cluster)" />
     <MESSAGE value="Implemented ticket selection when purchasing tickets by user in my frontend-app in Angular, that's why did code refactoring on my backend in this project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented ticket selection when purchasing tickets by user in my frontend-app in Angular, that's why did code refactoring on my backend in this project" />
+    <MESSAGE value="Added into README k8s deploy guide info" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added into README k8s deploy guide info" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

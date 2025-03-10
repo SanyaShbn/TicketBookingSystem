@@ -56,7 +56,7 @@ public class TicketsPurchaseController {
     @GetMapping("/purchasedTickets")
     public ResponseEntity<?> getPurchasedTickets(@RequestParam Long userId) {
         List<PurchasedTicketDto> purchasedTickets = purchasedTicketsService.findAllByUserId(userId);
-        return ResponseEntity.ok(purchasedTickets.toString());
+        return ResponseEntity.ok(purchasedTickets);
     }
 
     private ResponseEntity<String> handlePurchaseError(String errorCode) {
