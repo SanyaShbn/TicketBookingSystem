@@ -9,12 +9,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Added into README k8s deploy guide info">
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Refactored Ticket purchase functionality, added @Transactional for some of the methods in UserCartService">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketsPurchaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/TicketsPurchaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/TicketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/TicketRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/PurchasedTicketsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/PurchasedTicketsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserCartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/service/UserCartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/LoginController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/RefreshTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/RefreshTokenRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/AuthEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/AuthEntryPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/AuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/AuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/UserDetailsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/LoginControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/LoginControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/JwtServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/JwtServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +46,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="rest-and-microservices" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -533,6 +541,12 @@
       <workItem from="1741525890705" duration="7326000" />
       <workItem from="1741597519725" duration="3955000" />
       <workItem from="1741605491820" duration="5141000" />
+      <workItem from="1741762905383" duration="4495000" />
+      <workItem from="1741779493120" duration="620000" />
+      <workItem from="1741782964702" duration="2530000" />
+      <workItem from="1741788141380" duration="732000" />
+      <workItem from="1741796258183" duration="2930000" />
+      <workItem from="1741807532611" duration="3711000" />
     </task>
     <task id="LOCAL-00015" summary="Implemented committing purchase functionality + viewing purchased tickets">
       <option name="closed" value="true" />

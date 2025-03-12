@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * REST Controller class for managing user authentication and registration in the Ticket Booking System application.
  */
 @RestController
+@RequestMapping("/api/v1/registration")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -27,7 +28,7 @@ public class UserController {
      * @param bindingResult The binding result for validation.
      * @return A ResponseEntity containing the registered UserDto and HTTP status.
      */
-    @RequestMapping(value="/registration", method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<UserDto> registerUserAccount(@RequestBody @Validated UserDto userDto,
                                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
