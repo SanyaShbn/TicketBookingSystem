@@ -9,20 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Refactored Ticket purchase functionality, added @Transactional for some of the methods in UserCartService">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/AuthController.java" afterDir="false" />
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Started implementing back again the jwt-based authentication and authorization using SpringSecurity">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/LoginController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/entity/Role.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/RefreshTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/repository/RefreshTokenRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/AuthEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/AuthEntryPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/AuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/AuthenticationFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/JwtService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/UserDetailsServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/LoginControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/LoginControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/JwtServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/JwtServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/LoginControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/AuthControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -546,15 +538,12 @@
       <workItem from="1741782964702" duration="2530000" />
       <workItem from="1741788141380" duration="732000" />
       <workItem from="1741796258183" duration="2930000" />
-      <workItem from="1741807532611" duration="3711000" />
-    </task>
-    <task id="LOCAL-00015" summary="Implemented committing purchase functionality + viewing purchased tickets">
-      <option name="closed" value="true" />
-      <created>1734000101795</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1734000101795</updated>
+      <workItem from="1741807532611" duration="3814000" />
+      <workItem from="1741874016266" duration="3903000" />
+      <workItem from="1741885764131" duration="11294000" />
+      <workItem from="1741943891358" duration="6793000" />
+      <workItem from="1741953255102" duration="7363000" />
+      <workItem from="1741976149366" duration="5371000" />
     </task>
     <task id="LOCAL-00016" summary="Tried to deploy (not fully successful yet)">
       <option name="closed" value="true" />
@@ -940,7 +929,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741534956408</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="Started implementing back again the jwt-based authentication and authorization using SpringSecurity">
+      <option name="closed" value="true" />
+      <created>1741811665673</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1741811665673</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -983,7 +980,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implemented JWT into SpringSecurity (have role authorization, but for now - no refresh tokens)" />
     <MESSAGE value="Adding refresh token mechanism (not fully successfully tested yet)" />
     <MESSAGE value="Fixed and tested refresh token mechanism, refactored internalization (EN/RU), tested metrics within Actuator, added JavaDoc" />
     <MESSAGE value="Refactored unit-tests for service classes" />
@@ -1008,7 +1004,8 @@
     <MESSAGE value="Started configuring Kubernetes (successfully, but need some refactoring for additional functionality + haven't finished frontend project yet, so don't have it in the k8s-cluster)" />
     <MESSAGE value="Implemented ticket selection when purchasing tickets by user in my frontend-app in Angular, that's why did code refactoring on my backend in this project" />
     <MESSAGE value="Added into README k8s deploy guide info" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added into README k8s deploy guide info" />
+    <MESSAGE value="Started implementing back again the jwt-based authentication and authorization using SpringSecurity" />
+    <option name="LAST_COMMIT_MESSAGE" value="Started implementing back again the jwt-based authentication and authorization using SpringSecurity" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

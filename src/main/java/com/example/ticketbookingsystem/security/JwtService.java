@@ -15,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
 import java.time.Instant;
@@ -142,6 +143,7 @@ public class JwtService {
      *
      * @param refreshToken the refresh token to invalidate.
      */
+    @Transactional
     public void invalidateRefreshToken(String refreshToken) {
         refreshTokenRepository.deleteByToken(refreshToken);
         log.info("Refresh token invalidated: {}", refreshToken);

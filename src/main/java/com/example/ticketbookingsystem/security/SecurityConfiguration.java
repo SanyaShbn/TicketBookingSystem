@@ -4,17 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -39,7 +40,7 @@ public class SecurityConfiguration {
     private static final String[] AUTH_WHITELIST = {
             "/api/v1/login",
             "/api/v1/registration",
-            "/api/v1/refresh",
+//            "/api/v1/refresh",
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
@@ -48,15 +49,20 @@ public class SecurityConfiguration {
 
     private static final List<String> ALLOWED_METHODS = List.of("GET", "POST", "PUT", "DELETE", "OPTIONS");
 
-    private static final String CSRF_TOKEN_HEADER = "X-XSRF-TOKEN";
-
     private static final List<String> ALLOWED_HEADERS = List.of(
             "Authorization",
             "Cache-Control",
             "Content-Type",
-            CSRF_TOKEN_HEADER);
+            "Refresh-Token"
+    );
 
-    private static final String ADMIN_ROLE_PATH = "/api/v1/admin/**";
+    private static final String ADMIN_MODIFY_PATH = "/api/v1/admin/**";
+
+    private static final String[] ADMIN_PROTECTED_PATHS = {
+            "/api/v1/admin/arenas/**",
+            "/api/v1/admin/sectors/**",
+            "/api/v1/admin/rows/**",
+    };
 
     private static final String USER_CART_PATH = "/api/v1/user_cart";
 
@@ -104,16 +110,14 @@ public class SecurityConfiguration {
      * @return the CORS configuration source.
      */
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Collections.singletonList(CORS_ALLOWED_ORIGIN));
-        config.setAllowedMethods(ALLOWED_METHODS);
-        config.setAllowedHeaders(ALLOWED_HEADERS);
-        config.setExposedHeaders(Collections.singletonList(CSRF_TOKEN_HEADER));
-        config.setAllowCredentials(true);
-
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList(CORS_ALLOWED_ORIGIN));
+        configuration.setAllowedMethods(ALLOWED_METHODS);
+        configuration.setAllowedHeaders(ALLOWED_HEADERS);
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
@@ -127,9 +131,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf((csrf) -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                )
+        http.csrf(CsrfConfigurer::disable)
                 .cors(withDefaults())
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -137,14 +139,18 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers(request -> request.getParameter("lang") != null).permitAll()
-                        .requestMatchers(ADMIN_ROLE_PATH).hasRole(ADMIN.getAuthority())
+                        .requestMatchers(HttpMethod.POST, ADMIN_MODIFY_PATH).hasRole(ADMIN.getAuthority())
+                        .requestMatchers(HttpMethod.PUT, ADMIN_MODIFY_PATH).hasRole(ADMIN.getAuthority())
+                        .requestMatchers(HttpMethod.DELETE, ADMIN_MODIFY_PATH).hasRole(ADMIN.getAuthority())
+                        .requestMatchers(HttpMethod.GET, ADMIN_PROTECTED_PATHS).hasRole(ADMIN.getAuthority())
                         .requestMatchers(USER_CART_PATH,
                                 PURCHASES_PATH).hasRole(USER.getAuthority())
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling((ex) -> ex
                         .authenticationEntryPoint(exceptionHandler)
-                ).addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                )
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
