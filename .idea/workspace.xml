@@ -9,12 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Started implementing back again the jwt-based authentication and authorization using SpringSecurity">
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Continuing configuring authentication and authorization logic for proper interaction with my frontend Angular app">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/JwtService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/LoginControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/AuthControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -543,15 +540,13 @@
       <workItem from="1741885764131" duration="11294000" />
       <workItem from="1741943891358" duration="6793000" />
       <workItem from="1741953255102" duration="7363000" />
-      <workItem from="1741976149366" duration="5371000" />
-    </task>
-    <task id="LOCAL-00016" summary="Tried to deploy (not fully successful yet)">
-      <option name="closed" value="true" />
-      <created>1734091024393</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1734091024393</updated>
+      <workItem from="1741976149366" duration="5429000" />
+      <workItem from="1742019501167" duration="1031000" />
+      <workItem from="1742020855674" duration="8174000" />
+      <workItem from="1742043696734" duration="550000" />
+      <workItem from="1742044275917" duration="32000" />
+      <workItem from="1742050574460" duration="6482000" />
+      <workItem from="1742065829469" duration="903000" />
     </task>
     <task id="LOCAL-00017" summary="Deployed with Docker (please, check README file in order to get info about admin credentials and check admin functionality when running the app)">
       <option name="closed" value="true" />
@@ -937,7 +932,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741811665673</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="Continuing configuring authentication and authorization logic for proper interaction with my frontend Angular app">
+      <option name="closed" value="true" />
+      <created>1741985764011</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1741985764011</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -980,7 +983,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adding refresh token mechanism (not fully successfully tested yet)" />
     <MESSAGE value="Fixed and tested refresh token mechanism, refactored internalization (EN/RU), tested metrics within Actuator, added JavaDoc" />
     <MESSAGE value="Refactored unit-tests for service classes" />
     <MESSAGE value="Refactored unit-tests for controller layer" />
@@ -1005,7 +1007,8 @@
     <MESSAGE value="Implemented ticket selection when purchasing tickets by user in my frontend-app in Angular, that's why did code refactoring on my backend in this project" />
     <MESSAGE value="Added into README k8s deploy guide info" />
     <MESSAGE value="Started implementing back again the jwt-based authentication and authorization using SpringSecurity" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started implementing back again the jwt-based authentication and authorization using SpringSecurity" />
+    <MESSAGE value="Continuing configuring authentication and authorization logic for proper interaction with my frontend Angular app" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continuing configuring authentication and authorization logic for proper interaction with my frontend Angular app" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
