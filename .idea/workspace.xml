@@ -9,9 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Continuing configuring authentication and authorization logic for proper interaction with my frontend Angular app">
+    <list default="true" id="5c485c49-63b9-48e3-99af-4ef4e1e72f44" name="Changes" comment="Finished jwt-based authentication/authorization on frontend, did some refactoring to test it (not all aspects are perfect, for now)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ticketbookingsystem/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/TicketsPurchaseControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/controller/TicketsPurchaseControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/PurchasedTicketsServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ticketbookingsystem/unit/service/PurchasedTicketsServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,69 +108,8 @@
       <recent name="D:\TicketBookingSystem\src\main\webapp\WEB-INF\jsp\arena-jsp" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.ApplicationRunner">
-    <configuration name="ArenaRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.integration.repository.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration.repository" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.repository.ArenaRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HikariCPTest.testConnectionPool" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.connection_pool.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.connection_pool" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.connection_pool.HikariCPTest" />
-      <option name="METHOD_NAME" value="testConnectionPool" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PurchasedTicketRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.integration.repository.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration.repository" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.repository.PurchasedTicketRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RefreshTokenRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TicketBookingSystem" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ticketbookingsystem.integration.repository.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ticketbookingsystem.integration.repository" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.integration.repository.RefreshTokenRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RowServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.TicketsPurchaseControllerTest.testGetPurchasedTicketsSuccess">
+    <configuration name="PurchasedTicketsServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TicketBookingSystem" />
       <extension name="coverage">
         <pattern>
@@ -178,8 +118,71 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
-      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.RowServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.PurchasedTicketsServiceTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PurchasedTicketsServiceTest.testSavePurchasedTickets" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.service" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.service.PurchasedTicketsServiceTest" />
+      <option name="METHOD_NAME" value="testSavePurchasedTickets" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TicketsPurchaseControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.TicketsPurchaseControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TicketsPurchaseControllerTest.testCommitPurchaseSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.TicketsPurchaseControllerTest" />
+      <option name="METHOD_NAME" value="testCommitPurchaseSuccess" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TicketsPurchaseControllerTest.testGetPurchasedTicketsSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TicketBookingSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ticketbookingsystem.unit.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ticketbookingsystem.unit.controller" />
+      <option name="MAIN_CLASS_NAME" value="ticketbookingsystem.unit.controller.TicketsPurchaseControllerTest" />
+      <option name="METHOD_NAME" value="testGetPurchasedTicketsSuccess" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -289,21 +292,21 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.ArenaRepositoryTest" />
-      <item itemvalue="JUnit.HikariCPTest.testConnectionPool" />
-      <item itemvalue="JUnit.PurchasedTicketRepositoryTest" />
-      <item itemvalue="JUnit.RefreshTokenRepositoryTest" />
-      <item itemvalue="JUnit.RowServiceTest" />
+      <item itemvalue="JUnit.PurchasedTicketsServiceTest" />
+      <item itemvalue="JUnit.PurchasedTicketsServiceTest.testSavePurchasedTickets" />
+      <item itemvalue="JUnit.TicketsPurchaseControllerTest" />
+      <item itemvalue="JUnit.TicketsPurchaseControllerTest.testCommitPurchaseSuccess" />
+      <item itemvalue="JUnit.TicketsPurchaseControllerTest.testGetPurchasedTicketsSuccess" />
       <item itemvalue="Spring Boot.ApplicationRunner" />
       <item itemvalue="Tomcat Server.Tomcat 11.0.1" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RowServiceTest" />
-        <item itemvalue="JUnit.RefreshTokenRepositoryTest" />
-        <item itemvalue="JUnit.PurchasedTicketRepositoryTest" />
-        <item itemvalue="JUnit.HikariCPTest.testConnectionPool" />
-        <item itemvalue="JUnit.ArenaRepositoryTest" />
+        <item itemvalue="JUnit.TicketsPurchaseControllerTest.testGetPurchasedTicketsSuccess" />
+        <item itemvalue="JUnit.TicketsPurchaseControllerTest" />
+        <item itemvalue="JUnit.TicketsPurchaseControllerTest.testCommitPurchaseSuccess" />
+        <item itemvalue="JUnit.PurchasedTicketsServiceTest.testSavePurchasedTickets" />
+        <item itemvalue="JUnit.PurchasedTicketsServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -546,15 +549,11 @@
       <workItem from="1742043696734" duration="550000" />
       <workItem from="1742044275917" duration="32000" />
       <workItem from="1742050574460" duration="6482000" />
-      <workItem from="1742065829469" duration="903000" />
-    </task>
-    <task id="LOCAL-00017" summary="Deployed with Docker (please, check README file in order to get info about admin credentials and check admin functionality when running the app)">
-      <option name="closed" value="true" />
-      <created>1734122179019</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1734122179019</updated>
+      <workItem from="1742065829469" duration="1032000" />
+      <workItem from="1742114024235" duration="3525000" />
+      <workItem from="1742119461710" duration="5622000" />
+      <workItem from="1742133157974" duration="888000" />
+      <workItem from="1742195706309" duration="4332000" />
     </task>
     <task id="LOCAL-00018" summary="Did some refactoring">
       <option name="closed" value="true" />
@@ -940,7 +939,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741985764011</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="Finished jwt-based authentication/authorization on frontend, did some refactoring to test it (not all aspects are perfect, for now)">
+      <option name="closed" value="true" />
+      <created>1742066848254</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1742066848254</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -983,7 +990,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixed and tested refresh token mechanism, refactored internalization (EN/RU), tested metrics within Actuator, added JavaDoc" />
     <MESSAGE value="Refactored unit-tests for service classes" />
     <MESSAGE value="Refactored unit-tests for controller layer" />
     <MESSAGE value="Wrote integration tests for repositories using Testcontainers (no unit-tests for repositories)" />
@@ -1008,7 +1014,8 @@
     <MESSAGE value="Added into README k8s deploy guide info" />
     <MESSAGE value="Started implementing back again the jwt-based authentication and authorization using SpringSecurity" />
     <MESSAGE value="Continuing configuring authentication and authorization logic for proper interaction with my frontend Angular app" />
-    <option name="LAST_COMMIT_MESSAGE" value="Continuing configuring authentication and authorization logic for proper interaction with my frontend Angular app" />
+    <MESSAGE value="Finished jwt-based authentication/authorization on frontend, did some refactoring to test it (not all aspects are perfect, for now)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished jwt-based authentication/authorization on frontend, did some refactoring to test it (not all aspects are perfect, for now)" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

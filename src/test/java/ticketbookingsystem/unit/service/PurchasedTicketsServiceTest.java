@@ -4,6 +4,7 @@ import com.example.ticketbookingsystem.dto.PurchasedTicketDto;
 import com.example.ticketbookingsystem.entity.*;
 import com.example.ticketbookingsystem.repository.PurchasedTicketRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
+import com.example.ticketbookingsystem.repository.UserCartRepository;
 import com.example.ticketbookingsystem.repository.UserRepository;
 import com.example.ticketbookingsystem.service.PurchasedTicketsService;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +37,9 @@ public class PurchasedTicketsServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private UserCartRepository userCartRepository;
 
     @InjectMocks
     private PurchasedTicketsService purchasedTicketsService;
@@ -82,14 +87,18 @@ public class PurchasedTicketsServiceTest {
 
     @Test
     public void testSavePurchasedTickets() {
-        when(ticketRepository.findById(any(Long.class))).thenReturn(Optional.of(ticket));
+        when(userRepository.existsById(ENTITY_ID)).thenReturn(true);
+        when(ticketRepository.findAllById(anyList())).thenReturn(List.of(ticket));
+        doNothing().when(userCartRepository).deleteByUserId(any(Long.class));
+        when(ticketRepository.saveAll(anyList())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(purchasedTicketRepository.saveAll(anyList())).thenAnswer(invocation -> invocation.getArgument(0));
 
         List<Long> ticketIds = List.of(ENTITY_ID);
-
         purchasedTicketsService.savePurchasedTickets(ticketIds, ENTITY_ID);
 
-        verify(ticketRepository, times(1)).save(any(Ticket.class));
+        verify(ticketRepository, times(1)).saveAll(anyList());
         verify(purchasedTicketRepository, times(1)).saveAll(anyList());
+        verify(userCartRepository, times(1)).deleteByUserId(ENTITY_ID);
     }
 
     @Test
